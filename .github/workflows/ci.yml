@@ -15,6 +15,24 @@ permissions:
 # REQ-coverage tracer. A downstream project that scaffolds an app adds its own
 # typecheck/test steps (the task gate already auto-detects them — see .ai/bin/gate-task.sh).
 jobs:
+  pr-base-guard:
+    # Branch policy: main only ever advances via a release PR from develop. Branch
+    # protection / rulesets are unavailable on a free private repo, so this job is the
+    # enforcement: any PR whose base is main but whose head is NOT develop fails here.
+    name: PR base guard
+    if: github.event_name == 'pull_request' && github.base_ref == 'main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Only develop may target main
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          if [ "$HEAD_REF" != "develop" ]; then
+            echo "PR into main must come from develop (release PR only); got head='$HEAD_REF'." >&2
+            echo "Retarget this PR to develop." >&2
+            exit 1
+          fi
+
   verify:
     name: guards + spec-trace
     runs-on: ubuntu-latest
