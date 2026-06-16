@@ -17,6 +17,12 @@ export interface NavGroup {
 }
 
 export const navConfig: NavGroup[] = [
+  // ── Main ─────────────────────────────────────────────────────────────────
+  {
+    subheader: "Main",
+    items: [{ title: "แดชบอร์ด", path: "/main", icon: "dashboard" }],
+  },
+
   // ── Demo (minimals pages) ────────────────────────────────────────────────
   {
     subheader: "Demo",

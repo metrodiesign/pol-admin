@@ -1,6 +1,6 @@
 import { WelcomeBanner } from "@/components/dashboard/welcome-banner";
 import { FeaturedCarousel } from "@/components/dashboard/featured-carousel";
-import { SummaryWidgets } from "@/components/dashboard/summary-widget";
+import { PaymentSummaryWidgets } from "@/components/dashboard/payment-summary-widget";
 import { CurrentDownload } from "@/components/dashboard/current-download";
 import { AreaInstalled } from "@/components/dashboard/area-installed";
 import { NewInvoices } from "@/components/dashboard/new-invoices";
@@ -22,7 +22,7 @@ export default function MainPage() {
         </div>
 
         {/* Row 2 — summary KPIs */}
-        <SummaryWidgets />
+        <PaymentSummaryWidgets />
 
         {/* Row 3 — charts */}
         <div className="mmd:col-span-4">
