@@ -1,0 +1,100 @@
+import type { MailMessage } from "@/types/mail";
+
+const AVATAR_BASE =
+  "https://pub-c5e31b5cdafb419fb247a8ac2e78df7a.r2.dev/public/assets/images/mock/avatar";
+
+export const MAIL_MESSAGES: MailMessage[] = [
+  {
+    id: "e99f09a7-dd88-49d5-b1c8-1daf80c2d7b1",
+    from: {
+      name: "Jayvion Simon",
+      email: "nannie.abernathy70@yahoo.com",
+      avatarUrl: `${AVATAR_BASE}/avatar-1.webp`,
+    },
+    to: ["demo@minimals.cc", "tyrel.greenholt@gmail.com"],
+    subject: "Re: The Future of Renewable Energy: Innovations and Challenges Ahead",
+    preview: "Occaecati est et ...",
+    body: "Occaecati est et illo quibusdam accusamus qui. Incidunt aut et molestiae ut facere aut. Est quidem iusto praesentium excepturi harum nihil tenetur facilis. Ut omnis voluptates nihil accusantium doloribus eaque debitis.",
+    timestamp: "07 Jun 2026 11:32 pm",
+    relativeTime: "a few seconds",
+    labels: ["inbox", "important"],
+    isRead: false,
+    isStarred: false,
+    isImportant: true,
+  },
+  {
+    id: "e99f09a7-dd88-49d5-b1c8-1daf80c2d7b2",
+    from: {
+      name: "Lainey Davidson",
+      email: "lainey.davidson@gmail.com",
+      avatarUrl: `${AVATAR_BASE}/avatar-2.webp`,
+    },
+    to: ["demo@minimals.cc"],
+    subject: "Est enim et sit non imp...",
+    preview: "Non rerum modi. Accus...",
+    body: "Non rerum modi. Accusamus dolorem tempore qui consequatur. Enim sed laboriosam perspiciatis odio blanditiis.",
+    timestamp: "02 Jun 2026 08:00 am",
+    relativeTime: "5 days",
+    labels: ["inbox"],
+    isRead: true,
+    isStarred: false,
+    isImportant: false,
+  },
+  {
+    id: "e99f09a7-dd88-49d5-b1c8-1daf80c2d7b3",
+    from: {
+      name: "Cristopher Cardenas",
+      email: "cristopher.cardenas@hotmail.com",
+      initials: "C",
+      color: "#22c55e",
+    },
+    to: ["demo@minimals.cc"],
+    subject: "A inventore et. Se...",
+    preview: "Unde a inventore et. Se...",
+    body: "Unde a inventore et. Sed aut culpa et accusantium. Iste ea rerum dignissimos ut.",
+    timestamp: "01 Jun 2026 09:30 am",
+    relativeTime: "6 days",
+    labels: ["inbox", "social"],
+    isRead: true,
+    isStarred: false,
+    isImportant: false,
+  },
+  {
+    id: "e99f09a7-dd88-49d5-b1c8-1daf80c2d7b4",
+    from: {
+      name: "Melanie Noble",
+      email: "melanie.noble@example.com",
+      avatarUrl: `${AVATAR_BASE}/avatar-4.webp`,
+    },
+    to: ["demo@minimals.cc"],
+    subject: "Consequuntur et. Se...",
+    preview: "Consequuntur et. Se...",
+    body: "Consequuntur et. Se...",
+    timestamp: "31 May 2026 10:00 am",
+    relativeTime: "7 days",
+    labels: ["inbox", "promotions"],
+    isRead: true,
+    isStarred: true,
+    isImportant: false,
+  },
+  {
+    id: "e99f09a7-dd88-49d5-b1c8-1daf80c2d7b5",
+    from: {
+      name: "Chase Day",
+      email: "chase.day@example.com",
+      avatarUrl: `${AVATAR_BASE}/avatar-5.webp`,
+    },
+    to: ["demo@minimals.cc"],
+    subject: "Eaque natus adipisci so...",
+    preview: "Eaque natus adipisci so...",
+    body: "Eaque natus adipisci so...",
+    timestamp: "30 May 2026 11:00 am",
+    relativeTime: "8 days",
+    labels: ["inbox", "forums"],
+    isRead: true,
+    isStarred: false,
+    isImportant: false,
+  },
+];
+
+export const SELECTED_MESSAGE_ID = "e99f09a7-dd88-49d5-b1c8-1daf80c2d7b1";

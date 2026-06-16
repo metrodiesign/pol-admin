@@ -16,3 +16,6 @@ tsconfig.tsbuildinfo
 .env
 .env.*
 !.env.example
+
+# OS junk
+.DS_Store
