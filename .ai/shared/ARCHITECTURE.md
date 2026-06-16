@@ -47,21 +47,62 @@ retrospectives/       # บันทึก retro รายเดือน
 - จัด import เป็นชั้น: external ก่อน → internal absolute → relative
 - naming convention ชัดและคงเส้นคงวาทั้ง project (ดู Naming Conventions ด้านล่าง)
 
+### โครงสร้าง `src/` จริงของ CentroPay (pol-admin)
+
+แอปนี้คือ Next.js 16 App Router (frontend ล้วน, client-side, mock data). stack/idiom: [stack/nextjs.md](stack/nextjs.md).
+
+```
+src/
+  app/                 # App Router: layout.tsx (root: SettingsProvider, fonts, globals.css), dashboard routes
+    globals.css        #   design token single-source (@theme) + theme variants + dark mode
+  components/
+    ui/                # primitive: shadcn style base-nova บน @base-ui/react (ไม่ใช่ radix) — prop-only
+    payment/           # (*) CentroPay POL domain: dashboard, transactions, invoices, psp, api-clients,
+                       #   webhooks, audit, users, roles, branches, agents, apps, reports, notifications,
+                       #   shell, toast (+ shared: status-badge, stat-card, entity-drawer, lifecycle-track)
+    dashboard/         # Minimals template demo modules (analytics/ecommerce/banking/.../policy) — scaffolding
+    layout/            # app shell: *-layout, sidebar/topbar, nav-config.ts, drawers, logo, settings-drawer
+    form/              # field wrapper: text/select/date/country/phone-country + form-control
+    charts/            # recharts wrapper: donut/radial/stacked-bar/sparkline + legend/tooltip
+    table/             # @tanstack/react-table UI: data-table, pagination, selected-action, no-data
+    shared/            # cross-app: custom-breadcrumbs, page-header, avatar-upload, fieldset
+    providers/         # settings-provider.tsx (theme/mode/preset/layout/font runtime control)
+  hooks/               # stateful logic: use-data-table, use-policy-table-with-cart, use-invoices-table,
+                       #   use-scroll-lock, use-is-mobile
+  lib/
+    mock/              # typed mock data (NO backend): centropay/originators/psp/transactions/webhooks/...
+    utils.ts           # cn() (clsx+tailwind-merge), formatTHB()
+    breadcrumbs.ts     # buildBreadcrumbs() — map nav-config -> trail
+  types/               # domain contracts (PascalCase): transaction, psp, originator, role, permission,
+                       #   webhook, api-client, audit, policy, invoice, ...
+```
+
+> (*) = product surface จริง. `components/dashboard/*` + route ใน `app/dashboard/*` ส่วนใหญ่ยังเป็น
+> demo ของ Minimals template (de-navved); payment domain ยังไม่ wire เข้า route — ดู PROJECT_CONTEXT
+> "Current State". layout data flow: `lib/mock/*` -> hook -> page container spread เป็น props -> child render.
+
 `.github-sync.json` ใน `.claude/specs/<feature>/` = sidecar manifest ของ `/spec-sync-github`
 (link map issue<->task) — commit เข้า repo, เฉพาะคำสั่ง sync เขียน; ห้ามแก้มือ,
 ห้ามใส่ link ลง tasks.md
 
-## Naming Conventions
+## Naming Conventions (CentroPay จริง)
 
-- type/interface: PascalCase
-- ไฟล์ logic/data: ตาม convention ของภาษา/stack ที่ project เลือก แต่คงเส้นคงวาทั้ง repo
-- ค่าคงที่ที่ export: ตั้งชื่อสื่อความหมาย + มี type ชัด
+- ไฟล์ `.ts`/`.tsx`: **kebab-case** (`use-data-table.ts`, `policy-columns.tsx`, `custom-breadcrumbs.tsx`)
+- type/interface: **PascalCase** (`Policy`, `PolicyStatus`, `SettingsContextValue`)
+- custom hook: prefix **`use-*`** (`use-policy-table-with-cart`)
+- context provider: suffix **`*-provider.tsx`** + hook เข้าถึงชื่อ `useXxx()` (`settings-provider.tsx` -> `useSettings()`)
+- mock data: `entity.ts` (`policies.ts` export `POLICIES: Policy[]`)
+- export เป็น **named function** เสมอ (`export function PolicyDataTable()`); default export เฉพาะ Next page/layout
 
 ## Import Ordering
 
-1. external (dependency ของภายนอก)
-2. internal absolute (โมดูลภายใน project)
-3. relative (`./...`)
+1. external (dependency ของภายนอก เช่น `react`, `@tanstack/react-table`)
+2. internal absolute ผ่าน alias **`@/*`** (`@/types/policy`, `@/components/ui/*`) — ใช้ absolute เสมอ
+3. relative (`./...`) เฉพาะภายในโมดูลเดียวกัน
+
+> `"use client"` (ถ้ามี) อยู่บรรทัดบนสุดก่อน import ทั้งหมด.
+> นี่คือ convention เป้าหมาย — บางไฟล์เดิม (เช่น payment columns: `transactions-columns.tsx`,
+> `invoice-columns.tsx`, `roles-columns.tsx`) ยังเรียงสลับ external/internal อยู่; จัดใหม่ให้ตรงเมื่อแก้ไฟล์นั้น
 
 ## Architectural Patterns
 
