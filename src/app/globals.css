@@ -137,9 +137,10 @@
 }
 
 /* ---- Minimals clone primary = green; scoped to the /dashboard subtree so
-   CentroPay (app) keeps its blue primary. Applied via .theme-minimals on the
-   dashboard layout root. Tailwind v4 utilities read var(--color-primary) at
-   use-site, so overriding it on an ancestor recolors bg-/text-/ring-primary. ---- */
+   the default (non-minimals) theme keeps its blue primary. Applied via
+   .theme-minimals on the dashboard layout root. Tailwind v4 utilities read
+   var(--color-primary) at use-site, so overriding it on an ancestor recolors
+   bg-/text-/ring-primary. ---- */
 .theme-minimals {
   --color-primary-lighter: #c8fad6;
   --color-primary-light: #5be49b;
@@ -343,7 +344,7 @@ button, a, input, select, textarea {
 }
 
 /* Minimals clone: override transition duration to match MUI's 250ms easing.
-   Scoped to .theme-minimals so CentroPay (app) stays at 150ms. */
+   Scoped to .theme-minimals so the default theme stays at 150ms. */
 .theme-minimals button,
 .theme-minimals a,
 .theme-minimals [role="button"] {
