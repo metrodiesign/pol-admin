@@ -47,7 +47,7 @@ retrospectives/       # บันทึก retro รายเดือน
 - จัด import เป็นชั้น: external ก่อน → internal absolute → relative
 - naming convention ชัดและคงเส้นคงวาทั้ง project (ดู Naming Conventions ด้านล่าง)
 
-### โครงสร้าง `src/` จริงของ CentroPay (pol-admin)
+### โครงสร้าง `src/` จริงของ POL admin (pol-admin)
 
 แอปนี้คือ Next.js 16 App Router (frontend ล้วน, client-side, mock data). stack/idiom: [stack/nextjs.md](stack/nextjs.md).
 
@@ -57,7 +57,7 @@ src/
     globals.css        #   design token single-source (@theme) + theme variants + dark mode
   components/
     ui/                # primitive: shadcn style base-nova บน @base-ui/react (ไม่ใช่ radix) — prop-only
-    payment/           # (*) CentroPay POL domain: dashboard, transactions, invoices, psp, api-clients,
+    payment/           # (*) POL domain (product surface): dashboard, transactions, invoices, psp, api-clients,
                        #   webhooks, audit, users, roles, branches, agents, apps, reports, notifications,
                        #   shell, toast (+ shared: status-badge, stat-card, entity-drawer, lifecycle-track)
     dashboard/         # Minimals template demo modules (analytics/ecommerce/banking/.../policy) — scaffolding
@@ -70,7 +70,7 @@ src/
   hooks/               # stateful logic: use-data-table, use-policy-table-with-cart, use-invoices-table,
                        #   use-scroll-lock, use-is-mobile
   lib/
-    mock/              # typed mock data (NO backend): centropay/originators/psp/transactions/webhooks/...
+    mock/              # typed mock data (NO backend): originators/psp/transactions/webhooks/invoices/audit/...
     utils.ts           # cn() (clsx+tailwind-merge), formatTHB()
     breadcrumbs.ts     # buildBreadcrumbs() — map nav-config -> trail
   types/               # domain contracts (PascalCase): transaction, psp, originator, role, permission,
@@ -85,7 +85,7 @@ src/
 (link map issue<->task) — commit เข้า repo, เฉพาะคำสั่ง sync เขียน; ห้ามแก้มือ,
 ห้ามใส่ link ลง tasks.md
 
-## Naming Conventions (CentroPay จริง)
+## Naming Conventions (โปรเจกต์จริง)
 
 - ไฟล์ `.ts`/`.tsx`: **kebab-case** (`use-data-table.ts`, `policy-columns.tsx`, `custom-breadcrumbs.tsx`)
 - type/interface: **PascalCase** (`Policy`, `PolicyStatus`, `SettingsContextValue`)

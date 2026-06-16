@@ -1,4 +1,4 @@
-# Stack profile: Next.js (CentroPay / pol-admin)
+# Stack profile: Next.js (POL admin / pol-admin)
 
 > Optional stack profile — complements the neutral canon, ไม่แทนที่. กฎทั่วไปอยู่ใน
 > `../CODING_STANDARDS.md` / `../ARCHITECTURE.md` / `../TESTING_PROTOCOL.md`; ไฟล์นี้เก็บเฉพาะ
@@ -77,5 +77,5 @@
 
 ## Known mismatch (flag, ยังไม่แก้)
 
-- `package.json` field `"name": "merchant-dashboard"` ไม่ตรงกับผลิตภัณฑ์ (CentroPay / pol-admin).
+- `package.json` field `"name": "merchant-dashboard"` ไม่ตรงกับผลิตภัณฑ์ (POL admin / pol-admin).
   เป็นชื่อตกค้างจาก template — ควร rename เป็น `pol-admin` แยก PR เมื่อสะดวก.

@@ -5,12 +5,12 @@
 
 ## Purpose
 
-**CentroPay** คือ frontend ของ **admin portal ภายในองค์กร (internal-only, พนักงานเท่านั้น)**
-สำหรับทีม payment operations ของบริษัทประกัน ใช้บริหาร **Payment Orchestration Layer (POL)** —
-ชั้นที่รับชำระเบี้ยประกัน (policy premium) แล้ว route ธุรกรรมไปยังหลาย Payment Service Provider
-(PSP เช่น 2C2P, Omise) ตามกฎ routing, ติดตามสถานะธุรกรรมตลอด lifecycle, จัดการ payment link,
-originator (สาขา/ตัวแทน/นายหน้า/connected app), webhook, API client, audit และ
-report/reconciliation.
+**Payment Orchestration Layer (POL) — Admin** คือ frontend ของ **admin portal ภายในองค์กร
+(internal-only, พนักงานเท่านั้น)** สำหรับทีม payment operations ของบริษัทประกัน. ระบบ POL คือชั้นที่
+รับชำระเบี้ยประกัน (policy premium) แล้ว route ธุรกรรมไปยังหลาย Payment Service Provider
+(PSP เช่น 2C2P, Omise) ตามกฎ routing; frontend นี้คือหน้าจอบริหารของ POL — ติดตามสถานะธุรกรรม
+ตลอด lifecycle, จัดการ payment link, originator (สาขา/ตัวแทน/นายหน้า/connected app), webhook,
+API client, audit และ report/reconciliation.
 
 One-line pitch: ที่เดียวให้พนักงานภายในมองเห็นและปฏิบัติการกับการรับชำระเบี้ยประกันข้าม PSP
 ทั้งหมด — capture/void/refund, routing, กระทบยอด, และ audit — บนหน้าจอ admin ตัวเดียว.
@@ -73,13 +73,13 @@ One-line pitch: ที่เดียวให้พนักงานภาย�
   ในชั้นนี้ (ดู Current State)
 - **Minimals template demo pages ไม่นับเป็นฟีเจอร์ของผลิตภัณฑ์** — หน้า analytics/ecommerce/banking/
   booking/calendar/chat/mail/kanban/tour/post/job/product/order ฯลฯ ใต้ `src/app/dashboard/*`
-  คือ scaffolding ที่สืบทอดมาจาก admin template ไม่ใช่ขอบเขต CentroPay
+  คือ scaffolding ที่สืบทอดมาจาก admin template ไม่ใช่ขอบเขตของ POL admin
 
 ## Current State (ground truth)
 
 - **Payment surface สร้างครบเป็น component library + types + mock** — `src/components/payment/*`
   (16 โมดูล), `src/types/*` (transaction, psp, originator, role, permission, webhook, api-client,
-  audit, policy, invoice), `src/lib/mock/*` (centropay/originators/psp/transactions/webhooks/...)
+  audit, policy, invoice), `src/lib/mock/*` (originators/psp/transactions/webhooks/invoices/audit/roles/...)
 - **ยังไม่ wire เข้า Next.js route** — `src/app/dashboard/*` ปัจจุบันยังเป็นหน้า demo ของ Minimals
   template; `nav-config.ts` อ้าง route ของ payment (`/transactions`, `/psp`, ...) ไว้แล้วแต่ยังไม่มี
   `page.tsx` จริง. **การ integrate routing คืองานถัดไป.**
