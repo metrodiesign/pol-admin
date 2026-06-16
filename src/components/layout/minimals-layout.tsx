@@ -15,13 +15,10 @@ import { useSettings } from "@/components/providers/settings-provider";
 /**
  * Shell for the /dashboard (minimals clone) route group.
  *
- * Identical structure to DashboardLayout but:
- *  - Uses MinimalsTopbar (transparent, grey icons) instead of Topbar.
- *  - Passes minimalsNavConfig to SidebarNav via the new optional `groups` prop.
+ *  - Uses MinimalsTopbar (transparent, grey icons).
+ *  - Passes minimalsNavConfig to SidebarNav via the optional `groups` prop.
  *  - Keeps the `theme-minimals` class on the root so the green primary stays.
  *  - Uses a separate localStorage key so collapse state is independent.
- *
- * DashboardLayout (and CentroPay's (app)/layout.tsx) are untouched.
  */
 export function MinimalsLayout({ children }: { children: React.ReactNode }) {
   const { settings, setSetting } = useSettings();

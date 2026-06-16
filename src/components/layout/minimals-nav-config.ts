@@ -6,6 +6,12 @@ import { type NavGroup } from "./nav-config";
  * the path so the sidebar renders them visually without creating real pages.
  */
 export const minimalsNavConfig: NavGroup[] = [
+  // ── Main ────────────────────────────────────────────────────────────────
+  {
+    subheader: "Main",
+    items: [{ title: "แดชบอร์ด", path: "/main", icon: "dashboard" }],
+  },
+
   // ── Overview ────────────────────────────────────────────────────────────
   {
     subheader: "Overview",

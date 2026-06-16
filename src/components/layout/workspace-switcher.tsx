@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 interface WorkspaceSwitcherProps {
-  /** "white" = on coloured topbar (CentroPay default); "grey" = on transparent minimals topbar */
+  /** "white" = on coloured topbar; "grey" = on transparent minimals topbar */
   variant?: "white" | "grey";
 }
 

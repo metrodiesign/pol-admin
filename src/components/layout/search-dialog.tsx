@@ -67,13 +67,6 @@ export function SearchDialog({ variant = "white" }: SearchDialogProps) {
     return () => document.removeEventListener("keydown", onKey);
   }, []);
 
-  // Listen for the custom event dispatched by GlobalHotkeys (`?` key)
-  useEffect(() => {
-    const onOpenPalette = () => setOpen(true);
-    window.addEventListener("centropay:open-palette", onOpenPalette);
-    return () => window.removeEventListener("centropay:open-palette", onOpenPalette);
-  }, []);
-
   const handleOpenChange = (next: boolean) => {
     setOpen(next);
     if (!next) setQuery("");
