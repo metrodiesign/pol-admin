@@ -17,50 +17,7 @@ export interface NavGroup {
 }
 
 export const navConfig: NavGroup[] = [
-  // ── CentroPay groups ──────────────────────────────────────────────────────
-  {
-    subheader: "ภาพรวม",
-    items: [
-      { title: "แดชบอร์ด", path: "/", icon: "dashboard" },
-      { title: "ธุรกรรม", path: "/transactions", icon: "banking" },
-    ],
-  },
-  {
-    subheader: "การรับชำระเงิน",
-    items: [
-      { title: "กรมธรรม์", path: "/policy/list", icon: "invoice" },
-      { title: "ใบแจ้งหนี้ & ลิงก์", path: "/invoices", icon: "invoice" },
-      { title: "ออกใบแจ้งหนี้", path: "/invoices/new", icon: "ecommerce" },
-    ],
-  },
-  {
-    subheader: "ผู้ใช้งาน & สิทธิ์",
-    items: [
-      { title: "ผู้ใช้งาน", path: "/users", icon: "user" },
-      { title: "Roles", path: "/roles", icon: "lock" },
-      { title: "สาขา", path: "/branches", icon: "analytics" },
-      { title: "ตัวแทน / นายหน้า", path: "/agents", icon: "user" },
-    ],
-  },
-  {
-    subheader: "ระบบ",
-    items: [
-      { title: "แอปเชื่อมต่อ", path: "/apps", icon: "file" },
-      { title: "API Clients", path: "/api-clients", icon: "lock" },
-      { title: "PSP & เส้นทางชำระ", path: "/psp", icon: "banking" },
-      { title: "Webhooks", path: "/webhooks", icon: "job" },
-      { title: "การแจ้งเตือน", path: "/notifications", icon: "mail" },
-      { title: "Audit Log", path: "/audit", icon: "booking" },
-    ],
-  },
-  {
-    subheader: "รายงาน",
-    items: [
-      { title: "รายงาน & กระทบยอด", path: "/reports", icon: "analytics" },
-    ],
-  },
-
-  // ── Demo (minimals pages, de-navved from primary groups) ─────────────────
+  // ── Demo (minimals pages) ────────────────────────────────────────────────
   {
     subheader: "Demo",
     items: [
