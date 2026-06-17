@@ -57,6 +57,19 @@ export const navConfig: NavGroup[] = [
     ],
   },
 
+  // ── กรมธรรม์ ───────────────────────────────────────────────────────────────
+  {
+    subheader: "กรมธรรม์",
+    items: [
+      {
+        title: "กรมธรรม์",
+        path: "/policy/list",
+        icon: "invoice",
+        match: "/policy",
+      },
+    ],
+  },
+
   // ── Demo (minimals pages) ────────────────────────────────────────────────
   {
     subheader: "Demo",

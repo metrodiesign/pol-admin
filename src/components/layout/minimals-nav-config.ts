@@ -32,6 +32,19 @@ export const minimalsNavConfig: NavGroup[] = [
     ],
   },
 
+  // ── กรมธรรม์ ──────────────────────────────────────────────────────────────
+  {
+    subheader: "กรมธรรม์",
+    items: [
+      {
+        title: "กรมธรรม์",
+        path: "/policy/list",
+        icon: "invoice",
+        match: "/policy",
+      },
+    ],
+  },
+
   // ── Overview ────────────────────────────────────────────────────────────
   {
     subheader: "Overview",
