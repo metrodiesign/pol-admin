@@ -1,8 +1,9 @@
 "use client";
 
+import SimpleBar from "simplebar-react";
 import type { Policy } from "@/types/policy";
 import { sumPremium } from "@/lib/policy/policy";
-import { formatTHB } from "@/lib/utils";
+import { formatAmount } from "@/lib/utils";
 import {
   Dialog,
   DialogContent,
@@ -45,39 +46,59 @@ export function PremiumCheckoutDialog({
     <Dialog open={open} onOpenChange={(o) => (!o ? onClose() : undefined)}>
       <DialogContent className="sm:max-w-md" showCloseButton={false}>
         <DialogHeader>
-          <DialogTitle>ยืนยันรับชำระเบี้ย</DialogTitle>
+          <DialogTitle className="text-lg font-bold text-foreground">
+            ยืนยันรับชำระเบี้ย
+          </DialogTitle>
           <DialogDescription>
             ตรวจสอบรายการ {count} กรมธรรม์ ก่อนดำเนินการรับชำระเบี้ย
           </DialogDescription>
         </DialogHeader>
 
-        <ul className="max-h-64 space-y-2 overflow-y-auto">
-          {policies.map((p) => (
-            <li
-              key={p.id}
-              className="flex items-center gap-3 rounded-control border border-[var(--divider)] px-3 py-2"
-            >
-              <div className="min-w-0 flex-1">
-                <span className="block truncate text-sm font-bold text-foreground">{p.id}</span>
-                <span className="block truncate text-xs text-grey-500">{p.customer.name}</span>
-              </div>
-              <span className="shrink-0 text-sm font-bold text-foreground">
-                {formatTHB(p.premium, 2)}
-              </span>
-            </li>
-          ))}
-        </ul>
+        <div className="-mx-4 flex flex-col border-y border-[var(--divider)]">
+          <div className="flex items-center justify-between bg-grey-100 px-4 py-2.5">
+            <span className="text-sm font-semibold text-grey-700">กรมธรรม์</span>
+            <span className="text-sm font-semibold text-grey-700">เบี้ยรวม</span>
+          </div>
+          <SimpleBar autoHide={false} style={{ maxHeight: "16rem" }} className="px-4">
+            <ul className="flex flex-col">
+              {policies.map((p) => (
+                <li
+                  key={p.id}
+                  className="flex items-center justify-between gap-3 border-b border-[var(--divider)] py-2.5 last:border-b-0"
+                >
+                  <span className="min-w-0">
+                    <span className="block truncate text-sm font-bold text-foreground">
+                      {p.customer.name}
+                    </span>
+                    <span className="block truncate text-xs text-grey-500">{p.id}</span>
+                  </span>
+                  <span className="shrink-0 text-sm font-bold tabular-nums text-foreground">
+                    {formatAmount(p.premium, 2)}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </SimpleBar>
+        </div>
 
-        <div className="flex items-center justify-between border-t border-[var(--divider)] pt-3">
-          <span className="text-sm text-grey-600">เบี้ยรวม</span>
-          <span className="text-lg font-bold text-foreground">{formatTHB(total, 2)}</span>
+        <div className="flex items-center justify-between">
+          <span className="text-base font-semibold text-foreground">เบี้ยรวม</span>
+          <span className="text-xl font-bold tabular-nums text-primary">
+            {formatAmount(total, 2)}
+          </span>
         </div>
 
         <DialogFooter>
-          <DialogClose render={<Button variant="outline" />}>ยกเลิก</DialogClose>
+          <DialogClose
+            render={
+              <Button className="h-9 min-w-[100px] bg-[rgba(145,158,171,0.16)] font-bold text-grey-800 hover:bg-[rgba(145,158,171,0.24)]" />
+            }
+          >
+            ยกเลิก
+          </DialogClose>
           <Button
             onClick={handleConfirm}
-            className="bg-grey-800 text-white hover:bg-grey-900"
+            className="h-9 min-w-[100px] bg-grey-800 font-bold text-white hover:bg-grey-900"
           >
             ยืนยันรับชำระเบี้ย
           </Button>

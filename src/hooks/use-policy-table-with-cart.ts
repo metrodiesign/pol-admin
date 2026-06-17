@@ -105,7 +105,7 @@ export function usePolicyTableWithCart({
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     initialState: {
-      sorting: [{ id: "policyNo", desc: false }],
+      sorting: [{ id: "vcp", desc: false }],
       pagination: { pageIndex: 0, pageSize: 10 },
     },
   });

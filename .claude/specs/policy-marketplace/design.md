@@ -90,24 +90,38 @@ export type PremiumFrequency = "monthly" | "quarterly" | "yearly";
 export interface Policy {
   id: string;             // เลขกรมธรรม์ เช่น POL-2401170
   effectiveDate: string;  // เริ่มคุ้มครอง (ISO yyyy-mm-dd)
+  coverageEnd: string;    // สิ้นสุดคุ้มครอง (ISO) — amended 2026-06-17
   customer: { name: string; phone: string };
   product: { type: string; plan?: string };
   source: { code: string; channel: string };
+  insuranceKind: "VMI" | "CMI";              // ประเภทประกันภัย (amended 2026-06-17)
+  referenceType: "policy" | "claim";         // ประเภทเลขอ้างอิง
+  referenceNo: string;                       // หมายเลขกรมธรรม์/รับแจ้ง
+  extraInfo: { text: string; tooltip?: string };
   sumInsured: number;
-  premium: number;
+  premium: number;        // = totalAmount (ยอดที่ตะกร้ารับชำระเก็บ)
+  netPremium: number;     // เบี้ยสุทธิ
+  totalAmount: number;    // เบี้ยรวม (บาท)
   frequency: PremiumFrequency;
   nextDue: { date: string; installmentNo: number };
+  deduction: { state: "none" | "deducted"; date?: string }; // สถานะตัดชำระเบี้ย
+  vcp: "none" | "awaiting" | "paid";         // สถานะการชำระเงิน (VCP)
   status: PolicyStatus;
 }
 ```
+
+> หมายเหตุ (amended 2026-06-17): ตารางถูก rebuild เป็น motor-insurance schema — คอลัมน์ที่แสดง
+> ไม่รวม coverage period (ลบตามคำสั่ง), header เบี้ยใช้สีปกติ, action เป็น icon ซื้อเลย (Zap) +
+> เพิ่มลงตะกร้า disable เมื่อ vcp = paid. `formatThaiSlashDate` (DD/MM/BBBB) ใช้กับวันตัดชำระ.
 
 ```ts
 // src/lib/policy/policy.ts  (pure — no React)
 export const CART_ELIGIBLE_STATUSES: ReadonlySet<PolicyStatus>; // {awaiting, due_soon}
 export function isCartEligible(status: PolicyStatus): boolean;
 export function sumPremium(items: readonly Policy[]): number;
-export interface PolicyFilter { search: string; type: string; source: string; status: PolicyStatus | "all"; }
-export function matchesPolicyFilter(p: Policy, f: PolicyFilter): boolean; // search = id|customer.name (case-insensitive); AND
+export interface PolicyFilter { search: string; category: string; customerName: string; startDate: string; endDate: string; status: PolicyStatus | "all"; }
+export function policyCategory(p: Policy): "motor" | "non-motor"; // ประกันรถยนต์ = motor, ที่เหลือ = non-motor
+export function matchesPolicyFilter(p: Policy, f: PolicyFilter): boolean; // search = id|customer.name; category + customerName + date-range + status; AND (amended 2026-06-17)
 export function countByStatus(list: readonly Policy[]): Record<PolicyStatus | "all", number>;
 export function buildTypeOptions(list: readonly Policy[]): { value: string; label: string }[];
 export function buildSourceOptions(list: readonly Policy[]): { value: string; label: string }[];
@@ -199,9 +213,9 @@ repo ยังไม่มี test runner (มีแค่ `next build`/`eslint`
 
 | Design element | REQ |
 |----------------|-----|
-| `policy-table-columns` + `formatTHB` + `policy-status-badge` + DataTable sort/pagination | REQ-1.1–1.6 |
+| `policy-table-columns` (motor-insurance schema) + `formatTHB`/`formatThaiSlashDate` + VCP badge + `PolicyRowActions` (disable เมื่อ paid) + DataTable sort/pagination | REQ-1.1–1.7 |
 | `policy-status-tabs` + `countByStatus` + globalFilter status | REQ-2.1–2.4 |
-| `policy-list-toolbar` + `matchesPolicyFilter` + stubs | REQ-3.1–3.5 |
+| `policy-list-toolbar` (6-field grid) + `matchesPolicyFilter` + `policyCategory` + `CATEGORY_OPTIONS`/`PAYMENT_STATUS_OPTIONS` | REQ-3.1–3.8 |
 | `use-policy-table-with-cart` cart reducer + `isCartEligible` + action cell | REQ-4.1–4.7 |
 | `premium-cart-panel` + `premium-cart-item` + `sumPremium` | REQ-5.1–5.6 |
 | `premium-checkout-dialog` (cart mode) + `policy-toaster` + `cart.clear` | REQ-6.1–6.5 |
@@ -236,7 +250,7 @@ repo ยังไม่มี test runner (มีแค่ `next build`/`eslint`
 - **F-tbl-7 (med, REQ-2.3/3.1–3.3 reset)** — ตั้ง `autoResetPageIndex: false` (เหมือน user)
   และ handler ของ tab/search/type/source ทุกตัวเรียก `table.setPageIndex(0)` explicit.
 - **F-tbl-14 (low, REQ-3.4 AND)** — status รวมใน globalFilter object เดียว:
-  `{ search, type, source, status }` → `globalFilterFn = matchesPolicyFilter(row.original, f)`
+  `{ search, category, customerName, startDate, endDate, status }` → `globalFilterFn = matchesPolicyFilter(row.original, f)`
   (AND ครบ; status "all" = ผ่านหมด). `counts` แยกคำนวณจาก `POLICIES` เต็มด้วย `countByStatus`.
 - **F-ui-9 (med, REQ-5.1/5.4 mobile)** — `premium-cart-sheet` FAB แสดง badge `count` (live
   ขณะ sheet ปิด) + เปิด `ui/sheet` (side right) ครอบ `PremiumCartPanel` ตัวเดียวกับ desktop.

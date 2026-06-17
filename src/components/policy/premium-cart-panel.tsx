@@ -1,6 +1,6 @@
 "use client";
 
-import { ShoppingCart, Info } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import type { Policy } from "@/types/policy";
 import { formatTHB } from "@/lib/utils";
 import { PremiumCartItem } from "./premium-cart-item";
@@ -47,12 +47,6 @@ export function PremiumCartPanel({
           <p className="text-xs leading-relaxed text-grey-500">
             คลิก &quot;เพิ่มลงตะกร้า&quot; ที่กรมธรรม์ในตารางด้านซ้าย
             เพื่อรวมรับชำระเบี้ยทีเดียว
-          </p>
-          <p className="mt-2 flex items-start gap-2 rounded-control bg-info/8 px-3 py-2 text-left text-xs text-info-dark">
-            <Info className="mt-0.5 size-4 shrink-0" aria-hidden />
-            <span>
-              เพิ่มกรมธรรม์ <strong>ใบใดก็ได้</strong> ลงตะกร้าเพื่อรวมรับชำระเบี้ย
-            </span>
           </p>
         </div>
       ) : (

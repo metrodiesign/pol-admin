@@ -13,8 +13,10 @@ export function PremiumCartItem({ policy, onRemove }: PremiumCartItemProps) {
   return (
     <li className="flex items-center gap-3 rounded-control border border-[var(--divider)] px-3 py-2.5">
       <div className="min-w-0 flex-1">
-        <span className="block truncate text-sm font-bold text-foreground">{policy.id}</span>
-        <span className="block truncate text-xs text-grey-500">{policy.customer.name}</span>
+        <span className="block truncate text-sm font-bold text-foreground">
+          {policy.customer.name}
+        </span>
+        <span className="block truncate text-xs text-grey-500">{policy.id}</span>
       </div>
       <span className="shrink-0 text-sm font-bold text-foreground">
         {formatTHB(policy.premium, 2)}

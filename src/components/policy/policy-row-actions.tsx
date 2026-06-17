@@ -1,6 +1,6 @@
 "use client";
 
-import { Zap, ShoppingCart, Check, ChevronRight } from "lucide-react";
+import { CreditCard, ShoppingCart, Check, ChevronRight } from "lucide-react";
 import type { PolicyCartMeta } from "@/types/table-meta";
 import type { Policy } from "@/types/policy";
 import { cn } from "@/lib/utils";
@@ -18,9 +18,9 @@ interface PolicyRowActionsProps {
 }
 
 /**
- * เซลล์ action ต่อแถว — ปุ่ม "ซื้อเลย" + เพิ่ม/นำออกตะกร้า แสดงทุกกรมธรรม์
- * (user: ครบทุกรายการ). aria-label ผูก id ให้ screen reader แยกแถวได้ (REQ-9.1).
- * ถ้ายังไม่ wire cart -> chevron อย่างเดียว.
+ * เซลล์ action ต่อแถว — ปุ่ม "ซื้อเลย" + เพิ่ม/นำออกตะกร้า แสดงทุกกรมธรรม์.
+ * แถวที่มีสถานะชำระเงินแล้ว (vcp = "awaiting" รอชำระเงิน หรือ "paid" ชำระสำเร็จ) ปุ่มถูก disable (REQ-4 amended).
+ * aria-label ผูก id ให้ screen reader แยกแถวได้ (REQ-9.1).
  */
 export function PolicyRowActions({ policy, cart }: PolicyRowActionsProps) {
   if (!cart) {
@@ -32,32 +32,41 @@ export function PolicyRowActions({ policy, cart }: PolicyRowActionsProps) {
   }
 
   const inCart = cart.has(policy.id);
+  // ล็อกปุ่มเมื่อมีสถานะชำระเงินแล้ว (รอชำระเงิน หรือ ชำระสำเร็จ) — REQ-4 amended
+  const locked = policy.vcp !== "none";
+  const lockedLabel = policy.vcp === "paid" ? "ชำระสำเร็จแล้ว" : "รอชำระเงิน";
 
   return (
     <TooltipProvider>
-      <div className="flex items-center justify-end gap-1.5">
-        <Button
-          variant="default"
-          size="sm"
-          className="h-10 cursor-pointer gap-1.5 px-4 bg-primary text-primary-foreground hover:bg-primary/90"
-          onClick={() => cart.buyNow(policy)}
-          aria-label={`ซื้อ ${policy.id} เลย`}
-        >
-          <Zap className="size-4" />
-          ซื้อเลย
-        </Button>
+      <div className="flex items-center justify-start gap-1.5">
+        <Tooltip>
+          <TooltipTrigger render={<span className="inline-flex" />}>
+            <Button
+              variant="default"
+              size="icon-lg"
+              disabled={locked}
+              className="size-10 cursor-pointer bg-primary text-primary-foreground hover:bg-primary/90"
+              onClick={locked ? undefined : () => cart.buyNow(policy)}
+              aria-label={locked ? `${policy.id} ${lockedLabel}` : `ซื้อ ${policy.id} เลย`}
+            >
+              <CreditCard className="size-5" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>{locked ? lockedLabel : "ซื้อเลย"}</TooltipContent>
+        </Tooltip>
         <Tooltip>
           <TooltipTrigger render={<span className="inline-flex" />}>
             <Button
               variant="ghost"
               size="icon-lg"
+              disabled={locked}
               className={cn(
                 "size-10 cursor-pointer",
                 inCart
                   ? "bg-grey-800 text-white hover:bg-grey-800/90 focus-visible:bg-grey-800 focus-visible:text-white"
                   : "bg-grey-600/8 text-grey-700 hover:bg-grey-800 hover:text-white focus-visible:bg-grey-800 focus-visible:text-white",
               )}
-              onClick={() => cart.toggle(policy)}
+              onClick={locked ? undefined : () => cart.toggle(policy)}
               aria-label={
                 inCart
                   ? `นำ ${policy.id} ออกจากตะกร้า`
@@ -67,7 +76,9 @@ export function PolicyRowActions({ policy, cart }: PolicyRowActionsProps) {
               {inCart ? <Check className="size-5" /> : <ShoppingCart className="size-5" />}
             </Button>
           </TooltipTrigger>
-          <TooltipContent>{inCart ? "อยู่ในตะกร้า" : "เพิ่มลงตะกร้า"}</TooltipContent>
+          <TooltipContent>
+            {locked ? lockedLabel : inCart ? "อยู่ในตะกร้า" : "เพิ่มลงตะกร้า"}
+          </TooltipContent>
         </Tooltip>
       </div>
     </TooltipProvider>

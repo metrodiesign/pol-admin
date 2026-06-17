@@ -1,9 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import type { Policy } from "@/types/policy";
-import { POLICIES } from "@/lib/mock/policies";
-import { buildTypeOptions } from "@/lib/policy/policy";
+import type { Policy, PolicyStatus } from "@/types/policy";
+import { CATEGORY_OPTIONS, PAYMENT_STATUS_OPTIONS } from "@/lib/policy/policy";
 import {
   usePolicyTableWithCart,
   ROWS_PER_PAGE_OPTIONS,
@@ -25,17 +24,18 @@ interface CheckoutState {
 export function PolicyMarketplaceView() {
   const [dense, setDense] = useState(false);
   const [search, setSearch] = useState("");
-  const [type, setType] = useState("");
+  const [category, setCategory] = useState("");
+  const [customerName, setCustomerName] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [status, setStatus] = useState<PolicyStatus | "all">("all");
   const [checkout, setCheckout] = useState<CheckoutState | null>(null);
 
   const { toasts, show, dismiss } = usePolicyToast();
 
-  const typeOptions = useMemo(() => buildTypeOptions(POLICIES), []);
   const globalFilter = useMemo(
-    () => ({ search, type, startDate, endDate, status: "all" as const }),
-    [search, type, startDate, endDate],
+    () => ({ search, category, customerName, startDate, endDate, status }),
+    [search, category, customerName, startDate, endDate, status],
   );
 
   const { table, filteredCount, cart } = usePolicyTableWithCart({
@@ -64,12 +64,17 @@ export function PolicyMarketplaceView() {
               setSearch(v);
               resetToFirstPage();
             }}
-            type={type}
-            onTypeChange={(v) => {
-              setType(v);
+            category={category}
+            onCategoryChange={(v) => {
+              setCategory(v);
               resetToFirstPage();
             }}
-            typeOptions={typeOptions}
+            categoryOptions={CATEGORY_OPTIONS}
+            customerName={customerName}
+            onCustomerNameChange={(v) => {
+              setCustomerName(v);
+              resetToFirstPage();
+            }}
             startDate={startDate}
             onStartDateChange={(v) => {
               setStartDate(v);
@@ -80,6 +85,12 @@ export function PolicyMarketplaceView() {
               setEndDate(v);
               resetToFirstPage();
             }}
+            status={status}
+            onStatusChange={(v) => {
+              setStatus(v as PolicyStatus | "all");
+              resetToFirstPage();
+            }}
+            statusOptions={PAYMENT_STATUS_OPTIONS}
           />
           <DataTable
             table={table}

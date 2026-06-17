@@ -32,6 +32,7 @@
        - test: `npx tsc --noEmit` -> No errors found (columns + badge + view + row-actions + formatThaiShortDate)
        - viewports: n/a — route ยังไม่มี (สร้าง task 6); visual verify เลื่อนไป assembly task 6
        - deviations: action cell (`policy-row-actions.tsx`) สร้างเต็มตั้งแต่ task 2 (ปุ่ม cart/ซื้อเลย) แต่ cart meta wire ใน task 4 — task 2 fallback chevron
+       - amended 2026-06-17: rebuild ตารางเป็น motor-insurance schema (REQ-1.1/1.3/1.4 + REQ-1.7 ใหม่) — คอลัมน์ใหม่ ประเภทประกันภัย VMI/CMI, ประเภทเลขอ้างอิง, หมายเลขอ้างอิง(link), ชื่อผู้เอาประกัน, ข้อมูลเพิ่มเติม(+tooltip), เบี้ยสุทธิ, เบี้ยรวม, สถานะตัดชำระเบี้ย, VCP badge; ลบคอลัมน์ ช่วงคุ้มครอง; action = icon ซื้อเลย+ตะกร้า disable เมื่อ vcp=paid; เพิ่ม `formatThaiSlashDate`. browser-verified prod :5311 (10 header, disable ตรง paid, no overflow 375/768/1440). spec-trace 50 ข้อ exit 0
 
 - [x] 3. Tabs + toolbar + filter — `policy-status-tabs.tsx` (count badge ต่อสถานะ, reuse สี map จาก badge),
      `policy-list-toolbar.tsx` (SearchField + SelectField ประเภท/ที่มา + stubs CSV/ตัวกรองเพิ่มเติม/date

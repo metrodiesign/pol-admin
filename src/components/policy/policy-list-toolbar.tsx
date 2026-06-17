@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search, SlidersHorizontal, CalendarDays } from "lucide-react";
+import { Search, CalendarDays } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { TextField } from "@/components/form/text-field";
 import { SelectField } from "@/components/form/select-field";
@@ -23,7 +23,7 @@ function DateInput({
 }) {
   const [focused, setFocused] = useState(false);
   return (
-    <div className="flex w-full flex-col gap-1.5 sm:w-[160px] sm:shrink-0">
+    <div className="flex w-full flex-col gap-1.5">
       <span className="select-none text-sm font-medium text-grey-800">{label}</span>
       <div
         className={cn(
@@ -36,7 +36,7 @@ function DateInput({
         <input
           type="text"
           aria-label={label}
-          placeholder={label}
+          placeholder="YYYY-MM-DD"
           value={value}
           onChange={(e) => onChange(e.target.value)}
           onFocus={() => setFocused(true)}
@@ -58,78 +58,85 @@ function DateInput({
 interface PolicyListToolbarProps {
   search: string;
   onSearchChange: (v: string) => void;
-  type: string;
-  onTypeChange: (v: string) => void;
-  typeOptions: Option[];
+  category: string;
+  onCategoryChange: (v: string) => void;
+  categoryOptions: Option[];
+  customerName: string;
+  onCustomerNameChange: (v: string) => void;
   startDate: string;
   onStartDateChange: (v: string) => void;
   endDate: string;
   onEndDateChange: (v: string) => void;
+  status: string;
+  onStatusChange: (v: string) => void;
+  statusOptions: Option[];
 }
 
 const ALL = "__all__";
 
-/** layout เดียวกับ /user/list: TextField search + SelectField + DateField (label บน) + ปุ่มตัวกรอง. */
+/** ตัวกรอง 6 ช่อง grid 3 คอลัมน์ ตามแบบหน้าค้นหากรมธรรม์ (label บนทุกช่อง). */
 export function PolicyListToolbar({
   search,
   onSearchChange,
-  type,
-  onTypeChange,
-  typeOptions,
+  category,
+  onCategoryChange,
+  categoryOptions,
+  customerName,
+  onCustomerNameChange,
   startDate,
   onStartDateChange,
   endDate,
   onEndDateChange,
+  status,
+  onStatusChange,
+  statusOptions,
 }: PolicyListToolbarProps) {
-  const typeSelectOptions = [{ value: ALL, label: "ทั้งหมด" }, ...typeOptions];
+  const categorySelectOptions = [{ value: ALL, label: "ทั้งหมด" }, ...categoryOptions];
+  const statusSelectOptions = [{ value: ALL, label: "ทั้งหมด" }, ...statusOptions];
 
   return (
-    <div className="flex flex-col gap-3 py-5 pr-2 pl-5 sm:flex-row sm:items-stretch sm:gap-2">
+    <div className="grid grid-cols-1 gap-x-5 gap-y-4 px-5 py-5 sm:grid-cols-2 lg:grid-cols-3">
       <TextField
-        label="ค้นหา"
-        className="flex-1"
-        placeholder="ค้นหาเลขกรมธรรม์, ลูกค้า..."
+        label="คำค้นหา"
+        placeholder="เช่น เลขที่กรมธรรม์, ชื่อผู้เอาประกัน"
         value={search}
         onChange={onSearchChange}
         startAdornment={<Search className="size-5 text-grey-500" />}
-        endAdornment={
-          <button
-            type="button"
-            className="flex size-9 shrink-0 items-center justify-center rounded-control text-grey-700 transition-colors hover:bg-[var(--action-hover)] sm:hidden"
-            aria-label="ตัวกรองเพิ่มเติม"
-          >
-            <SlidersHorizontal className="size-5" />
-          </button>
-        }
       />
 
       <SelectField
-        label="ประเภท"
-        className="w-full sm:w-[200px]"
-        value={type || ALL}
-        onChange={(v) => onTypeChange(v === ALL ? "" : v)}
-        options={typeSelectOptions}
+        label="ประเภทประกันภัย"
+        placeholder="Motor / Non-Motor"
+        value={category || ALL}
+        onChange={(v) => onCategoryChange(v === ALL ? "" : v)}
+        options={categorySelectOptions}
       />
 
-      <DateInput label="วันที่เริ่มต้น" value={startDate} onChange={onStartDateChange} />
+      <TextField
+        label="ชื่อ-นามสกุล"
+        placeholder="เช่น ใจดี"
+        value={customerName}
+        onChange={onCustomerNameChange}
+      />
 
-      <DateInput label="วันที่สิ้นสุด" value={endDate} onChange={onEndDateChange} />
+      <DateInput
+        label="วันที่เริ่มต้นความคุ้มครอง"
+        value={startDate}
+        onChange={onStartDateChange}
+      />
 
-      {/* Spacer label mirrors the fields so the button centers on the input box */}
-      <div className="hidden flex-col gap-1.5 sm:flex">
-        <span aria-hidden className="select-none text-sm font-medium">
-          &nbsp;
-        </span>
-        <div className="flex flex-1 items-center">
-          <button
-            type="button"
-            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-control border border-[var(--divider)] text-grey-700 transition-colors hover:bg-[var(--action-hover)]"
-            aria-label="ตัวกรองเพิ่มเติม"
-          >
-            <SlidersHorizontal className="size-4" />
-          </button>
-        </div>
-      </div>
+      <DateInput
+        label="วันที่สิ้นสุดความคุ้มครอง"
+        value={endDate}
+        onChange={onEndDateChange}
+      />
+
+      <SelectField
+        label="สถานะการชำระเงิน"
+        value={status === "all" ? ALL : status}
+        onChange={(v) => onStatusChange(v === ALL ? "all" : v)}
+        options={statusSelectOptions}
+      />
     </div>
   );
 }
