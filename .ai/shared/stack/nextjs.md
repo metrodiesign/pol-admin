@@ -32,6 +32,14 @@
 - variant ของ component ใช้ **`cva`** (class-variance-authority).
 - runtime theming ผ่าน CSS variable: `.theme-minimals[data-preset="cyan|purple|blue|orange|red"]`
   override `--color-primary`/`--primary`/`--ring` โดยไม่ใช้ JS; dark mode = class `.dark` บน `<html>`.
+- **Tailwind default palette ยังเปิดอยู่** ควบคู่ custom `@theme --color-*` (ไม่ได้ reset ด้วย
+  `--color-*: initial`) — ใช้ `bg-orange-500`/`text-teal-700`/`bg-violet-500` ฯลฯ ได้เลยโดยไม่ต้อง
+  นิยาม token เอง. เกินจาก 6 semantic families (`primary/secondary/info/success/warning/error`+grey)
+  ก็หยิบ default scale มาใช้.
+- ยืนยันว่า utility class ที่เพิ่งใช้ถูก **generate จริง**: grep substring (เช่น `orange`, `teal`) ใน
+  prod CSS ก้อนใหญ่ `.next/static/chunks/*.css` — **build เขียวไม่การันตี** (unknown utility = เงียบ
+  ไม่ error). อย่าใช้ fixed-string grep ชื่อ class เต็มข้ามหลายไฟล์ — minification/`$VAR` expansion
+  ให้ 0 หลอกได้.
 
 ## UI primitives (shadcn-on-base-ui)
 

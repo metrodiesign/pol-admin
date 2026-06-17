@@ -35,6 +35,9 @@ function SidebarLogo({
 function isActivePath(pathname: string, item: NavItem): boolean {
   const base = item.match ?? item.path;
   if (item.path === pathname || base === pathname) return true;
+  // A sibling owns these sub-paths — don't let this item's deep range claim them.
+  if (item.exclude?.some((p) => pathname === p || pathname.startsWith(p + "/")))
+    return false;
   if ((item.deepMatch || item.match) && pathname.startsWith(base + "/"))
     return true;
   return (

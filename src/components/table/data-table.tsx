@@ -124,7 +124,18 @@ export function DataTable<TData>({
                   key={row.id}
                   data-state={row.getIsSelected() ? "selected" : undefined}
                   onClick={
-                    onRowClick ? () => onRowClick(row.original) : undefined
+                    onRowClick
+                      ? (e) => {
+                          // คลิกในเซลล์ที่ mark ignoreRowClick (เช่น คอลัมน์ปุ่ม) ไม่เปิด/trigger row
+                          if (
+                            (e.target as HTMLElement).closest(
+                              "[data-row-click-ignore]",
+                            )
+                          )
+                            return;
+                          onRowClick(row.original);
+                        }
+                      : undefined
                   }
                   className={cn(
                     "border-b border-dashed border-[var(--divider)] transition-colors",
@@ -137,9 +148,17 @@ export function DataTable<TData>({
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
+                      data-row-click-ignore={
+                        cell.column.columnDef.meta?.ignoreRowClick
+                          ? ""
+                          : undefined
+                      }
                       className={cn(
                         "px-4 align-middle",
                         dense ? "py-1.5" : "py-4",
+                        // คอลัมน์ที่ไม่ trigger row → ยกเลิก cursor-pointer ของ row
+                        cell.column.columnDef.meta?.ignoreRowClick &&
+                          "cursor-default",
                         cell.column.columnDef.meta?.cellClassName,
                       )}
                     >

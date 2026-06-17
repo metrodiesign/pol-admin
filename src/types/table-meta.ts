@@ -15,5 +15,7 @@ declare module "@tanstack/react-table" {
   interface ColumnMeta<TData extends RowData, TValue> { // eslint-disable-line @typescript-eslint/no-unused-vars
     headClassName?: string;
     cellClassName?: string;
+    /** คลิกในเซลล์คอลัมน์นี้จะไม่ trigger onRowClick (เช่น คอลัมน์ปุ่ม action) */
+    ignoreRowClick?: boolean;
   }
 }

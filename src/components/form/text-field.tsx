@@ -71,9 +71,8 @@ export function TextField({
       <label
         id={fieldId}
         className={cn(
-          "select-none text-sm font-medium",
+          "text-sm font-medium",
           hasError ? "text-error" : "text-grey-800",
-          disabled && "opacity-60",
         )}
       >
         {label}
