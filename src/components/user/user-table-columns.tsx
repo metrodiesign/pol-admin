@@ -6,6 +6,12 @@ import type { User, UserStatus } from "@/types/user";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Eye, Pencil, Trash2 } from "lucide-react";
 
 const statusStyles: Record<UserStatus, string> = {
@@ -114,39 +120,56 @@ export const userColumns: ColumnDef<User>[] = [
   {
     id: "actions",
     enableSorting: false,
-    meta: { headClassName: "w-20", cellClassName: "w-20" },
+    meta: { headClassName: "w-44", cellClassName: "w-44" },
     header: () => null,
     cell: ({ row }) => (
-      <div className="flex items-center gap-1">
-        <Button
-          render={<Link href="/user/read" />}
-          nativeButton={false}
-          variant="ghost"
-          size="icon-lg"
-          className="text-grey-600 hover:bg-grey-600/8 hover:text-grey-600"
-          aria-label={`View ${row.original.name}`}
-        >
-          <Eye className="size-5" />
-        </Button>
-        <Button
-          render={<Link href="/user/edit" />}
-          nativeButton={false}
-          variant="ghost"
-          size="icon-lg"
-          className="text-grey-600 hover:bg-grey-600/8 hover:text-grey-600"
-          aria-label={`Edit ${row.original.name}`}
-        >
-          <Pencil className="size-5" />
-        </Button>
-        <Button
-          variant="ghost"
-          size="icon-lg"
-          className="text-error hover:bg-error/8 hover:text-error"
-          aria-label={`Delete ${row.original.name}`}
-        >
-          <Trash2 className="size-5" />
-        </Button>
-      </div>
+      <TooltipProvider>
+        <div className="flex items-center justify-end gap-1.5">
+          <Tooltip>
+            <TooltipTrigger render={<span className="inline-flex" />}>
+              <Button
+                render={<Link href="/user/read" />}
+                nativeButton={false}
+                variant="ghost"
+                size="icon-lg"
+                className="size-10 cursor-pointer bg-grey-600/8 text-grey-700 hover:bg-grey-800 hover:text-white focus-visible:bg-grey-800 focus-visible:text-white"
+                aria-label={`View ${row.original.name}`}
+              >
+                <Eye className="size-5" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>ดู</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger render={<span className="inline-flex" />}>
+              <Button
+                render={<Link href="/user/edit" />}
+                nativeButton={false}
+                variant="ghost"
+                size="icon-lg"
+                className="size-10 cursor-pointer bg-grey-600/8 text-grey-700 hover:bg-grey-800 hover:text-white focus-visible:bg-grey-800 focus-visible:text-white"
+                aria-label={`Edit ${row.original.name}`}
+              >
+                <Pencil className="size-5" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>แก้ไข</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger render={<span className="inline-flex" />}>
+              <Button
+                variant="ghost"
+                size="icon-lg"
+                className="size-10 cursor-pointer text-error hover:bg-error/8 hover:text-error"
+                aria-label={`Delete ${row.original.name}`}
+              >
+                <Trash2 className="size-5" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>ลบ</TooltipContent>
+          </Tooltip>
+        </div>
+      </TooltipProvider>
     ),
   },
 ];

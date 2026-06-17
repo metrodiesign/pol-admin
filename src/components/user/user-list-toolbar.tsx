@@ -1,10 +1,9 @@
 "use client";
 
-import { Search, EllipsisVertical } from "lucide-react";
+import { Search, SlidersHorizontal } from "lucide-react";
 import { USER_ROLES } from "@/lib/mock/users";
 import { TextField } from "@/components/form/text-field";
 import { SelectField } from "@/components/form/select-field";
-import { Button } from "@/components/ui/button";
 
 const ROLE_OPTIONS = [
   { value: "__all__", label: "All roles" },
@@ -25,7 +24,7 @@ export function UserListToolbar({
   onRoleChange,
 }: UserListToolbarProps) {
   return (
-    <div className="flex flex-col gap-3 py-5 pr-2 pl-5 sm:flex-row sm:items-stretch sm:gap-4">
+    <div className="flex flex-col gap-3 py-5 pr-2 pl-5 sm:flex-row sm:items-stretch sm:gap-2">
       <SelectField
         label="Role"
         className="w-full sm:w-[200px]"
@@ -42,9 +41,13 @@ export function UserListToolbar({
         onChange={onSearchChange}
         startAdornment={<Search className="size-5 text-grey-500" />}
         endAdornment={
-          <Button variant="ghost" size="icon" className="text-grey-600 sm:hidden">
-            <EllipsisVertical className="size-5" />
-          </Button>
+          <button
+            type="button"
+            className="flex size-9 shrink-0 items-center justify-center rounded-control text-grey-700 transition-colors hover:bg-[var(--action-hover)] sm:hidden"
+            aria-label="ตัวกรอง"
+          >
+            <SlidersHorizontal className="size-5" />
+          </button>
         }
       />
 
@@ -52,9 +55,13 @@ export function UserListToolbar({
       <div className="hidden flex-col gap-1.5 sm:flex">
         <span aria-hidden className="select-none text-sm font-medium">&nbsp;</span>
         <div className="flex flex-1 items-center">
-          <Button variant="ghost" size="icon" className="text-grey-600 shrink-0">
-            <EllipsisVertical className="size-5" />
-          </Button>
+          <button
+            type="button"
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-control border border-[var(--divider)] text-grey-700 transition-colors hover:bg-[var(--action-hover)]"
+            aria-label="ตัวกรอง"
+          >
+            <SlidersHorizontal className="size-4" />
+          </button>
         </div>
       </div>
     </div>
