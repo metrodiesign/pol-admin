@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import type { Role, RoleColor, RoleStatus, RoleFormInput } from "@/types/rbac";
+import type { Role, RoleStatus, RoleFormInput } from "@/types/rbac";
 import { PERMISSION_CATALOG, RBAC_ROLES, RESOURCE_GROUPS } from "@/lib/mock/rbac";
 import { makeCopyCode, validateRoleForm } from "@/lib/rbac/role-permissions";
 import { cn } from "@/lib/utils";
@@ -11,15 +11,8 @@ import { EditPageHeader } from "@/components/shared/edit-page-header";
 import { TextField } from "@/components/form/text-field";
 import { SelectField } from "@/components/form/select-field";
 import { RbacPermissionMatrix } from "./rbac-permission-matrix";
+import { ROLE_COLOR_OPTIONS } from "./rbac-role-badge";
 import { STATUS_OPTIONS } from "./rbac-role-status-badge";
-
-const COLOR_OPTIONS: { value: RoleColor; label: string; dot: string }[] = [
-  { value: "red", label: "แดง", dot: "bg-error" },
-  { value: "blue", label: "น้ำเงิน", dot: "bg-info" },
-  { value: "green", label: "เขียว", dot: "bg-success" },
-  { value: "amber", label: "เหลือง", dot: "bg-warning" },
-  { value: "gray", label: "เทา", dot: "bg-grey-500" },
-];
 
 const cardStyle = {
   boxShadow:
@@ -132,7 +125,7 @@ export function RbacRoleCreateView({ source }: RbacRoleCreateViewProps) {
           <div className="flex flex-col gap-2 sm:col-span-2">
             <span className="text-sm font-medium text-grey-800">สีป้ายกำกับ</span>
             <div className="flex items-center gap-3">
-              {COLOR_OPTIONS.map((o) => {
+              {ROLE_COLOR_OPTIONS.map((o) => {
                 const selected = input.color === o.value;
                 return (
                   <button

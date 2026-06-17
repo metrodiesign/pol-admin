@@ -1,6 +1,18 @@
 export type ResourceKey = "txn" | "merchant" | "finance" | "user" | "system";
 
-export type RoleColor = "red" | "blue" | "green" | "amber" | "gray";
+export type RoleColor =
+  | "red"
+  | "orange"
+  | "amber"
+  | "green"
+  | "teal"
+  | "cyan"
+  | "blue"
+  | "indigo"
+  | "violet"
+  | "purple"
+  | "pink"
+  | "gray";
 
 /** สถานะการใช้งานบทบาท: active = ใช้งาน, inactive = ปิดใช้งาน */
 export type RoleStatus = "active" | "inactive";

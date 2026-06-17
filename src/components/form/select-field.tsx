@@ -49,7 +49,7 @@ export function SelectField({
       isItemEqualToValue={(a, b) => a.value === b.value}
     >
       <div className={cn("flex w-full flex-col gap-1.5", className)}>
-        <label id={id} className="select-none text-sm font-medium text-grey-800">
+        <label id={id} className="text-sm font-medium text-grey-800">
           {label}
         </label>
         <ComboboxInput

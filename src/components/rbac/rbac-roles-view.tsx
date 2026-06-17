@@ -3,12 +3,19 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Plus } from "lucide-react";
+import {
+  getCoreRowModel,
+  getFilteredRowModel,
+  getSortedRowModel,
+  getPaginationRowModel,
+} from "@tanstack/react-table";
 import type { Role } from "@/types/rbac";
 import { PERMISSION_CATALOG, RBAC_ROLES, RESOURCE_GROUPS } from "@/lib/mock/rbac";
-import { filterRoles } from "@/lib/rbac/role-permissions";
+import { useDataTable } from "@/hooks/use-data-table";
+import { DataTable } from "@/components/table/data-table";
 import { CustomBreadcrumbs } from "@/components/shared/custom-breadcrumbs";
 import { RbacRolesToolbar } from "./rbac-roles-toolbar";
-import { RbacRolesTable } from "./rbac-roles-table";
+import { buildRbacRoleColumns } from "./rbac-roles-columns";
 import { RbacRoleDetailSheet } from "./rbac-role-detail-sheet";
 import { RbacDeleteDialog } from "./rbac-delete-dialog";
 import { useRbacToast } from "./use-rbac-toast";
@@ -20,6 +27,7 @@ import { RbacToaster } from "./rbac-toaster";
  */
 export function RbacRolesView() {
   const [search, setSearch] = useState("");
+  const [dense, setDense] = useState(false);
   const [detailRole, setDetailRole] = useState<Role | null>(null);
   const [deleteRole, setDeleteRole] = useState<Role | null>(null);
   const { toasts, show, dismiss } = useRbacToast();
@@ -34,11 +42,6 @@ export function RbacRolesView() {
       window.history.replaceState({}, "", "/user/rbac");
     }
   }, [show]);
-
-  // seed คงที่: ตาราง render จาก RBAC_ROLES เสมอ (REQ-10.3 / 12.4).
-  // ไม่มีการ mutate รายการ, ไม่เรียก network, ไม่เขียน storage (REQ-10.2) — CRUD = UI-shell.
-  const roles = RBAC_ROLES;
-  const filtered = useMemo(() => filterRoles(roles, search), [roles, search]);
 
   // create / duplicate / edit = หน้าแยกทั้งหมด
   function goCreate() {
@@ -61,6 +64,54 @@ export function RbacRolesView() {
     router.push(`/user/rbac/edit?code=${encodeURIComponent(role.code)}`);
   }
 
+  // seed คงที่: ตาราง render จาก RBAC_ROLES เสมอ — UI-shell ไม่ mutate (REQ-10).
+  // กรองผ่าน table (data = RBAC_ROLES) เพื่อให้ row selection เป็น GLOBAL
+  // เหมือน user module — เลือกแล้วเปลี่ยนคำค้นยังคงเลือกอยู่.
+  const columns = useMemo(
+    () =>
+      buildRbacRoleColumns({
+        catalog: PERMISSION_CATALOG,
+        onSelect: setDetailRole,
+        onRead: goRead,
+        onEdit: goEdit,
+        onDuplicate: goDuplicate,
+        onDelete: setDeleteRole,
+      }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- handlers เสถียร (router/setState)
+    [],
+  );
+
+  const table = useDataTable<Role>({
+    data: RBAC_ROLES,
+    columns,
+    getRowId: (r) => r.code,
+    meta: { onRowClick: (role: Role) => setDetailRole(role) },
+    enableRowSelection: true,
+    enableSortingRemoval: false,
+    autoResetPageIndex: false,
+    state: { globalFilter: search },
+    globalFilterFn: (row, _columnId, value) => {
+      const q = String(value).trim().toLowerCase();
+      if (!q) return true;
+      const r = row.original;
+      return (
+        r.name.toLowerCase().includes(q) ||
+        r.code.toLowerCase().includes(q) ||
+        r.description.toLowerCase().includes(q)
+      );
+    },
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: {
+      sorting: [{ id: "name", desc: false }],
+      pagination: { pageIndex: 0, pageSize: 5 },
+    },
+  });
+
+  const filteredCount = table.getFilteredRowModel().rows.length;
+
   return (
     <>
       <CustomBreadcrumbs
@@ -82,18 +133,26 @@ export function RbacRolesView() {
         className="overflow-hidden rounded-2xl bg-card"
         style={{ boxShadow: "var(--shadow-card)" }}
       >
-        <RbacRolesToolbar search={search} onSearchChange={setSearch} />
-        <RbacRolesTable
-          roles={filtered}
-          hasRoles={roles.length > 0}
-          query={search}
-          catalog={PERMISSION_CATALOG}
-          onSelect={setDetailRole}
-          onRead={goRead}
-          onEdit={goEdit}
-          onDuplicate={goDuplicate}
-          onDelete={setDeleteRole}
+        <RbacRolesToolbar
+          search={search}
+          onSearchChange={(v) => {
+            setSearch(v);
+            table.setPageIndex(0);
+          }}
         />
+        <DataTable
+          table={table}
+          total={filteredCount}
+          dense={dense}
+          onDenseChange={setDense}
+          rowsPerPageOptions={[5, 10, 25]}
+          searchQuery={search}
+          showSelectionAction={false}
+        />
+        <p className="border-t border-[var(--divider)] px-5 py-4 text-xs text-grey-500">
+          สิทธิ์รวมของผู้ใช้ = union ของสิทธิ์จากทุกบทบาทที่ได้รับ ·
+          บทบาทที่มีผู้ใช้ผูกอยู่จะลบไม่ได้
+        </p>
       </div>
 
       <RbacRoleDetailSheet
