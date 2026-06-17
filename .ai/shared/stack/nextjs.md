@@ -83,6 +83,13 @@
   จะข้าม code-green check แล้วเหลือ Evidence gate จนกว่าจะเพิ่ม `test` script (ดู CODING_STANDARDS Tooling).
 - typecheck: ใช้ `tsc --noEmit` ได้ (ยังไม่มี script `typecheck` ใน package.json — เพิ่มได้เพื่อให้ gate auto-detect).
 
+## Navigation (sidebar)
+
+- เพิ่มเมนู sidebar ต้องแก้ **สองไฟล์**: `src/components/layout/nav-config.ts` (breadcrumb/search)
+  **และ** `src/components/layout/minimals-nav-config.ts` — `MinimalsLayout` render sidebar จาก
+  `minimals-nav-config.ts` เท่านั้น. แก้แค่ `nav-config.ts` = เมนูไม่ขึ้นใน sidebar จริง (เคสจริง
+  /policy/list). verify เมนู active บน production build ไม่ใช่เชื่อว่าแก้ config แล้วพอ.
+
 ## Known mismatch (flag, ยังไม่แก้)
 
 - `package.json` field `"name": "merchant-dashboard"` ไม่ตรงกับผลิตภัณฑ์ (POL admin / pol-admin).

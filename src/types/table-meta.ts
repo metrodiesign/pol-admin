@@ -3,11 +3,22 @@
 // for its side effect: import "@/types/table-meta";
 
 import type { RowData } from "@tanstack/react-table";
+import type { Policy } from "@/types/policy";
+
+/** Cart API ส่งเข้า columns ของ Policy Marketplace ผ่าน table.options.meta. */
+export interface PolicyCartMeta {
+  has(id: string): boolean;
+  /** เพิ่ม/นำออก (guard eligibility + กันซ้ำ) */
+  toggle(policy: Policy): void;
+  /** เปิด checkout ใบเดียว (ซื้อเลย) — ไม่แตะตะกร้า */
+  buyNow(policy: Policy): void;
+}
 
 declare module "@tanstack/react-table" {
   interface TableMeta<TData> {
     onRowClick?: (row: TData) => void;
     onResend?: (row: TData) => void;
+    cart?: PolicyCartMeta;
   }
 
   // Generic params TData/TValue must match @tanstack/table-core's original declaration exactly
