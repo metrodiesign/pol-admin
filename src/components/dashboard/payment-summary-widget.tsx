@@ -115,7 +115,7 @@ function PaymentSummaryCard({
             {stat.trend.up ? "+" : "-"}
             {stat.trend.value}%
           </span>
-          <span className="text-grey-600">{stat.caption}</span>
+          <span className="whitespace-nowrap text-grey-600">{stat.caption}</span>
         </div>
       </div>
       <div className="size-[88px] shrink-0">

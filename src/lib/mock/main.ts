@@ -27,7 +27,7 @@ export const paymentSummaryStats: PaymentSummaryStat[] = [
     title: "ธุรกรรมสำเร็จ",
     total: "2,466",
     trend: { value: 8.1, up: true },
-    caption: "อัตราสำเร็จ 98.7%",
+    caption: "มูลค่ารวม ฿16.17M",
     color: "success",
   },
   {
