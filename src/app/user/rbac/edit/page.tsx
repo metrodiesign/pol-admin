@@ -10,6 +10,6 @@ export default async function RbacEditPage({
 }) {
   const { code } = await searchParams;
   const role = RBAC_ROLES.find((r) => r.code === code);
-  if (!role) redirect("/user/rbac");
+  if (!role) redirect("/user/rbac/list");
   return <RbacRoleEditView role={role} />;
 }

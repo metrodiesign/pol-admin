@@ -1,8 +1,7 @@
 "use client";
 
-import { Search, EllipsisVertical } from "lucide-react";
+import { Search, SlidersHorizontal } from "lucide-react";
 import { TextField } from "@/components/form/text-field";
-import { Button } from "@/components/ui/button";
 
 interface RbacRolesToolbarProps {
   search: string;
@@ -14,7 +13,7 @@ export function RbacRolesToolbar({
   onSearchChange,
 }: RbacRolesToolbarProps) {
   return (
-    <div className="flex flex-col gap-3 py-5 pr-2 pl-5 sm:flex-row sm:items-stretch sm:gap-4">
+    <div className="flex flex-col gap-3 py-5 pr-2 pl-5 sm:flex-row sm:items-stretch sm:gap-2">
       <TextField
         label="Search"
         className="flex-1"
@@ -23,14 +22,13 @@ export function RbacRolesToolbar({
         onChange={onSearchChange}
         startAdornment={<Search className="size-5 text-grey-500" />}
         endAdornment={
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-grey-600 sm:hidden"
-            aria-label="ตัวเลือกเพิ่มเติม"
+          <button
+            type="button"
+            className="flex size-9 shrink-0 items-center justify-center rounded-control text-grey-700 transition-colors hover:bg-[var(--action-hover)] sm:hidden"
+            aria-label="ตัวกรอง"
           >
-            <EllipsisVertical className="size-5" />
-          </Button>
+            <SlidersHorizontal className="size-5" />
+          </button>
         }
       />
 
@@ -40,14 +38,13 @@ export function RbacRolesToolbar({
           &nbsp;
         </span>
         <div className="flex flex-1 items-center">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="shrink-0 text-grey-600"
-            aria-label="ตัวเลือกเพิ่มเติม"
+          <button
+            type="button"
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-control border border-[var(--divider)] text-grey-700 transition-colors hover:bg-[var(--action-hover)]"
+            aria-label="ตัวกรอง"
           >
-            <EllipsisVertical className="size-5" />
-          </Button>
+            <SlidersHorizontal className="size-4" />
+          </button>
         </div>
       </div>
     </div>

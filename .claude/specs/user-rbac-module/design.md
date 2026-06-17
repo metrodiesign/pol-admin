@@ -14,17 +14,16 @@
 
 - **ไม่สร้าง** `rbac/layout.tsx` — parent `src/app/user/layout.tsx` wrap `MinimalsLayout` ให้ทุก child
   ใต้ `/user` รวม `/user/rbac` อยู่แล้ว. สร้างซ้ำ = MinimalsLayout ซ้อนกัน (sidebar/topbar 2 ชั้น). [critique C1]
-- `src/app/user/rbac/page.tsx` — Server Component: `metadata` + `<PageHeader title="บทบาทและสิทธิ์"
-  breadcrumbs=[Console, บทบาทและสิทธิ์]>` (heading+breadcrumb เท่านั้น) + render `<RbacRolesView />`.
+- `src/app/user/rbac/list/page.tsx` — Server Component: `metadata` + render `<RbacRolesView />`.
+  list อยู่ใต้ `list/` (ไม่ใช่ root `rbac/page.tsx`) เพื่อ align โครงเดียวกับ `/user/list`, `/dashboard/job/list`
+  — `/user/rbac` เป็น container เปล่า (ไม่มี page) เหมือน `/user`. heading/breadcrumb/ปุ่มเพิ่ม render
+  ผ่าน `CustomBreadcrumbs` ภายใน `RbacRolesView` (client) — subtitle REQ-3.2 + ปุ่ม `+ เพิ่มบทบาทใหม่`
+  (REQ-6.1 onClick navigate ไป create) เป็นของ client. [critique C2]
 
-`PageHeader` (shared) มี props แค่ `{title, breadcrumbs, action:{label,href}}` — **ไม่มี subtitle** และ
-`action` render เป็น `<Link href>` (navigate). ดังนั้น: subtitle REQ-3.2 และปุ่ม `+ เพิ่มบทบาทใหม่`
-(REQ-6.1, ต้อง onClick เปิด Dialog ไม่ใช่ navigate) เป็นของ **`RbacRolesView` / `rbac-roles-toolbar`**
-(client) — **ไม่ส่ง `action` ให้ PageHeader**. [critique C2]
-
-ใช้ route เดียว `/user/rbac` — create/edit/duplicate/detail/delete ทำผ่าน Dialog/Sheet ใน client
-(ไม่มี sub-route `/new` `/edit`). เหตุผล: ภาพ ui-reference แสดงทุกอย่างบนจอเดียว + drawer; UI-shell
-ไม่ต้อง deep-link. (ปิด open question F6 รูปแบบฟอร์ม.)
+**Drift resolved 2026-06-17:** F6 ปิดด้วย full-page sub-route (ไม่ใช่ Dialog ตามแผนเดิม) — `create/`,
+`edit/`, `read/` เป็น route แยก (ต่อ `<button>` actions ใน list); detail/delete ยังเป็น Sheet/Dialog ใน
+client. list ย้าย root -> `list/` ให้ครบ standard. nav: `path:/user/rbac/list` (link), `match:/user/rbac`
+(prefix → active ทั้ง subtree), `exclude:["/user/rbac"]` ที่ item ผู้ใช้งาน คงเดิม.
 
 ### Components (new dir `src/components/rbac/`) — REQ-2.2/2.3/2.4
 

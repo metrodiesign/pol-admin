@@ -70,7 +70,7 @@ export function RbacRoleCreateView({ source }: RbacRoleCreateViewProps) {
     // UI-shell: ไม่ mutate รายการจริง — กลับหน้า list พร้อม toast (REQ-10.2 / 13.1)
     const verb = isDuplicate ? "ทำสำเนาบทบาท" : "สร้างบทบาท";
     router.push(
-      `/user/rbac?toast=${encodeURIComponent(`${verb} “${input.name}” สำเร็จ`)}`,
+      `/user/rbac/list?toast=${encodeURIComponent(`${verb} “${input.name}” สำเร็จ`)}`,
     );
   }
 
@@ -80,10 +80,10 @@ export function RbacRoleCreateView({ source }: RbacRoleCreateViewProps) {
     <>
       <EditPageHeader
         title={title}
-        backHref="/user/rbac"
+        backHref="/user/rbac/list"
         breadcrumbs={[
           { label: "Console" },
-          { label: "บทบาทและสิทธิ์", href: "/user/rbac" },
+          { label: "บทบาทและสิทธิ์", href: "/user/rbac/list" },
           { label: title },
         ]}
       />
@@ -161,7 +161,7 @@ export function RbacRoleCreateView({ source }: RbacRoleCreateViewProps) {
         </div>
 
         <div className="mt-6 flex items-center justify-end gap-3">
-          <Link href="/user/rbac" className={cancelClass}>
+          <Link href="/user/rbac/list" className={cancelClass}>
             ยกเลิก
           </Link>
           <button

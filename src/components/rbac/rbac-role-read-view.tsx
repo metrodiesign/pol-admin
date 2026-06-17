@@ -43,10 +43,10 @@ export function RbacRoleReadView({
     <>
       <EditPageHeader
         title="ดูบทบาท"
-        backHref="/user/rbac"
+        backHref="/user/rbac/list"
         breadcrumbs={[
           { label: "Console" },
-          { label: "บทบาทและสิทธิ์", href: "/user/rbac" },
+          { label: "บทบาทและสิทธิ์", href: "/user/rbac/list" },
           { label: role.name },
         ]}
       />
@@ -65,7 +65,7 @@ export function RbacRoleReadView({
           </div>
           <div className="flex shrink-0 items-center gap-2">
             <Link
-              href="/user/rbac"
+              href="/user/rbac/list"
               className="inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-sm font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]"
             >
               ยกเลิก
