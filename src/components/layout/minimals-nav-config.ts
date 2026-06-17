@@ -12,6 +12,19 @@ export const minimalsNavConfig: NavGroup[] = [
     items: [{ title: "แดชบอร์ด", path: "/main", icon: "dashboard" }],
   },
 
+  // ── ผู้ใช้งาน & สิทธิ์ ──────────────────────────────────────────────────
+  {
+    subheader: "ผู้ใช้งาน & สิทธิ์",
+    items: [
+      {
+        title: "ผู้ใช้งาน",
+        path: "/user/list",
+        icon: "user",
+        match: "/user",
+      },
+    ],
+  },
+
   // ── Overview ────────────────────────────────────────────────────────────
   {
     subheader: "Overview",
