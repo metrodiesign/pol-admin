@@ -16,6 +16,7 @@ import {
   sumPremium,
   type PolicyFilter,
 } from "@/lib/policy/policy";
+import { cartReducer } from "@/lib/policy/cart";
 import { useDataTable } from "@/hooks/use-data-table";
 import { policyColumns } from "@/components/policy/policy-table-columns";
 
@@ -31,26 +32,6 @@ export interface PremiumCart {
   toggle(policy: Policy): void;
   remove(id: string): void;
   clear(): void;
-}
-
-type CartAction =
-  | { type: "add"; policy: Policy }
-  | { type: "remove"; id: string }
-  | { type: "clear" };
-
-function cartReducer(items: Policy[], action: CartAction): Policy[] {
-  switch (action.type) {
-    case "add":
-      // กันซ้ำ (ทุกสถานะเพิ่มได้ — user: ครบทุกรายการ)
-      if (items.some((i) => i.id === action.policy.id)) return items;
-      return [...items, action.policy];
-    case "remove":
-      return items.filter((i) => i.id !== action.id);
-    case "clear":
-      return [];
-    default:
-      return items;
-  }
 }
 
 interface UsePolicyTableWithCartParams {

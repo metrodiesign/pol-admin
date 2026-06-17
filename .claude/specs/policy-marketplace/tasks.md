@@ -90,11 +90,19 @@
        - viewports: clientWidth 1440 OK (grid 1fr+360px, no overflow) | 768 OK (1-col 720px, desktop panel display:none, FAB block, no overflow) | 375 OK (1-col 328px, no overflow culprit, FAB flex) — REQ-8.3/8.4/8.5
        - deviations: nav ต้องแก้ **2 ไฟล์** — `nav-config.ts` (breadcrumb/search) + `minimals-nav-config.ts` (sidebar จริงที่ MinimalsLayout ใช้ render); plan ระบุแค่ nav-config.ts. รวมเป็น 4 ไฟล์เดิม additive (utils, table-meta, nav-config, minimals-nav-config). Gotcha: ต้อง rebuild + restart prod server ก่อน browser verify (server เก่า serve build เดิม)
 
-- [ ] 7. [optional] Unit/property tests for pure logic — เพิ่ม test runner (vitest, devDependency —
+- [x] 7. [optional] Unit/property tests for pure logic — เพิ่ม test runner (vitest, devDependency —
      ต้องอนุมัติ dependency แยกตาม CODING_STANDARDS) + co-located `src/lib/policy/policy.test.ts`
      (`isCartEligible`, `sumPremium`, `matchesPolicyFilter` AND, `countByStatus`) + reducer ของ cart.
      Done = test เขียว, รองรับ `/spec-pbt` ต่อ.
      Satisfies: (testing strategy — design.md) Depends on: 1, 4. Verify: `npx vitest run`.
+     Evidence:
+       - dep: อนุมัติ `vitest@^4.1.9` (MIT) เป็น devDependency (user approve 2026-06-18)
+       - extract: ย้าย `cartReducer` -> `src/lib/policy/cart.ts` (pure, ไม่ดึง React) เพื่อ test ตรง; hook import จาก module ใหม่ (behavior เดิม)
+       - test: `npx vitest run` -> 2 files / 22 tests passed (policy.test.ts 15 + cart.test.ts 7)
+       - gates: `npx tsc --noEmit` 0 errors | `npm run lint` clean | `npm run build` Compiled successfully
+       - config: `vitest.config.ts` (alias @ -> ./src, env node, include `src/**/*.test.ts`); script `npm test` = `vitest run`
+       - viewports: n/a — logic-only (unit tests, ไม่มี UI)
+       - deviations: none
 
 ## Suggested execution batches
 
