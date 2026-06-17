@@ -121,7 +121,7 @@ export function buildRbacRoleColumns({
     {
       id: "actions",
       enableSorting: false,
-      meta: { headClassName: "w-56", cellClassName: "w-56" },
+      meta: { headClassName: "w-56", cellClassName: "w-56", ignoreRowClick: true },
       header: () => null,
       cell: ({ row }) => {
         const role = row.original;
@@ -137,7 +137,7 @@ export function buildRbacRoleColumns({
                   <Button
                     variant="ghost"
                     size="icon-lg"
-                    className="size-10 bg-grey-600/8 text-grey-700 hover:bg-grey-800 hover:text-white focus-visible:bg-grey-800 focus-visible:text-white"
+                    className="size-10 cursor-pointer bg-grey-600/8 text-grey-700 hover:bg-grey-800 hover:text-white focus-visible:bg-grey-800 focus-visible:text-white"
                     aria-label={`ดูบทบาท ${role.name}`}
                     onClick={() => onRead?.(role)}
                   >
@@ -151,7 +151,7 @@ export function buildRbacRoleColumns({
                   <Button
                     variant="ghost"
                     size="icon-lg"
-                    className="size-10 bg-grey-600/8 text-grey-700 hover:bg-grey-800 hover:text-white focus-visible:bg-grey-800 focus-visible:text-white"
+                    className="size-10 cursor-pointer bg-grey-600/8 text-grey-700 hover:bg-grey-800 hover:text-white focus-visible:bg-grey-800 focus-visible:text-white"
                     aria-label={`แก้ไขบทบาท ${role.name}`}
                     onClick={() => onEdit?.(role)}
                   >
@@ -165,7 +165,7 @@ export function buildRbacRoleColumns({
                   <Button
                     variant="ghost"
                     size="icon-lg"
-                    className="size-10 bg-grey-600/8 text-grey-700 hover:bg-grey-800 hover:text-white focus-visible:bg-grey-800 focus-visible:text-white"
+                    className="size-10 cursor-pointer bg-grey-600/8 text-grey-700 hover:bg-grey-800 hover:text-white focus-visible:bg-grey-800 focus-visible:text-white"
                     aria-label={`ทำสำเนาบทบาท ${role.name}`}
                     onClick={() => onDuplicate?.(role)}
                   >
@@ -180,7 +180,7 @@ export function buildRbacRoleColumns({
                     <Button
                       variant="ghost"
                       size="icon-lg"
-                      className="size-10 text-error hover:bg-error/8 hover:text-error"
+                      className="size-10 cursor-pointer text-error hover:bg-error/8 hover:text-error"
                       aria-label={`ลบบทบาท ${role.name}`}
                       onClick={() => onDelete?.(role)}
                     >
