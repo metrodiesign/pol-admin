@@ -53,17 +53,17 @@ export function RbacRoleEditView({ role }: RbacRoleEditViewProps) {
     }
     // UI-shell: ไม่ mutate รายการจริง — กลับหน้า list พร้อม toast (REQ-7.2 / 10.2 / 13.1)
     const toast = `แก้ไขบทบาท “${input.name}” สำเร็จ`;
-    router.push(`/user/rbac?toast=${encodeURIComponent(toast)}`);
+    router.push(`/user/rbac/list?toast=${encodeURIComponent(toast)}`);
   }
 
   return (
     <>
       <EditPageHeader
         title="แก้ไขบทบาท"
-        backHref="/user/rbac"
+        backHref="/user/rbac/list"
         breadcrumbs={[
           { label: "Console" },
-          { label: "บทบาทและสิทธิ์", href: "/user/rbac" },
+          { label: "บทบาทและสิทธิ์", href: "/user/rbac/list" },
           { label: role.name },
         ]}
       />
@@ -137,7 +137,7 @@ export function RbacRoleEditView({ role }: RbacRoleEditViewProps) {
         </div>
 
         <div className="mt-6 flex items-center justify-end gap-3">
-          <Link href="/user/rbac" className={cancelClass}>
+          <Link href="/user/rbac/list" className={cancelClass}>
             ยกเลิก
           </Link>
           <button

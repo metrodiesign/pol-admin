@@ -50,7 +50,7 @@ export const navConfig: NavGroup[] = [
       },
       {
         title: "บทบาทและสิทธิ์",
-        path: "/user/rbac",
+        path: "/user/rbac/list",
         icon: "lock",
         match: "/user/rbac",
       },

@@ -33,13 +33,13 @@ export function RbacRolesView() {
   const { toasts, show, dismiss } = useRbacToast();
   const router = useRouter();
 
-  // toast เมื่อกลับจากหน้าแก้ไขแยก (/user/rbac/edit -> /user/rbac?toast=...) (REQ-13.1)
+  // toast เมื่อกลับจากหน้าแก้ไขแยก (/user/rbac/edit -> /user/rbac/list?toast=...) (REQ-13.1)
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const t = params.get("toast");
     if (t) {
       show(t);
-      window.history.replaceState({}, "", "/user/rbac");
+      window.history.replaceState({}, "", "/user/rbac/list");
     }
   }, [show]);
 
