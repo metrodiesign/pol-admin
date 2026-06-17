@@ -12,6 +12,6 @@
     "6": { "issue": 18, "nodeId": "4681337154", "subIssueLinked": true, "bodyHash": "sha256:8c20e5197e643deeb432fa264a2a62e3fdd6591ff4444c510972a6c596c8df85", "state": "closed" },
     "7": { "issue": 19, "nodeId": "4681339969", "subIssueLinked": true, "bodyHash": "sha256:4a7cd77990a2ebadd40598ee006ee784d059d1b92966fa730c96873c57295879", "state": "closed" }
   },
-  "lastSync": "2026-06-17T08:22:05Z",
+  "lastSync": "2026-06-17T09:22:51Z",
   "labelsEnsured": ["spec:user-rbac-module", "spec-epic", "spec-task", "req-spine"]
 }
