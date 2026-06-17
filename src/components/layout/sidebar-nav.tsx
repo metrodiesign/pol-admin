@@ -33,8 +33,10 @@ function SidebarLogo({
 }
 
 function isActivePath(pathname: string, item: NavItem): boolean {
-  if (item.path === pathname) return true;
-  if (item.deepMatch && pathname.startsWith(item.path + "/")) return true;
+  const base = item.match ?? item.path;
+  if (item.path === pathname || base === pathname) return true;
+  if ((item.deepMatch || item.match) && pathname.startsWith(base + "/"))
+    return true;
   return (
     item.children?.some(
       (c) =>
@@ -93,8 +95,8 @@ function ChildLink({ child, treeline = true }: { child: NavItem; treeline?: bool
 
 function ExpandedRow({ item }: { item: NavItem }) {
   const pathname = usePathname();
-  const active = item.path === pathname;
   const hasChildren = !!item.children?.length;
+  const active = isActivePath(pathname, item);
   const childActive = isActivePath(pathname, item);
   const [open, setOpen] = useState(() => isActivePath(pathname, item));
 

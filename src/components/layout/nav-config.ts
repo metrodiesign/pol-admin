@@ -9,6 +9,13 @@ export interface NavItem {
   disabled?: boolean;
   /** When true, the item is considered active on its path AND any sub-paths. */
   deepMatch?: boolean;
+  /**
+   * Base path used for active detection instead of `path`. The item is active on
+   * `match` and any of its sub-paths — use when the link target is a child route
+   * (e.g. path `/user/list`) but the menu should stay active across the whole
+   * section (`match: "/user"` → active on /user/list, /user/new, /user/edit).
+   */
+  match?: string;
 }
 
 export interface NavGroup {
@@ -21,6 +28,19 @@ export const navConfig: NavGroup[] = [
   {
     subheader: "Main",
     items: [{ title: "แดชบอร์ด", path: "/main", icon: "dashboard" }],
+  },
+
+  // ── ผู้ใช้งาน & สิทธิ์ ─────────────────────────────────────────────────────
+  {
+    subheader: "ผู้ใช้งาน & สิทธิ์",
+    items: [
+      {
+        title: "ผู้ใช้งาน",
+        path: "/user/list",
+        icon: "user",
+        match: "/user",
+      },
+    ],
   },
 
   // ── Demo (minimals pages) ────────────────────────────────────────────────
