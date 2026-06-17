@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "feature": "policy-marketplace",
+  "repo": "metrodiesign/pol-admin",
+  "epic": { "issue": 27, "nodeId": "4685518199", "bodyHash": "sha256:4e7768beed1ce961e4b0edcae661b55a2c3ba9c7679e53dfee99ad39ce4d668f" },
+  "tasks": {
+    "1": { "issue": 28, "nodeId": "4685521428", "subIssueLinked": true, "bodyHash": "sha256:8528f45e51cdebd3913f5f8be439a17e27ef2bab222eb6f360448e181e6a1998", "state": "closed" },
+    "2": { "issue": 29, "nodeId": "4685525906", "subIssueLinked": true, "bodyHash": "sha256:e5750e26a66dbb5456ac4ba50c1094f384bbb2bc22c46538713a79f7a8c59145", "state": "closed" },
+    "3": { "issue": 30, "nodeId": "4685528209", "subIssueLinked": true, "bodyHash": "sha256:9f53a4f521a11b529702dbc8d490179d86e7af2ebb8a36bf02a1e497d3767d55", "state": "closed" },
+    "4": { "issue": 31, "nodeId": "4685530927", "subIssueLinked": true, "bodyHash": "sha256:59e4793101c71eb389ec22e63d6e5d1761fea46398224c1653c9538a17d743d3", "state": "closed" },
+    "5": { "issue": 32, "nodeId": "4685533693", "subIssueLinked": true, "bodyHash": "sha256:e49876f8e5e6b33fb6e38c14c3b3b71fa2f5f88b743f2b602e35c4e636c6fc28", "state": "closed" },
+    "6": { "issue": 33, "nodeId": "4685536270", "subIssueLinked": true, "bodyHash": "sha256:aff4f38126cb8dcd0144fa525676f54d0671eadcd803c4c0368073067aeafccd", "state": "closed" },
+    "7": { "issue": 34, "nodeId": "4685538513", "subIssueLinked": true, "bodyHash": "sha256:273cbca1e6931b56bc85bb2521b09eb50a268d99fb1b0d062922fd7637aad70f", "state": "open" }
+  },
+  "lastSync": "2026-06-17T17:23:48Z",
+  "labelsEnsured": ["spec:policy-marketplace", "spec-epic", "spec-task", "req-spine"]
+}
