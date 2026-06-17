@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "feature": "user-role-module",
+  "repo": "metrodiesign/pol-admin",
+  "epic": { "issue": 12, "nodeId": "I_kwDOS7GlNs8AAAABFwdgPQ", "bodyHash": "sha256:01aedcdd84d1d92f0b39c2af4020e999affbe9bad19acc9650473cc4375c48e4" },
+  "tasks": {
+    "1": { "issue": 13, "nodeId": "4681328946", "subIssueLinked": true, "bodyHash": "sha256:0dff9cdae3242b4934d5e4d1e80bb0d6b749ede09234c048936480115e064b49", "state": "closed" },
+    "2": { "issue": 14, "nodeId": "4681330134", "subIssueLinked": true, "bodyHash": "sha256:f81ab28f07d902da77c9447466dbb65f81e9af9863cb20adc78fe26901156a8e", "state": "closed" },
+    "3": { "issue": 15, "nodeId": "4681333058", "subIssueLinked": true, "bodyHash": "sha256:87a060a9c10f420b66004f983f3ae0d1522e13dd91c8fe206d644e494b0afe38", "state": "closed" },
+    "4": { "issue": 16, "nodeId": "4681334975", "subIssueLinked": true, "bodyHash": "sha256:852a0fa2e0b19cd8f9e616a5fff97af7a645a0d6103fd3244d88e875bcec3c2b", "state": "closed" },
+    "5": { "issue": 17, "nodeId": "4681336521", "subIssueLinked": true, "bodyHash": "sha256:360027602167d90474e674402741592e6d7b2bfe957bba8183990525e35b4c23", "state": "closed" },
+    "6": { "issue": 18, "nodeId": "4681337154", "subIssueLinked": true, "bodyHash": "sha256:8c20e5197e643deeb432fa264a2a62e3fdd6591ff4444c510972a6c596c8df85", "state": "closed" },
+    "7": { "issue": 19, "nodeId": "4681339969", "subIssueLinked": true, "bodyHash": "sha256:4a7cd77990a2ebadd40598ee006ee784d059d1b92966fa730c96873c57295879", "state": "closed" }
+  },
+  "lastSync": "2026-06-17T12:20:42Z",
+  "labelsEnsured": ["spec:user-role-module", "spec-epic", "spec-task", "req-spine"]
+}

@@ -19,7 +19,7 @@ export interface NavItem {
   /**
    * Sub-paths to carve OUT of this item's deep/match range so a sibling that
    * owns them stays the sole active item. Without it a broad `match` (e.g.
-   * "/user") would also light up on a sibling's route (`/user/rbac`). The item
+   * "/user") would also light up on a sibling's route (`/user/role`). The item
    * stays active on its own pages — only the listed prefixes are excluded.
    */
   exclude?: string[];
@@ -46,13 +46,13 @@ export const navConfig: NavGroup[] = [
         path: "/user/list",
         icon: "user",
         match: "/user",
-        exclude: ["/user/rbac"],
+        exclude: ["/user/role"],
       },
       {
         title: "บทบาทและสิทธิ์",
-        path: "/user/rbac/list",
+        path: "/user/role/list",
         icon: "lock",
-        match: "/user/rbac",
+        match: "/user/role",
       },
     ],
   },
