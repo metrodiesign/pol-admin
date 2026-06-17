@@ -21,6 +21,13 @@ export const minimalsNavConfig: NavGroup[] = [
         path: "/user/list",
         icon: "user",
         match: "/user",
+        exclude: ["/user/rbac"],
+      },
+      {
+        title: "บทบาทและสิทธิ์",
+        path: "/user/rbac",
+        icon: "lock",
+        match: "/user/rbac",
       },
     ],
   },

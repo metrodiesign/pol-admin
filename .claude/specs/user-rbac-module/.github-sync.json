@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "feature": "user-rbac-module",
+  "repo": "metrodiesign/pol-admin",
+  "epic": { "issue": 12, "nodeId": "I_kwDOS7GlNs8AAAABFwdgPQ", "bodyHash": "sha256:init" },
+  "tasks": {
+    "1": { "issue": 13, "nodeId": "4681328946", "subIssueLinked": true, "bodyHash": "sha256:init", "state": "closed" },
+    "2": { "issue": 14, "nodeId": "4681330134", "subIssueLinked": true, "bodyHash": "sha256:init", "state": "closed" },
+    "3": { "issue": 15, "nodeId": "4681333058", "subIssueLinked": true, "bodyHash": "sha256:init", "state": "closed" },
+    "4": { "issue": 16, "nodeId": "4681334975", "subIssueLinked": true, "bodyHash": "sha256:init", "state": "closed" },
+    "5": { "issue": 17, "nodeId": "4681336521", "subIssueLinked": true, "bodyHash": "sha256:init", "state": "closed" },
+    "6": { "issue": 18, "nodeId": "4681337154", "subIssueLinked": true, "bodyHash": "sha256:init", "state": "closed" },
+    "7": { "issue": 19, "nodeId": "4681339969", "subIssueLinked": true, "bodyHash": "sha256:init", "state": "closed" }
+  },
+  "lastSync": "2026-06-17T08:06:29Z",
+  "labelsEnsured": ["spec:user-rbac-module", "spec-epic", "spec-task", "req-spine"]
+}
