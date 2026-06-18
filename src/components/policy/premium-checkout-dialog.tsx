@@ -19,9 +19,8 @@ interface PremiumCheckoutDialogProps {
   open: boolean;
   /** รายการที่จะรับชำระ — cart mode = หลายใบ, ซื้อเลย = 1 ใบ (REQ-6, 7) */
   policies: Policy[];
-  /** cart mode = cart.clear; ซื้อเลย = no-op (REQ-7.4) */
+  /** ยืนยันรายการ -> ไปหน้า checkout เต็มรูปแบบ (navigation จัดการที่ฝั่ง view) */
   onConfirm: () => void;
-  onSuccess: (message: string) => void;
   onClose: () => void;
 }
 
@@ -29,22 +28,19 @@ export function PremiumCheckoutDialog({
   open,
   policies,
   onConfirm,
-  onSuccess,
   onClose,
 }: PremiumCheckoutDialogProps) {
   const total = sumPremium(policies);
   const count = policies.length;
 
   function handleConfirm() {
-    // mock — ไม่เรียก backend (REQ-6.4, 7.3)
+    // ยืนยันรายการแล้วไปหน้า checkout (ชำระจริง mock ทำที่หน้านั้น)
     onConfirm();
-    onSuccess(`รับชำระเบี้ยสำเร็จ ${count} กรมธรรม์`);
-    onClose();
   }
 
   return (
     <Dialog open={open} onOpenChange={(o) => (!o ? onClose() : undefined)}>
-      <DialogContent className="sm:max-w-md" showCloseButton={false}>
+      <DialogContent className="theme-minimals sm:max-w-md" showCloseButton={false}>
         <DialogHeader>
           <DialogTitle className="text-lg font-bold text-foreground">
             ยืนยันรับชำระเบี้ย
@@ -100,7 +96,7 @@ export function PremiumCheckoutDialog({
             onClick={handleConfirm}
             className="h-9 min-w-[100px] bg-grey-800 font-bold text-white hover:bg-grey-900"
           >
-            ยืนยันรับชำระเบี้ย
+            ดำเนินการชำระเบี้ย
           </Button>
         </DialogFooter>
       </DialogContent>

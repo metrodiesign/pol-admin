@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import type { Policy, PolicyStatus } from "@/types/policy";
 import { CATEGORY_OPTIONS, PAYMENT_STATUS_OPTIONS } from "@/lib/policy/policy";
 import {
@@ -12,13 +13,10 @@ import { PolicyListToolbar } from "./policy-list-toolbar";
 import { PremiumCartPanel } from "./premium-cart-panel";
 import { PremiumCartSheet } from "./premium-cart-sheet";
 import { PremiumCheckoutDialog } from "./premium-checkout-dialog";
-import { PolicyToaster } from "./policy-toaster";
-import { usePolicyToast } from "./use-policy-toast";
 
 interface CheckoutState {
+  /** รายการที่ review ใน dialog ก่อนไปหน้า checkout */
   policies: Policy[];
-  /** ยืนยันแล้วเคลียร์ตะกร้าไหม — cart mode = true, ซื้อเลย = false (REQ-7.4) */
-  clearCart: boolean;
 }
 
 export function PolicyMarketplaceView() {
@@ -31,7 +29,7 @@ export function PolicyMarketplaceView() {
   const [status, setStatus] = useState<PolicyStatus | "all">("all");
   const [checkout, setCheckout] = useState<CheckoutState | null>(null);
 
-  const { toasts, show, dismiss } = usePolicyToast();
+  const router = useRouter();
 
   const globalFilter = useMemo(
     () => ({ search, category, customerName, startDate, endDate, status }),
@@ -40,7 +38,7 @@ export function PolicyMarketplaceView() {
 
   const { table, filteredCount, cart } = usePolicyTableWithCart({
     globalFilter,
-    onBuyNow: (policy) => setCheckout({ policies: [policy], clearCart: false }),
+    onBuyNow: (policy) => setCheckout({ policies: [policy] }),
   });
 
   function resetToFirstPage() {
@@ -48,7 +46,12 @@ export function PolicyMarketplaceView() {
   }
 
   function openCartCheckout() {
-    setCheckout({ policies: cart.items, clearCart: true });
+    setCheckout({ policies: cart.items });
+  }
+
+  function goToCheckout(policies: Policy[]) {
+    const ids = policies.map((p) => p.id).join(",");
+    router.push(`/policy/checkout?ids=${encodeURIComponent(ids)}`);
   }
 
   return (
@@ -125,14 +128,9 @@ export function PolicyMarketplaceView() {
       <PremiumCheckoutDialog
         open={checkout !== null}
         policies={checkout?.policies ?? []}
-        onConfirm={() => {
-          if (checkout?.clearCart) cart.clear();
-        }}
-        onSuccess={show}
+        onConfirm={() => goToCheckout(checkout?.policies ?? [])}
         onClose={() => setCheckout(null)}
       />
-
-      <PolicyToaster toasts={toasts} onDismiss={dismiss} />
     </>
   );
 }
