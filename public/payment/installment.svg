@@ -1,0 +1,12 @@
+<svg width="44" height="40" viewBox="0 0 44 40" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ผ่อนชำระ">
+  <!-- bank building -->
+  <path d="M22 4 6 12v3h32v-3L22 4z" fill="#2F855A"/>
+  <rect x="9" y="16" width="3.5" height="13" fill="#38A169"/>
+  <rect x="16" y="16" width="3.5" height="13" fill="#38A169"/>
+  <rect x="24" y="16" width="3.5" height="13" fill="#38A169"/>
+  <rect x="31" y="16" width="3.5" height="13" fill="#38A169"/>
+  <rect x="6" y="30" width="32" height="3.5" rx="1" fill="#2F855A"/>
+  <!-- installment coins -->
+  <circle cx="34" cy="29" r="7" fill="#F6C453" stroke="#D9A93B" stroke-width="1"/>
+  <text x="34" y="32.5" font-family="Arial, Helvetica, sans-serif" font-size="8" font-weight="700" fill="#8A6314" text-anchor="middle">฿</text>
+</svg>

@@ -31,7 +31,7 @@ export interface Policy {
   effectiveDate: string;
   /** สิ้นสุดคุ้มครอง (ISO yyyy-mm-dd) */
   coverageEnd: string;
-  customer: { name: string; phone: string };
+  customer: { name: string; phone: string; email?: string; nationalId?: string };
   /** ประเภท + ชื่อแผน */
   product: { type: string; plan?: string };
   /** ที่มา: รหัสช่องทาง (เช่น KKC) + ชื่อช่องทาง/สาขา */
