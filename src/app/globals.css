@@ -91,11 +91,15 @@
   --shadow-error: 0 8px 16px 0 rgba(255, 86, 48, 0.24);
 
   /* ---- Typography ---- */
-  --font-sans: var(--font-public-sans), ui-sans-serif, system-ui, -apple-system,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* Thai font appended after the Latin face so Latin glyphs use Public Sans and
+     Thai glyphs use Noto Sans Thai (Latin face has no Thai coverage). */
+  --font-sans: var(--font-public-sans), var(--font-noto-thai), ui-sans-serif,
+    system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    sans-serif;
 
   /* ---- Typography (Public Sans body, Barlow display — extracted from minimals) ---- */
-  --font-display: "Barlow", var(--font-public-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Barlow", var(--font-public-sans), var(--font-noto-thai),
+    ui-sans-serif, system-ui, sans-serif;
   /* clamp ranges = base rem (mobile) -> computed px @1440 (desktop), matching MUI responsiveFontSizes */
   --text-h1: clamp(2.5rem, 1.972rem + 2.253vw, 4rem);
   --text-h2: clamp(2rem, 1.648rem + 1.502vw, 3rem);
@@ -256,8 +260,10 @@
     background: var(--color-bg);
     color: var(--color-text-primary);
     /* --font-active set on <html> by the settings provider (Font → Family);
-       falls back to the Public Sans stack when unset. */
-    font-family: var(--font-active, var(--font-sans));
+       falls back to the Public Sans stack when unset. Thai face appended so the
+       selected Latin font never strands Thai glyphs on the OS fallback. */
+    font-family: var(--font-active, var(--font-public-sans)),
+      var(--font-noto-thai), ui-sans-serif, system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
   /* Restore pointer cursor on interactive elements — Tailwind v4 preflight
