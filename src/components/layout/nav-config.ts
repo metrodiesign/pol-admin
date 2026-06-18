@@ -37,6 +37,19 @@ export const navConfig: NavGroup[] = [
     items: [{ title: "แดชบอร์ด", path: "/main", icon: "dashboard" }],
   },
 
+  // ── กรมธรรม์ ───────────────────────────────────────────────────────────────
+  {
+    subheader: "กรมธรรม์",
+    items: [
+      {
+        title: "กรมธรรม์",
+        path: "/policy/list",
+        icon: "invoice",
+        match: "/policy",
+      },
+    ],
+  },
+
   // ── ผู้ใช้งาน & สิทธิ์ ─────────────────────────────────────────────────────
   {
     subheader: "ผู้ใช้งาน & สิทธิ์",
@@ -53,19 +66,6 @@ export const navConfig: NavGroup[] = [
         path: "/user/role/list",
         icon: "lock",
         match: "/user/role",
-      },
-    ],
-  },
-
-  // ── กรมธรรม์ ───────────────────────────────────────────────────────────────
-  {
-    subheader: "กรมธรรม์",
-    items: [
-      {
-        title: "กรมธรรม์",
-        path: "/policy/list",
-        icon: "invoice",
-        match: "/policy",
       },
     ],
   },
