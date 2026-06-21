@@ -5,6 +5,7 @@ import {
   Inter,
   DM_Sans,
   Nunito_Sans,
+  Noto_Sans_Thai,
 } from "next/font/google";
 import "./globals.css";
 import {
@@ -23,6 +24,16 @@ const barlow = Barlow({
   variable: "--font-barlow",
   subsets: ["latin"],
   weight: ["600", "700", "800"],
+  display: "swap",
+});
+
+// Thai glyph coverage — Public Sans/Barlow are Latin-only, so Thai text would
+// otherwise fall back to a heavier OS font. Loaded once and appended to every
+// font chain (see globals.css) so Thai renders at the correct weight.
+const notoSansThai = Noto_Sans_Thai({
+  variable: "--font-noto-thai",
+  subsets: ["thai"],
+  weight: ["400", "500", "600", "700", "800"],
   display: "swap",
 });
 
@@ -59,7 +70,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${publicSans.variable} ${barlow.variable} ${inter.variable} ${dmSans.variable} ${nunitoSans.variable} h-full antialiased`}
+      className={`${publicSans.variable} ${barlow.variable} ${inter.variable} ${dmSans.variable} ${nunitoSans.variable} ${notoSansThai.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>
