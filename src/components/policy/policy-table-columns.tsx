@@ -22,13 +22,13 @@ const REFERENCE_TYPE_LABEL: Record<Policy["referenceType"], string> = {
   claim: "เลขรับแจ้ง",
 };
 
-/** badge สถานะการชำระเงิน (VCP) — สี + ข้อความ (none = เว้นว่างตามแบบ). */
+/** badge สถานะการชำระเงิน (VCP) — สี + ข้อความ (none = N/A). */
 const VCP_META: Record<Exclude<VcpStatus, "none">, { chip: string; label: string }> = {
   awaiting: { chip: "bg-warning/16 text-warning-dark", label: "รอชำระเงิน" },
   paid: { chip: "bg-success/16 text-success-dark", label: "ชำระสำเร็จ" },
 };
 
-/** ลำดับ sort สถานะ: ว่าง (—) ก่อน → รอชำระเงิน → ชำระสำเร็จ. */
+/** ลำดับ sort สถานะ: N/A ก่อน → รอชำระเงิน → ชำระสำเร็จ. */
 const VCP_SORT_RANK: Record<VcpStatus, number> = {
   none: 0,
   awaiting: 1,
@@ -36,7 +36,7 @@ const VCP_SORT_RANK: Record<VcpStatus, number> = {
 };
 
 function VcpBadge({ vcp }: { vcp: VcpStatus }) {
-  if (vcp === "none") return <span className="text-grey-400">—</span>;
+  if (vcp === "none") return <span className="text-sm text-grey-500">N/A</span>;
   const style = VCP_META[vcp];
   return (
     <span
@@ -82,7 +82,7 @@ export const policyColumns: ColumnDef<Policy>[] = [
           <span className="block text-sm font-medium text-primary underline underline-offset-2">
             {p.referenceNo}
           </span>
-          <span className="block text-xs text-grey-500">
+          <span className="block text-sm text-grey-500">
             {REFERENCE_TYPE_LABEL[p.referenceType]}
           </span>
         </div>
