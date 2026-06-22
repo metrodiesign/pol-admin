@@ -10,8 +10,7 @@ import {
 } from "@/hooks/use-policy-table-with-cart";
 import { DataTable } from "@/components/table/data-table";
 import { PolicyListToolbar } from "./policy-list-toolbar";
-import { PremiumCartPanel } from "./premium-cart-panel";
-import { PremiumCartSheet } from "./premium-cart-sheet";
+import { PremiumCartBar } from "./premium-cart-bar";
 import { PremiumCheckoutDialog } from "./premium-checkout-dialog";
 
 interface CheckoutState {
@@ -56,68 +55,56 @@ export function PolicyMarketplaceView() {
 
   return (
     <>
-      <div className="grid grid-cols-1 items-start gap-6 mlg:grid-cols-[1fr_360px]">
-        <div
-          className="min-w-0 overflow-hidden rounded-2xl bg-card"
-          style={{ boxShadow: "var(--shadow-card)" }}
-        >
-          <PolicyListToolbar
-            search={search}
-            onSearchChange={(v) => {
-              setSearch(v);
-              resetToFirstPage();
-            }}
-            category={category}
-            onCategoryChange={(v) => {
-              setCategory(v);
-              resetToFirstPage();
-            }}
-            categoryOptions={CATEGORY_OPTIONS}
-            customerName={customerName}
-            onCustomerNameChange={(v) => {
-              setCustomerName(v);
-              resetToFirstPage();
-            }}
-            startDate={startDate}
-            onStartDateChange={(v) => {
-              setStartDate(v);
-              resetToFirstPage();
-            }}
-            endDate={endDate}
-            onEndDateChange={(v) => {
-              setEndDate(v);
-              resetToFirstPage();
-            }}
-            status={status}
-            onStatusChange={(v) => {
-              setStatus(v as PolicyStatus | "all");
-              resetToFirstPage();
-            }}
-            statusOptions={PAYMENT_STATUS_OPTIONS}
-          />
-          <DataTable
-            table={table}
-            total={filteredCount}
-            dense={dense}
-            onDenseChange={setDense}
-            rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
-            searchQuery={search}
-            showSelectionAction={false}
-          />
-        </div>
-
-        <div className="hidden mlg:sticky mlg:top-24 mlg:block">
-          <PremiumCartPanel
-            items={cart.items}
-            count={cart.count}
-            total={cart.total}
-            onRemove={cart.remove}
-            onProceed={openCartCheckout}
-          />
-        </div>
+      <div
+        className="min-w-0 overflow-hidden rounded-2xl bg-card"
+        style={{ boxShadow: "var(--shadow-card)" }}
+      >
+        <PolicyListToolbar
+          search={search}
+          onSearchChange={(v) => {
+            setSearch(v);
+            resetToFirstPage();
+          }}
+          category={category}
+          onCategoryChange={(v) => {
+            setCategory(v);
+            resetToFirstPage();
+          }}
+          categoryOptions={CATEGORY_OPTIONS}
+          customerName={customerName}
+          onCustomerNameChange={(v) => {
+            setCustomerName(v);
+            resetToFirstPage();
+          }}
+          startDate={startDate}
+          onStartDateChange={(v) => {
+            setStartDate(v);
+            resetToFirstPage();
+          }}
+          endDate={endDate}
+          onEndDateChange={(v) => {
+            setEndDate(v);
+            resetToFirstPage();
+          }}
+          status={status}
+          onStatusChange={(v) => {
+            setStatus(v as PolicyStatus | "all");
+            resetToFirstPage();
+          }}
+          statusOptions={PAYMENT_STATUS_OPTIONS}
+        />
+        <DataTable
+          table={table}
+          total={filteredCount}
+          dense={dense}
+          onDenseChange={setDense}
+          rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
+          searchQuery={search}
+          showSelectionAction={false}
+        />
       </div>
 
-      <PremiumCartSheet
+      <PremiumCartBar
         items={cart.items}
         count={cart.count}
         total={cart.total}
