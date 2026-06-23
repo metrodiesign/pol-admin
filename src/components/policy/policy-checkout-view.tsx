@@ -23,6 +23,7 @@ import { CheckoutItemsCard } from "./checkout-items-card";
 import { CheckoutChannelCard } from "./checkout-channel-card";
 import { CheckoutLinkSettingsCard } from "./checkout-link-settings-card";
 import { CheckoutAdvancedCard, EMPTY_ADVANCED, type AdvancedInfo } from "./checkout-advanced-card";
+import { CheckoutNoteCard } from "./checkout-note-card";
 import { CheckoutFooterBar } from "./checkout-footer-bar";
 
 interface PolicyCheckoutViewProps {
@@ -147,6 +148,11 @@ export function PolicyCheckoutView({ ids }: PolicyCheckoutViewProps) {
         onCustomEmail={setCustomEmailOn}
         customEmail={customEmail}
         onCustomEmailValue={setCustomEmail}
+      />
+
+      <CheckoutNoteCard
+        value={advanced.note}
+        onChange={(note) => setAdvanced({ ...advanced, note })}
       />
 
       <CheckoutFooterBar

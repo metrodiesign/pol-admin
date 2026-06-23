@@ -17,7 +17,7 @@ interface CheckoutItemsCardProps {
   onRemove: (uid: string) => void;
 }
 
-const th = "px-3 py-2.5 text-xs font-semibold text-grey-600 whitespace-nowrap";
+const th = "px-3 py-2.5 text-sm font-semibold text-grey-600 whitespace-nowrap";
 const td = "px-3 py-3 text-sm text-foreground align-middle";
 
 export function CheckoutItemsCard({ items, total, onUpdate, onRemove }: CheckoutItemsCardProps) {
