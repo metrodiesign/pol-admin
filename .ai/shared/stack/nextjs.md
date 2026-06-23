@@ -79,9 +79,8 @@
 
 - scripts: `dev` = `next dev -p 5200`, `start` = `next start -p 5200`, `build` = `next build`
   (Next 16 ใช้ Turbopack เป็น default), `lint` = `eslint`.
-- **ยังไม่มี test runner** (ไม่มี jest/vitest/playwright ใน deps) — gate `.ai/bin/gate-task.sh`
-  จะข้าม code-green check แล้วเหลือ Evidence gate จนกว่าจะเพิ่ม `test` script (ดู CODING_STANDARDS Tooling).
-- typecheck: ใช้ `tsc --noEmit` ได้ (ยังไม่มี script `typecheck` ใน package.json — เพิ่มได้เพื่อให้ gate auto-detect).
+- **test runner = vitest** (`vitest` ^4.1.9, config `vitest.config.ts`: alias `@`→`./src`, `environment: node`, include `src/**/*.test.ts`); script `test` = `vitest run`. gate `.ai/bin/gate-task.sh` auto-detect `"test"` → รัน `npm test` เป็น code-green ตอน mark `[x]`. tests co-located `src/**/*.test.ts` (auth, policy, producer).
+- typecheck: ใช้ `tsc --noEmit` หรือ `next build` (ยังไม่มี script `typecheck` แยก — เพิ่มได้เพื่อให้ gate auto-detect).
 
 ## Navigation (sidebar)
 
@@ -92,5 +91,7 @@
 
 ## Known mismatch (flag, ยังไม่แก้)
 
-- `package.json` field `"name": "merchant-dashboard"` ไม่ตรงกับผลิตภัณฑ์ (POL admin / pol-admin).
-  เป็นชื่อตกค้างจาก template — ควร rename เป็น `pol-admin` แยก PR เมื่อสะดวก.
+- `producer-role` (clone จาก `user/role`) ใช้ resource keys ของ admin domain
+  (`txn`/`merchant`/`finance`/`user`/`system`) — ยังไม่ใช่ resource ของ producer จริง.
+  copy โครง + mock เดิมไปก่อน, ปรับ resource model ให้ตรง producer domain แยก PR
+  (spec: `producer-management` REQ-8 note).
