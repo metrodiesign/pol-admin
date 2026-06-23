@@ -107,6 +107,8 @@ export function PolicyCheckoutView({ ids }: PolicyCheckoutViewProps) {
 
   return (
     <div className="flex flex-col gap-6 pb-4">
+      <CheckoutAdvancedCard value={advanced} onChange={setAdvanced} />
+
       <CheckoutCustomerCard customer={customer} onChange={setCustomer} />
 
       <CheckoutItemsCard
@@ -147,9 +149,8 @@ export function PolicyCheckoutView({ ids }: PolicyCheckoutViewProps) {
         onCustomEmailValue={setCustomEmail}
       />
 
-      <CheckoutAdvancedCard value={advanced} onChange={setAdvanced} />
-
       <CheckoutFooterBar
+        count={items.length}
         total={total}
         canIssue={ready}
         onCancel={() => {

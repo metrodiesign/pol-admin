@@ -53,6 +53,8 @@ export interface CheckoutLineItem {
   uid: string;
   /** หมายเลขกรมธรรม์/รับแจ้ง/สลักหลัง (display) */
   policyNo: string;
+  /** ชนิดเลขอ้างอิง (policy=เลขกรมธรรม์, claim=เลขรับแจ้ง) */
+  referenceType: Policy["referenceType"];
   /** ชื่อ-นามสกุลผู้เอาประกัน (display) */
   payerName: string;
   /** เบี้ยสุทธิ (display) */
@@ -112,6 +114,7 @@ export function buildLineItem(p: Policy): CheckoutLineItem {
   return {
     uid: p.id,
     policyNo: p.referenceNo,
+    referenceType: p.referenceType,
     payerName: p.customer.name,
     netPremium: p.netPremium,
     grossPremium: p.totalAmount,

@@ -50,7 +50,14 @@ export function CheckoutItemsCard({ items, total, onUpdate, onRemove }: Checkout
             {items.map((it, idx) => (
               <tr key={it.uid} className="border-b border-[var(--divider)] last:border-b-0">
                 <td className={`${td} text-grey-500`}>{idx + 1}</td>
-                <td className={`${td} whitespace-nowrap font-medium`}>{it.policyNo}</td>
+                <td className={`${td} whitespace-nowrap`}>
+                  <span className="block font-bold text-primary underline underline-offset-2">
+                    {it.policyNo}
+                  </span>
+                  <span className="mt-0.5 block text-[13px] text-grey-500">
+                    {it.referenceType === "claim" ? "เลขรับแจ้ง" : "เลขกรมธรรม์"}
+                  </span>
+                </td>
                 <td className={`${td} whitespace-nowrap`}>{it.payerName}</td>
                 <td className={`${td} text-right tabular-nums`}>{formatAmount(it.netPremium, 2)}</td>
                 <td className={`${td} text-right tabular-nums`}>{formatAmount(it.grossPremium, 2)}</td>
