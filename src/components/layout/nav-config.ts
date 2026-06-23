@@ -70,6 +70,26 @@ export const navConfig: NavGroup[] = [
     ],
   },
 
+  // ── ตัวแทน/นายหน้า ──────────────────────────────────────────────────────────
+  {
+    subheader: "ตัวแทน/นายหน้า",
+    items: [
+      {
+        title: "ตัวแทน/นายหน้า",
+        path: "/producer/list",
+        icon: "user",
+        match: "/producer",
+        exclude: ["/producer/role"],
+      },
+      {
+        title: "บทบาทและสิทธิ์",
+        path: "/producer/role/list",
+        icon: "lock",
+        match: "/producer/role",
+      },
+    ],
+  },
+
   // ── Demo (minimals pages) ────────────────────────────────────────────────
   {
     subheader: "Demo",
