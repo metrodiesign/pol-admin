@@ -93,11 +93,40 @@ export function validateClaims(
   return { ok: true, session };
 }
 
-/** orchestrator: decode token + validate -> ผลเดียวให้ view ใช้ (REQ-3.1, 3.3). */
+/** orchestrator (known audience): decode token + validate -> ผลเดียว (REQ-3.1, 3.3). */
 export function verifyAndBuildSession(token: string, opts: VerifyOpts): ClaimResult {
   const payload = decodeJwtPayload(token);
   if (!payload) return { ok: false, reason: "malformed" };
   return validateClaims(payload, opts);
+}
+
+export interface ResolveCredentialOpts {
+  /** map aud (client_id) -> audience; ไม่ตรง client เรา -> null */
+  audienceForClientId: (clientId: string) => Audience | null;
+  /** allowed hd ต่อ audience (REQ-3.8) */
+  allowedHostedDomains: (audience: Audience) => string[];
+  nowSec: number;
+}
+
+/**
+ * orchestrator สำหรับโหมดโชว์ปุ่ม Google ทั้ง 2 audience พร้อมกัน (callback ร่วม ไม่รู้ audience ล่วงหน้า):
+ * decode -> derive audience จาก `aud` -> validate. aud ไม่ตรง client เรา -> `aud_mismatch` (REQ-3.1, 3.3, 3.4).
+ */
+export function resolveCredential(
+  token: string,
+  opts: ResolveCredentialOpts,
+): ClaimResult {
+  const payload = decodeJwtPayload(token);
+  if (!payload) return { ok: false, reason: "malformed" };
+  const aud = typeof payload.aud === "string" ? payload.aud : "";
+  const audience = aud ? opts.audienceForClientId(aud) : null;
+  if (!audience) return { ok: false, reason: "aud_mismatch" };
+  return validateClaims(payload, {
+    audience,
+    expectedClientId: aud,
+    allowedHostedDomains: opts.allowedHostedDomains(audience),
+    nowSec: opts.nowSec,
+  });
 }
 
 /** landing route จาก audience ผ่าน map เดียว (REQ-4.1). */

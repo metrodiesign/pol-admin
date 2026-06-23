@@ -1,6 +1,6 @@
 # Implementation Tasks: Login + Dual Google SSO
 
-> Status: approved 2026-06-23
+> Status: approved 2026-06-23, amended 2026-06-23
 
 > Each task is a cohesive, independently verifiable slice. Implement a whole task
 > in one pass (it may touch many files). Decompose into sub-steps yourself at
@@ -63,6 +63,7 @@
      ใช้ `useSyncExternalStore` (hydrated flag) แทน sessionChecked-setState-in-effect (lint rule `react-hooks/set-state-in-effect`); slot เคลียร์ด้วย `replaceChildren()` (เลี่ยง innerHTML).
      ค้าง (manual browser + real client_id): GIS popup จริง, redirect ตาม aud, toast แดง/เขียว, focus/contrast, no-scroll @320px, no token/PII ใน console. คง `[ ]`.
      Live verify (2026-06-23, browser :5200): /login no-shell + 2 ปุ่ม+aria-label (1.1-1.4); GIS โหลด (`google.accounts.id`=true) + ปุ่ม enabled (1.5); ปุ่ม Google render ต่อ audience (2.1-2.4,2.6); session ใช้ได้ -> เด้ง /main (4.4); หมดอายุ -> ล้าง+คง /login (4.5); responsive 320/375/768/1440 clientWidth===target no h-scroll (7.3); Tab -> focus ring 3px ทั้ง 2 ปุ่ม (7.1); ก่อน sign-in ไม่มี token/PII ใน localStorage (3.7). ค้าง: happy-path sign-in สำเร็จ + error/cancel toast (5.x) + config-error/empty-state (2.5) + script-fail retry (1.6) — ต้อง Google login จริง/force-fail; ติด origin config.
+     2-card amend (2026-06-23): `login-view` เป็น **2 card**, ปุ่ม Google โชว์พร้อมกันต่อ card (ไม่ต้องเลือกก่อน); config error ต่อ card. verified live :5200: 2 region + h2, ปุ่มทั้งคู่ render client_id ถูกตัว, 375 no h-scroll, ไม่มี error ใหม่. tsc/lint/build เขียว, 29 unit tests pass.
 
 - [ ] 5. Sign-out (logout route) — `src/app/logout/page.tsx` (`"use client"`: `clearSession()` -> `router.replace("/login")`).
      Satisfies: REQ-8 (8.1-8.3). Depends on: 4 (session-storage). Verify: `npm run dev` — เข้า `/logout` ล้าง session + เด้ง `/login`;

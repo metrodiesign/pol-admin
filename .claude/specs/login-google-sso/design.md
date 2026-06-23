@@ -1,6 +1,6 @@
 # Design: Login + Dual Google SSO
 
-> Status: approved 2026-06-23
+> Status: approved 2026-06-23, amended 2026-06-23
 
 อ้างอิง: requirements.md (approved 2026-06-23, REQ-1..REQ-8). Stack: Next 16 App Router / React 19 /
 Tailwind v4 / @base-ui / vitest (node env). Frontend-only, mock data, ไม่มี backend, ไม่มี dependency ใหม่.
@@ -161,7 +161,9 @@ export interface VerifyOpts {
 
 // claim ที่ขาด (aud/exp/email_verified/sub/email) -> reason "missing_claims"; email_verified รับทั้ง boolean และ string "true"
 export function validateClaims(payload: Record<string, unknown>, opts: VerifyOpts): ClaimResult;     // REQ-3.2,3.4,3.5,3.8,3.9
-export function verifyAndBuildSession(token: string, opts: VerifyOpts): ClaimResult;                  // decode + validate
+export function verifyAndBuildSession(token: string, opts: VerifyOpts): ClaimResult;                  // decode + validate (known audience)
+export interface ResolveCredentialOpts { audienceForClientId: (clientId: string) => Audience | null; allowedHostedDomains: (a: Audience) => string[]; nowSec: number; }
+export function resolveCredential(token: string, opts: ResolveCredentialOpts): ClaimResult;           // decode + derive audience จาก aud + validate (2-card, REQ-3.4)
 export function chooseLanding(audience: Audience): string;                                            // REQ-4.1
 export function isSessionValid(session: MockSession, nowSec: number): boolean;                        // REQ-4.4,4.5
 ```
@@ -169,6 +171,7 @@ export function isSessionValid(session: MockSession, nowSec: number): boolean;  
 `src/lib/auth/auth-config.ts`:
 ```ts
 export function getClientId(audience: Audience): string | null;   // env, null = ไม่ตั้ง (REQ-2.5,6.1)
+export function audienceForClientId(clientId: string): Audience | null;  // reverse: aud -> audience (2-card, REQ-3.4)
 export const LANDING_BY_AUDIENCE: Record<Audience, string>;        // { admin:"/main", producer:"/main" }
 export const ALLOWED_HOSTED_DOMAINS: Record<Audience, string[]>;   // default ว่าง = ปิด hd check
 ```
@@ -180,20 +183,23 @@ export function writeSession(s: MockSession): void;
 export function clearSession(): void;
 ```
 
-GIS global (`window.google.accounts.id` เท่านั้น — ห้าม `google.accounts.oauth2`, REQ-2.6) — render-on-demand
-1 client_id ต่อครั้ง (เลี่ยง singleton clobber):
+GIS (`window.google.accounts.id` เท่านั้น — ห้าม `google.accounts.oauth2`, REQ-2.6) — **โชว์ปุ่ม Google ทั้ง 2
+audience พร้อมกัน (2-card)**. แต่ละ rendered-button iframe bake client_id ของตัวเอง; **callback เดียวใช้ร่วม**
+(audience-agnostic) เลี่ยง singleton clobber — audience derive จาก `aud` ใน token ภายหลัง (ไม่ผูก closure):
 ```ts
-function selectAudience(audience: Audience, slotEl: HTMLElement) {
-  const clientId = getClientId(audience);
-  if (!clientId) return; // ปุ่ม disabled + inline error อยู่แล้ว (REQ-2.5)
-  window.google.accounts.id.initialize({
-    client_id: clientId,
-    callback: (r) => onCredential(audience, clientId, r), // closure ผูก audience+clientId
-  });
-  // render ปุ่ม Google จริงของ audience นี้ลง slot เดียวที่ live ในขณะนั้น (REQ-2.3/2.4, REQ-1.3)
-  window.google.accounts.id.renderButton(slotEl, { type: "standard", theme: "outline", text: "signin_with" });
+// callback ร่วมตัวเดียว (ตัวสุดท้ายที่ initialize ชนะ — ปลอดภัยเพราะเป็นฟังก์ชันเดียวกัน)
+function handleCredential(r: { credential?: string }) {
+  if (!r.credential) { toast("เข้าสู่ระบบไม่สำเร็จ", "error"); return; } // REQ-5.2
+  const res = resolveCredential(r.credential, { audienceForClientId, allowedHostedDomains, nowSec });
+  // res.ok -> writeSession + redirect chooseLanding(res.session.audience); !ok -> toast error (REQ-5.3)
 }
-// ผู้ใช้คลิกปุ่ม Google -> popup -> onCredential(); ปิด popup = ไม่มี callback = idle (REQ-5.1)
+// วาดทั้ง 2 audience: ต่อ audience -> initialize(client_id, handleCredential) -> renderButton(slot ของ card นั้น)
+for (const a of ["admin", "producer"]) {
+  const clientId = getClientId(a); if (!clientId) continue; // card นั้นโชว์ config error (REQ-2.5)
+  window.google.accounts.id.initialize({ client_id: clientId, callback: handleCredential });
+  window.google.accounts.id.renderButton(slot[a], { type: "standard", theme: "outline", text: "signin_with" });
+}
+// คลิกปุ่ม Google ของ card ไหน -> popup ของ client_id นั้น -> handleCredential; `aud` ในtoken บอก audience (REQ-2.3/2.4,1.3)
 ```
 
 ## Technology Decisions
@@ -201,7 +207,7 @@ function selectAudience(audience: Audience, slotEl: HTMLElement) {
 | เรื่อง | เลือก | เหตุผล |
 |--------|-------|--------|
 | Auth flow | GIS **ID-token credential** (`google.accounts.id`) | REQ-2.6; คืน ID token ตรง ๆ ไม่ต้อง backend exchange, ไม่ใช้ secret (REQ-6.4) |
-| 2 client_id หน้าเดียว | **`renderButton()` render-on-demand, 1 client_id/ครั้ง** | `google.accounts.id` ออกแบบ 1 client/หน้า (initialize = singleton). เลือก audience -> `initialize(client_id)` -> `renderButton(slot)` ปุ่ม Google จริง; คลิก = ได้ credential on-demand. **ตัด `prompt()` ทิ้ง** (One Tap = cooldown/rate-limit; FedCM ถอด moment-notification ทำให้จับ cancel ไม่ได้ — B1/B2). render ทีละ audience เลี่ยง singleton clobber (B3). **Spike ก่อน implement:** ยืนยัน callback ผูก client_id ถูกตัวเมื่อสลับ audience |
+| 2 client_id หน้าเดียว | **โชว์ปุ่ม Google ทั้ง 2 audience พร้อมกัน (2-card), callback เดียว derive จาก `aud`** | `google.accounts.id.initialize` = singleton (callback ตัวสุดท้ายชนะ) แต่แต่ละ **rendered-button iframe bake client_id ของตัวเอง**. initialize ต่อ audience -> renderButton ลง slot ของ card นั้น โดยใช้ **callback ร่วมตัวเดียว (audience-agnostic)** -> ไม่มี closure clobber; audience มาจาก `aud` (`audienceForClientId`/`resolveCredential`). **supersedes** render-on-demand เดิม (B3) ตาม UX 2-card. **ตัด `prompt()`/oauth2** (B1/B2, REQ-2.6). verified live: 2 iframe client_id ถูกตัว + `resolveCredential` unit-tested; residual: credential routing ยืนยันเต็มตอน sign-in จริง. ดู Addendum 2026-06-23 |
 | GIS script | `next/script` ใน `login-view` (`strategy="afterInteractive"`); retry = bump `key` | repo ยังไม่ใช้ `next/script`; โหลดเฉพาะหน้า login; `onLoad` -> ready, `onError` -> error state. retry เปลี่ยน `key` ของ `<Script>` เพื่อ force re-fetch (M3) (REQ-1.5/1.6) |
 | Toast | extend local toast-hook pattern + field `variant` | `RoleToaster` เดิม hardcode success icon — error จะขึ้นถูกเขียว (B4). เพิ่ม variant success/error; ยังเป็น local pattern ไม่เพิ่ม lib (REQ-5.4) |
 | Session storage | **localStorage** (`pol.mock_session`), field น้อยสุด | scope = mock UI, ไม่มี backend/middleware; client-only พอ. **Ceiling:** prod = httpOnly cookie set โดย backend + middleware guard |
@@ -303,3 +309,16 @@ script (1.5, 1.6), env client_id แยกต่อปุ่ม (2.1-2.4), keybo
 - ค่า client_id จริงของ 2 OAuth client (Google Cloud Console) — ใส่ `.env.local` ตอนทดสอบจริง
 - ถ้า `prompt()` ไม่ reliable -> สลับไป rendered GIS button 2 ขั้น (ระบุใน Technology Decisions ceiling)
 - wire sign-out เข้า topbar account menu (ภายหลัง; `/logout` พอสำหรับ scope นี้)
+
+## Addendum 2026-06-23 — 2-card render-both (supersedes render-on-demand B3)
+
+ตาม UX ที่ user ขอ (แยก 2 card + โชว์ปุ่ม Google เลย) เปลี่ยนกลยุทธ์ GIS:
+
+- **เดิม (B3):** render-on-demand 1 client_id/ครั้ง, callback closure ผูก audience -> ต้องเลือก audience ก่อนถึงเห็นปุ่ม
+- **ใหม่:** โชว์ปุ่ม Google ทั้ง 2 audience พร้อมกัน. แต่ละ rendered-button iframe bake client_id ของตัวเอง; **callback ร่วมตัวเดียว (audience-agnostic)**; audience derive จาก `aud` ผ่าน `audienceForClientId` + `resolveCredential`
+- **ทำไมได้:** GIS `initialize` = singleton (callback ตัวสุดท้ายชนะ) — closure ต่อปุ่มจะ clobber. callback เดียวร่วม + derive-from-aud เลี่ยงปัญหานี้ (token ของ iframe ไหนมา callback เดียวกัน decode `aud` รู้เอง)
+- **REQ-3.4 reinterpret:** "aud ต้องตรง client ของปุ่มที่กด" -> "aud ต้องตรงหนึ่งใน client ที่ตั้งไว้; audience ถูกกำหนดโดย `aud`". aud ไม่ตรง client เรา -> `aud_mismatch` (เดิม). สาระความปลอดภัยเท่าเดิม
+- **fn ใหม่:** `audienceForClientId(clientId)` (auth-config), `resolveCredential(token, {audienceForClientId, allowedHostedDomains, nowSec})` (session) — view ใช้ `resolveCredential` แทน `verifyAndBuildSession` (ตัวเดิมคงไว้เป็น helper known-audience + test)
+- **verified:** live :5200 — 2 card, ปุ่ม Google ทั้งคู่ render พร้อมกัน, iframe client_id Admin=`888188...`/Producer=`331131...` (คนละตัว), 375 no h-scroll; unit GREEN: `resolveCredential` (malformed/aud_mismatch/admin/producer), `audienceForClientId`
+- **residual:** credential routing ของ 2 ปุ่มพร้อมกัน (GIS ส่ง credential ของแต่ละ iframe เข้า callback ร่วม) ยืนยันเต็มตอน sign-in จริง — ตอนนี้ติด OAuth origin allowlist (403)
+- **T3 spike เดิม** (manual ยืนยัน binding) -> แทนด้วย unit test + live distinct-client_id render

@@ -5,16 +5,28 @@ import type { Audience } from "@/types/auth";
  * แยกจาก pure logic เพื่อให้ session.ts คง node-testable.
  */
 
-// อ้าง process.env แบบ static literal ต่อ audience -> ให้ Next inline ค่า NEXT_PUBLIC_* ตอน build
-const CLIENT_ID_BY_AUDIENCE: Record<Audience, string | undefined> = {
-  admin: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID_ADMIN,
-  producer: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID_PRODUCER,
-};
-
-/** client_id ของ audience จาก env; null = ไม่ตั้ง -> ปุ่ม disabled + config error (REQ-2.5, 6.1). */
+/**
+ * client_id ของ audience จาก env; null = ไม่ตั้ง -> ปุ่ม disabled + config error (REQ-2.5, 6.1).
+ * อ่าน process.env แบบ static literal ต่อ audience (Next inline NEXT_PUBLIC_*) และอ่าน ณ เวลาเรียก
+ * เพื่อให้ test stub env ได้.
+ */
 export function getClientId(audience: Audience): string | null {
-  const id = CLIENT_ID_BY_AUDIENCE[audience];
+  const id =
+    audience === "admin"
+      ? process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID_ADMIN
+      : process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID_PRODUCER;
   return id && id.trim() ? id : null;
+}
+
+/**
+ * reverse: client_id (= `aud` ใน token) -> audience. ไม่ตรง client ที่ตั้งไว้ -> null.
+ * ใช้ตอนโชว์ปุ่ม Google ทั้ง 2 audience พร้อมกัน (callback เดียว derive audience จาก aud) (REQ-3.4).
+ */
+export function audienceForClientId(clientId: string): Audience | null {
+  if (!clientId) return null;
+  if (clientId === getClientId("admin")) return "admin";
+  if (clientId === getClientId("producer")) return "producer";
+  return null;
 }
 
 /**

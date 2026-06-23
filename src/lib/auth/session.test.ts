@@ -5,8 +5,10 @@ import type { MockSession } from "@/types/auth";
 import {
   chooseLanding,
   isSessionValid,
+  resolveCredential,
   validateClaims,
   verifyAndBuildSession,
+  type ResolveCredentialOpts,
   type VerifyOpts,
 } from "./session";
 
@@ -105,6 +107,35 @@ describe("verifyAndBuildSession", () => {
   it("token ถูกต้อง -> ok + session", () => {
     const res = verifyAndBuildSession(token(baseClaims), opts);
     expect(res.ok).toBe(true);
+  });
+});
+
+describe("resolveCredential", () => {
+  const PRODUCER_ID = "producer-client.apps.googleusercontent.com";
+  const resolveOpts: ResolveCredentialOpts = {
+    audienceForClientId: (aud) =>
+      aud === ADMIN_ID ? "admin" : aud === PRODUCER_ID ? "producer" : null,
+    allowedHostedDomains: () => [],
+    nowSec: 1000,
+  };
+
+  it("malformed token -> malformed (REQ-3.3)", () => {
+    expect(resolveCredential("not-a-jwt", resolveOpts)).toEqual({ ok: false, reason: "malformed" });
+  });
+
+  it("aud ไม่ใช่ client ของเรา -> aud_mismatch (REQ-3.4)", () => {
+    const res = resolveCredential(token({ ...baseClaims, aud: "stranger" }), resolveOpts);
+    expect(res).toEqual({ ok: false, reason: "aud_mismatch" });
+  });
+
+  it("aud = admin client -> ok + derive audience admin", () => {
+    const res = resolveCredential(token(baseClaims), resolveOpts);
+    expect(res.ok && res.session.audience).toBe("admin");
+  });
+
+  it("aud = producer client -> ok + derive audience producer", () => {
+    const res = resolveCredential(token({ ...baseClaims, aud: PRODUCER_ID }), resolveOpts);
+    expect(res.ok && res.session.audience).toBe("producer");
   });
 });
 

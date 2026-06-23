@@ -1,6 +1,6 @@
 # Requirements: Login + Dual Google SSO
 
-> Status: approved 2026-06-23
+> Status: approved 2026-06-23, amended 2026-06-23
 
 ## Overview
 
@@ -60,7 +60,8 @@ so that ฉันพัฒนาและ demo หน้าจอหลัง lo
   `aud`, `exp`
 - 3.3  IF token ไม่ใช่ JWT ที่ well-formed (ไม่ใช่ 3 ส่วน base64url) THEN THE SYSTEM SHALL ปฏิเสธการเข้าสู่
   ระบบและแสดง error
-- 3.4  IF ค่า `aud` ใน token ไม่เท่ากับ client id ที่ใช้กับปุ่มที่กด THEN THE SYSTEM SHALL ปฏิเสธการเข้าสู่ระบบ
+- 3.4  IF ค่า `aud` ใน token ไม่ตรงกับ client id ที่ตั้งไว้ของ audience ใดเลย THEN THE SYSTEM SHALL ปฏิเสธการเข้าสู่ระบบ
+  (audience ถูกกำหนดจาก `aud`; โหมด 2-card ใช้ callback ร่วม — ดู Addendum 2026-06-23 ใน design.md)
 - 3.5  IF ค่า `exp` เป็นเวลาในอดีต (token หมดอายุ) THEN THE SYSTEM SHALL ปฏิเสธการเข้าสู่ระบบ
 - 3.6  WHEN claim ครบและผ่านการตรวจ THE SYSTEM SHALL สร้าง mock session record ที่มีเฉพาะ field ที่ UI ใช้:
   audience, `name`, `picture`, `exp` (อ่าน `sub`/`email`/`email_verified` เพื่อ check เท่านั้น ไม่เก็บลง session)
@@ -167,3 +168,4 @@ audience หรือทดสอบการเข้าสู่ระบบ�
 - F6 (ambiguity, REQ-3.6/3.7) — PII ใน storage. Decision: **a** -> REQ-3.6 เก็บเฉพาะ audience/name/picture/exp; อ่าน `sub`/`email`/`email_verified` เพื่อ check เท่านั้น.
 - F7 (minor, REQ-5.3) — รวม reject/storage-fail. Decision: **a** -> REQ-5.3 ข้อความรวม `เข้าสู่ระบบไม่สำเร็จ`.
 - F8 (defer, REQ-4.2/4.3) — producer landing. Decision: **a** -> defer -> design.md (REQ-4.1 mapping fn คงโครง).
+- Amend 2026-06-23 (2-card, ตาม user request) — REQ-3.4 reinterpret: aud determines audience (ไม่ใช่ "ปุ่มที่กด"); aud ไม่ตรง client ใด -> reject. propagate -> design.md Addendum 2026-06-23 (`audienceForClientId`/`resolveCredential`, render-both supersedes B3). สาระความปลอดภัยเท่าเดิม.
