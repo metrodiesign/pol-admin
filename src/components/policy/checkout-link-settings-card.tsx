@@ -95,30 +95,35 @@ export function CheckoutLinkSettingsCard(props: CheckoutLinkSettingsCardProps) {
             ariaLabel="การแจ้งเตือนลูกค้า"
           />
 
-          {props.notifyMode === "send_customer" && (
-            <div className="mt-4 flex flex-col gap-3">
-              <CustomNotifyToggle
-                icon={<MessageSquare className="size-4.5" />}
-                title="ส่ง SMS แจ้งลิงก์"
-                checked={props.smsOn}
-                onChange={props.onSms}
-                value={props.notifyCustomPhone}
-                onValue={props.onNotifyCustomPhone}
-                placeholder="เบอร์โทรผู้รับ"
-                inputMode="tel"
-              />
-              <CustomNotifyToggle
-                icon={<Mail className="size-4.5" />}
-                title="ส่งอีเมลพร้อมลิงก์"
-                checked={props.emailOn}
-                onChange={props.onEmail}
-                value={props.notifyCustomEmail}
-                onValue={props.onNotifyCustomEmail}
-                placeholder="อีเมลผู้รับ"
-                inputMode="email"
-              />
-            </div>
-          )}
+          {(() => {
+            const sending = props.notifyMode === "send_customer";
+            return (
+              <div className="mt-4 flex flex-col gap-3">
+                <CustomNotifyToggle
+                  icon={<MessageSquare className="size-4.5" />}
+                  title="ส่ง SMS แจ้งลิงก์"
+                  checked={sending && props.smsOn}
+                  onChange={props.onSms}
+                  disabled={!sending}
+                  value={props.notifyCustomPhone}
+                  onValue={props.onNotifyCustomPhone}
+                  placeholder="เบอร์โทรผู้รับ"
+                  inputMode="tel"
+                />
+                <CustomNotifyToggle
+                  icon={<Mail className="size-4.5" />}
+                  title="ส่งอีเมลพร้อมลิงก์"
+                  checked={sending && props.emailOn}
+                  onChange={props.onEmail}
+                  disabled={!sending}
+                  value={props.notifyCustomEmail}
+                  onValue={props.onNotifyCustomEmail}
+                  placeholder="อีเมลผู้รับ"
+                  inputMode="email"
+                />
+              </div>
+            );
+          })()}
         </div>
 
         <div>
@@ -160,6 +165,7 @@ function CustomNotifyToggle({
   onValue,
   placeholder,
   inputMode,
+  disabled = false,
 }: {
   icon: React.ReactNode;
   title: string;
@@ -169,11 +175,17 @@ function CustomNotifyToggle({
   onValue: (v: string) => void;
   placeholder: string;
   inputMode: "tel" | "email";
+  disabled?: boolean;
 }) {
   return (
-    <div className="rounded-xl border border-[var(--divider)]">
-      <label className="flex cursor-pointer items-center gap-3 px-4 py-3">
-        <Switch checked={checked} onCheckedChange={onChange} />
+    <div className={"rounded-xl border border-[var(--divider)]" + (disabled ? " opacity-60" : "")}>
+      <label
+        className={
+          "flex items-center gap-3 px-4 py-3 " +
+          (disabled ? "cursor-not-allowed" : "cursor-pointer")
+        }
+      >
+        <Switch checked={checked} onCheckedChange={onChange} disabled={disabled} />
         <span className="flex size-8 items-center justify-center rounded-full bg-grey-100 text-grey-600">
           {icon}
         </span>

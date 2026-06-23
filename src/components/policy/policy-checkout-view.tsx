@@ -122,7 +122,13 @@ export function PolicyCheckoutView({ ids }: PolicyCheckoutViewProps) {
         expiry={expiry}
         onExpiry={setExpiry}
         notifyMode={notifyMode}
-        onNotifyMode={setNotifyMode}
+        onNotifyMode={(v) => {
+          setNotifyMode(v);
+          if (v === "none") {
+            setSmsOn(false);
+            setEmailOn(false);
+          }
+        }}
         smsOn={smsOn}
         onSms={setSmsOn}
         emailOn={emailOn}
