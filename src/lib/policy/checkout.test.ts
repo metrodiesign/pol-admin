@@ -72,12 +72,12 @@ describe("buildLineItem", () => {
 });
 
 describe("lineItemDiscountPct", () => {
-  it("ปัดเป็นจำนวนเต็ม (1000/10000=10%)", () => {
+  it("2 ทศนิยม (1000/10000=10%)", () => {
     expect(lineItemDiscountPct(item({ discount: 1000 }))).toBe(10);
   });
 
-  it("1000/18000 -> 6% (ปัด)", () => {
-    expect(lineItemDiscountPct(item({ netPremium: 18000, discount: 1000 }))).toBe(6);
+  it("1000/18000 -> 5.56% (2 ทศนิยม)", () => {
+    expect(lineItemDiscountPct(item({ netPremium: 18000, discount: 1000 }))).toBe(5.56);
   });
 
   it("netPremium 0 = 0%", () => {

@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 
 export interface AdvancedInfo {
   invoiceNo: string;
@@ -25,7 +24,7 @@ interface CheckoutAdvancedCardProps {
 const fieldLabel = "mb-1.5 block text-[13px] font-semibold text-grey-700";
 
 export function CheckoutAdvancedCard({ value, onChange }: CheckoutAdvancedCardProps) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   const setRef = (idx: number, v: string) => {
     const references = value.references.map((r, i) => (i === idx ? v : r));
@@ -48,7 +47,7 @@ export function CheckoutAdvancedCard({ value, onChange }: CheckoutAdvancedCardPr
             ใบแจ้งหนี้และเลขที่อ้างอิง (ขั้นสูง)
           </span>
           <span className="mt-0.5 block text-[13px] text-grey-500">
-            Invoice No, Reference 1-5, หมายเหตุ · ใช้กระทบยอดกับระบบต้นทาง
+            Invoice No, Reference 1-5 · ใช้กระทบยอดกับระบบต้นทาง
           </span>
         </span>
         <ChevronDown
@@ -80,15 +79,6 @@ export function CheckoutAdvancedCard({ value, onChange }: CheckoutAdvancedCardPr
                   <Input value={r} onChange={(e) => setRef(i, e.target.value)} />
                 </div>
               ))}
-            </div>
-
-            <div>
-              <label className={fieldLabel}>หมายเหตุ</label>
-              <Textarea
-                value={value.note}
-                onChange={(e) => onChange({ ...value, note: e.target.value })}
-                placeholder="หมายเหตุภายใน (ไม่แสดงให้ลูกค้า)"
-              />
             </div>
           </div>
         </div>

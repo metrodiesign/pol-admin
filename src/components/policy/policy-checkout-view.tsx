@@ -23,6 +23,7 @@ import { CheckoutItemsCard } from "./checkout-items-card";
 import { CheckoutChannelCard } from "./checkout-channel-card";
 import { CheckoutLinkSettingsCard } from "./checkout-link-settings-card";
 import { CheckoutAdvancedCard, EMPTY_ADVANCED, type AdvancedInfo } from "./checkout-advanced-card";
+import { CheckoutNoteCard } from "./checkout-note-card";
 import { CheckoutFooterBar } from "./checkout-footer-bar";
 
 interface PolicyCheckoutViewProps {
@@ -107,6 +108,8 @@ export function PolicyCheckoutView({ ids }: PolicyCheckoutViewProps) {
 
   return (
     <div className="flex flex-col gap-6 pb-4">
+      <CheckoutAdvancedCard value={advanced} onChange={setAdvanced} />
+
       <CheckoutCustomerCard customer={customer} onChange={setCustomer} />
 
       <CheckoutItemsCard
@@ -122,7 +125,13 @@ export function PolicyCheckoutView({ ids }: PolicyCheckoutViewProps) {
         expiry={expiry}
         onExpiry={setExpiry}
         notifyMode={notifyMode}
-        onNotifyMode={setNotifyMode}
+        onNotifyMode={(v) => {
+          setNotifyMode(v);
+          if (v === "none") {
+            setSmsOn(false);
+            setEmailOn(false);
+          }
+        }}
         smsOn={smsOn}
         onSms={setSmsOn}
         emailOn={emailOn}
@@ -141,9 +150,13 @@ export function PolicyCheckoutView({ ids }: PolicyCheckoutViewProps) {
         onCustomEmailValue={setCustomEmail}
       />
 
-      <CheckoutAdvancedCard value={advanced} onChange={setAdvanced} />
+      <CheckoutNoteCard
+        value={advanced.note}
+        onChange={(note) => setAdvanced({ ...advanced, note })}
+      />
 
       <CheckoutFooterBar
+        count={items.length}
         total={total}
         canIssue={ready}
         onCancel={() => {

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Info, Trash2 } from "lucide-react";
 import {
   lineItemDiscountPct,
@@ -16,11 +17,13 @@ interface CheckoutItemsCardProps {
   onRemove: (uid: string) => void;
 }
 
-const th = "px-3 py-2.5 text-xs font-semibold text-grey-600 whitespace-nowrap";
+const th = "px-3 py-2.5 text-sm font-semibold text-grey-600 whitespace-nowrap";
 const td = "px-3 py-3 text-sm text-foreground align-middle";
 
 export function CheckoutItemsCard({ items, total, onUpdate, onRemove }: CheckoutItemsCardProps) {
   const canRemove = items.length > 1;
+  const [focusedUid, setFocusedUid] = useState<string | null>(null);
+  const [draft, setDraft] = useState("");
 
   return (
     <CheckoutCard
@@ -47,25 +50,42 @@ export function CheckoutItemsCard({ items, total, onUpdate, onRemove }: Checkout
             {items.map((it, idx) => (
               <tr key={it.uid} className="border-b border-[var(--divider)] last:border-b-0">
                 <td className={`${td} text-grey-500`}>{idx + 1}</td>
-                <td className={`${td} whitespace-nowrap font-medium`}>{it.policyNo}</td>
+                <td className={`${td} whitespace-nowrap`}>
+                  <span className="block font-bold text-primary underline underline-offset-2">
+                    {it.policyNo}
+                  </span>
+                  <span className="mt-0.5 block text-[13px] text-grey-500">
+                    {it.referenceType === "claim" ? "เลขรับแจ้ง" : "เลขกรมธรรม์"}
+                  </span>
+                </td>
                 <td className={`${td} whitespace-nowrap`}>{it.payerName}</td>
                 <td className={`${td} text-right tabular-nums`}>{formatAmount(it.netPremium, 2)}</td>
                 <td className={`${td} text-right tabular-nums`}>{formatAmount(it.grossPremium, 2)}</td>
                 <td className={`${td} text-right`}>
                   <input
-                    type="number"
+                    type="text"
                     inputMode="decimal"
-                    min={0}
-                    max={it.grossPremium}
-                    step="0.01"
                     aria-label={`ส่วนลด ${it.policyNo}`}
-                    value={Number.isFinite(it.discount) ? it.discount : ""}
-                    onChange={(e) => onUpdate(it.uid, { discount: e.target.valueAsNumber || 0 })}
+                    value={focusedUid === it.uid ? draft : it.discount ? String(it.discount) : "0"}
+                    onChange={(e) => {
+                      const v = e.target.value;
+                      if (!/^\d*\.?\d{0,2}$/.test(v)) return; // digits + max 2 decimals
+                      const n = v === "" || v === "." ? 0 : parseFloat(v);
+                      const maxDiscount = Math.max(0, Math.round((it.grossPremium - it.netPremium) * 100) / 100); // เบี้ยรวม − เบี้ยสุทธิ
+                      const clamped = Math.min(n, maxDiscount);
+                      setDraft(clamped === n ? v : String(clamped));
+                      onUpdate(it.uid, { discount: clamped });
+                    }}
+                    onFocus={() => {
+                      setFocusedUid(it.uid);
+                      setDraft(it.discount ? String(it.discount) : "");
+                    }}
+                    onBlur={() => setFocusedUid(null)}
                     className="h-9 w-28 rounded-md border border-dashed border-grey-400 bg-warning/8 px-2.5 text-right text-sm tabular-nums text-foreground outline-none focus:border-grey-800 focus:bg-warning/12 focus:ring-1 focus:ring-inset focus:ring-grey-800"
                   />
                 </td>
                 <td className={`${td} text-right tabular-nums text-grey-600`}>
-                  {lineItemDiscountPct(it)}%
+                  {lineItemDiscountPct(it).toFixed(2)}%
                 </td>
                 <td className={`${td} text-right tabular-nums`}>
                   {formatAmount(lineItemAmountDue(it), 2)}
