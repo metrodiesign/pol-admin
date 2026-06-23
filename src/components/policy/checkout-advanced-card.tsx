@@ -24,7 +24,7 @@ interface CheckoutAdvancedCardProps {
 const fieldLabel = "mb-1.5 block text-[13px] font-semibold text-grey-700";
 
 export function CheckoutAdvancedCard({ value, onChange }: CheckoutAdvancedCardProps) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   const setRef = (idx: number, v: string) => {
     const references = value.references.map((r, i) => (i === idx ? v : r));
