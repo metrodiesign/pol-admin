@@ -123,7 +123,7 @@ export function buildLineItem(p: Policy): CheckoutLineItem {
 /** %ส่วนลดจากเบี้ยสุทธิ — ระบบคำนวณ, ปัดเป็นจำนวนเต็ม. */
 export function lineItemDiscountPct(item: CheckoutLineItem): number {
   if (item.netPremium <= 0) return 0;
-  return Math.round((item.discount / item.netPremium) * 100);
+  return round2((item.discount / item.netPremium) * 100);
 }
 
 /** ยอดชำระ = เบี้ยประกันภัยรวม − ส่วนลด. */
