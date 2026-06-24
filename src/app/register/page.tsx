@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { CircleCheck } from "lucide-react";
 import { AvatarUpload } from "@/components/shared/avatar-upload";
 import { Fieldset, Field, Label, Description } from "@/components/shared/fieldset";
 import { ProducerEditFormCard } from "@/components/producer/producer-edit-form-card";
@@ -39,12 +40,19 @@ export default function RegisterPage() {
     return (
       <main className="flex min-h-dvh items-center justify-center bg-grey-100 p-4">
         <div
-          className="w-full max-w-md rounded-card bg-card px-6 py-10 text-center"
+          className="w-full max-w-md rounded-card bg-card px-6 py-12 text-center"
           style={cardStyle}
         >
-          <h1 className="text-xl font-bold text-foreground">ลงทะเบียนสำเร็จ</h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            รอการอนุมัติจากผู้ดูแลระบบ
+          <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-success/12">
+            <CircleCheck className="size-12 text-success" strokeWidth={1.5} />
+          </div>
+          <h1 className="mt-6 text-xl font-bold text-foreground">
+            ลงทะเบียนสำเร็จ
+          </h1>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+            ระบบได้รับข้อมูลการลงทะเบียนของคุณแล้ว
+            <br />
+            กรุณารอการอนุมัติจากผู้ดูแลระบบ
           </p>
           <Link href="/login" className={linkButtonClass}>
             ไปหน้าเข้าสู่ระบบ
