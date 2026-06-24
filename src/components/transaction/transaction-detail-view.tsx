@@ -127,31 +127,6 @@ const STEP_LABEL_COLOR: Record<StepState, string> = {
   pending: "text-grey-500",
 };
 
-function ReadField({
-  icon: Icon,
-  value,
-  className,
-}: {
-  icon?: LucideIcon;
-  value: string;
-  className?: string;
-}) {
-  return (
-    <div className={cn("relative", className)}>
-      {Icon ? (
-        <Icon className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-grey-500" />
-      ) : null}
-      <p
-        className={cn(
-          "rounded-md border border-[var(--divider)] bg-grey-50 py-2 text-sm text-foreground",
-          Icon ? "pl-10 pr-3.5" : "px-3.5",
-        )}
-      >
-        {value || <span className="text-grey-400">—</span>}
-      </p>
-    </div>
-  );
-}
 
 const fieldLabel = "mb-1.5 block text-[13px] font-semibold text-grey-700";
 
@@ -219,20 +194,14 @@ export function TransactionDetailView({ id }: { id: string | undefined }) {
             ))}
           </div>
 
-          <div className="mt-6 grid grid-cols-1 items-start gap-x-8 gap-y-8 mmd:grid-cols-2">
-            <div>
-              <h2 className="text-center text-base font-bold text-foreground">QR Code</h2>
-              <div className="mt-4 flex flex-col items-center rounded-2xl bg-grey-100 px-6 py-7">
-                <div className="flex flex-col items-center gap-3 rounded-xl border-2 border-dashed border-grey-300 px-8 py-8">
-                  <QrCode className="size-16 text-grey-800" strokeWidth={1.5} />
-                  <span className="font-mono text-xs text-grey-500">{link.url}</span>
-                </div>
-              </div>
+          <div className="mt-6 grid grid-cols-1 gap-x-8 gap-y-8 mmd:grid-cols-2">
+            <div className="flex h-full flex-col items-center justify-center rounded-2xl bg-grey-100 px-6 py-7 gap-3">
+              <QrCode className="size-24 text-grey-800" strokeWidth={1.5} />
+              <span className="font-mono text-xs text-grey-500">{link.url}</span>
             </div>
 
             <div>
-              <h2 className="text-base font-bold text-foreground">การดำเนินการ</h2>
-              <div className="mt-4 flex flex-col gap-3">
+              <div className="flex flex-col gap-3">
                 <button
                   type="button"
                   className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-info/12 px-4 text-sm font-bold text-info transition-colors hover:bg-info/16"
@@ -289,34 +258,34 @@ export function TransactionDetailView({ id }: { id: string | undefined }) {
         <div className="px-6 py-5">
           <div className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
             <div>
-              <label className={fieldLabel}>Invoice No</label>
-              <ReadField value={t.code} />
+              <p className={fieldLabel}>Invoice No</p>
+              <p className="text-sm font-bold text-foreground">{t.code || <span className="text-grey-400">—</span>}</p>
             </div>
             <div>
-              <label className={fieldLabel}>PSP</label>
-              <ReadField value={t.psp.toUpperCase()} />
+              <p className={fieldLabel}>PSP</p>
+              <p className="text-sm font-bold text-foreground">{t.psp.toUpperCase() || <span className="text-grey-400">—</span>}</p>
             </div>
           </div>
-          <div className="mt-4 grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2 mlg:grid-cols-3">
+          <div className="mt-4 grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
             <div>
-              <label className={fieldLabel}>Reference 1 — ที่มา</label>
-              <ReadField value={t.source.code} />
+              <p className={fieldLabel}>Reference 1 — ที่มา</p>
+              <p className="text-sm font-bold text-foreground">{t.source.code || <span className="text-grey-400">—</span>}</p>
             </div>
             <div>
-              <label className={fieldLabel}>Reference 2 — ชื่อที่มา</label>
-              <ReadField value={t.source.label} />
+              <p className={fieldLabel}>Reference 2 — ชื่อที่มา</p>
+              <p className="text-sm font-bold text-foreground">{t.source.label || <span className="text-grey-400">—</span>}</p>
             </div>
             <div>
-              <label className={fieldLabel}>Reference 3 — บทบาท</label>
-              <ReadField value={`${src.role} · ${src.location}`} />
+              <p className={fieldLabel}>Reference 3 — บทบาท</p>
+              <p className="text-sm font-bold text-foreground">{`${src.role} · ${src.location}` || <span className="text-grey-400">—</span>}</p>
             </div>
             <div>
-              <label className={fieldLabel}>Reference 4 — สังกัด</label>
-              <ReadField value={`${src.branchCode} · ${src.branchLabel}`} />
+              <p className={fieldLabel}>Reference 4 — สังกัด</p>
+              <p className="text-sm font-bold text-foreground">{`${src.branchCode} · ${src.branchLabel}` || <span className="text-grey-400">—</span>}</p>
             </div>
             <div>
-              <label className={fieldLabel}>Reference 5 — อ้างอิงลิงก์</label>
-              <ReadField value={src.linkRef} />
+              <p className={fieldLabel}>Reference 5 — อ้างอิงลิงก์</p>
+              <p className="text-sm font-bold text-foreground">{src.linkRef || <span className="text-grey-400">—</span>}</p>
             </div>
           </div>
         </div>
@@ -327,16 +296,16 @@ export function TransactionDetailView({ id }: { id: string | undefined }) {
         <div className="px-6 py-5">
           <div className="grid grid-cols-1 gap-x-5 gap-y-5 mmd:grid-cols-2">
             <div className="flex flex-col gap-1.5">
-              <label className={fieldLabel}>ชื่อ-นามสกุล</label>
-              <ReadField value={t.customerName} />
+              <p className={fieldLabel}>ชื่อ-นามสกุล</p>
+              <p className="text-sm font-bold text-foreground">{t.customerName || <span className="text-grey-400">—</span>}</p>
             </div>
             <div className="flex flex-col gap-1.5">
-              <label className={fieldLabel}>อีเมล</label>
-              <ReadField icon={Mail} value={t.customerEmail} />
+              <p className={fieldLabel}>อีเมล</p>
+              <p className="text-sm font-bold text-foreground">{t.customerEmail || <span className="text-grey-400">—</span>}</p>
             </div>
             <div className="flex flex-col gap-1.5">
-              <label className={fieldLabel}>เบอร์โทรศัพท์</label>
-              <ReadField icon={Phone} value={customerPhone(t)} />
+              <p className={fieldLabel}>เบอร์โทรศัพท์</p>
+              <p className="text-sm font-bold text-foreground">{customerPhone(t) || <span className="text-grey-400">—</span>}</p>
             </div>
           </div>
         </div>
@@ -466,12 +435,9 @@ export function TransactionDetailView({ id }: { id: string | undefined }) {
                     <span className="min-w-0 flex-1">
                       <span className="block text-sm font-bold text-foreground">ส่ง SMS แจ้งลิงก์</span>
                     </span>
-                    <span className="shrink-0 text-xs font-semibold text-success">เปิด</span>
                   </div>
                   <div className="border-t border-[var(--divider)] px-4 py-3">
-                    <p className="rounded-md border border-[var(--divider)] bg-grey-50 px-3.5 py-2 text-sm text-foreground">
-                      {customerPhone(t)}
-                    </p>
+                    <p className="text-sm font-bold text-foreground">{customerPhone(t)}</p>
                   </div>
                 </div>
               </div>
@@ -489,12 +455,9 @@ export function TransactionDetailView({ id }: { id: string | undefined }) {
                     <span className="min-w-0 flex-1">
                       <span className="block text-sm font-bold text-foreground">ส่ง SMS ถึงผู้รับที่กำหนด</span>
                     </span>
-                    <span className="shrink-0 text-xs font-semibold text-success">เปิด</span>
                   </div>
                   <div className="border-t border-[var(--divider)] px-4 py-3">
-                    <p className="rounded-md border border-[var(--divider)] bg-grey-50 px-3.5 py-2 text-sm text-foreground">
-                      {customerPhone(t)}
-                    </p>
+                    <p className="text-sm font-bold text-foreground">{customerPhone(t)}</p>
                   </div>
                 </div>
                 <div className="rounded-xl border border-[var(--divider)]">
@@ -505,12 +468,9 @@ export function TransactionDetailView({ id }: { id: string | undefined }) {
                     <span className="min-w-0 flex-1">
                       <span className="block text-sm font-bold text-foreground">ส่งอีเมลถึงผู้รับที่กำหนด</span>
                     </span>
-                    <span className="shrink-0 text-xs font-semibold text-success">เปิด</span>
                   </div>
                   <div className="border-t border-[var(--divider)] px-4 py-3">
-                    <p className="rounded-md border border-[var(--divider)] bg-grey-50 px-3.5 py-2 text-sm text-foreground">
-                      {t.customerEmail}
-                    </p>
+                    <p className="text-sm font-bold text-foreground">{t.customerEmail}</p>
                   </div>
                 </div>
               </div>
@@ -522,9 +482,7 @@ export function TransactionDetailView({ id }: { id: string | undefined }) {
       {/* ── 6. หมายเหตุ ─────────────────────────────────────────────────────── */}
       <Panel title="หมายเหตุ" description="หมายเหตุภายใน · ไม่แสดงให้ลูกค้า">
         <div className="px-6 py-5">
-          <div className="min-h-40 rounded-md border border-[var(--divider)] bg-grey-50 px-3.5 py-3 text-sm text-grey-400">
-            ไม่มีหมายเหตุ
-          </div>
+          <p className="text-sm font-bold text-grey-400">ไม่มีหมายเหตุ</p>
         </div>
       </Panel>
 
