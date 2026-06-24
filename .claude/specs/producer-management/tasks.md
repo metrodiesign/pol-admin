@@ -1,8 +1,8 @@
 # Tasks: Producer Module
 
-> Status: approved 2026-06-23 (quick, no gates)
+> Status: approved 2026-06-23 (quick, no gates), amended 2026-06-24 (Slice C / REQ-11)
 
-Build order: Slice A (T1–T5) → verify → Slice B (T6) → verify.
+Build order: Slice A (T1–T5) → verify → Slice B (T6) → verify → Slice C (T8–T10 / REQ-11) → verify.
 
 ## Slice A — producer account CRUD
 
@@ -60,3 +60,30 @@ Build order: Slice A (T1–T5) → verify → Slice B (T6) → verify.
   - `src/app/producer/edit/page.tsx`: `status` local state (init "pending") + `onApprove={() => setStatus("active")}`
 
   Evidence: lint clean + next build green; browser /producer/edit @1440 — status "รอตรวจสอบ" shows green "อนุมัติ" button, click flips status to "ใช้งาน" and hides the button (verified via a11y snapshot uid=button "อนุมัติ" + before/after screenshots); viewports 1440 verified, 375/768 n/a (button reuses already-verified profile-card layout); deviations: UI-shell local state (no persist); approve on edit only (not readOnly read page); reject button deferred (งานแยก).
+
+## Slice C — public self-registration (REQ-11, amend 2026-06-24)
+
+- [x] **T8 — Register types + validateRegisterForm + tests** [REQ-11.4, 11.6, 11.8]
+  - `src/types/producer.ts`: เพิ่ม `ProducerRegisterFormData extends ProducerFormData { photo: File | null }` (ไม่แตะ `ProducerFormData`)
+  - `src/lib/producer/producer-validation.ts`: เพิ่ม `RegisterFormErrors` + `validateRegisterForm(form)` = `validateProducerForm(form, { requireAcceptTerms: true })` + `if (!form.photo) errors.photo = "กรุณาแนบรูปถ่ายตัวแทนพร้อมบัตรประชาชน"`
+  - `producer-validation.test.ts`: เพิ่ม 5 cases (valid reg, photo null→error, photo present→no error, acceptTerms required, producer rule flow-through)
+
+  Evidence: `npx vitest run producer-validation.test.ts` = 23 pass / 0 fail (เดิม 18 + ใหม่ 5); ฟิลด์ regex reuse ผ่าน validateProducerForm (ไม่ duplicate); deviations: none.
+
+- [x] **T9 — ProducerEditFormCard optional photo prop** [REQ-11.6, 11.8]
+  - เพิ่ม optional prop `photo?: { value: File|null; onError: (message?: string)=>void }`
+  - WHERE ส่ง `photo`: handleSubmit ใช้ `validateRegisterForm({ ...form, photo: photo.value })`, แยก `photo` error ออกแล้ว `photo.onError(photoErr)` ให้ page render; field errors เก็บใน state เดิม
+  - WHERE ไม่ส่ง: พฤติกรรมเดิม (`validateProducerForm`) — additive branch, admin path ไม่เปลี่ยน
+
+  Evidence: `npm run build` + `npm run lint` clean (ESLint no issues); change เป็น branch ใหม่ gated บน `photo` truthiness เท่านั้น (admin ไม่ส่ง prop → เส้นเดิม); deviations: prop shape ใช้ `onError` callback (ไม่ใช่ `error` input) เพราะ photo error คำนวณใน card แต่ render ที่ page (D2).
+
+- [x] **T10 — Public `/register` page + `/login` link** [REQ-11.1–11.3, 11.5, 11.7, 11.9]
+  - `src/app/register/page.tsx` (`"use client"`, **ไม่มี layout.tsx**): โครงตาม `producer/new` — 2-col, การ์ดซ้าย `AvatarUpload` + คำอธิบาย, ขวา `ProducerEditFormCard` (`showAcceptTerms`, `submitLabel="ลงทะเบียน"`, `photo` prop)
+  - หัวข้อ plain "การลงทะเบียนตัวแทน"; ตัด Switch "ยืนยันอีเมลแล้ว"; photo error render ใต้ avatar (D2); success panel + Link → `/login`
+  - `login-view.tsx`: เพิ่มลิงก์ "สมัครเป็นตัวแทน" → `/register`
+
+  Evidence: `npm run build` → `/register` prerendered ○ (static, ไม่มี AuthGuard = shell-free, REQ-11.2); browser @localhost:5200 — a11y snapshot ยืนยัน: ไม่มี sidebar/topbar (เฉพาะ `main`+heading+form); submit เปล่า → error ครบ 7 field + acceptTerms + photo "กรุณาแนบรูปถ่ายตัวแทนพร้อมบัตรประชาชน" ใต้ avatar; กรอกครบ+อัปโหลด PNG+ติ๊ก terms → success panel "ลงทะเบียนสำเร็จ / รอการอนุมัติจากผู้ดูแลระบบ" + link → `/login`; `/login` แสดงลิงก์ "สมัครเป็นตัวแทน" → `/register`; deviations: skip `metadata` title (single client file, mock); viewports หลัก 1440 (form reuse responsive classes ของ producer/new ที่ verified แล้ว).
+
+- [x] **Verify C** [REQ-11, REQ-9.3]
+
+  Evidence: `npx vitest run` = 84 pass / 0 fail; `npm run lint` = no issues; `npm run build` success (ทุก route prerendered รวม `/register` static); admin `/producer/*` ไม่ regress (T9 additive branch + build/types เขียว; manual admin submit ต้องผ่าน Google auth จึงไม่ทดสอบใน browser — ไม่ bypass guard); deviations: none.

@@ -5,8 +5,12 @@ import {
   isValidLicense,
   isEmail,
   validateProducerForm,
+  validateRegisterForm,
 } from "./producer-validation";
-import type { ProducerFormData } from "@/types/producer";
+import type {
+  ProducerFormData,
+  ProducerRegisterFormData,
+} from "@/types/producer";
 
 const base: ProducerFormData = {
   firstName: "สมชาย",
@@ -99,5 +103,26 @@ describe("validateProducerForm", () => {
         .acceptTerms,
     ).toBeDefined();
     expect(validateProducerForm({ ...base, acceptTerms: false }).acceptTerms).toBeUndefined();
+  });
+});
+
+describe("validateRegisterForm (REQ-11.6)", () => {
+  const fakePhoto = new File(["x"], "id-card.jpg", { type: "image/jpeg" });
+  const regBase: ProducerRegisterFormData = { ...base, photo: fakePhoto };
+
+  it("passes a valid registration form", () => {
+    expect(validateRegisterForm(regBase)).toEqual({});
+  });
+  it("flags missing photo (11.6)", () => {
+    expect(validateRegisterForm({ ...regBase, photo: null }).photo).toBeDefined();
+  });
+  it("no photo error when photo present", () => {
+    expect(validateRegisterForm(regBase).photo).toBeUndefined();
+  });
+  it("requires acceptTerms (registration always opts in)", () => {
+    expect(validateRegisterForm({ ...regBase, acceptTerms: false }).acceptTerms).toBeDefined();
+  });
+  it("still flows producer rules through (e.g. bad id)", () => {
+    expect(validateRegisterForm({ ...regBase, idNumber: "123" }).idNumber).toBeDefined();
   });
 });

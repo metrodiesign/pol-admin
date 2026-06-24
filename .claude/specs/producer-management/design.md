@@ -1,6 +1,6 @@
 # Design: Producer Module (ตัวแทน/นายหน้าประกันภัย)
 
-> Status: approved 2026-06-23 (quick, no gates)
+> Status: approved 2026-06-23 (quick, no gates), amended 2026-06-24 (REQ-11)
 
 ## Architecture Overview
 
@@ -116,6 +116,64 @@ mirror user module:
 
 rewrite: `/user/role` → `/producer/role`; imports `@/components/role` → `@/components/producer-role`, `@/lib/role` → `@/lib/producer-role`, `@/lib/mock/role` → `@/lib/mock/producer-role`, `@/types/role` → `@/types/producer-role`. cross-import ภายในกลุ่มเป็น relative → resolve เองหลัง copy.
 
+## REQ-11 — Public self-registration `/register` (amend 2026-06-24)
+
+Public surface นอก admin shell. **reuse ธีม/ฟอร์มเดิม 100%** — ไม่สร้าง view ใหม่; ส่วนต่างคือ
+route placement (shell-free) + photo binding เข้า validation.
+
+### Types (`src/types/producer.ts`) — เพิ่ม
+```ts
+export interface ProducerRegisterFormData extends ProducerFormData {
+  photo: File | null;
+}
+```
+`ProducerFormData` เดิมไม่แตะ (admin ยังใช้ตามเดิม).
+
+### Validation (`src/lib/producer/producer-validation.ts`) — เพิ่ม
+```ts
+export type RegisterFormErrors =
+  Partial<Record<keyof ProducerRegisterFormData, string>>;
+
+// reuse validateProducerForm ทั้งก้อน (requireAcceptTerms:true) + photo required
+export function validateRegisterForm(
+  form: ProducerRegisterFormData,
+): RegisterFormErrors {
+  const errors: RegisterFormErrors = validateProducerForm(form, {
+    requireAcceptTerms: true,
+  });
+  if (!form.photo) errors.photo = "กรุณาแนบรูปถ่ายตัวแทนพร้อมบัตรประชาชน";
+  return errors;
+}
+```
+ไม่ duplicate regex — เรียก `isThaiId/isThaiPhone/isValidLicense/isEmail` ผ่าน `validateProducerForm` (REQ-11.4).
+
+### `ProducerEditFormCard` — เพิ่ม optional controlled photo prop (admin path ไม่เปลี่ยน, REQ-11.8)
+```ts
+interface ProducerEditFormCardProps {
+  // ...เดิม...
+  photo?: {
+    value: File | null;
+    onChange: (f: File | null) => void;
+    error?: string;
+  };
+}
+```
+- WHERE `photo` ถูกส่ง: handleSubmit ใช้ `validateRegisterForm({ ...form, photo: photo.value })` แทน `validateProducerForm`, และ map `errors.photo` ออกทาง `photo.error` ให้ page (page เป็นคน render error ใต้ AvatarUpload — REQ-11.6, decision D2; ไม่แตะ `AvatarUpload`).
+- WHERE `photo` ไม่ถูกส่ง (admin /producer/new, edit, read): พฤติกรรมเดิมทุกอย่าง (`validateProducerForm`).
+
+### Route `src/app/register/page.tsx` (REQ-11.1–11.3, 11.5)
+- **ไม่มี `layout.tsx`** ใน folder → inherit แค่ root layout (shell-free, mirror `/login` — REQ-11.2).
+- โครง copy จาก `src/app/producer/new/page.tsx`: 2-col grid (`mmd:grid-cols-12`), การ์ดซ้าย = `AvatarUpload` + คำอธิบาย "แนบรูปถ่ายตัวแทนพร้อมบัตรประชาชน"; ขวา = `ProducerEditFormCard` (`showAcceptTerms`, `submitLabel="ลงทะเบียน"`).
+- ต่างจาก admin: หัวข้อ plain "การลงทะเบียนตัวแทน" แทน `PageHeader` breadcrumb; ตัด Switch "ยืนยันอีเมลแล้ว" (REQ-11.5).
+- page state: `photo: File|null` + `photoError?: string`. ส่ง `photo={{ value, onChange: setPhoto, error: photoError }}` ลง form card; AvatarUpload `onFileSelect` → setPhoto; render `photoError` ใต้ avatar (D2).
+- submit สำเร็จ → swap เป็น success panel ("ลงทะเบียนสำเร็จ รอการอนุมัติจากผู้ดูแลระบบ") + `<Link href="/login">ไปหน้าเข้าสู่ระบบ</Link>` (REQ-11.7). ไม่มี backend call.
+
+### `/login` entry link (REQ-11.9)
+- เพิ่มลิงก์ "สมัครเป็นตัวแทน" → `/register` ใน `src/components/auth/login-view.tsx` (ใกล้ปุ่ม login producer).
+
+### Out of scope (decision E1)
+duplicate idNumber/email check — ไม่ทำ (no backend). photo File ไม่ persist.
+
 ## Error Handling
 
 - form invalid → แสดง error ใต้ field, ไม่ submit (UI shell: submit = noop/toast).
@@ -133,6 +191,8 @@ rewrite: `/user/role` → `/producer/role`; imports `@/components/role` → `@/c
 | producer-role ไม่ผูก role เดิม | `grep -rn "/user/role\|components/role\|lib/role\|types/role" src/app/producer/role src/components/producer-role` = 0 | REQ-8.5, 8.6 |
 | nav group | navConfig + minimalsNavConfig มี subheader "ตัวแทน/นายหน้า" | REQ-7.1–7.4 |
 | build/coexist | `npm run build` + lint ผ่าน, route ทั้งคู่เข้าได้ | REQ-9.2, 9.3 |
+| photo required (public) | unit test `validateRegisterForm`: photo null→error, มีไฟล์→ไม่มี error; admin path เดิมไม่กระทบ | REQ-11.6, 11.8 |
+| /register shell-free | ไม่มี `src/app/register/layout.tsx`; page render ได้ไม่มี sidebar | REQ-11.1, 11.2 |
 
 ## Requirement Traceability
 
@@ -149,3 +209,6 @@ rewrite: `/user/role` → `/producer/role`; imports `@/components/role` → `@/c
 | producer-role clone (app/components/types/mock/lib) | REQ-8.1–8.6 |
 | `ProducerEditProfileCard.onApprove` button (pending only) + edit page `status` state flip | REQ-10.1–10.4 |
 | ไม่แก้ user module (ยกเว้น nav), coexist, build | REQ-9.1–9.3 |
+| `src/app/register/page.tsx` (shell-free, ธีม producer/new, success panel) | REQ-11.1–11.3, 11.5, 11.7 |
+| `ProducerRegisterFormData` + `validateRegisterForm` + photo prop บน form card | REQ-11.4, 11.6, 11.8 |
+| ลิงก์ "สมัครเป็นตัวแทน" ใน `login-view.tsx` → `/register` | REQ-11.9 |
