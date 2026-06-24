@@ -57,13 +57,35 @@
   `src/hooks/use-data-table.ts`; table เฉพาะโดเมนต่อยอดเป็น hook (`use-policy-table-with-cart`,
   `use-invoices-table`).
 
-## Data layer (mock-only)
+## Data layer (domain = mock; auth = real BFF)
 
-- **ไม่มี backend / API client / server action**. ข้อมูลทั้งหมดเป็น typed mock ใน `src/lib/mock/*`
-  ที่ implement interface ใน `src/types/*` (เช่น `export const POLICIES: Policy[]`).
+- **Domain data ยัง mock**: typed mock ใน `src/lib/mock/*` ที่ implement interface ใน `src/types/*`
+  (เช่น `export const POLICIES: Policy[]`). transaction/policy/producer/user ยังไม่มี backend endpoint.
 - data flow: `lib/mock/*` -> hook (filter/sort/paginate ผ่าน TanStack) -> page container spread
   เป็น props -> child component render. ไม่มี global store (ไม่มี Redux/Zustand) — React hook + context.
-- เมื่อมี backend จริงในอนาคต: ใส่ชั้น fetch/adapter แยก แล้วคง type contract ใน `src/types/*` เป็นสัญญา.
+- **Auth = real backend แล้ว** (ดู section "Auth" ล่าง): `src/lib/api/admin-api.ts` คือ API client จริงตัวแรก;
+  `/admin/me` เป็น real fetch. swap domain mock->real: เพิ่ม module `src/lib/api/<domain>.ts` คืน Promise,
+  `const ENDPOINT: string|null = null` (null=mock, set=adminFetch) — migrate consumer ต่อ domain เมื่อ endpoint พร้อม.
+
+## Auth (server-side OIDC BFF)
+
+- admin auth = **server-side OIDC BFF** (contract: `pol-core/docs/reference/admin-fe-integration.md` +
+  `admin-google-sso.md`). FE **ไม่ถือ token**; session = httpOnly cookie ที่ backend set. ไม่มี GIS/id-token/Bearer.
+- **same-origin proxy บังคับ**: `next.config.ts` `rewrites()` `/admin/:path*` -> `process.env.ADMIN_API_ORIGIN`
+  (dev = `http://localhost:5100`; **prod เว้นว่าง** -> rewrite คืน `[]` เพราะ reverse proxy same-origin อยู่แล้ว).
+  ผลพลอยได้: browser เห็นทุก call เป็น same-origin -> **CORS ไม่ถูก exercise** (อย่าไล่ debug CORS เมื่อใช้ proxy นี้;
+  doc backend เขียน admin origin 5130 ก็ไม่มีผล).
+- `src/lib/api/admin-api.ts`: `adminFetch` (credentials:'include', แนบ `X-CSRF-Token`=cookie `adm_csrf` เฉพาะ
+  mutation, 401->`login()`), `getMe()` (200->AdminMe / 401->null), `login(returnTo)` (full-page navigate
+  `/admin/auth/login?returnTo=`), `logout`/`logoutAll`. pure helper แยกไว้ unit-test (node) ได้.
+- guard = **client-side** (ตรงกับ contract): `auth-provider.tsx` (getMe on mount, `useAuth`) +
+  `auth-guard.tsx` (loading/anon->login/authed) wrap ใน `minimals-layout.tsx` -> คุมทุก protected group;
+  `/login` `/logout` `/login-error` ไม่ผ่าน MinimalsLayout = public โดยโครงสร้าง.
+- `returnTo` ต้องอยู่ใน backend allowlist (`AdminSession:ReturnUrlAllowlist`); `app/page.tsx` redirect `/`->`/main`
+  ทำให้ landing robust แม้ backend fall back มา `/`. backend deny -> redirect `/login-error?reason=<label>` (FE หน้านี้ map ข้อความ).
+- **E2E recipe**: real backend ต้อง Google human-auth + provisioned admin -> validate ครบไม่ได้ด้วย automation.
+  ใช้ **contract-mock backend** (no-dep node http บน :5100 พูดตาม contract) + cookie-jar curl ผ่าน proxy +
+  isolated browser context -> exercise proxy/guard/401/CSRF/authed ครบแบบ deterministic.
 
 ## App setup & theming
 
