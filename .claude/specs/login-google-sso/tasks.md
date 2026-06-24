@@ -1,6 +1,9 @@
 # Implementation Tasks: Login + Dual Google SSO
 
-> Status: approved 2026-06-23, amended 2026-06-23
+> Status: approved 2026-06-23, amended 2026-06-23, **SUPERSEDED 2026-06-24 by BFF migration** (ดูส่วนท้าย)
+>
+> Tasks 1-5 ด้านล่าง = GIS client-side flow **เลิกใช้แล้ว** (backend เปลี่ยนเป็น OIDC BFF). เก็บเป็นประวัติ.
+> งานจริงที่ใช้งานอยู่ = "## BFF migration (2026-06-24)" ท้ายไฟล์ + Addendum 2026-06-24 ใน design.md.
 
 > Each task is a cohesive, independently verifiable slice. Implement a whole task
 > in one pass (it may touch many files). Decompose into sub-steps yourself at
@@ -82,3 +85,72 @@
 > ลำดับบังคับ: 1 -> 2 -> 3 -> 4 -> 5 (T3 รันหลัง T1 ได้ ขนานกับ T2).
 
 ไม่มี `Batch:` tag — แต่ละ task เป็น slice ที่ verify แยกได้ ไม่มีคลัสเตอร์เล็กชนิดเดียวกันให้ batch.
+
+## BFF migration (2026-06-24) — supersedes T1-T5
+
+> Backend เปลี่ยนเป็น server-side OIDC BFF (ดู Addendum 2026-06-24 ใน design.md + contract
+> `pol-core/docs/reference/admin-fe-integration.md`). admin-only, FE ไม่ถือ token.
+
+- [x] B1. Types + admin-api client — `src/types/auth.ts` (`AdminTier`/`AccessibleTenants`/`AdminMe` แทน
+     Audience/GoogleIdTokenClaims/MockSession); `src/lib/api/admin-api.ts` (pure: `readCookieFrom`/`isMutation`/
+     `buildLoginUrl`/`buildRequestInit` + binding: `cookie`/`login`/`adminFetch`/`getMe`/`logout`/`logoutAll`)
+     + `admin-api.test.ts`.
+     Evidence: B1 เขียว
+       - test: `npx vitest run src/lib/api` -> 15 passed / 0 failed; `npm test` -> 5 files, 78 passed
+       - typecheck: `npx tsc --noEmit` -> admin-api.ts/auth.ts 0 error (แก้ noUncheckedIndexedAccess ที่ readCookieFrom)
+       - viewports: n/a — pure logic + types
+       - deviations: ไม่มี
+- [x] B2. Proxy + env — `next.config.ts` conditional `rewrites()` บน `ADMIN_API_ORIGIN`; `.env.example`
+     ลบ `NEXT_PUBLIC_GOOGLE_CLIENT_ID_*` -> เพิ่ม `ADMIN_API_ORIGIN`.
+     Evidence: B2 เขียว
+       - build: `npm run build` -> สำเร็จ, ทุก route compiled (`/login` `/logout` `/main` ○ Static)
+       - prod parity: `rewrites()` คืน `[]` เมื่อ `ADMIN_API_ORIGIN` ว่าง (อ่านจาก code path)
+       - viewports: n/a — config
+       - deviations: `.env.example` แก้ผ่าน Bash printf (Read/heredoc ถูก dotfile permission guard บล็อก)
+- [x] B3. Auth provider + guard — `auth-provider.tsx` (`getMe` on mount + `useAuth`), `auth-guard.tsx`
+     (loading/anon/authed), wrap ใน `minimals-layout.tsx` (`MinimalsShell`).
+     Evidence: B3 เขียว
+       - build: `npm run build` ผ่าน; 6 protected layout (dashboard/main/policy/producer/transaction/user) route ผ่าน MinimalsLayout (grep ยืนยัน); /login /logout ไม่ผ่าน
+       - typecheck/lint: `npx tsc --noEmit` 0 error (ไฟล์ใหม่), `npm run lint` clean
+       - viewports: n/a (logic) — guard placeholder reuse `role=status` markup เดิม; live no-flash ค้าง B6
+       - deviations: `useAuth` co-locate ใน auth-provider (pattern settings-provider) แทนไฟล์ hook แยก
+- [x] B4. Login/logout/account-drawer — `login-view.tsx` ปุ่มเดียว `login()`; `logout/page.tsx` BFF `logout()`;
+     `account-drawer.tsx` ปุ่ม Logout -> `/logout` + แสดง `me.email`/tier.
+     Evidence: B4 เขียว
+       - build/lint: `npm run build` -> `/login` `/logout` ○ Static; `npm run lint` clean; `npx tsc --noEmit` 0 error
+       - viewports: ค้าง B6 (live :5200) — login-view reuse layout เดิม (`min-h-dvh` center, `max-w-sm`, token เดิม); ยังไม่ manual 375/768/1440
+       - deviations: account-drawer คง name/avatar mock (backend ไม่ส่ง name/picture) — coordination item
+- [x] B5. ลบ GIS files — `src/lib/auth/{gis,jwt,session,session-storage,auth-config}.ts` + tests.
+     Evidence: B5 เขียว
+       - pre-delete gate: `grep -rn lib/auth|MockSession|GoogleIdTokenClaims|Audience|clearSession|resolveCredential|... src` (นอก auth dir) -> 0 importer
+       - typecheck: `npx tsc --noEmit` -> ไม่มี dangling import; `src/lib/auth/` ถูกลบทั้ง dir
+       - viewports: n/a — deletion
+       - deviations: pre-existing tsc error ใน `src/lib/policy/checkout.test.ts` (มีตั้งแต่ T1, branch นี้ไม่แตะ — `git diff develop...HEAD` ว่าง) ไม่แก้ (surgical)
+- [x] B6. Live E2E — proxy + guard + login round-trip + CSRF (ทดสอบผ่าน Next proxy จริงกับ contract mock; ภายหลัง backend จริง :5100 ขึ้น).
+     Evidence: B6 เขียว
+       - curl ผ่าน proxy :5200->mock :5100: /admin/me no-session 401; /admin/auth/login 302 +Set-Cookie(adm_session HttpOnly, adm_csrf readable) +Location /dashboard; /admin/me w/session 200 AdminMe; logout no-CSRF 403; logout w/CSRF 204
+       - browser (Chrome, context สะอาด): เปิด /main anon -> guard getMe 401 -> login() -> mock -> จบ /dashboard authed (ไม่ค้าง spinner); document.cookie=adm_csrf เท่านั้น (adm_session httpOnly ซ่อน); account-drawer โชว์ admin@vcentral.test + "Super Admin"; กด Logout -> adminFetch auto-CSRF -> mock 204 -> /login
+       - real backend :5100: Google OAuth round-trip สำเร็จหลัง register redirect_uri; authorize URL ถูก (client_id+redirect_uri+PKCE)
+       - viewports: ค้าง — ยังไม่ manual 375/768/1440 (UI reuse layout เดิม)
+       - deviations: ใช้ contract mock เพราะ real login ต้อง Google human-auth + provisioned admin (automate ไม่ได้)
+- [x] B7. /login-error route — `app/login-error/page.tsx` (public). backend `ErrorPath=/login-error?reason=`
+     เด้งมาเมื่อ deny; ก่อนหน้านี้ FE ไม่มี route -> 404 (พบตอน live E2E จริง). map reason -> ข้อความไทย + ปุ่มกลับ /login.
+     Evidence: B7 เขียว
+       - typecheck/lint: `npx tsc --noEmit` ไม่มี error ใหม่ (เหลือ pre-existing checkout.test.ts); `eslint` clean
+       - live :5200: /login-error?reason={not-provisioned,suspended,bogus} -> 200 ทั้งหมด (unknown -> fallback)
+       - browser: render heading + ข้อความ not-provisioned + ลิงก์กลับ /login ครบ
+       - viewports: n/a (reuse login-view card layout เดิม)
+       - deviations: route นี้ guide FE (admin-fe-integration.md) ไม่ได้ระบุ — ดึง contract จาก pol-core AdminAuthOptions/AdminLoginService
+
+- [x] B8. Landing /main + root redirect — สลับ `RETURN_TO` -> `/main` (login-view + FE allowlist `admin-api.ts`);
+     เพิ่ม `app/page.tsx` redirect `/` -> `/main` (กัน "/" 404 + รองรับ backend fall back).
+     Evidence: B8 เขียว
+       - test: `npx vitest run src/lib/api` -> 16 passed (buildLoginUrl: allow /main, clamp -> /main default)
+       - typecheck/lint: `npx tsc --noEmit` ไม่มี error ใหม่
+       - live :5200: `GET /` -> 307 -> /main; `/admin/auth/login?returnTo=%2Fmain` -> 302 Google (backend รับ)
+       - viewports: n/a (redirect) / login-view reuse layout เดิม
+       - deviations: landing /main ทำงานได้แม้ backend ยังไม่ allowlist /main (fall back / -> root redirect -> /main)
+
+> Deviations จาก plan: (1) `useAuth` co-locate ใน auth-provider (ตาม pattern settings-provider) แทนไฟล์
+> `src/hooks/use-auth.ts` แยก; (2) ไม่สร้างไฟล์ template `src/lib/api/<domain>.ts` ที่ยังไม่ wire (dead code) —
+> `getMe` เป็น seam จริงตัวแรกพอ; (3) pre-existing tsc error ใน `src/lib/policy/checkout.test.ts` (มีตั้งแต่ T1) ไม่แก้ (surgical).

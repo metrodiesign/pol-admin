@@ -1,6 +1,12 @@
 # Requirements: Login + Dual Google SSO
 
-> Status: approved 2026-06-23, amended 2026-06-23
+> Status: approved 2026-06-23, amended 2026-06-23, **partially SUPERSEDED 2026-06-24**
+>
+> 2026-06-24: backend เปลี่ยนเป็น server-side OIDC BFF (FE ไม่ถือ token, session = httpOnly cookie).
+> ผลต่อ requirements: REQ-2 (dual OAuth client ฝั่ง FE), REQ-3 (decode/validate ID token ฝั่ง client),
+> REQ-6.1/6.3 (NEXT_PUBLIC_GOOGLE_CLIENT_ID_*) **เลิกใช้** — auth ย้ายไป backend. คงเจตนา REQ-1 (มีหน้า login),
+> REQ-4 (redirect หลัง login), REQ-5 (error), REQ-7 (a11y/responsive), REQ-8 (sign-out) แต่ทำผ่าน BFF.
+> producer audience ถูกตัด (admin-only). ดู Addendum 2026-06-24 ใน design.md + "BFF migration" ใน tasks.md.
 
 ## Overview
 
