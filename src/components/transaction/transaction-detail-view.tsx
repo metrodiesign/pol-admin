@@ -268,23 +268,23 @@ export function TransactionDetailView({ id }: { id: string | undefined }) {
           </div>
           <div className="mt-4 grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
             <div>
-              <p className={fieldLabel}>Reference 1 — ที่มา</p>
+              <p className={fieldLabel}>Reference 1</p>
               <p className="text-sm font-bold text-foreground">{t.source.code || <span className="text-grey-400">—</span>}</p>
             </div>
             <div>
-              <p className={fieldLabel}>Reference 2 — ชื่อที่มา</p>
+              <p className={fieldLabel}>Reference 2</p>
               <p className="text-sm font-bold text-foreground">{t.source.label || <span className="text-grey-400">—</span>}</p>
             </div>
             <div>
-              <p className={fieldLabel}>Reference 3 — บทบาท</p>
+              <p className={fieldLabel}>Reference 3</p>
               <p className="text-sm font-bold text-foreground">{`${src.role} · ${src.location}` || <span className="text-grey-400">—</span>}</p>
             </div>
             <div>
-              <p className={fieldLabel}>Reference 4 — สังกัด</p>
+              <p className={fieldLabel}>Reference 4</p>
               <p className="text-sm font-bold text-foreground">{`${src.branchCode} · ${src.branchLabel}` || <span className="text-grey-400">—</span>}</p>
             </div>
             <div>
-              <p className={fieldLabel}>Reference 5 — อ้างอิงลิงก์</p>
+              <p className={fieldLabel}>Reference 5</p>
               <p className="text-sm font-bold text-foreground">{src.linkRef || <span className="text-grey-400">—</span>}</p>
             </div>
           </div>
