@@ -1,5 +1,9 @@
 import type { NextConfig } from "next";
 
+// dev: ตั้ง ADMIN_API_ORIGIN=http://localhost:5100 ให้ proxy /admin/* ไป backend BFF (บังคับ same-origin).
+// prod: เว้นว่าง — reverse proxy เสิร์ฟ SPA + API เป็น origin เดียวกันอยู่แล้ว ไม่ต้อง rewrite.
+const adminApiOrigin = process.env.ADMIN_API_ORIGIN;
+
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
@@ -16,6 +20,10 @@ const nextConfig: NextConfig = {
         hostname: "api-prod-minimal-v700.pages.dev",
       },
     ],
+  },
+  async rewrites() {
+    if (!adminApiOrigin) return [];
+    return [{ source: "/admin/:path*", destination: `${adminApiOrigin}/admin/:path*` }];
   },
 };
 

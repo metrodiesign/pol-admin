@@ -3,14 +3,14 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-import { clearSession } from "@/lib/auth/session-storage";
+import { logout } from "@/lib/api/admin-api";
 
-// sign-out: ล้าง mock session แล้วเด้งกลับ /login (REQ-8.1, 8.2, 8.3)
+// sign-out: เรียก BFF logout (POST /admin/auth/logout + CSRF) แล้วเด้งกลับ /login.
+// .finally -> logout fail ก็ยังกลับ /login (guard จะเด้งไป SSO ต่อถ้า session ยังอยู่).
 export default function LogoutPage() {
   const router = useRouter();
   useEffect(() => {
-    clearSession();
-    router.replace("/login");
+    logout().finally(() => router.replace("/login"));
   }, [router]);
 
   return (

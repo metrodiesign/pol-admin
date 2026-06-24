@@ -1,26 +1,19 @@
-/** audience ของ OAuth client — admin / producer แยก client_id + aud คนละตัว (REQ-2). */
-export type Audience = "admin" | "producer";
+/** ระดับสิทธิ์ของ admin จาก backend (GET /admin/me). */
+export type AdminTier = "Super" | "Scoped";
 
-/** claim ที่อ่านจาก Google ID token payload (REQ-3.2). decode ฝั่ง client = DEV-only, ไม่ verify ลายเซ็น. */
-export interface GoogleIdTokenClaims {
-  sub: string;
-  email: string;
-  email_verified: boolean;
-  name: string;
-  picture?: string;
-  /** = client_id ที่ใช้ขอ token */
-  aud: string;
-  /** epoch seconds */
-  exp: number;
-  /** hosted domain (ถ้ามี) */
-  hd?: string;
+/** tenant ที่ admin เข้าถึงได้ — Super = unrestricted; Scoped = รายการ tenant ที่ถูก assign. */
+export interface AccessibleTenants {
+  isUnrestricted: boolean;
+  tenants?: { id: string; code: string }[];
 }
 
-/** mock session: เก็บเฉพาะ field ที่ UI ใช้ (REQ-3.6) — ไม่เก็บ sub/email/PII อื่น. */
-export interface MockSession {
-  audience: Audience;
-  name: string;
-  picture?: string;
-  /** epoch seconds */
-  exp: number;
+/**
+ * payload ของ GET /admin/me (200). FE ไม่ถือ token — identity มาจาก httpOnly session cookie
+ * ที่ backend จัดการ (server-side OIDC BFF). backend ยังไม่ส่ง name/picture (ดู coordination item).
+ */
+export interface AdminMe {
+  adminId: string;
+  email: string;
+  tier: AdminTier;
+  accessibleTenants: AccessibleTenants;
 }

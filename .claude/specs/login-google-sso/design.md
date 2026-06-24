@@ -1,6 +1,10 @@
 # Design: Login + Dual Google SSO
 
-> Status: approved 2026-06-23, amended 2026-06-23
+> Status: approved 2026-06-23, amended 2026-06-23, **SUPERSEDED 2026-06-24** (ดู Addendum 2026-06-24 ท้ายไฟล์)
+>
+> หมายเหตุ: ส่วน GIS client-side ทั้งหมดด้านล่าง (ปุ่ม 2-card, jwt decode, validateClaims, localStorage
+> mock session, NEXT_PUBLIC_GOOGLE_CLIENT_ID_*) **เลิกใช้แล้ว** — backend เปลี่ยนเป็น server-side OIDC BFF.
+> เก็บไว้เป็นบันทึกประวัติ. ของจริงที่ใช้งานอยู่ = Addendum 2026-06-24.
 
 อ้างอิง: requirements.md (approved 2026-06-23, REQ-1..REQ-8). Stack: Next 16 App Router / React 19 /
 Tailwind v4 / @base-ui / vitest (node env). Frontend-only, mock data, ไม่มี backend, ไม่มี dependency ใหม่.
@@ -322,3 +326,55 @@ script (1.5, 1.6), env client_id แยกต่อปุ่ม (2.1-2.4), keybo
 - **verified:** live :5200 — 2 card, ปุ่ม Google ทั้งคู่ render พร้อมกัน, iframe client_id Admin=`888188...`/Producer=`331131...` (คนละตัว), 375 no h-scroll; unit GREEN: `resolveCredential` (malformed/aud_mismatch/admin/producer), `audienceForClientId`
 - **residual:** credential routing ของ 2 ปุ่มพร้อมกัน (GIS ส่ง credential ของแต่ละ iframe เข้า callback ร่วม) ยืนยันเต็มตอน sign-in จริง — ตอนนี้ติด OAuth origin allowlist (403)
 - **T3 spike เดิม** (manual ยืนยัน binding) -> แทนด้วย unit test + live distinct-client_id render
+
+## Addendum 2026-06-24 — Server-side OIDC BFF (supersedes GIS client-side flow ทั้งหมด)
+
+ทีม API (pol-core) เปลี่ยน admin auth เป็น **server-side OIDC BFF**. contract: `pol-core/docs/reference/
+admin-fe-integration.md` (+ `admin-google-sso.md`, generated 2026-06-24 จาก C# source). FE **ไม่ถือ token**
+— session อยู่ใน httpOnly cookie ที่ backend จัดการ. addendum นี้ **แทน** ดีไซน์ GIS ทั้งหมดด้านบน.
+
+**Decisions (locked กับ user 2026-06-24):**
+1. **Admin only** — ตัด producer audience ทิ้ง. `Audience` type, dual-card, `audienceForClientId`,
+   `resolveCredential`, `LANDING_BY_AUDIENCE` เลิกใช้.
+2. Scope = auth integration + เริ่ม data layer (wire `/admin/me` จริง; domain อื่นคง mock).
+
+**Backend contract (ยืนยันจาก source):**
+- endpoints: `GET /admin/auth/login?returnTo=`, `POST /admin/auth/logout`, `POST /admin/auth/logout-all`,
+  `GET /admin/me`, `POST/GET /admin/tenants[/{code}]`, `/admin/admins/*`.
+- `GET /admin/me` 200 = `{ adminId, email, tier: "Super"|"Scoped", accessibleTenants: { isUnrestricted,
+  tenants?: [{id,code}] } }` — **ไม่มี name/picture**. 401 = ยังไม่ login.
+- cookie (dev http): session `adm_session` (httpOnly), CSRF `adm_csrf` (JS อ่านได้). prod = `__Host-adm_session`
+  + Secure อัตโนมัติ. CSRF double-submit: header `X-CSRF-Token` == cookie `adm_csrf`, เฉพาะ POST/PUT/PATCH/DELETE.
+- same-origin บังคับ -> Next proxy rewrite `/admin/:path*` -> `ADMIN_API_ORIGIN` (dev เท่านั้น; prod reverse proxy).
+- returnTo allowlist = `/`, `/dashboard`, `/tenants`. **`/main` ไม่อยู่ใน allowlist** -> coordination item.
+
+**Architecture (BFF):**
+- `src/lib/api/admin-api.ts` — pure helper (`readCookieFrom`, `isMutation`, `buildLoginUrl`,
+  `buildRequestInit`; node-testable) + binding (`cookie`, `login`, `adminFetch`, `getMe`, `logout`,
+  `logoutAll`). `adminFetch` ใส่ CSRF เมื่อ mutation + `credentials:'include'`; 401 -> เด้ง login.
+- `src/components/auth/auth-provider.tsx` — `<AuthProvider>` เรียก `getMe()` ตอน mount; `useAuth()` (co-locate
+  ตาม pattern settings-provider). `auth-guard.tsx` — loading -> spinner, anon -> `login()`, authed -> children.
+- wrap `<AuthProvider><AuthGuard>` **ภายใน `minimals-layout.tsx`** (`MinimalsShell` = body เดิม) — คุมทุก
+  protected group (dashboard/main/policy/producer/transaction/user); `/login` `/logout` ไม่ผ่าน -> public.
+- `login-view.tsx` — ปุ่มเดียว `login("/dashboard")` (ตัด GIS/next-script/ResizeObserver/dual-card/toast).
+- `logout/page.tsx` — `logout().finally(-> /login)`. `account-drawer.tsx` — ปุ่ม Logout -> `/logout`;
+  header แสดง `me.email` + tier badge (name/avatar คง mock เพราะ backend ไม่ส่ง).
+- `app/page.tsx` (root "/") — `redirect("/main")`. "/" ไม่มี surface เอง; ครอบการเข้า / ตรง ๆ + กรณี
+  backend fall back มา "/" หลัง callback (เมื่อ returnTo ไม่ allowlist) -> ยังลง /main ผ่าน guard. (พบตอน live E2E: "/" 404.)
+- `app/login-error/page.tsx` (public, shell-free) — backend เด้งมาเมื่อ login callback ไม่ผ่าน
+  (`AdminAuthOptions.ErrorPath="/login-error"`) พร้อม `?reason=<label>`. label: `not-provisioned`,
+  `suspended`, `access-denied`, `missing-subject`, `resolve-failed`, `session-write-failed` (+ OIDC failure).
+  อ่าน reason -> แสดงข้อความไทย + ปุ่มกลับ `/login`. (พบตอน live E2E — guide FE ไม่ได้ระบุ route นี้.)
+- `src/types/auth.ts` — `AdminTier`, `AccessibleTenants`, `AdminMe` (แทน Audience/GoogleIdTokenClaims/MockSession).
+- ลบ `src/lib/auth/*` ทั้งหมด (gis/jwt/session/session-storage/auth-config + tests).
+
+**Trust boundary:** ย้ายไป backend เต็มตัว — backend verify ID token signature, ถือ session, ตรวจ CSRF.
+FE เป็นแค่ proxy + redirect + cookie carrier. client-side decode/validate เดิม = เลิกใช้.
+
+**Tests:** `admin-api.test.ts` (node) ครอบ pure helper. UI/proxy/login round-trip = manual ที่ :5200 + backend :5100.
+
+**Coordination items (backend):** (1) **[FE switched to /main 2026-06-24]** landing = `/main` (RETURN_TO +
+FE allowlist). backend เพิ่ม `/main` ใน `AdminSession:ReturnUrlAllowlist` = nice-to-have (ลง /main ตรง ๆ);
+ถ้าไม่เพิ่ม backend fall back `/` -> root page redirect -> /main อยู่ดี (double-bounce แต่ใช้งานได้);
+(2) `/admin/me` เพิ่ม name/picture ถ้าต้องการแสดงใน account-drawer; (3) domain endpoints
+(transaction/policy/producer/user) ยังไม่มี -> คง mock.

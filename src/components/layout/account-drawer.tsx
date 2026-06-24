@@ -12,6 +12,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { accountUser } from "@/lib/mock/topbar";
+import { useAuth } from "@/components/auth/auth-provider";
 
 // Nav icons — SVG paths extracted from minimals.cc live source
 function IconHome() {
@@ -91,6 +92,7 @@ interface AccountDrawerProps {
 }
 
 export function AccountDrawer({ variant = "white" }: AccountDrawerProps) {
+  const { me } = useAuth();
   const [open, setOpen] = useState(false);
   const [avatarStatus, setAvatarStatus] = useState<
     "idle" | "loading" | "loaded" | "error"
@@ -151,8 +153,14 @@ export function AccountDrawer({ variant = "white" }: AccountDrawerProps) {
             </Avatar>
           </div>
 
+          {/* identity จริงจาก /admin/me — email + tier. name/avatar ยัง mock (backend ไม่ส่ง — ดู coordination item). */}
           <p className="mt-2 text-base font-semibold text-grey-800">{accountUser.name}</p>
-          <p className="text-sm text-grey-600">{accountUser.email}</p>
+          <p className="text-sm text-grey-600">{me?.email ?? accountUser.email}</p>
+          {me && (
+            <span className="mt-1 rounded-md bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">
+              {me.tier === "Super" ? "Super Admin" : "Scoped Admin"}
+            </span>
+          )}
 
           {/* Account switcher */}
           <div className="mt-3 flex items-center gap-2">
@@ -238,9 +246,12 @@ export function AccountDrawer({ variant = "white" }: AccountDrawerProps) {
             />
           </div>
 
-          {/* Logout */}
+          {/* Logout — เด้งไป /logout ซึ่งเรียก BFF logout (POST /admin/auth/logout + CSRF) */}
           <button
             type="button"
+            onClick={() => {
+              window.location.href = "/logout";
+            }}
             className="mt-3 w-full rounded-lg py-2 text-sm font-bold transition-colors hover:opacity-90"
             style={{
               background: "rgba(255, 86, 48, 0.16)",

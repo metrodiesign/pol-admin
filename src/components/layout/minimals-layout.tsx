@@ -11,6 +11,8 @@ import { Logo } from "./logo";
 import { minimalsNavConfig } from "./minimals-nav-config";
 import { cn } from "@/lib/utils";
 import { useSettings } from "@/components/providers/settings-provider";
+import { AuthProvider } from "@/components/auth/auth-provider";
+import { AuthGuard } from "@/components/auth/auth-guard";
 
 /**
  * Shell for the /dashboard (minimals clone) route group.
@@ -21,6 +23,17 @@ import { useSettings } from "@/components/providers/settings-provider";
  *  - Uses a separate localStorage key so collapse state is independent.
  */
 export function MinimalsLayout({ children }: { children: React.ReactNode }) {
+  // BFF auth gate — ทุก protected route group route ผ่าน MinimalsLayout; /login + /logout ไม่ผ่าน -> public.
+  return (
+    <AuthProvider>
+      <AuthGuard>
+        <MinimalsShell>{children}</MinimalsShell>
+      </AuthGuard>
+    </AuthProvider>
+  );
+}
+
+function MinimalsShell({ children }: { children: React.ReactNode }) {
   const { settings, setSetting } = useSettings();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [splash, setSplash] = useState(true);
