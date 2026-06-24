@@ -35,7 +35,7 @@ export function Checkbox({
     >
       <span
         className={cn(
-          "flex size-5 items-center justify-center rounded-[4px] border-2 transition-colors",
+          "flex size-6 items-center justify-center rounded-[4px] border-2 transition-colors",
           checked || indeterminate
             ? "border-primary bg-primary text-white"
             : error

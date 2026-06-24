@@ -36,6 +36,11 @@ export interface ProducerFormData {
   acceptTerms: boolean;
 }
 
+/** ฟอร์มลงทะเบียน public `/register` — เพิ่ม photo (required) จาก ProducerFormData (REQ-11.4) */
+export interface ProducerRegisterFormData extends ProducerFormData {
+  photo: File | null;
+}
+
 export const PERSON_TYPE_LABEL: Record<ProducerPersonType, string> = {
   individual: "บุคคลธรรมดา",
   juristic: "นิติบุคคล",

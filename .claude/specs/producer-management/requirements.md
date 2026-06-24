@@ -1,6 +1,6 @@
 # Requirements: Producer Module (ตัวแทน/นายหน้าประกันภัย)
 
-> Status: approved 2026-06-23 (quick, no gates)
+> Status: approved 2026-06-23 (quick, no gates), amended 2026-06-24
 
 ## Overview
 
@@ -66,7 +66,7 @@ so that บันทึกข้อมูลตัวแทนได้ครบ
 - 4.3 `idNumber` (เลขบัตรประชาชน/เลขผู้เสียภาษี) — text, required, รับเฉพาะตัวเลข 13 หลัก
 - 4.4 `producerCode` (รหัสตัวแทน) — text, required
 - 4.5 `licenseNumber` (เลขที่ใบอนุญาตตัวแทน) — text, optional (เงื่อนไขใน REQ-5)
-- 4.6 `photoUrl` (แนบรูปถ่ายตัวแทน+บัตรประชาชน) — upload ผ่าน `AvatarUpload`, required
+- 4.6 `photoUrl` (แนบรูปถ่ายตัวแทน+บัตรประชาชน) — upload ผ่าน `AvatarUpload`. WHERE หน้า admin (`/producer/new`, edit) THE SYSTEM SHALL ถือว่า optional (ไม่ enforce); required เฉพาะหน้า public `/register` (ดู REQ-11.6)
 - 4.7 `phoneNumber` (โทรศัพท์ยืนยัน OTP) — text, required, ตัวเลข 10 หลัก
 - 4.8 `email` (อีเมล) — text, required, email format
 - 4.9 WHERE หน้า create THE SYSTEM SHALL มี checkbox `acceptTerms` (ยอมรับเงื่อนไขการใช้บริการ) ที่ต้องติ๊กก่อน submit
@@ -140,9 +140,38 @@ so that บันทึกข้อมูลตัวแทนได้ครบ
 - 10.4 WHERE readOnly (หน้า read) THE SYSTEM SHALL ไม่แสดงปุ่ม action ใด ๆ รวมถึงอนุมัติ
 - (UI shell: status flip เป็น local state ไม่ persist — mirror CRUD อื่นในโมดูล. reject = งานแยก ยังไม่ทำ)
 
+## REQ-11: หน้าลงทะเบียนตัวแทนแบบ public (self-registration)
+
+> เพิ่ม 2026-06-24 — public self-registration surface (นอก admin shell)
+
+**User Story:** As a prospective ตัวแทน/นายหน้า, I want หน้าลงทะเบียนตนเองแบบสาธารณะ,
+so that สมัครเป็นตัวแทนได้โดยไม่ต้องเข้าระบบ admin.
+
+**Acceptance Criteria (EARS):**
+- 11.1 THE SYSTEM SHALL ให้บริการหน้า public registration ที่ `/register`
+- 11.2 THE SYSTEM SHALL ทำให้ `/register` เป็น shell-free (ไม่มี `MinimalsLayout` sidebar/topbar) โดยไม่มี `layout.tsx` ใน route folder (inherit เฉพาะ root layout — mirror `/login`)
+- 11.3 THE SYSTEM SHALL ใช้ธีม/เลย์เอาต์เดียวกับ `/producer/new` (light card, 2-col grid, `AvatarUpload`, `ProducerEditFormCard`) — ไม่ออกแบบใหม่
+- 11.4 THE SYSTEM SHALL ใช้ field spec เดียวกับ REQ-4 (9 ฟิลด์ + `acceptTerms`) และ validation เดียวกับ REQ-5
+- 11.5 THE SYSTEM SHALL แทน `PageHeader` breadcrumb ของ admin ด้วยหัวข้อ "การลงทะเบียนตัวแทน" และไม่แสดง Switch "ยืนยันอีเมลแล้ว" (admin-only)
+- 11.6 THE SYSTEM SHALL บังคับ field รูปถ่าย (REQ-4.6, photo) เป็น required ใน form validation: IF ไม่มีไฟล์รูปถ่าย THEN invalid. error แสดงโดย page render เองใต้ `AvatarUpload` — ไม่แก้ component `AvatarUpload` (คง uncontrolled, ไม่เพิ่ม `error` prop)
+- 11.7 WHEN submit สำเร็จ (ผ่าน validation ครบ) THE SYSTEM SHALL แสดง success panel ("ลงทะเบียนสำเร็จ รอการอนุมัติจากผู้ดูแลระบบ") พร้อมปุ่ม "ไปหน้าเข้าสู่ระบบ" ลิงก์ `/login` — frontend-only, ไม่มี backend call
+- 11.8 THE SYSTEM SHALL ไม่เปลี่ยนพฤติกรรมของ `/producer/new`, `/producer/edit`, `/producer/read` (photo-required path เปิดเฉพาะเมื่อส่ง prop ควบคุม photo)
+- 11.9 THE SYSTEM SHALL เพิ่มลิงก์ "สมัครเป็นตัวแทน" ที่หน้า `/login` ชี้ไป `/register` (entry point ของ public registration; producer audience มีปุ่ม login อยู่แล้ว)
+
 ## Edge Cases & Notes
 
 - CRUD เป็น UI shell: edit/read ใช้ static route + mock entry เดียว (mirror user module — table links ไป `/producer/edit` ไม่มี id param). ไม่ทำ per-row data fetch.
 - personType radio: ใช้ native `<input type="radio">` (ไม่มี radio component สำเร็จในระบบ) — accessible ด้วย label.
 - phone ตัวแทนเป็นเบอร์ไทย 10 หลัก → ไม่ใช้ `PhoneCountrySelect` (ต่างจาก user form), ใช้ TextField numeric ธรรมดา.
 - `acceptTerms` อยู่เฉพาะหน้า create (registration) ไม่อยู่ใน edit.
+- public `/register` (REQ-11): duplicate registration (idNumber/email ซ้ำ) = out of scope — ไม่มี uniqueness check จนกว่าจะมี backend (decision E1). photo File ที่ submit ไม่ถูก persist (frontend-only).
+
+## Edge Cases & Open Questions
+
+> Findings log — /spec-analyze run anchored at requirements.md commit `d21739f` (REQ-11 amend, 2026-06-24). Re-runs may skip decided findings below.
+
+- **A (4.6 vs 11.8 inconsistency)** — DECIDED A2: photo-required เป็น public-only โดยตั้งใจ. แก้ถ้อยคำ REQ-4.6 = optional บน admin, required บน `/register` (REQ-11.6).
+- **B (entry point ไป /register)** — DECIDED B1: เพิ่มลิงก์ "สมัครเป็นตัวแทน" ที่ `/login` → REQ-11.9.
+- **C (post-success action)** — DECIDED C1: success panel + ปุ่ม "ไปหน้าเข้าสู่ระบบ" → `/login` → REQ-11.7.
+- **D (AvatarUpload uncontrolled, ไม่มี error prop)** — DECIDED D2: page render error เองใต้ AvatarUpload, ไม่แตะ component shared → REQ-11.6.
+- **E (duplicate registration)** — DECIDED E1: out of scope (no uniqueness check จนกว่ามี backend) → note ด้านบน.

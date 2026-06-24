@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { login } from "@/lib/api/admin-api";
 
@@ -24,6 +25,12 @@ export function LoginView() {
         >
           เข้าสู่ระบบด้วย Google
         </Button>
+        <p className="mt-6 text-sm text-muted-foreground">
+          เป็นตัวแทน/นายหน้า?{" "}
+          <Link href="/register" className="font-semibold text-primary hover:underline">
+            สมัครเป็นตัวแทน
+          </Link>
+        </p>
       </div>
     </main>
   );

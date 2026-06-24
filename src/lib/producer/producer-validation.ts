@@ -1,4 +1,8 @@
-import type { ProducerFormData, ProducerPersonType } from "@/types/producer";
+import type {
+  ProducerFormData,
+  ProducerPersonType,
+  ProducerRegisterFormData,
+} from "@/types/producer";
 
 /** เลขบัตรประชาชน/เลขผู้เสียภาษี — ตัวเลข 13 หลักเท่านั้น (REQ-5.1) */
 export function isThaiId(value: string): boolean {
@@ -66,5 +70,23 @@ export function validateProducerForm(
   if (opts.requireAcceptTerms && !form.acceptTerms)
     errors.acceptTerms = "กรุณายอมรับเงื่อนไขการใช้บริการ";
 
+  return errors;
+}
+
+export type RegisterFormErrors = Partial<
+  Record<keyof ProducerRegisterFormData, string>
+>;
+
+/**
+ * Validation หน้า public `/register` (REQ-11.4, 11.6): reuse `validateProducerForm`
+ * (acceptTerms required) แล้วเพิ่มกฎ photo required. ไม่ duplicate regex.
+ */
+export function validateRegisterForm(
+  form: ProducerRegisterFormData,
+): RegisterFormErrors {
+  const errors: RegisterFormErrors = validateProducerForm(form, {
+    requireAcceptTerms: true,
+  });
+  if (!form.photo) errors.photo = "กรุณาแนบรูปถ่ายตัวแทนพร้อมบัตรประชาชน";
   return errors;
 }
