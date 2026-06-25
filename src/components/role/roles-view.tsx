@@ -10,7 +10,8 @@ import {
   getPaginationRowModel,
 } from "@tanstack/react-table";
 import type { Role } from "@/types/role";
-import { PERMISSION_CATALOG, ROLES, RESOURCE_GROUPS } from "@/lib/mock/role";
+import { PERMISSION_CATALOG, RESOURCE_GROUPS } from "@/lib/mock/role";
+import { getRoles } from "@/lib/api/admin-api";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";
 import { CustomBreadcrumbs } from "@/components/shared/custom-breadcrumbs";
@@ -30,8 +31,30 @@ export function RolesView() {
   const [dense, setDense] = useState(false);
   const [detailRole, setDetailRole] = useState<Role | null>(null);
   const [deleteRole, setDeleteRole] = useState<Role | null>(null);
+  const [roles, setRoles] = useState<Role[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [reloadKey, setReloadKey] = useState(0);
   const { toasts, show, dismiss } = useRoleToast();
   const router = useRouter();
+
+  // โหลด list จริงจาก backend (GET /admin/roles). guard active กัน setState หลัง unmount.
+  useEffect(() => {
+    let active = true;
+    getRoles()
+      .then((data) => {
+        if (active) setRoles(data);
+      })
+      .catch(() => {
+        if (active) setError(true);
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [reloadKey]);
 
   // toast เมื่อกลับจากหน้าแก้ไขแยก (/user/role/edit -> /user/role/list?toast=...) (REQ-13.1)
   useEffect(() => {
@@ -64,9 +87,9 @@ export function RolesView() {
     router.push(`/user/role/edit?code=${encodeURIComponent(role.code)}`);
   }
 
-  // seed คงที่: ตาราง render จาก ROLES เสมอ — UI-shell ไม่ mutate (REQ-10).
-  // กรองผ่าน table (data = ROLES) เพื่อให้ row selection เป็น GLOBAL
-  // เหมือน user module — เลือกแล้วเปลี่ยนคำค้นยังคงเลือกอยู่.
+  // ตาราง render จาก list จริง (GET /admin/roles). กรองผ่าน table (data = roles)
+  // เพื่อให้ row selection เป็น GLOBAL เหมือน user module —
+  // เลือกแล้วเปลี่ยนคำค้นยังคงเลือกอยู่.
   const columns = useMemo(
     () =>
       buildRoleColumns({
@@ -82,7 +105,7 @@ export function RolesView() {
   );
 
   const table = useDataTable<Role>({
-    data: ROLES,
+    data: roles,
     columns,
     getRowId: (r) => r.code,
     meta: { onRowClick: (role: Role) => setDetailRole(role) },
@@ -140,15 +163,36 @@ export function RolesView() {
             table.setPageIndex(0);
           }}
         />
-        <DataTable
-          table={table}
-          total={filteredCount}
-          dense={dense}
-          onDenseChange={setDense}
-          rowsPerPageOptions={[5, 10, 25]}
-          searchQuery={search}
-          showSelectionAction={false}
-        />
+        {loading ? (
+          <p className="px-5 py-10 text-center text-sm text-grey-500">
+            กำลังโหลด…
+          </p>
+        ) : error ? (
+          <div className="px-5 py-10 text-center text-sm text-grey-500">
+            <p>โหลดบทบาทไม่สำเร็จ</p>
+            <button
+              type="button"
+              onClick={() => {
+                setLoading(true);
+                setError(false);
+                setReloadKey((k) => k + 1);
+              }}
+              className="mt-3 inline-flex h-9 items-center rounded-control bg-grey-800 px-3 text-sm font-bold text-white transition-colors hover:bg-grey-900"
+            >
+              ลองใหม่
+            </button>
+          </div>
+        ) : (
+          <DataTable
+            table={table}
+            total={filteredCount}
+            dense={dense}
+            onDenseChange={setDense}
+            rowsPerPageOptions={[5, 10, 25]}
+            searchQuery={search}
+            showSelectionAction={false}
+          />
+        )}
         <p className="border-t border-[var(--divider)] px-5 py-4 text-xs text-grey-500">
           สิทธิ์รวมของผู้ใช้ = union ของสิทธิ์จากทุกบทบาทที่ได้รับ ·
           บทบาทที่มีผู้ใช้ผูกอยู่จะลบไม่ได้

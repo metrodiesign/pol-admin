@@ -1,4 +1,5 @@
 import type { AdminMe } from "@/types/auth";
+import type { Role, RoleColor, RoleStatus } from "@/types/role";
 
 // Admin BFF client — FE ไม่ถือ token; session อยู่ใน httpOnly cookie ที่ backend จัดการ.
 // contract: pol-core/docs/reference/admin-fe-integration.md
@@ -80,6 +81,38 @@ export async function getMe(): Promise<AdminMe | null> {
   if (res.status === 401) return null;
   if (!res.ok) throw new Error(`/admin/me ${res.status}`);
   return (await res.json()) as AdminMe;
+}
+
+/** RoleResponse จาก backend (`GET /admin/roles`) — field nullable/loose ตาม OpenAPI. */
+interface RoleResponse {
+  code: string;
+  name: string;
+  description: string | null;
+  color: string | null;
+  status: string;
+  permissions: string[] | null;
+  userCount: number | string;
+}
+
+/** map RoleResponse -> Role (coerce null/string กัน table/filter พัง). */
+function toRole(r: RoleResponse): Role {
+  return {
+    code: r.code,
+    name: r.name,
+    description: r.description ?? "",
+    color: (r.color ?? "gray") as RoleColor,
+    status: r.status as RoleStatus,
+    permissions: r.permissions ?? [],
+    userCount: Number(r.userCount) || 0,
+  };
+}
+
+/** GET /admin/roles — list บทบาททั้งหมด. 401 -> adminFetch เด้ง /login. throw ถ้า status อื่น. */
+export async function getRoles(): Promise<Role[]> {
+  const res = await adminFetch("/admin/roles");
+  if (!res.ok) throw new Error(`/admin/roles ${res.status}`);
+  const raw = (await res.json()) as RoleResponse[];
+  return raw.map(toRole);
 }
 
 /** ออกจากระบบ (device นี้). */
