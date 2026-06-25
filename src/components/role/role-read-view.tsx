@@ -1,6 +1,11 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Check, Copy, Pencil } from "lucide-react";
-import type { Permission, ResourceGroup, Role } from "@/types/role";
+import type { Role } from "@/types/role";
+import { getRole } from "@/lib/api/admin-api";
+import { useRoleCatalog } from "@/hooks/use-role-catalog";
 import {
   grantedCount,
   groupGranted,
@@ -9,6 +14,7 @@ import {
 import { EditPageHeader } from "@/components/shared/edit-page-header";
 import { RoleBadge } from "./role-badge";
 import { RoleStatusBadge } from "./role-status-badge";
+import { RoleFormStatus } from "./role-form-status";
 
 const cardStyle = {
   boxShadow:
@@ -16,17 +22,77 @@ const cardStyle = {
 };
 
 interface RoleReadViewProps {
-  role: Role;
-  catalog: Permission[];
-  groups: ResourceGroup[];
+  /** code ของบทบาท — view โหลดเองจาก GET /admin/roles/{code}. */
+  code: string;
 }
 
 /** หน้าดูรายละเอียดบทบาทแบบเต็มหน้า (route แยก /user/role/read). read-only. */
-export function RoleReadView({
-  role,
-  catalog,
-  groups,
-}: RoleReadViewProps) {
+export function RoleReadView({ code }: RoleReadViewProps) {
+  const cat = useRoleCatalog();
+  const [role, setRole] = useState<Role | null>(null);
+  const [load, setLoad] = useState<"loading" | "ok" | "notfound" | "error">(
+    "loading",
+  );
+
+  useEffect(() => {
+    let active = true;
+    getRole(code)
+      .then((r) => {
+        if (!active) return;
+        if (!r) {
+          setLoad("notfound");
+          return;
+        }
+        setRole(r);
+        setLoad("ok");
+      })
+      .catch(() => {
+        if (active) setLoad("error");
+      });
+    return () => {
+      active = false;
+    };
+  }, [code]);
+
+  const header = (
+    <EditPageHeader
+      title="ดูบทบาท"
+      backHref="/user/role/list"
+      breadcrumbs={[
+        { label: "Console" },
+        { label: "บทบาทและสิทธิ์", href: "/user/role/list" },
+        { label: role?.name ?? "ดูบทบาท" },
+      ]}
+    />
+  );
+
+  if (load === "loading" || cat.loading) {
+    return (
+      <>
+        {header}
+        <RoleFormStatus state="loading" />
+      </>
+    );
+  }
+  if (load === "notfound") {
+    return (
+      <>
+        {header}
+        <RoleFormStatus state="notfound" />
+      </>
+    );
+  }
+  if (load === "error" || cat.error || !role || !cat.catalog) {
+    return (
+      <>
+        {header}
+        <RoleFormStatus state="error" />
+      </>
+    );
+  }
+
+  const catalog = cat.catalog.permissions;
+  const groups = cat.catalog.groups;
   const granted = grantedCount(role.permissions, catalog);
   const total = catalog.length;
   const held = new Set(role.permissions);
@@ -41,15 +107,7 @@ export function RoleReadView({
 
   return (
     <>
-      <EditPageHeader
-        title="ดูบทบาท"
-        backHref="/user/role/list"
-        breadcrumbs={[
-          { label: "Console" },
-          { label: "บทบาทและสิทธิ์", href: "/user/role/list" },
-          { label: role.name },
-        ]}
-      />
+      {header}
 
       <div className="overflow-hidden rounded-card bg-card" style={cardStyle}>
         {/* Header: badge + รหัสบทบาท + สำเนา/แก้ไข */}
