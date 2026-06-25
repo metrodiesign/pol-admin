@@ -14,6 +14,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { accountUser } from "@/lib/mock/topbar";
 import { useAuth } from "@/components/auth/auth-provider";
+import { logout } from "@/lib/api/admin-api";
 
 // Nav icons — SVG paths extracted from minimals.cc live source
 function IconHome() {
@@ -250,11 +251,14 @@ export function AccountDrawer({ variant = "white" }: AccountDrawerProps) {
             />
           </div>
 
-          {/* Logout — เด้งไป /logout ซึ่งเรียก BFF logout (POST /admin/auth/logout + CSRF) */}
+          {/* Logout — ยิง BFF logout ตรง (POST /admin/auth/logout + CSRF) แล้วเด้ง /login.
+              .finally -> logout fail ก็ยังกลับ /login (guard เด้งไป SSO ต่อถ้า session ยังอยู่). */}
           <button
             type="button"
             onClick={() => {
-              window.location.href = "/logout";
+              logout().finally(() => {
+                window.location.href = "/login";
+              });
             }}
             className="mt-3 w-full rounded-lg py-2 text-sm font-bold transition-colors hover:opacity-90"
             style={{
