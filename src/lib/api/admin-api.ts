@@ -60,7 +60,7 @@ export interface AdminFetchOptions extends RequestInit {
   redirectOnUnauthorized?: boolean;
 }
 
-/** fetch admin API: credentials:'include', แนบ CSRF เมื่อ mutation, 401 -> เด้งไป login. */
+/** fetch admin API: credentials:'include', แนบ CSRF เมื่อ mutation, 401 -> เด้งไปหน้า /login. */
 export async function adminFetch(
   path: string,
   opts: AdminFetchOptions = {},
@@ -69,7 +69,7 @@ export async function adminFetch(
   const csrf = isMutation(init.method ?? "GET") ? cookie(CSRF_COOKIE) : null;
   const res = await fetch(path, buildRequestInit(init, csrf));
   if (res.status === 401 && redirectOnUnauthorized) {
-    login(window.location.pathname); // session หมด -> re-login
+    window.location.href = "/login"; // session หมด -> หน้า login (ผู้ใช้เริ่ม SSO เอง)
   }
   return res;
 }

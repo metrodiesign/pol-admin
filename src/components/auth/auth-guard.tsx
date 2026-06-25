@@ -2,7 +2,6 @@
 
 import React, { useEffect } from "react";
 
-import { login } from "@/lib/api/admin-api";
 import { useAuth } from "./auth-provider";
 
 /** loading placeholder — กัน flash ของ shell ก่อน /admin/me ตอบ. */
@@ -16,7 +15,8 @@ function AuthPending(): React.JSX.Element {
   );
 }
 
-/** กันหน้าที่ต้อง login: anon -> เด้งไป SSO; loading -> placeholder; authed -> render children. */
+/** กันหน้าที่ต้อง login: anon -> เด้งไปหน้า /login (ผู้ใช้เลือก role แล้วเริ่ม SSO เอง);
+    loading -> placeholder; authed -> render children. */
 export function AuthGuard({
   children,
 }: {
@@ -25,7 +25,7 @@ export function AuthGuard({
   const { status } = useAuth();
 
   useEffect(() => {
-    if (status === "anon") login(window.location.pathname);
+    if (status === "anon") window.location.href = "/login";
   }, [status]);
 
   if (status !== "authed") return <AuthPending />;
