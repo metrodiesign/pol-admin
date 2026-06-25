@@ -61,14 +61,14 @@ so that แก้ได้โดยไม่กระทบ user module.
 so that บันทึกข้อมูลตัวแทนได้ครบตาม field spec.
 
 **Acceptance Criteria (EARS):** ฟอร์ม (`producer-edit-form-card`) SHALL มี field ตามนี้
-- 4.1 `firstName` (ชื่อ), `lastName` (นามสกุล) — text, required
-- 4.2 `personType` (ประเภทบุคคล) — radio: บุคคลธรรมดา (`individual`) / นิติบุคคล (`juristic`), required
-- 4.3 `idNumber` (เลขบัตรประชาชน/เลขผู้เสียภาษี) — text, required, รับเฉพาะตัวเลข 13 หลัก
-- 4.4 `producerCode` (รหัสตัวแทน) — text, required
-- 4.5 `licenseNumber` (เลขที่ใบอนุญาตตัวแทน) — text, optional (เงื่อนไขใน REQ-5)
+- 4.1 THE SYSTEM SHALL มี field `firstName` (ชื่อ), `lastName` (นามสกุล) — text, required
+- 4.2 THE SYSTEM SHALL มี field `personType` (ประเภทบุคคล) — radio: บุคคลธรรมดา (`individual`) / นิติบุคคล (`juristic`), required
+- 4.3 THE SYSTEM SHALL มี field `idNumber` (เลขบัตรประชาชน/เลขผู้เสียภาษี) — text, required, รับเฉพาะตัวเลข 13 หลัก
+- 4.4 THE SYSTEM SHALL มี field `producerCode` (รหัสตัวแทน) — text, required
+- 4.5 THE SYSTEM SHALL มี field `licenseNumber` (เลขที่ใบอนุญาตตัวแทน) — text, optional (เงื่อนไขใน REQ-5)
 - 4.6 `photoUrl` (แนบรูปถ่ายตัวแทน+บัตรประชาชน) — upload ผ่าน `AvatarUpload`. WHERE หน้า admin (`/producer/new`, edit) THE SYSTEM SHALL ถือว่า optional (ไม่ enforce); required เฉพาะหน้า public `/register` (ดู REQ-11.6)
-- 4.7 `phoneNumber` (โทรศัพท์ยืนยัน OTP) — text, required, ตัวเลข 10 หลัก
-- 4.8 `email` (อีเมล) — text, required, email format
+- 4.7 THE SYSTEM SHALL มี field `phoneNumber` (โทรศัพท์ยืนยัน OTP) — text, required, ตัวเลข 10 หลัก
+- 4.8 THE SYSTEM SHALL มี field `email` (อีเมล) — text, required, email format
 - 4.9 WHERE หน้า create THE SYSTEM SHALL มี checkbox `acceptTerms` (ยอมรับเงื่อนไขการใช้บริการ) ที่ต้องติ๊กก่อน submit
 - 4.10 WHERE `readOnly` THE SYSTEM SHALL แสดงค่าเป็น text (ไม่มี input, ไม่มีปุ่ม submit) เหมือน user form
 
