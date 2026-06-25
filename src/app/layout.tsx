@@ -6,6 +6,7 @@ import {
   DM_Sans,
   Nunito_Sans,
   Noto_Sans_Thai,
+  IBM_Plex_Mono,
 } from "next/font/google";
 import "./globals.css";
 import {
@@ -57,6 +58,14 @@ const nunitoSans = Nunito_Sans({
   display: "swap",
 });
 
+// Monospace data face for the control plane — machine identifiers, keys, refs.
+const ibmPlexMono = IBM_Plex_Mono({
+  variable: "--font-ibm-plex-mono",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Dashboard - Minimal UI",
   description: "Minimal UI dashboard clone",
@@ -70,7 +79,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${publicSans.variable} ${barlow.variable} ${inter.variable} ${dmSans.variable} ${nunitoSans.variable} ${notoSansThai.variable} h-full antialiased`}
+      className={`${publicSans.variable} ${barlow.variable} ${inter.variable} ${dmSans.variable} ${nunitoSans.variable} ${notoSansThai.variable} ${ibmPlexMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>

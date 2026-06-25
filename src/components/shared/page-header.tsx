@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { CustomBreadcrumbs } from "@/components/shared/custom-breadcrumbs";
@@ -11,13 +12,14 @@ interface BreadcrumbItem {
 interface PageHeaderProps {
   title: string;
   breadcrumbs: BreadcrumbItem[];
+  description?: ReactNode;
   action?: {
     label: string;
     href: string;
   };
 }
 
-export function PageHeader({ title, breadcrumbs, action }: PageHeaderProps) {
+export function PageHeader({ title, breadcrumbs, description, action }: PageHeaderProps) {
   const links: BreadcrumbLink[] = breadcrumbs.map((b) => ({
     name: b.label,
     href: b.href,
@@ -37,6 +39,7 @@ export function PageHeader({ title, breadcrumbs, action }: PageHeaderProps) {
     <CustomBreadcrumbs
       heading={title}
       links={links}
+      description={description}
       action={actionNode}
     />
   );

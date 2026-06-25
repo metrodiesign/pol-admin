@@ -100,6 +100,10 @@
   /* ---- Typography (Public Sans body, Barlow display — extracted from minimals) ---- */
   --font-display: "Barlow", var(--font-public-sans), var(--font-noto-thai),
     ui-sans-serif, system-ui, sans-serif;
+  /* ---- Control-plane signature: monospace data face for machine identifiers
+     (masked keys, idempotency keys, event/client IDs, signatures, refs). ---- */
+  --font-mono: var(--font-ibm-plex-mono), ui-monospace, SFMono-Regular,
+    "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
   /* clamp ranges = base rem (mobile) -> computed px @1440 (desktop), matching MUI responsiveFontSizes */
   --text-h1: clamp(2.5rem, 1.972rem + 2.253vw, 4rem);
   --text-h2: clamp(2rem, 1.648rem + 1.502vw, 3rem);
@@ -470,6 +474,13 @@ tbody tr {
 @utility text-body2 { font-size: 0.875rem; line-height: 1.571; font-weight: 400; }
 @utility text-caption { font-size: 0.75rem; line-height: 1.5; font-weight: 400; }
 @utility text-overline { font-size: 0.75rem; line-height: 1.5; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* ---- Control-plane data face: machine identifiers, tabular figures aligned ---- */
+@utility text-data { font-family: var(--font-mono); font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+
+/* ---- Control-plane health spine: vertical state bar on list rows / cards.
+   Decorative only — the same state is always shown in a text badge too. ---- */
+@utility status-spine { display: inline-block; width: 3px; border-radius: 9999px; align-self: stretch; }
 
 /* ---- Settings: compact density ---- */
 [data-compact="true"] [data-dashboard-main] {

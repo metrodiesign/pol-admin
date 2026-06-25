@@ -1,0 +1,78 @@
+import type { RoutingRule } from "@/types/routing-rule";
+
+// Deterministic seed — ordered by priority within each tenant. Lower priority
+// numbers take precedence; one rule is intentionally disabled.
+export const ROUTING_RULES: RoutingRule[] = [
+  {
+    id: "RR-VCTL-CARD-HI",
+    priority: 1,
+    tenantId: "vcentral",
+    channel: "card",
+    minAmount: 50000,
+    targetPsp: "2c2p",
+    fallbackPsp: "omise",
+    enabled: true,
+  },
+  {
+    id: "RR-VCTL-CARD-LO",
+    priority: 2,
+    tenantId: "vcentral",
+    channel: "card",
+    maxAmount: 49999,
+    targetPsp: "omise",
+    fallbackPsp: "2c2p",
+    enabled: true,
+  },
+  {
+    id: "RR-VCTL-INSTALLMENT",
+    priority: 3,
+    tenantId: "vcentral",
+    channel: "installment",
+    minAmount: 3000,
+    targetPsp: "2c2p",
+    enabled: true,
+  },
+  {
+    id: "RR-VCTL-ANY",
+    priority: 9,
+    tenantId: "vcentral",
+    channel: "any",
+    targetPsp: "omise",
+    enabled: true,
+  },
+  {
+    id: "RR-VCOM-CARD",
+    priority: 1,
+    tenantId: "vcommerce",
+    channel: "card",
+    targetPsp: "omise",
+    fallbackPsp: "2c2p",
+    enabled: true,
+  },
+  {
+    id: "RR-VCOM-PROMPTPAY",
+    priority: 2,
+    tenantId: "vcommerce",
+    channel: "promptpay",
+    targetPsp: "omise",
+    enabled: false,
+  },
+  {
+    id: "RR-VSVN-PROMPTPAY",
+    priority: 1,
+    tenantId: "vsouvenir",
+    channel: "promptpay",
+    maxAmount: 20000,
+    targetPsp: "2c2p",
+    enabled: true,
+  },
+  {
+    id: "RR-VSVN-ANY",
+    priority: 5,
+    tenantId: "vsouvenir",
+    channel: "any",
+    targetPsp: "2c2p",
+    fallbackPsp: "omise",
+    enabled: true,
+  },
+];
