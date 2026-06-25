@@ -8,6 +8,8 @@ interface CustomBreadcrumbsProps {
   links?: BreadcrumbLink[];
   action?: ReactNode;
   moreLink?: { name: string; href: string }[];
+  /** Optional plain-language line under the heading — explains what the page is for. */
+  description?: ReactNode;
   className?: string;
 }
 
@@ -16,6 +18,7 @@ export function CustomBreadcrumbs({
   links,
   action,
   moreLink,
+  description,
   className,
 }: CustomBreadcrumbsProps) {
   const hasLinks = links && links.length > 0;
@@ -65,6 +68,11 @@ export function CustomBreadcrumbs({
             })}
           </ol>
         </nav>
+      )}
+
+      {/* Optional plain-language description */}
+      {description != null && (
+        <p className="mt-1.5 max-w-3xl text-sm text-grey-600">{description}</p>
       )}
 
       {/* Optional moreLink block */}

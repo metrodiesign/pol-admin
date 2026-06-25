@@ -103,6 +103,45 @@ export const navConfig: NavGroup[] = [
     ],
   },
 
+  // ── Control plane · การเชื่อมต่อ & orchestration ───────────────────────────
+  {
+    subheader: "Control plane · การเชื่อมต่อ",
+    items: [
+      { title: "PSP Connections", path: "/control/psp/list", icon: "banking", match: "/control/psp" },
+      { title: "Routing Rules", path: "/control/routing", icon: "analytics", match: "/control/routing" },
+      { title: "API Clients", path: "/control/api-clients", icon: "lock", match: "/control/api-clients" },
+      { title: "Webhooks & Events", path: "/control/webhooks", icon: "folder", match: "/control/webhooks" },
+    ],
+  },
+
+  // ── Control plane · การกำกับดูแล ────────────────────────────────────────────
+  {
+    subheader: "Control plane · การกำกับดูแล",
+    items: [
+      { title: "Approvals", path: "/control/approvals", icon: "invoice", match: "/control/approvals" },
+      { title: "Audit Log", path: "/control/audit", icon: "file", match: "/control/audit" },
+      { title: "การแจ้งเตือน", path: "/control/notifications", icon: "mail", match: "/control/notifications" },
+    ],
+  },
+
+  // ── Control plane · การเงิน & กระทบยอด ──────────────────────────────────────
+  {
+    subheader: "Control plane · การเงิน",
+    items: [
+      { title: "การกระทบยอด", path: "/control/reconciliation", icon: "banking", match: "/control/reconciliation" },
+      { title: "รายงาน", path: "/control/reports", icon: "analytics", match: "/control/reports" },
+    ],
+  },
+
+  // ── Control plane · องค์กร & ระบบ ───────────────────────────────────────────
+  {
+    subheader: "Control plane · องค์กร",
+    items: [
+      { title: "Tenants & Workspaces", path: "/control/tenants", icon: "lock", match: "/control/tenants" },
+      { title: "Originators", path: "/control/originators", icon: "user", match: "/control/originators" },
+    ],
+  },
+
   // ── Demo (minimals pages) ────────────────────────────────────────────────
   {
     subheader: "Demo",
