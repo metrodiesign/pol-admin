@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { X } from "lucide-react";
+import SimpleBar from "simplebar-react";
 import {
   Sheet,
   SheetClose,
@@ -133,6 +134,9 @@ export function AccountDrawer({ variant = "white" }: AccountDrawerProps) {
           <X className="size-5" />
         </SheetClose>
 
+        {/* Scrollable body — SimpleBar autoHide (scrollbar ซ่อนเป็น default, โผล่ตอน scroll/hover) */}
+        <SimpleBar className="min-h-0 flex-1">
+        <div className="flex min-h-full flex-col">
         {/* Header */}
         <div className="flex flex-col items-center gap-1 px-6 pt-10 pb-4 text-center">
           {/* Avatar with animated conic ring */}
@@ -261,6 +265,8 @@ export function AccountDrawer({ variant = "white" }: AccountDrawerProps) {
             Logout
           </button>
         </div>
+        </div>
+        </SimpleBar>
       </SheetContent>
     </Sheet>
   );
