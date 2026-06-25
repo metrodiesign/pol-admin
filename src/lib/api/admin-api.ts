@@ -1,5 +1,13 @@
 import type { AdminMe } from "@/types/auth";
-import type { Role, RoleColor, RoleStatus } from "@/types/role";
+import type {
+  Permission,
+  ResourceGroup,
+  ResourceKey,
+  Role,
+  RoleColor,
+  RoleFormInput,
+  RoleStatus,
+} from "@/types/role";
 
 // Admin BFF client — FE ไม่ถือ token; session อยู่ใน httpOnly cookie ที่ backend จัดการ.
 // contract: pol-core/docs/reference/admin-fe-integration.md
@@ -113,6 +121,66 @@ export async function getRoles(): Promise<Role[]> {
   if (!res.ok) throw new Error(`/admin/roles ${res.status}`);
   const raw = (await res.json()) as RoleResponse[];
   return raw.map(toRole);
+}
+
+/** GET /admin/roles/{code} — รายตัว. 404 -> null. throw ถ้า status อื่น. */
+export async function getRole(code: string): Promise<Role | null> {
+  const res = await adminFetch(`/admin/roles/${encodeURIComponent(code)}`);
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error(`/admin/roles/${code} ${res.status}`);
+  return toRole((await res.json()) as RoleResponse);
+}
+
+/** POST /admin/roles — สร้างบทบาท. คืน Response ดิบ (caller เช็ค 409 = code ซ้ำ). */
+export function createRole(input: RoleFormInput): Promise<Response> {
+  return adminFetch("/admin/roles", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(input),
+  });
+}
+
+/** PUT /admin/roles/{code} — แก้ไข (code immutable, ไม่ส่งใน body). คืน Response ดิบ. */
+export function updateRole(code: string, input: RoleFormInput): Promise<Response> {
+  const { code: _omit, ...body } = input;
+  return adminFetch(`/admin/roles/${encodeURIComponent(code)}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+}
+
+/** DELETE /admin/roles/{code}. คืน Response ดิบ (caller เช็ค 409 = มีผู้ใช้ผูกอยู่). */
+export function deleteRole(code: string): Promise<Response> {
+  return adminFetch(`/admin/roles/${encodeURIComponent(code)}`, {
+    method: "DELETE",
+  });
+}
+
+/** PermissionCatalogResponse จาก backend (GET /admin/permissions). */
+interface PermissionCatalogResponse {
+  groups: { key: string; label: string }[];
+  permissions: { key: string; label: string; resource: string }[];
+}
+
+export interface PermissionCatalog {
+  groups: ResourceGroup[];
+  permissions: Permission[];
+}
+
+/** GET /admin/permissions — catalog สิทธิ์ + resource groups. throw ถ้า status อื่น. */
+export async function getPermissionCatalog(): Promise<PermissionCatalog> {
+  const res = await adminFetch("/admin/permissions");
+  if (!res.ok) throw new Error(`/admin/permissions ${res.status}`);
+  const raw = (await res.json()) as PermissionCatalogResponse;
+  return {
+    groups: raw.groups.map((g) => ({ key: g.key as ResourceKey, label: g.label })),
+    permissions: raw.permissions.map((p) => ({
+      key: p.key,
+      label: p.label,
+      resource: p.resource as ResourceKey,
+    })),
+  };
 }
 
 /** ออกจากระบบ (device นี้). */

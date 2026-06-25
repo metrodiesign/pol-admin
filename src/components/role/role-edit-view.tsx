@@ -1,16 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { Role, RoleStatus, RoleFormInput } from "@/types/role";
-import { PERMISSION_CATALOG, ROLES, RESOURCE_GROUPS } from "@/lib/mock/role";
+import { getRole, updateRole } from "@/lib/api/admin-api";
+import { useRoleCatalog } from "@/hooks/use-role-catalog";
 import { validateRoleForm } from "@/lib/role/role-permissions";
 import { cn } from "@/lib/utils";
 import { EditPageHeader } from "@/components/shared/edit-page-header";
 import { TextField } from "@/components/form/text-field";
 import { SelectField } from "@/components/form/select-field";
 import { RolePermissionMatrix } from "./role-permission-matrix";
+import { RoleFormStatus } from "./role-form-status";
 import { ROLE_COLOR_OPTIONS } from "./role-badge";
 import { STATUS_OPTIONS } from "./role-status-badge";
 
@@ -23,50 +25,117 @@ const cancelClass =
   "inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-sm font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]";
 
 interface RoleEditViewProps {
-  role: Role;
+  /** code ของบทบาทที่จะแก้ไข — view โหลดเองจาก GET /admin/roles/{code}. */
+  code: string;
 }
 
-/** หน้าแก้ไขบทบาทแบบเต็มหน้า (route แยก /user/role/edit). code read-only (REQ-7.3). UI-shell. */
-export function RoleEditView({ role }: RoleEditViewProps) {
+/** หน้าแก้ไขบทบาทแบบเต็มหน้า (route แยก /user/role/edit). code read-only (REQ-7.3). */
+export function RoleEditView({ code }: RoleEditViewProps) {
   const router = useRouter();
-  const [input, setInput] = useState<RoleFormInput>(() => ({
-    code: role.code,
-    name: role.name,
-    description: role.description,
-    color: role.color,
-    status: role.status,
-    permissions: [...role.permissions],
-  }));
+  const cat = useRoleCatalog();
+  const [role, setRole] = useState<Role | null>(null);
+  const [load, setLoad] = useState<"loading" | "ok" | "notfound" | "error">(
+    "loading",
+  );
+  const [input, setInput] = useState<RoleFormInput | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [saving, setSaving] = useState(false);
 
-  const existingCodes = ROLES.map((r) => r.code);
+  useEffect(() => {
+    let active = true;
+    getRole(code)
+      .then((r) => {
+        if (!active) return;
+        if (!r) {
+          setLoad("notfound");
+          return;
+        }
+        setRole(r);
+        setInput({
+          code: r.code,
+          name: r.name,
+          description: r.description,
+          color: r.color,
+          status: r.status,
+          permissions: [...r.permissions],
+        });
+        setLoad("ok");
+      })
+      .catch(() => {
+        if (active) setLoad("error");
+      });
+    return () => {
+      active = false;
+    };
+  }, [code]);
 
   function patch(p: Partial<RoleFormInput>) {
-    setInput((prev) => ({ ...prev, ...p }));
+    setInput((prev) => (prev ? { ...prev, ...p } : prev));
   }
 
-  function handleSave() {
-    const found = validateRoleForm(input, existingCodes, "edit");
+  async function handleSave() {
+    if (!input || saving) return;
+    const found = validateRoleForm(input, [], "edit");
     if (Object.keys(found).length > 0) {
       setErrors(found);
       return;
     }
-    // UI-shell: ไม่ mutate รายการจริง — กลับหน้า list พร้อม toast (REQ-7.2 / 10.2 / 13.1)
-    const toast = `แก้ไขบทบาท “${input.name}” สำเร็จ`;
-    router.push(`/user/role/list?toast=${encodeURIComponent(toast)}`);
+    setSaving(true);
+    const res = await updateRole(code, input);
+    setSaving(false);
+    if (res.status === 409) {
+      setErrors({ name: "ข้อมูลขัดแย้งกับบทบาทอื่น" });
+      return;
+    }
+    if (!res.ok) {
+      setErrors({ name: "บันทึกไม่สำเร็จ ลองใหม่อีกครั้ง" });
+      return;
+    }
+    router.push(
+      `/user/role/list?toast=${encodeURIComponent(`แก้ไขบทบาท “${input.name}” สำเร็จ`)}`,
+    );
+  }
+
+  const header = (
+    <EditPageHeader
+      title="แก้ไขบทบาท"
+      backHref="/user/role/list"
+      breadcrumbs={[
+        { label: "Console" },
+        { label: "บทบาทและสิทธิ์", href: "/user/role/list" },
+        { label: role?.name ?? "แก้ไขบทบาท" },
+      ]}
+    />
+  );
+
+  if (load === "loading" || cat.loading) {
+    return (
+      <>
+        {header}
+        <RoleFormStatus state="loading" />
+      </>
+    );
+  }
+  if (load === "notfound") {
+    return (
+      <>
+        {header}
+        <RoleFormStatus state="notfound" />
+      </>
+    );
+  }
+  if (load === "error" || cat.error || !input || !cat.catalog) {
+    return (
+      <>
+        {header}
+        <RoleFormStatus state="error" />
+      </>
+    );
   }
 
   return (
     <>
-      <EditPageHeader
-        title="แก้ไขบทบาท"
-        backHref="/user/role/list"
-        breadcrumbs={[
-          { label: "Console" },
-          { label: "บทบาทและสิทธิ์", href: "/user/role/list" },
-          { label: role.name },
-        ]}
-      />
+      {header}
 
       <div className="rounded-card bg-card p-6" style={cardStyle}>
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
@@ -128,8 +197,8 @@ export function RoleEditView({ role }: RoleEditViewProps) {
           <span className="text-sm font-medium text-grey-800">สิทธิ์</span>
           <div className="-mx-6 border-t border-[var(--divider)]">
             <RolePermissionMatrix
-              catalog={PERMISSION_CATALOG}
-              groups={RESOURCE_GROUPS}
+              catalog={cat.catalog.permissions}
+              groups={cat.catalog.groups}
               selected={input.permissions}
               onChange={(next) => patch({ permissions: next })}
             />
@@ -143,9 +212,10 @@ export function RoleEditView({ role }: RoleEditViewProps) {
           <button
             type="button"
             onClick={handleSave}
-            className="inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-grey-800 px-3 text-sm font-bold text-white transition-colors hover:bg-grey-900"
+            disabled={saving}
+            className="inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-grey-800 px-3 text-sm font-bold text-white transition-colors hover:bg-grey-900 disabled:opacity-60"
           >
-            บันทึก
+            {saving ? "กำลังบันทึก…" : "บันทึก"}
           </button>
         </div>
       </div>

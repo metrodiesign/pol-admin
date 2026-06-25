@@ -1,16 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import type { Role, RoleStatus, RoleFormInput } from "@/types/role";
-import { PERMISSION_CATALOG, ROLES, RESOURCE_GROUPS } from "@/lib/mock/role";
+import type { RoleStatus, RoleFormInput } from "@/types/role";
+import { getRoles, createRole } from "@/lib/api/admin-api";
+import { useRoleCatalog } from "@/hooks/use-role-catalog";
 import { makeCopyCode, validateRoleForm } from "@/lib/role/role-permissions";
 import { cn } from "@/lib/utils";
 import { EditPageHeader } from "@/components/shared/edit-page-header";
 import { TextField } from "@/components/form/text-field";
 import { SelectField } from "@/components/form/select-field";
 import { RolePermissionMatrix } from "./role-permission-matrix";
+import { RoleFormStatus } from "./role-form-status";
 import { ROLE_COLOR_OPTIONS } from "./role-badge";
 import { STATUS_OPTIONS } from "./role-status-badge";
 
@@ -22,52 +24,87 @@ const cardStyle = {
 const cancelClass =
   "inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-sm font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]";
 
+const blankInput: RoleFormInput = {
+  code: "",
+  name: "",
+  description: "",
+  color: "blue",
+  status: "active",
+  permissions: [],
+};
+
 interface RoleCreateViewProps {
-  /** บทบาทต้นทางสำหรับโหมดทำสำเนา (prefill); ไม่มี = สร้างใหม่ */
-  source?: Role | null;
+  /** code ของบทบาทต้นทางสำหรับโหมดทำสำเนา; null = สร้างใหม่ */
+  from?: string | null;
 }
 
 /**
  * หน้าสร้างบทบาทแบบเต็มหน้า (route แยก /user/role/create).
- * source ว่าง = สร้างใหม่; มี source = ทำสำเนา (prefill code/name/perms). code แก้ไขได้. UI-shell.
+ * from ว่าง = สร้างใหม่; มี from = ทำสำเนา (prefill จากบทบาทต้นทาง). code แก้ไขได้.
  */
-export function RoleCreateView({ source }: RoleCreateViewProps) {
+export function RoleCreateView({ from }: RoleCreateViewProps) {
   const router = useRouter();
-  const existingCodes = ROLES.map((r) => r.code);
-  const isDuplicate = Boolean(source);
-
-  const [input, setInput] = useState<RoleFormInput>(() =>
-    source
-      ? {
-          code: makeCopyCode(source.code, existingCodes),
-          name: `${source.name} (สำเนา)`,
-          description: source.description,
-          color: source.color,
-          status: source.status,
-          permissions: [...source.permissions],
-        }
-      : {
-          code: "",
-          name: "",
-          description: "",
-          color: "blue",
-          status: "active",
-          permissions: [],
-        },
-  );
+  const cat = useRoleCatalog();
+  const [load, setLoad] = useState<"loading" | "ok" | "error">("loading");
+  const [existingCodes, setExistingCodes] = useState<string[]>([]);
+  const [isDuplicate, setIsDuplicate] = useState(false);
+  const [input, setInput] = useState<RoleFormInput | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    getRoles()
+      .then((list) => {
+        if (!active) return;
+        const codes = list.map((r) => r.code);
+        setExistingCodes(codes);
+        const source = from ? (list.find((r) => r.code === from) ?? null) : null;
+        setIsDuplicate(Boolean(source));
+        setInput(
+          source
+            ? {
+                code: makeCopyCode(source.code, codes),
+                name: `${source.name} (สำเนา)`,
+                description: source.description,
+                color: source.color,
+                status: source.status,
+                permissions: [...source.permissions],
+              }
+            : { ...blankInput },
+        );
+        setLoad("ok");
+      })
+      .catch(() => {
+        if (active) setLoad("error");
+      });
+    return () => {
+      active = false;
+    };
+  }, [from]);
 
   function patch(p: Partial<RoleFormInput>) {
-    setInput((prev) => ({ ...prev, ...p }));
+    setInput((prev) => (prev ? { ...prev, ...p } : prev));
   }
 
-  function handleSave() {
+  async function handleSave() {
+    if (!input || saving) return;
     const found = validateRoleForm(input, existingCodes, "create");
     if (Object.keys(found).length > 0) {
       setErrors(found);
       return;
     }
-    // UI-shell: ไม่ mutate รายการจริง — กลับหน้า list พร้อม toast (REQ-10.2 / 13.1)
+    setSaving(true);
+    const res = await createRole(input);
+    setSaving(false);
+    if (res.status === 409) {
+      setErrors({ code: "รหัสนี้ถูกใช้แล้ว" });
+      return;
+    }
+    if (!res.ok) {
+      setErrors({ name: "บันทึกไม่สำเร็จ ลองใหม่อีกครั้ง" });
+      return;
+    }
     const verb = isDuplicate ? "ทำสำเนาบทบาท" : "สร้างบทบาท";
     router.push(
       `/user/role/list?toast=${encodeURIComponent(`${verb} “${input.name}” สำเร็จ`)}`,
@@ -75,18 +112,38 @@ export function RoleCreateView({ source }: RoleCreateViewProps) {
   }
 
   const title = isDuplicate ? "ทำสำเนาบทบาท" : "สร้างบทบาทใหม่";
+  const header = (
+    <EditPageHeader
+      title={title}
+      backHref="/user/role/list"
+      breadcrumbs={[
+        { label: "Console" },
+        { label: "บทบาทและสิทธิ์", href: "/user/role/list" },
+        { label: title },
+      ]}
+    />
+  );
+
+  if (load === "loading" || cat.loading) {
+    return (
+      <>
+        {header}
+        <RoleFormStatus state="loading" />
+      </>
+    );
+  }
+  if (load === "error" || cat.error || !input || !cat.catalog) {
+    return (
+      <>
+        {header}
+        <RoleFormStatus state="error" />
+      </>
+    );
+  }
 
   return (
     <>
-      <EditPageHeader
-        title={title}
-        backHref="/user/role/list"
-        breadcrumbs={[
-          { label: "Console" },
-          { label: "บทบาทและสิทธิ์", href: "/user/role/list" },
-          { label: title },
-        ]}
-      />
+      {header}
 
       <div className="rounded-card bg-card p-6" style={cardStyle}>
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
@@ -152,8 +209,8 @@ export function RoleCreateView({ source }: RoleCreateViewProps) {
           <span className="text-sm font-medium text-grey-800">สิทธิ์</span>
           <div className="-mx-6 border-t border-[var(--divider)]">
             <RolePermissionMatrix
-              catalog={PERMISSION_CATALOG}
-              groups={RESOURCE_GROUPS}
+              catalog={cat.catalog.permissions}
+              groups={cat.catalog.groups}
               selected={input.permissions}
               onChange={(next) => patch({ permissions: next })}
             />
@@ -167,9 +224,10 @@ export function RoleCreateView({ source }: RoleCreateViewProps) {
           <button
             type="button"
             onClick={handleSave}
-            className="inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-grey-800 px-3 text-sm font-bold text-white transition-colors hover:bg-grey-900"
+            disabled={saving}
+            className="inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-grey-800 px-3 text-sm font-bold text-white transition-colors hover:bg-grey-900 disabled:opacity-60"
           >
-            บันทึก
+            {saving ? "กำลังบันทึก…" : "บันทึก"}
           </button>
         </div>
       </div>

@@ -10,8 +10,8 @@ import {
   getPaginationRowModel,
 } from "@tanstack/react-table";
 import type { Role } from "@/types/role";
-import { PERMISSION_CATALOG, RESOURCE_GROUPS } from "@/lib/mock/role";
-import { getRoles } from "@/lib/api/admin-api";
+import { getRoles, deleteRole as deleteRoleApi } from "@/lib/api/admin-api";
+import { useRoleCatalog } from "@/hooks/use-role-catalog";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";
 import { CustomBreadcrumbs } from "@/components/shared/custom-breadcrumbs";
@@ -32,11 +32,17 @@ export function RolesView() {
   const [detailRole, setDetailRole] = useState<Role | null>(null);
   const [deleteRole, setDeleteRole] = useState<Role | null>(null);
   const [roles, setRoles] = useState<Role[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [rolesLoading, setRolesLoading] = useState(true);
+  const [rolesError, setRolesError] = useState(false);
   const [reloadKey, setReloadKey] = useState(0);
   const { toasts, show, dismiss } = useRoleToast();
   const router = useRouter();
+
+  const cat = useRoleCatalog();
+  const catalog = cat.catalog?.permissions ?? [];
+  const groups = cat.catalog?.groups ?? [];
+  const loading = rolesLoading || cat.loading;
+  const error = rolesError || cat.error;
 
   // โหลด list จริงจาก backend (GET /admin/roles). guard active กัน setState หลัง unmount.
   useEffect(() => {
@@ -46,10 +52,10 @@ export function RolesView() {
         if (active) setRoles(data);
       })
       .catch(() => {
-        if (active) setError(true);
+        if (active) setRolesError(true);
       })
       .finally(() => {
-        if (active) setLoading(false);
+        if (active) setRolesLoading(false);
       });
     return () => {
       active = false;
@@ -93,15 +99,15 @@ export function RolesView() {
   const columns = useMemo(
     () =>
       buildRoleColumns({
-        catalog: PERMISSION_CATALOG,
+        catalog,
         onSelect: setDetailRole,
         onRead: goRead,
         onEdit: goEdit,
         onDuplicate: goDuplicate,
         onDelete: setDeleteRole,
       }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- handlers เสถียร (router/setState)
-    [],
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- handlers เสถียร (router/setState); rebuild เมื่อ catalog มา
+    [catalog],
   );
 
   const table = useDataTable<Role>({
@@ -173,9 +179,10 @@ export function RolesView() {
             <button
               type="button"
               onClick={() => {
-                setLoading(true);
-                setError(false);
+                setRolesLoading(true);
+                setRolesError(false);
                 setReloadKey((k) => k + 1);
+                if (cat.error) cat.reload();
               }}
               className="mt-3 inline-flex h-9 items-center rounded-control bg-grey-800 px-3 text-sm font-bold text-white transition-colors hover:bg-grey-900"
             >
@@ -205,8 +212,8 @@ export function RolesView() {
         onOpenChange={(open) => {
           if (!open) setDetailRole(null);
         }}
-        catalog={PERMISSION_CATALOG}
-        groups={RESOURCE_GROUPS}
+        catalog={catalog}
+        groups={groups}
         onEdit={goEdit}
         onDuplicate={goDuplicate}
         onDelete={setDeleteRole}
@@ -218,9 +225,19 @@ export function RolesView() {
         onOpenChange={(open) => {
           if (!open) setDeleteRole(null);
         }}
-        onConfirm={(role) => {
-          // UI-shell: ปิด drawer ที่เปิดอยู่ (REQ-9.1) + toast — ไม่ลบออกจากรายการจริง (REQ-10.2)
+        onConfirm={async (role) => {
+          const res = await deleteRoleApi(role.code);
+          if (res.status === 409) {
+            show(`ลบบทบาท “${role.name}” ไม่ได้ — มีผู้ใช้ผูกอยู่`);
+            return;
+          }
+          if (!res.ok) {
+            show(`ลบบทบาท “${role.name}” ไม่สำเร็จ`);
+            return;
+          }
           setDetailRole(null);
+          setDeleteRole(null);
+          setReloadKey((k) => k + 1); // re-fetch list หลังลบ
           show(`ลบบทบาท “${role.name}” สำเร็จ`);
         }}
       />
