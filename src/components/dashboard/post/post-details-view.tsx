@@ -242,7 +242,7 @@ export function PostDetailsView() {
         {/* Title — bottom-left */}
         <div className="absolute bottom-6 left-6 sm:bottom-8 sm:left-8 right-20">
           <h1
-            className="max-w-[480px] text-[28px] sm:text-[32px] font-bold leading-tight text-white"
+            className="max-w-[480px] text-2xl sm:text-3xl font-bold leading-tight text-white"
             style={{ fontFamily: "var(--font-barlow, var(--font-sans))" }}
           >
             Climate Change and Its Effects on Global Food Security
@@ -464,8 +464,8 @@ export function PostDetailsView() {
       {/* Comments section */}
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-6">
-          <h4 className="text-[18px] font-bold text-grey-800">Comments</h4>
-          <span className="text-[14px] text-grey-500 font-medium">
+          <h4 className="text-base font-bold text-grey-800">Comments</h4>
+          <span className="text-xs text-grey-500 font-medium">
             ({POST_COMMENTS.length})
           </span>
         </div>

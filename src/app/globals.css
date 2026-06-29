@@ -104,13 +104,32 @@
      (masked keys, idempotency keys, event/client IDs, signatures, refs). ---- */
   --font-mono: var(--font-ibm-plex-mono), ui-monospace, SFMono-Regular,
     "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  /* ---- Body/display scale: floor 14px, body 16px (rebalanced up) ---- */
+  --text-xs: 0.875rem;            /* 14px ← floor */
+  --text-xs--line-height: 1.25rem;
+  --text-sm: 0.9375rem;           /* 15px ← body (text-sm) */
+  --text-sm--line-height: 1.375rem;
+  --text-base: 1rem;              /* 16px ← normal */
+  --text-base--line-height: 1.5rem;
+  --text-lg: 1.25rem;             /* 20px */
+  --text-lg--line-height: 1.75rem;
+  --text-xl: 1.5rem;              /* 24px */
+  --text-xl--line-height: 2rem;
+  --text-2xl: 1.75rem;            /* 28px */
+  --text-2xl--line-height: 2.25rem;
+  --text-3xl: 2rem;               /* 32px */
+  --text-3xl--line-height: 2.5rem;
+  --text-4xl: 2.5rem;             /* 40px */
+  --text-4xl--line-height: 2.75rem;
+  --text-5xl: 3rem;               /* 48px */
+  --text-5xl--line-height: 3rem;
   /* clamp ranges = base rem (mobile) -> computed px @1440 (desktop), matching MUI responsiveFontSizes */
   --text-h1: clamp(2.5rem, 1.972rem + 2.253vw, 4rem);
   --text-h2: clamp(2rem, 1.648rem + 1.502vw, 3rem);
-  --text-h3: clamp(1.5rem, 1.324rem + 0.751vw, 2rem);
-  --text-h4: clamp(1.25rem, 1.162rem + 0.376vw, 1.5rem);
-  --text-h5: clamp(1.125rem, 1.103rem + 0.094vw, 1.1875rem);
-  --text-h6: clamp(1.0625rem, 1.040rem + 0.094vw, 1.125rem);
+  --text-h3: clamp(1.75rem, 1.662rem + 0.376vw, 2rem);     /* 28→32px */
+  --text-h4: clamp(1.5rem, 1.412rem + 0.376vw, 1.75rem);   /* 24→28px */
+  --text-h5: clamp(1.375rem, 1.331rem + 0.188vw, 1.5rem);  /* 22→24px */
+  --text-h6: clamp(1.25rem, 1.206rem + 0.188vw, 1.375rem); /* 20→22px */
 }
 
 /* ---- shadcn primitive tokens mapped to the Minimal palette ---- */
@@ -378,7 +397,7 @@ button, a, input, select, textarea {
   border: 1px solid var(--divider);
   background-color: transparent;
   color: var(--color-text-primary);
-  font-size: 0.9375rem; /* 15px */
+  font-size: 1rem; /* 16px — body */
   outline: none;
   transition: border-color 150ms ease-in-out, box-shadow 150ms ease-in-out;
 }
@@ -472,8 +491,8 @@ tbody tr {
 @utility text-subtitle2 { font-size: 0.875rem; line-height: 1.571; font-weight: 600; }
 @utility text-body1 { font-size: 1rem; line-height: 1.5; font-weight: 400; }
 @utility text-body2 { font-size: 0.875rem; line-height: 1.571; font-weight: 400; }
-@utility text-caption { font-size: 0.75rem; line-height: 1.5; font-weight: 400; }
-@utility text-overline { font-size: 0.75rem; line-height: 1.5; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+@utility text-caption { font-size: 0.875rem; line-height: 1.5; font-weight: 400; }
+@utility text-overline { font-size: 0.875rem; line-height: 1.5; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
 
 /* ---- Control-plane data face: machine identifiers, tabular figures aligned ---- */
 @utility text-data { font-family: var(--font-mono); font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }

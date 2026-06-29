@@ -45,7 +45,7 @@ export function ContactsPopover({ variant = "white" }: ContactsPopoverProps) {
         <Users className="size-6" />
       </PopoverTrigger>
       <PopoverContent align="end" className="w-[328px] p-0">
-        <p className="p-3 text-[18px] font-semibold text-grey-800">
+        <p className="p-3 text-base font-semibold text-grey-800">
           Contacts{" "}
           <span className="text-grey-500">({contacts.length})</span>
         </p>

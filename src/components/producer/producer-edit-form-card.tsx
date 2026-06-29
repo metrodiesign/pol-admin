@@ -114,7 +114,7 @@ export function ProducerEditFormCard({
           {rows.map(([label, value]) => (
             <div key={label} className="flex flex-col gap-1">
               <dt className="text-sm font-medium text-grey-600">{label}</dt>
-              <dd className="text-[15px] text-foreground">{value || "-"}</dd>
+              <dd className="text-sm text-foreground">{value || "-"}</dd>
             </div>
           ))}
         </dl>
@@ -141,7 +141,7 @@ export function ProducerEditFormCard({
             {PERSON_TYPES.map((pt) => (
               <label
                 key={pt}
-                className="flex cursor-pointer items-center gap-2 text-[15px] text-foreground"
+                className="flex cursor-pointer items-center gap-2 text-sm text-foreground"
               >
                 <input
                   type="radio"

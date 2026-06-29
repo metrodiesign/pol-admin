@@ -42,7 +42,7 @@ export function webhookColumns({
     },
     {
       accessorKey: "id",
-      header: "Event",
+      header: "เหตุการณ์",
       enableSorting: false,
       cell: ({ row }) => (
         <div className="flex flex-col gap-0.5">
@@ -87,7 +87,7 @@ export function webhookColumns({
     },
     {
       accessorKey: "signatureVerified",
-      header: "Signature",
+      header: "ลายเซ็น",
       enableSorting: false,
       cell: ({ row }) =>
         row.original.signatureVerified ? (

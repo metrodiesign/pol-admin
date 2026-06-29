@@ -333,7 +333,7 @@ function ImageDropzone({ existingImages = [], onExistingRemove, onRemoveAll }: I
             </button>
             <button
               type="button"
-              className="inline-flex items-center gap-1.5 rounded-control bg-foreground px-2.5 py-1 text-[13px] leading-[22px] font-bold text-card hover:opacity-90 transition-opacity"
+              className="inline-flex items-center gap-1.5 rounded-control bg-foreground px-2.5 py-1 text-xs leading-[22px] font-bold text-card hover:opacity-90 transition-opacity"
             >
               <Upload className="size-4" />
               Upload
@@ -462,7 +462,7 @@ export function TourForm({ mode, tour }: TourFormProps) {
                   placeholder="Ex: Adventure seekers expedition..."
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full rounded-control border border-[var(--divider)] h-14 px-3.5 text-[15px] text-grey-800 outline-none placeholder:text-grey-400 focus:border-grey-800 focus:ring-1 focus:ring-inset focus:ring-grey-800"
+                  className="w-full rounded-control border border-[var(--divider)] h-14 px-3.5 text-sm text-grey-800 outline-none placeholder:text-grey-400 focus:border-grey-800 focus:ring-1 focus:ring-inset focus:ring-grey-800"
                 />
               </div>
 
@@ -504,7 +504,7 @@ export function TourForm({ mode, tour }: TourFormProps) {
                     {selectedGuides.map((guide) => (
                       <span
                         key={guide.id}
-                        className="inline-flex h-6 items-center gap-1 rounded-[8px] bg-[rgba(145,158,171,0.16)] py-0.5 pl-1 pr-2 text-[13px] font-normal text-grey-800"
+                        className="inline-flex h-6 items-center gap-1 rounded-[8px] bg-[rgba(145,158,171,0.16)] py-0.5 pl-1 pr-2 text-xs font-normal text-grey-800"
                       >
                         <span className="relative size-5 overflow-hidden rounded-full bg-grey-200 shrink-0">
                           <Image
@@ -562,7 +562,7 @@ export function TourForm({ mode, tour }: TourFormProps) {
                       placeholder="Start date"
                       value={startDate}
                       onChange={(e) => setStartDate(e.target.value)}
-                      className="w-full rounded-control border border-[var(--divider)] h-14 px-3.5 pr-10 text-[15px] text-grey-800 outline-none placeholder:text-grey-400 focus:border-grey-800 focus:ring-1 focus:ring-inset focus:ring-grey-800"
+                      className="w-full rounded-control border border-[var(--divider)] h-14 px-3.5 pr-10 text-sm text-grey-800 outline-none placeholder:text-grey-400 focus:border-grey-800 focus:ring-1 focus:ring-inset focus:ring-grey-800"
                     />
                     <button
                       type="button"
@@ -582,7 +582,7 @@ export function TourForm({ mode, tour }: TourFormProps) {
                       placeholder="End date"
                       value={endDate}
                       onChange={(e) => setEndDate(e.target.value)}
-                      className="w-full rounded-control border border-[var(--divider)] h-14 px-3.5 pr-10 text-[15px] text-grey-800 outline-none placeholder:text-grey-400 focus:border-grey-800 focus:ring-1 focus:ring-inset focus:ring-grey-800"
+                      className="w-full rounded-control border border-[var(--divider)] h-14 px-3.5 pr-10 text-sm text-grey-800 outline-none placeholder:text-grey-400 focus:border-grey-800 focus:ring-1 focus:ring-inset focus:ring-grey-800"
                     />
                     <button
                       type="button"
@@ -612,7 +612,7 @@ export function TourForm({ mode, tour }: TourFormProps) {
                   placeholder="Ex: 2 days, 4 days 3 nights..."
                   value={duration}
                   onChange={(e) => setDuration(e.target.value)}
-                  className="w-full rounded-control border border-[var(--divider)] h-14 px-3.5 text-[15px] text-grey-800 outline-none placeholder:text-grey-400 focus:border-grey-800 focus:ring-1 focus:ring-inset focus:ring-grey-800"
+                  className="w-full rounded-control border border-[var(--divider)] h-14 px-3.5 text-sm text-grey-800 outline-none placeholder:text-grey-400 focus:border-grey-800 focus:ring-1 focus:ring-inset focus:ring-grey-800"
                 />
               </div>
 
@@ -630,7 +630,7 @@ export function TourForm({ mode, tour }: TourFormProps) {
                 >
                   <SelectTrigger
                     aria-labelledby={destinationId}
-                    className="w-full h-14 text-[15px] text-grey-800"
+                    className="w-full h-14 text-sm text-grey-800"
                   >
                     <SelectValue placeholder="+ Destination" />
                   </SelectTrigger>
@@ -726,7 +726,7 @@ export function TourForm({ mode, tour }: TourFormProps) {
             </label>
             <button
               type="submit"
-              className="h-12 rounded-control bg-foreground px-4 text-[15px] font-bold text-card hover:opacity-90 transition-opacity"
+              className="h-12 rounded-control bg-foreground px-4 text-sm font-bold text-card hover:opacity-90 transition-opacity"
             >
               {isEdit ? "Save changes" : "Create tour"}
             </button>

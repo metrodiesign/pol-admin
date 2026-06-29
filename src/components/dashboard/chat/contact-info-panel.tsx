@@ -26,7 +26,7 @@ function CollapsibleSection({
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="flex w-full items-center justify-between px-4 py-2 text-[11px] font-bold tracking-wider text-grey-500 transition-colors hover:bg-grey-100"
+        className="flex w-full items-center justify-between px-4 py-2 text-xs font-bold tracking-wider text-grey-500 transition-colors hover:bg-grey-100"
       >
         {title}
         <ChevronDown
@@ -123,10 +123,10 @@ function AttachmentRow({ attachment }: { attachment: ChatAttachment }) {
 
       {/* Name + date */}
       <div className="min-w-0 flex-1">
-        <p className="truncate text-[13px] font-medium leading-5 text-grey-800">
+        <p className="truncate text-xs font-medium leading-5 text-grey-800">
           {attachment.name}
         </p>
-        <p className="text-[12px] leading-4 text-grey-400">{attachment.datetime}</p>
+        <p className="text-xs leading-4 text-grey-400">{attachment.datetime}</p>
       </div>
 
       {/* Download button */}

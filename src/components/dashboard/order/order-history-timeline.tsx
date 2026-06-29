@@ -49,7 +49,7 @@ export function OrderHistoryTimeline({
                   <p className="text-sm font-semibold text-foreground">
                     {event.label}
                   </p>
-                  <p className="mt-0.5 text-[13px] text-grey-600">
+                  <p className="mt-0.5 text-xs text-grey-600">
                     {event.datetime}
                   </p>
                 </div>
@@ -61,7 +61,7 @@ export function OrderHistoryTimeline({
         <button
           type="button"
           onClick={() => setExpanded((v) => !v)}
-          className="mt-4 flex items-center gap-1 text-[13px] font-bold leading-[22px] text-foreground transition-opacity hover:opacity-70"
+          className="mt-4 flex items-center gap-1 text-xs font-bold leading-[22px] text-foreground transition-opacity hover:opacity-70"
         >
           Show {expanded ? "less" : "more"}
           <ChevronRight
@@ -77,7 +77,7 @@ export function OrderHistoryTimeline({
       <div className="w-full space-y-4 lg:w-[220px] lg:shrink-0">
         {keyTimes.map((kt, i) => (
           <div key={i}>
-            <p className="text-[13px] text-grey-600">{kt.label}</p>
+            <p className="text-xs text-grey-600">{kt.label}</p>
             <p className="mt-0.5 text-sm font-semibold text-foreground">
               {kt.datetime}
             </p>

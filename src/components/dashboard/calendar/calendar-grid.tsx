@@ -299,7 +299,7 @@ export function CalendarGrid({
                   <div className="flex justify-end">
                     <span
                       className={cn(
-                        "flex h-6 w-6 items-center justify-center rounded-full text-[13px] font-medium",
+                        "flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium",
                         isToday
                           ? "font-bold text-white"
                           : !cell.inMonth
@@ -321,7 +321,7 @@ export function CalendarGrid({
                         setExpanded((prev) => ({ ...prev, [cell.dateStr]: true }));
                       }}
                       style={{ top: `${SLOT_TOP + MAX_SLOTS * SLOT_H}px` }}
-                      className="absolute left-1.5 right-1.5 text-left text-[11px] font-medium text-grey-600 hover:text-grey-800"
+                      className="absolute left-1.5 right-1.5 text-left text-xs font-medium text-grey-600 hover:text-grey-800"
                     >
                       +{hiddenCount} more
                     </button>
@@ -365,7 +365,7 @@ export function CalendarGrid({
                     height: "20px",
                   }}
                   className={cn(
-                    "absolute z-10 flex items-center gap-1 overflow-hidden border-l-2 px-1.5 text-[11px] font-medium leading-5 transition-opacity hover:opacity-80",
+                    "absolute z-10 flex items-center gap-1 overflow-hidden border-l-2 px-1.5 text-xs font-medium leading-5 transition-opacity hover:opacity-80",
                     colors.bg,
                     colors.text,
                     colors.border,

@@ -195,7 +195,7 @@ function EmptyOrDone({
         {icon}
       </span>
       <p className="text-base font-bold text-foreground">{title}</p>
-      <p className="max-w-md text-[13px] leading-relaxed text-grey-500">{subtitle}</p>
+      <p className="max-w-md text-xs leading-relaxed text-grey-500">{subtitle}</p>
       {children}
       <Button
         render={<Link href="/policy/list" />}

@@ -19,7 +19,7 @@ function StatCard({ stat }: { stat: CourseStat }) {
         <Icon className="size-5" style={{ color: stat.color }} />
       </div>
       {/* Number */}
-      <p className="text-[32px] font-bold leading-[48px] text-grey-800">{stat.value}</p>
+      <p className="text-3xl font-bold leading-[48px] text-grey-800">{stat.value}</p>
       {/* Label */}
       <p className="mt-1 text-sm text-grey-500">{stat.title}</p>
     </div>

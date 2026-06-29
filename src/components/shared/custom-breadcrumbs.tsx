@@ -30,7 +30,7 @@ export function CustomBreadcrumbs({
         <div className="flex items-center justify-between gap-2">
           <div>
             {typeof heading === "string" ? (
-              <h4 className="text-2xl font-bold leading-9 text-foreground">{heading}</h4>
+              <h4 className="text-lg font-bold leading-9 text-foreground">{heading}</h4>
             ) : (
               heading
             )}

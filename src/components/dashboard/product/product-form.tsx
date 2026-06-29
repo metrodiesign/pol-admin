@@ -163,7 +163,7 @@ function TagsInput({
         {value.map((tag) => (
           <span
             key={tag}
-            className="flex h-6 items-center gap-1 rounded-lg bg-info/16 px-2 text-[13px] font-normal text-info-dark"
+            className="flex h-6 items-center gap-1 rounded-lg bg-info/16 px-2 text-xs font-normal text-info-dark"
           >
             {tag}
             <button
@@ -323,7 +323,7 @@ export function ProductForm({ mode, defaultValues = {}, onSubmit }: ProductFormP
               <Select value={category} onValueChange={(v) => v && setCategory(v)}>
                 <SelectTrigger
                   aria-labelledby={categoryId}
-                  className="h-12 w-full rounded-control border-[var(--divider)] pl-3.5 pr-3 text-[15px] text-foreground focus-within:border-grey-800 focus-within:ring-1 focus-within:ring-inset focus-within:ring-grey-800"
+                  className="h-12 w-full rounded-control border-[var(--divider)] pl-3.5 pr-3 text-sm text-foreground focus-within:border-grey-800 focus-within:ring-1 focus-within:ring-inset focus-within:ring-grey-800"
                 >
                   <SelectValue />
                 </SelectTrigger>
@@ -472,7 +472,7 @@ export function ProductForm({ mode, defaultValues = {}, onSubmit }: ProductFormP
               published,
             })
           }
-          className="h-12 rounded-lg bg-foreground px-4 text-[15px] font-bold text-card transition-opacity hover:opacity-90"
+          className="h-12 rounded-lg bg-foreground px-4 text-sm font-bold text-card transition-opacity hover:opacity-90"
         >
           {submitLabel}
         </button>

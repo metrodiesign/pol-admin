@@ -3,13 +3,29 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import type { Transaction } from "@/types/transaction";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { cn, formatTHB } from "@/lib/utils";
 import { CHANNEL_LABEL, CHANNEL_DOT, PSP_LABEL } from "@/lib/transaction";
 import { TransactionLifecycle } from "./transaction-lifecycle";
 import { TransactionStatusBadge } from "./transaction-status-badge";
-import { ChevronRight, Menu } from "lucide-react";
+import { Eye, Pencil, Copy, Trash2, Menu } from "lucide-react";
 
-export const transactionColumns: ColumnDef<Transaction>[] = [
+interface BuildColumnsArgs {
+  onSelect?: (t: Transaction) => void;
+  onRead?: (t: Transaction) => void;
+}
+
+export function buildTransactionColumns({
+  onSelect: _onSelect,
+  onRead,
+}: BuildColumnsArgs): ColumnDef<Transaction>[] {
+  return [
   {
     id: "select",
     enableSorting: false,
@@ -21,14 +37,14 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
           table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
         }
         onChange={(c) => table.toggleAllRowsSelected(c)}
-        aria-label="Select all"
+        aria-label="เลือกทั้งหมด"
       />
     ),
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
         onChange={(c) => row.toggleSelected(c)}
-        aria-label={`Select ${row.original.code}`}
+        aria-label={`เลือก ${row.original.code}`}
       />
     ),
   },
@@ -122,7 +138,7 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
   },
   {
     id: "lifecycle",
-    header: "LIFECYCLE",
+    header: "วงจร",
     enableSorting: false,
     cell: ({ row }) => <TransactionLifecycle status={row.original.status} />,
   },
@@ -141,10 +157,64 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
     ),
   },
   {
-    id: "chevron",
+    id: "actions",
     enableSorting: false,
-    meta: { headClassName: "w-12", cellClassName: "w-12", ignoreRowClick: true },
+    meta: { headClassName: "w-48", cellClassName: "w-48", ignoreRowClick: true },
     header: () => null,
-    cell: () => <ChevronRight className="size-4 text-grey-500" />,
+    cell: ({ row }) => (
+      <TooltipProvider>
+        <div
+          className="flex items-center justify-end gap-1.5"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <Tooltip>
+            <TooltipTrigger render={<span className="inline-flex" />}>
+              <Button
+                variant="ghost"
+                size="icon-lg"
+                className="size-10 cursor-pointer bg-grey-600/8 text-grey-700 hover:bg-grey-800 hover:text-white focus-visible:bg-grey-800 focus-visible:text-white"
+                aria-label="ดู"
+                onClick={() => onRead?.(row.original)}
+              >
+                <Eye className="size-5" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>ดู</TooltipContent>
+          </Tooltip>
+          {[
+            { icon: Pencil, label: "แก้ไข" },
+            { icon: Copy,   label: "คัดลอก" },
+          ].map(({ icon: Icon, label }) => (
+            <Tooltip key={label}>
+              <TooltipTrigger render={<span className="inline-flex" />}>
+                <Button
+                  variant="ghost"
+                  size="icon-lg"
+                  className="size-10 cursor-pointer bg-grey-600/8 text-grey-700 hover:bg-grey-800 hover:text-white focus-visible:bg-grey-800 focus-visible:text-white"
+                  aria-label={label}
+                >
+                  <Icon className="size-5" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>{label}</TooltipContent>
+            </Tooltip>
+          ))}
+          <Tooltip>
+            <TooltipTrigger render={<span className="inline-flex" />}>
+              <Button
+                variant="ghost"
+                size="icon-lg"
+                className="size-10 cursor-pointer text-error hover:bg-error/8 hover:text-error focus-visible:bg-error/8 focus-visible:text-error"
+                aria-label="ลบ"
+              >
+                <Trash2 className="size-5" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>ลบ</TooltipContent>
+          </Tooltip>
+        </div>
+      </TooltipProvider>
+    ),
   },
-];
+  ];
+}

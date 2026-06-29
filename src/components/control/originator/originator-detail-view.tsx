@@ -67,7 +67,7 @@ export function OriginatorDetailView({ id }: { id?: string }) {
             <StatusSpine tone={tone} className="h-auto" />
             <div className="min-w-0">
               <span className="text-overline text-grey-500">
-                Control plane · Originator
+                Control plane · ต้นทางคำสั่ง
               </span>
               <h1 className="text-data text-h5 text-foreground break-all">
                 {originator.code}
@@ -98,7 +98,7 @@ export function OriginatorDetailView({ id }: { id?: string }) {
           icon={<Radio className="size-5 text-grey-600" />}
         >
           <div className="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
-            <ReadField label="Code" value={originator.code} mono />
+            <ReadField label="รหัส" value={originator.code} mono />
             <ReadField label="ประเภท" value={TYPE_LABEL[originator.type]} />
             <ReadField
               label="ชื่อ"
@@ -120,7 +120,7 @@ export function OriginatorDetailView({ id }: { id?: string }) {
           </p>
           <div className="grid grid-cols-1 gap-5">
             <ReadField
-              label="API client"
+              label="ไคลเอนต์ API"
               value={originator.linkedApiClientId ?? "—"}
               mono
             />

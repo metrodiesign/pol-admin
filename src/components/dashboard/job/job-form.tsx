@@ -46,7 +46,7 @@ function TextInput({
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
       aria-label={placeholder}
-      className="h-14 w-full rounded-control border border-[var(--divider)] bg-transparent px-3.5 text-[15px] text-grey-800 placeholder:text-grey-400 outline-none focus:border-grey-800 focus:ring-1 focus:ring-inset focus:ring-grey-800"
+      className="h-14 w-full rounded-control border border-[var(--divider)] bg-transparent px-3.5 text-sm text-grey-800 placeholder:text-grey-400 outline-none focus:border-grey-800 focus:ring-1 focus:ring-inset focus:ring-grey-800"
     />
   );
 }
@@ -133,7 +133,7 @@ function SimpleSelect({
     <Select value={value} onValueChange={(v) => onChange(v ?? "")}>
       <SelectTrigger
         aria-label={placeholder ?? "Role"}
-        className="h-14 w-full text-[15px] text-grey-800"
+        className="h-14 w-full text-sm text-grey-800"
       >
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
@@ -183,7 +183,7 @@ function MultiChipSelect({
         {selected.map((s) => (
           <span
             key={s}
-            className="inline-flex h-6 items-center gap-1 rounded-[8px] bg-info/16 px-2 text-[13px] font-normal text-info-dark"
+            className="inline-flex h-6 items-center gap-1 rounded-[8px] bg-info/16 px-2 text-xs font-normal text-info-dark"
           >
             {s}
             <button
@@ -199,7 +199,7 @@ function MultiChipSelect({
             </button>
           </span>
         ))}
-        <span className="flex-1 text-[15px] text-grey-400">{placeholder}</span>
+        <span className="flex-1 text-sm text-grey-400">{placeholder}</span>
         <svg className="size-4 shrink-0 text-grey-400" viewBox="0 0 20 20" fill="currentColor">
           <path
             fillRule="evenodd"
@@ -259,7 +259,7 @@ function LocationSelect({
           return (
             <span
               key={code}
-              className="inline-flex h-6 items-center gap-1 rounded-[8px] bg-info/16 px-2 text-[13px] font-normal text-info-dark"
+              className="inline-flex h-6 items-center gap-1 rounded-[8px] bg-info/16 px-2 text-xs font-normal text-info-dark"
             >
               {loc?.flag} {loc?.code} {loc?.name}
               <button
@@ -276,7 +276,7 @@ function LocationSelect({
             </span>
           );
         })}
-        <span className="flex-1 text-[15px] text-grey-400">+ Locations</span>
+        <span className="flex-1 text-sm text-grey-400">+ Locations</span>
         <svg className="size-4 shrink-0 text-grey-400" viewBox="0 0 20 20" fill="currentColor">
           <path fillRule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" />
         </svg>
@@ -318,7 +318,7 @@ function DateField({
         onChange={(e) => onChange(e.target.value)}
         placeholder="MM/DD/YYYY"
         aria-label="Expired date"
-        className="flex-1 bg-transparent text-[15px] text-grey-800 placeholder:text-grey-400 outline-none"
+        className="flex-1 bg-transparent text-sm text-grey-800 placeholder:text-grey-400 outline-none"
       />
       <button type="button" aria-label="Choose date" className="shrink-0 text-grey-400 hover:text-grey-700">
         <svg className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
@@ -382,7 +382,7 @@ function SalaryField({
           placeholder="0.00"
           disabled={negotiable}
           aria-label="Salary amount"
-          className="flex-1 bg-transparent text-[15px] text-grey-800 placeholder:text-grey-400 outline-none disabled:opacity-40"
+          className="flex-1 bg-transparent text-sm text-grey-800 placeholder:text-grey-400 outline-none disabled:opacity-40"
         />
       </div>
 
@@ -628,7 +628,7 @@ export function JobForm({ currentJob }: JobFormProps) {
 
         <button
           type="submit"
-          className="rounded-control bg-foreground h-12 px-4 text-[15px] font-bold text-card transition-opacity hover:opacity-90"
+          className="rounded-control bg-foreground h-12 px-4 text-sm font-bold text-card transition-opacity hover:opacity-90"
         >
           {isEdit ? "Save changes" : "Create job"}
         </button>

@@ -28,7 +28,7 @@ export function CheckoutCard({
         <div className="min-w-0">
           <h2 className="text-base font-bold text-foreground">{title}</h2>
           {description ? (
-            <p className="mt-0.5 text-[13px] text-grey-500">{description}</p>
+            <p className="mt-0.5 text-xs text-grey-500">{description}</p>
           ) : null}
         </div>
         {action ? <div className="shrink-0">{action}</div> : null}

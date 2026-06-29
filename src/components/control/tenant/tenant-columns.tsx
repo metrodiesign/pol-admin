@@ -52,7 +52,7 @@ export const tenantColumns: ColumnDef<Tenant>[] = [
     header: "ขอบเขต SAQ",
     enableSorting: false,
     cell: ({ row }) => (
-      <Badge variant="outline" className="text-[11px]">
+      <Badge variant="outline" className="text-xs">
         {row.original.saqScope}
       </Badge>
     ),
@@ -64,7 +64,7 @@ export const tenantColumns: ColumnDef<Tenant>[] = [
     cell: ({ row }) => (
       <div className="flex flex-wrap gap-1">
         {row.original.enabledPsps.map((p) => (
-          <Badge key={p} variant="secondary" className="text-[11px] uppercase">
+          <Badge key={p} variant="secondary" className="text-xs uppercase">
             {p}
           </Badge>
         ))}

@@ -100,7 +100,7 @@ function JobSearchInput({ value, onChange }: { value: string; onChange: (v: stri
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         aria-label="Search jobs"
-        className="flex-1 bg-transparent text-[15px] text-foreground placeholder:text-grey-500 outline-none"
+        className="flex-1 bg-transparent text-sm text-foreground placeholder:text-grey-500 outline-none"
       />
     </div>
   );

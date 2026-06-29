@@ -76,7 +76,7 @@ export default function OrderDetailsPage() {
                   <p className="text-base font-semibold text-foreground">
                     {order.customer.name}
                   </p>
-                  <p className="truncate text-[13px] text-grey-600">
+                  <p className="truncate text-xs text-grey-600">
                     {order.customer.email}
                   </p>
                 </div>
@@ -91,7 +91,7 @@ export default function OrderDetailsPage() {
 
               <button
                 type="button"
-                className="mt-4 flex items-center gap-1 text-[13px] font-bold leading-[22px] text-error transition-opacity hover:opacity-70"
+                className="mt-4 flex items-center gap-1 text-xs font-bold leading-[22px] text-error transition-opacity hover:opacity-70"
               >
                 <Plus className="size-4" />
                 Add to blacklist

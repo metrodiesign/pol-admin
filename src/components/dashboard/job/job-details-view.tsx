@@ -58,7 +58,7 @@ function StatusBadge({ status }: { status: string }) {
 
 function Chip({ label }: { label: string }) {
   return (
-    <span className="inline-flex items-center rounded-[10px] bg-grey-500/16 px-2.5 py-0.5 text-[13px] text-grey-800">
+    <span className="inline-flex items-center rounded-[10px] bg-grey-500/16 px-2.5 py-0.5 text-xs text-grey-800">
       {label}
     </span>
   );
@@ -248,14 +248,14 @@ export function JobDetailsView({ job }: JobDetailsViewProps) {
         <div className="grid grid-cols-1 gap-6 mmd:grid-cols-12">
           {/* Main content */}
           <div className="min-w-0 mmd:col-span-8">
-            <h1 className="mb-5 text-[1.5rem] font-bold leading-9 text-grey-800">
+            <h1 className="mb-5 text-xl font-bold leading-9 text-grey-800">
               {job.title}
             </h1>
             {job.descriptionSections ? (
               <div className="space-y-6">
                 {job.descriptionSections.map((section, i) => (
                   <div key={i}>
-                    <h3 className="mb-2 text-[1.125rem] font-semibold leading-7 text-grey-800">
+                    <h3 className="mb-2 text-base font-semibold leading-7 text-grey-800">
                       {section.heading}
                     </h3>
                     {section.paragraph && (

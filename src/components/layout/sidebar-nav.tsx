@@ -163,7 +163,7 @@ function ExpandedRow({ item }: { item: NavItem }) {
           )}
         </span>
         {item.badge && (
-          <span className="rounded-md bg-error/10 px-1.5 py-0.5 text-[11px] font-bold text-error">
+          <span className="rounded-md bg-error/10 px-1.5 py-0.5 text-xs font-bold text-error">
             {item.badge}
           </span>
         )}
@@ -178,7 +178,7 @@ function MiniItemInner({ item, active }: { item: NavItem; active: boolean }) {
   return (
     <span
       className={cn(
-        "relative flex h-[58px] w-full flex-col items-center justify-center gap-1 rounded-control px-1 pb-1.5 pt-2 text-[10px] font-bold leading-none transition-colors",
+        "relative flex h-[58px] w-full flex-col items-center justify-center gap-1 rounded-control px-1 pb-1.5 pt-2 text-xs font-bold leading-none transition-colors",
         active
           ? "bg-[var(--primary-soft)] text-primary"
           : "text-grey-600 hover:bg-[var(--primary-soft)] hover:text-primary",
@@ -269,7 +269,7 @@ export function SidebarNav({
           {collapsed ? (
             <span className="mx-auto mb-2 block h-px w-6 bg-[var(--divider)]" />
           ) : (
-            <p className="px-3 pb-2 text-[11px] font-bold uppercase tracking-wider text-grey-600">
+            <p className="px-3 pb-2 text-xs font-bold uppercase tracking-wider text-grey-600">
               {group.subheader}
             </p>
           )}

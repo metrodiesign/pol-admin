@@ -107,10 +107,10 @@ export const navConfig: NavGroup[] = [
   {
     subheader: "Control plane · การเชื่อมต่อ",
     items: [
-      { title: "PSP Connections", path: "/control/psp/list", icon: "banking", match: "/control/psp" },
-      { title: "Routing Rules", path: "/control/routing", icon: "analytics", match: "/control/routing" },
-      { title: "API Clients", path: "/control/api-clients", icon: "lock", match: "/control/api-clients" },
-      { title: "Webhooks & Events", path: "/control/webhooks", icon: "folder", match: "/control/webhooks" },
+      { title: "การเชื่อมต่อ PSP", path: "/control/psp/list", icon: "banking", match: "/control/psp" },
+      { title: "กฎการกำหนดเส้นทาง", path: "/control/routing", icon: "analytics", match: "/control/routing" },
+      { title: "ไคลเอนต์ API", path: "/control/api-clients", icon: "lock", match: "/control/api-clients" },
+      { title: "Webhooks และเหตุการณ์", path: "/control/webhooks", icon: "folder", match: "/control/webhooks" },
     ],
   },
 
@@ -118,8 +118,8 @@ export const navConfig: NavGroup[] = [
   {
     subheader: "Control plane · การกำกับดูแล",
     items: [
-      { title: "Approvals", path: "/control/approvals", icon: "invoice", match: "/control/approvals" },
-      { title: "Audit Log", path: "/control/audit", icon: "file", match: "/control/audit" },
+      { title: "การอนุมัติ", path: "/control/approvals", icon: "invoice", match: "/control/approvals" },
+      { title: "บันทึกการตรวจสอบ", path: "/control/audit", icon: "file", match: "/control/audit" },
       { title: "การแจ้งเตือน", path: "/control/notifications", icon: "mail", match: "/control/notifications" },
     ],
   },

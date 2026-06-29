@@ -32,7 +32,7 @@ export function BankingOverview() {
         <div>
           <p className="text-sm text-grey-500">Total balance</p>
           <p
-            className="mt-1 text-[2rem] font-bold leading-[3rem] text-grey-800"
+            className="mt-1 text-3xl font-bold leading-[3rem] text-grey-800"
             style={{ fontFamily: "var(--font-barlow, var(--font-sans))" }}
           >
             {totalBalance}
@@ -92,7 +92,7 @@ export function BankingOverview() {
           </div>
           <span
             className={cn(
-              "ml-1 rounded-full px-1.5 py-0.5 text-[11px] font-semibold",
+              "ml-1 rounded-full px-1.5 py-0.5 text-xs font-semibold",
               activeTab === "income"
                 ? "bg-white/16 text-white"
                 : "bg-success/16 text-success-dark",
@@ -133,7 +133,7 @@ export function BankingOverview() {
           </div>
           <span
             className={cn(
-              "ml-1 rounded-full px-1.5 py-0.5 text-[11px] font-semibold",
+              "ml-1 rounded-full px-1.5 py-0.5 text-xs font-semibold",
               activeTab === "expenses"
                 ? "bg-white/16 text-white"
                 : "bg-error/16 text-error-dark",

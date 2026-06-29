@@ -191,7 +191,7 @@ function CustomNotifyToggle({
         </span>
         <span className="min-w-0">
           <span className="block text-sm font-bold text-foreground">{title}</span>
-          <span className="block truncate text-[13px] text-grey-500">
+          <span className="block truncate text-xs text-grey-500">
             {checked ? "กรอกปลายทางด้านล่าง" : "ปิดอยู่"}
           </span>
         </span>

@@ -25,15 +25,15 @@ const statusConfig: Record<
   UserStatus,
   { label: string; bg: string; text: string }
 > = {
-  active: { label: "Active", bg: "bg-success/16", text: "text-success-dark" },
+  active: { label: "ใช้งาน", bg: "bg-success/16", text: "text-success-dark" },
   pending: {
-    label: "Pending",
+    label: "รอตรวจสอบ",
     bg: "bg-warning/16",
     text: "text-warning-dark",
   },
-  banned: { label: "Banned", bg: "bg-error/16", text: "text-error-dark" },
+  banned: { label: "ระงับ", bg: "bg-error/16", text: "text-error-dark" },
   rejected: {
-    label: "Rejected",
+    label: "ปฏิเสธ",
     bg: "bg-grey-500/16",
     text: "text-grey-600",
   },
@@ -49,7 +49,7 @@ function BoolBadge({ value }: { value: boolean }) {
           : "bg-grey-500/16 text-grey-600",
       )}
     >
-      {value ? "Yes" : "No"}
+      {value ? "ใช่" : "ไม่"}
     </span>
   );
 }
@@ -95,12 +95,12 @@ export function UserEditProfileCard({
         />
       </div>
 
-      <Fieldset aria-label="Account settings" className="mt-10">
+      <Fieldset aria-label="ตั้งค่าบัญชี" className="mt-10">
         <div className="space-y-5">
           <Field className="flex-row items-start justify-between gap-4">
             <div>
-              <Label className="text-sm font-semibold">Banned</Label>
-              <Description>Apply disable account</Description>
+              <Label className="text-sm font-semibold">ระงับการใช้งาน</Label>
+              <Description>ปิดการใช้งานบัญชีนี้</Description>
             </div>
             {readOnly ? (
               <BoolBadge value={banned} />
@@ -115,10 +115,9 @@ export function UserEditProfileCard({
 
           <Field className="flex-row items-start justify-between gap-4">
             <div>
-              <Label className="text-sm font-semibold">Email verified</Label>
+              <Label className="text-sm font-semibold">ยืนยันอีเมลแล้ว</Label>
               <Description>
-                Disabling this will automatically send the user a verification
-                email
+                หากปิดตัวเลือกนี้ ระบบจะส่งอีเมลยืนยันให้ผู้ใช้โดยอัตโนมัติ
               </Description>
             </div>
             {readOnly ? (
@@ -141,7 +140,7 @@ export function UserEditProfileCard({
             onClick={onDeleteUser}
             className="rounded-control bg-error/16 px-3 py-1.5 text-sm font-bold text-error-dark transition-colors hover:bg-error/24"
           >
-            Delete user
+            ลบผู้ใช้งาน
           </button>
         </div>
       )}

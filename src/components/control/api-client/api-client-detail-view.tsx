@@ -102,7 +102,7 @@ export function ApiClientDetailView({ id }: { id?: string }) {
             <StatusSpine tone={tone} className="h-auto" />
             <div className="min-w-0">
               <span className="text-overline text-grey-500">
-                Control plane · API client
+                Control plane · ไคลเอนต์ API
               </span>
               <h1 className="text-h5 text-foreground">{client.name}</h1>
               <p className="text-data mt-1 text-xs break-all text-grey-600">
@@ -149,7 +149,7 @@ export function ApiClientDetailView({ id }: { id?: string }) {
             <ReadField label="ชื่อ" value={client.name} />
             <ReadField label="บริษัท" value={TENANT_LABEL[client.tenantId]} />
             <ReadField
-              label="Client ID"
+              label="รหัสไคลเอนต์"
               value={client.clientId}
               mono
               className="sm:col-span-2"
@@ -169,7 +169,7 @@ export function ApiClientDetailView({ id }: { id?: string }) {
         </DetailCard>
 
         <DetailCard
-          title="Scopes"
+          title="ขอบเขตสิทธิ์"
           icon={<ShieldCheck className="size-5 text-grey-600" />}
         >
           <p className="mb-4 text-sm text-grey-600">
@@ -186,7 +186,7 @@ export function ApiClientDetailView({ id }: { id?: string }) {
         </DetailCard>
 
         <DetailCard
-          title="Credential vault"
+          title="ที่เก็บข้อมูลลับ"
           icon={<KeyRound className="size-5 text-grey-600" />}
         >
           <p className="mb-4 text-sm text-grey-600">
@@ -195,7 +195,7 @@ export function ApiClientDetailView({ id }: { id?: string }) {
           </p>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
             <ReadField
-              label="Client secret"
+              label="คีย์ลับไคลเอนต์"
               value={maskSecret(client.clientSecret)}
               mono
             />

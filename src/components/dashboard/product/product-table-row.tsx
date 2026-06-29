@@ -72,7 +72,7 @@ export function ProductTableRow({
       {/* Create at */}
       <td className="px-4 py-4">
         <p className="text-sm text-foreground">{product.createdAt}</p>
-        <p className="text-[13px] text-grey-500">{product.createdTime}</p>
+        <p className="text-xs text-grey-500">{product.createdTime}</p>
       </td>
 
       {/* Stock */}

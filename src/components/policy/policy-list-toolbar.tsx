@@ -41,7 +41,7 @@ function DateInput({
           onChange={(e) => onChange(e.target.value)}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
-          className="min-w-0 flex-1 bg-transparent text-[15px] text-foreground outline-none placeholder:text-grey-500"
+          className="min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-grey-500"
         />
         <button
           type="button"
@@ -106,7 +106,7 @@ export function PolicyListToolbar({
 
       <SelectField
         label="ประเภทประกันภัย"
-        placeholder="Motor / Non-Motor"
+        placeholder="มอเตอร์ / ไม่ใช่มอเตอร์"
         value={category || ALL}
         onChange={(v) => onCategoryChange(v === ALL ? "" : v)}
         options={categorySelectOptions}

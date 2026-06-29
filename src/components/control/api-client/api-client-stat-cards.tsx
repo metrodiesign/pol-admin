@@ -7,7 +7,7 @@ function StatCard({ label, value }: { label: string; value: string }) {
       style={{ boxShadow: "var(--shadow-card)" }}
     >
       <p className="text-sm font-semibold text-grey-600">{label}</p>
-      <p className="mt-2 text-[28px] font-bold text-foreground md:text-[32px]">
+      <p className="mt-2 text-2xl font-bold text-foreground md:text-3xl">
         {value}
       </p>
     </div>
@@ -21,7 +21,7 @@ export function ApiClientStatCards({ rows }: { rows: ApiClient[] }) {
 
   return (
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-      <StatCard label="Client ทั้งหมด" value={String(rows.length)} />
+      <StatCard label="ไคลเอนต์ทั้งหมด" value={String(rows.length)} />
       <StatCard label="ใช้งาน" value={String(active)} />
       <StatCard label="เพิกถอนแล้ว" value={String(revoked)} />
     </div>

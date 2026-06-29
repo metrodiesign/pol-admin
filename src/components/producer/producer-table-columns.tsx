@@ -55,14 +55,14 @@ export const producerColumns: ColumnDef<Producer>[] = [
           table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
         }
         onChange={(c) => table.toggleAllRowsSelected(c)}
-        aria-label="Select all"
+        aria-label="เลือกทั้งหมด"
       />
     ),
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
         onChange={(c) => row.toggleSelected(c)}
-        aria-label={`Select ${row.original.firstName}`}
+        aria-label={`เลือก ${row.original.firstName}`}
       />
     ),
   },
@@ -157,7 +157,7 @@ export const producerColumns: ColumnDef<Producer>[] = [
                 variant="ghost"
                 size="icon-lg"
                 className="size-10 cursor-pointer bg-grey-600/8 text-grey-700 hover:bg-grey-800 hover:text-white focus-visible:bg-grey-800 focus-visible:text-white"
-                aria-label={`View ${row.original.firstName}`}
+                aria-label={`ดู ${row.original.firstName}`}
               >
                 <Eye className="size-5" />
               </Button>
@@ -172,7 +172,7 @@ export const producerColumns: ColumnDef<Producer>[] = [
                 variant="ghost"
                 size="icon-lg"
                 className="size-10 cursor-pointer bg-grey-600/8 text-grey-700 hover:bg-grey-800 hover:text-white focus-visible:bg-grey-800 focus-visible:text-white"
-                aria-label={`Edit ${row.original.firstName}`}
+                aria-label={`แก้ไข ${row.original.firstName}`}
               >
                 <Pencil className="size-5" />
               </Button>
@@ -185,7 +185,7 @@ export const producerColumns: ColumnDef<Producer>[] = [
                 variant="ghost"
                 size="icon-lg"
                 className="size-10 cursor-pointer text-error hover:bg-error/8 hover:text-error"
-                aria-label={`Delete ${row.original.firstName}`}
+                aria-label={`ลบ ${row.original.firstName}`}
               >
                 <Trash2 className="size-5" />
               </Button>

@@ -43,7 +43,7 @@ const cardStyle = {
 export function UserEditFormCard({
   initialData,
   onSave,
-  submitLabel = "Save changes",
+  submitLabel = "บันทึกการเปลี่ยนแปลง",
   readOnly = false,
   cancelHref,
 }: UserEditFormCardProps) {
@@ -61,16 +61,16 @@ export function UserEditFormCard({
 
   if (readOnly) {
     const rows: Array<[string, string]> = [
-      ["Full name", form.fullName],
-      ["Email address", form.email],
-      ["Phone number", form.phoneNumber],
-      ["Country", form.country],
-      ["State/region", form.stateRegion],
-      ["City", form.city],
-      ["Address", form.address],
-      ["Zip/code", form.zipCode],
-      ["Company", form.company],
-      ["Role", form.role],
+      ["ชื่อ-นามสกุล", form.fullName],
+      ["อีเมล", form.email],
+      ["เบอร์โทรศัพท์", form.phoneNumber],
+      ["ประเทศ", form.country],
+      ["รัฐ/ภูมิภาค", form.stateRegion],
+      ["เมือง", form.city],
+      ["ที่อยู่", form.address],
+      ["รหัสไปรษณีย์", form.zipCode],
+      ["บริษัท", form.company],
+      ["บทบาท", form.role],
     ];
 
     return (
@@ -79,7 +79,7 @@ export function UserEditFormCard({
           {rows.map(([label, value]) => (
             <div key={label} className="flex flex-col gap-1">
               <dt className="text-sm font-medium text-grey-600">{label}</dt>
-              <dd className="text-[15px] text-foreground">{value || "-"}</dd>
+              <dd className="text-sm text-foreground">{value || "-"}</dd>
             </div>
           ))}
         </dl>
@@ -100,21 +100,21 @@ export function UserEditFormCard({
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <TextField
-            label="Full name"
+            label="ชื่อ-นามสกุล"
             value={form.fullName}
             onChange={(v) => update("fullName", v)}
           />
           <TextField
-            label="Email address"
+            label="อีเมล"
             type="email"
             value={form.email}
             onChange={(v) => update("email", v)}
           />
 
           <TextField
-            label="Phone number"
+            label="เบอร์โทรศัพท์"
             type="tel"
-            placeholder="Enter phone number"
+            placeholder="กรอกเบอร์โทรศัพท์"
             value={form.phoneNumber}
             onChange={(v) => update("phoneNumber", v)}
             startAdornment={
@@ -126,7 +126,7 @@ export function UserEditFormCard({
                   type="button"
                   onClick={() => update("phoneNumber", "")}
                   className="text-grey-400 transition-colors hover:text-grey-600"
-                  aria-label="Clear phone number"
+                  aria-label="ล้างเบอร์โทรศัพท์"
                 >
                   <X className="size-4" />
                 </button>
@@ -141,32 +141,32 @@ export function UserEditFormCard({
           />
 
           <TextField
-            label="State/region"
+            label="รัฐ/ภูมิภาค"
             value={form.stateRegion}
             onChange={(v) => update("stateRegion", v)}
           />
           <TextField
-            label="City"
+            label="เมือง"
             value={form.city}
             onChange={(v) => update("city", v)}
           />
           <TextField
-            label="Address"
+            label="ที่อยู่"
             value={form.address}
             onChange={(v) => update("address", v)}
           />
           <TextField
-            label="Zip/code"
+            label="รหัสไปรษณีย์"
             value={form.zipCode}
             onChange={(v) => update("zipCode", v)}
           />
           <TextField
-            label="Company"
+            label="บริษัท"
             value={form.company}
             onChange={(v) => update("company", v)}
           />
           <TextField
-            label="Role"
+            label="บทบาท"
             value={form.role}
             onChange={(v) => update("role", v)}
           />

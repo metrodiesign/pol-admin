@@ -43,13 +43,13 @@ export default function InvoiceEditPage() {
       <div className="mt-6 flex justify-end gap-3">
         <button
           type="button"
-          className="h-12 rounded-control bg-transparent px-4 text-[15px] font-bold text-grey-800 transition-colors hover:bg-grey-50"
+          className="h-12 rounded-control bg-transparent px-4 text-sm font-bold text-grey-800 transition-colors hover:bg-grey-50"
         >
           Save as draft
         </button>
         <button
           type="button"
-          className="h-12 rounded-control bg-foreground px-4 text-[15px] font-bold text-card transition-opacity hover:opacity-90"
+          className="h-12 rounded-control bg-foreground px-4 text-sm font-bold text-card transition-opacity hover:opacity-90"
         >
           Update &amp; send
         </button>

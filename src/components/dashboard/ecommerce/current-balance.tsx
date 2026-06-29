@@ -6,7 +6,7 @@ export function CurrentBalance() {
     <WidgetCard title="Current balance">
       <div className="space-y-5">
         <p
-          className="text-[32px] font-bold leading-[48px] text-grey-800"
+          className="text-3xl font-bold leading-[48px] text-grey-800"
           style={{ fontFamily: "var(--font-barlow, Barlow, sans-serif)" }}
         >
           {currentBalance.total}

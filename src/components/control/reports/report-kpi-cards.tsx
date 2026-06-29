@@ -50,7 +50,7 @@ export function ReportKpiCards({
         >
           <div>
             <p className="text-sm font-semibold text-grey-600">{c.label}</p>
-            <p className="mt-2 text-[28px] font-bold text-foreground md:text-[32px]">
+            <p className="mt-2 text-2xl font-bold text-foreground md:text-3xl">
               {c.value}
             </p>
           </div>

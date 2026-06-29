@@ -79,7 +79,7 @@ export function SettlementDetailView({ id }: { id?: string }) {
             <StatusSpine tone={tone} className="h-auto" />
             <div className="min-w-0">
               <span className="text-overline text-grey-500">
-                Control plane · Settlement batch
+                Control plane · ชุดงานกระทบยอด
               </span>
               <h1 className="text-h5 text-foreground">
                 {PSP_LABEL[batch.psp]} · {TENANT_LABEL[batch.tenantId]}
@@ -102,7 +102,7 @@ export function SettlementDetailView({ id }: { id?: string }) {
             <ReadField label="PSP" value={PSP_LABEL[batch.psp]} />
             <ReadField label="รหัสชุด" value={batch.id} mono />
             <ReadField
-              label="Settle เมื่อ"
+              label="ชำระเมื่อ"
               value={formatDateTime(batch.settledAt)}
               mono
             />
@@ -188,8 +188,8 @@ export function SettlementDetailView({ id }: { id?: string }) {
           {batch.lineItems.length > 0 ? (
             <div className="flex flex-col divide-y divide-[var(--divider)]">
               <div className="flex items-center justify-between gap-3 pb-2 text-xs font-medium text-grey-600">
-                <span>Reference</span>
-                <span>ยอด settle</span>
+                <span>เลขอ้างอิง</span>
+                <span>ยอดชำระ</span>
               </div>
               {batch.lineItems.map((item) => (
                 <div

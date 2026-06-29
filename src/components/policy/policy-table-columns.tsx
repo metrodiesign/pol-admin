@@ -82,7 +82,7 @@ export const policyColumns: ColumnDef<Policy>[] = [
           <span className="block text-sm font-bold text-primary underline underline-offset-2">
             {p.referenceNo}
           </span>
-          <span className="mt-0.5 block text-[13px] text-grey-500">
+          <span className="mt-0.5 block text-xs text-grey-500">
             {REFERENCE_TYPE_LABEL[p.referenceType]}
           </span>
         </div>

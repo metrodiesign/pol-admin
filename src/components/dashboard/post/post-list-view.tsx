@@ -101,7 +101,7 @@ function SearchInput({ value, onChange }: { value: string; onChange: (v: string)
         onChange={(e) => onChange(e.target.value)}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
-        className="flex-1 bg-transparent text-[15px] text-foreground placeholder:text-grey-500 outline-none"
+        className="flex-1 bg-transparent text-sm text-foreground placeholder:text-grey-500 outline-none"
       />
     </div>
   );
@@ -216,7 +216,7 @@ export function PostListView() {
             >
               {label}
               <span
-                className={`inline-flex items-center justify-center rounded-full min-w-[20px] h-5 px-1.5 text-[10px] font-bold ${
+                className={`inline-flex items-center justify-center rounded-full min-w-[20px] h-5 px-1.5 text-xs font-bold ${
                   value === "all"
                     ? "bg-foreground text-card"
                     : value === "published"

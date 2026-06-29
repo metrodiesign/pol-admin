@@ -2,16 +2,16 @@ import { PageHeader } from "@/components/shared/page-header";
 import { AuditLogView } from "@/components/control/audit/audit-log-view";
 
 export const metadata = {
-  title: "Audit Log | POL Admin",
+  title: "บันทึกการตรวจสอบ | POL Admin",
 };
 
 export default function AuditLogPage() {
   return (
     <>
       <PageHeader
-        title="Audit Log"
+        title="บันทึกการตรวจสอบ"
         description="บันทึกการกระทำสำคัญทั้งหมดในระบบ — อ่านอย่างเดียว แก้ไขหรือลบไม่ได้"
-        breadcrumbs={[{ label: "Control plane" }, { label: "Audit Log" }]}
+        breadcrumbs={[{ label: "Control plane" }, { label: "บันทึกการตรวจสอบ" }]}
       />
       <AuditLogView />
     </>

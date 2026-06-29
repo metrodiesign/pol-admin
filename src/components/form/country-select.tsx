@@ -34,7 +34,7 @@ interface CountrySelectProps {
  * TextField used across the user forms.
  */
 export function CountrySelect({
-  label = "Country",
+  label = "ประเทศ",
   value,
   onChange,
   options,
@@ -59,9 +59,9 @@ export function CountrySelect({
         <ComboboxInput
           aria-labelledby={id}
           className={cn(
-            "h-12 rounded-control border-[var(--divider)] text-[15px]",
+            "h-12 rounded-control border-[var(--divider)] text-sm",
             "focus-within:border-grey-800 focus-within:ring-1 focus-within:ring-inset focus-within:ring-grey-800",
-            "[&_[data-slot=input-group-control]]:text-[15px]",
+            "[&_[data-slot=input-group-control]]:text-sm",
           )}
         >
           {selected ? (

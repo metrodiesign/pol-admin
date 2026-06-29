@@ -16,7 +16,8 @@ import { DataTable } from "@/components/table/data-table";
 import { TransactionStatCards } from "./transaction-stat-cards";
 import { TransactionListTabs } from "./transaction-list-tabs";
 import { TransactionListToolbar } from "./transaction-list-toolbar";
-import { transactionColumns } from "./transaction-table-columns";
+import { TransactionDetailSheet } from "./transaction-detail-sheet";
+import { buildTransactionColumns } from "./transaction-table-columns";
 import "@/types/table-meta";
 
 type TabValue = TransactionStatus | "all";
@@ -34,37 +35,48 @@ export function TransactionListView() {
   const router = useRouter();
 
   const [search, setSearch] = useState("");
-  const [source, setSource] = useState("");
+  const [channel, setChannel] = useState("");
   const [psp, setPsp] = useState("");
   const [statusTab, setStatusTab] = useState<TabValue>("all");
   const [dense, setDense] = useState(false);
+  const [detailTx, setDetailTx] = useState<Transaction | null>(null);
 
   const globalFilter = useMemo(
-    () => ({ search, source, psp, status: statusTab }),
-    [search, source, psp, statusTab],
+    () => ({ search, channel, psp, status: statusTab }),
+    [search, channel, psp, statusTab],
+  );
+
+  const columns = useMemo(
+    () =>
+      buildTransactionColumns({
+        onSelect: setDetailTx,
+        onRead: (t) => router.push(`/transaction/read?id=${t.code}`),
+      }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
   );
 
   const table = useDataTable<Transaction>({
     data: TRANSACTIONS,
-    columns: transactionColumns,
+    columns,
     getRowId: (t) => t.id,
     enableRowSelection: true,
     enableSortingRemoval: false,
     autoResetPageIndex: false,
     state: { globalFilter },
     meta: {
-      onRowClick: (t) => router.push(`/transaction/read?id=${t.code}`),
+      onRowClick: setDetailTx,
     },
     globalFilterFn: (row, _columnId, value) => {
       const f = value as {
         search: string;
-        source: string;
+        channel: string;
         psp: string;
         status: TabValue;
       };
       const t = row.original;
       if (!(f.status === "all" || t.status === f.status)) return false;
-      if (f.source && t.source.code !== f.source) return false;
+      if (f.channel && t.channel !== f.channel) return false;
       if (f.psp && t.psp !== f.psp) return false;
       if (f.search) {
         const q = f.search.toLowerCase();
@@ -88,8 +100,7 @@ export function TransactionListView() {
   });
 
   const filteredCount = table.getFilteredRowModel().rows.length;
-  const filteredRows = table.getFilteredRowModel().rows.map((r) => r.original);
-
+  
   const count = (status: TabValue) =>
     status === "all"
       ? TRANSACTIONS.length
@@ -104,18 +115,9 @@ export function TransactionListView() {
     })),
   ];
 
-  const sourceOptions = useMemo(() => {
-    const seen = new Map<string, string>();
-    for (const t of TRANSACTIONS) {
-      if (!seen.has(t.source.code)) seen.set(t.source.code, t.source.label);
-    }
-    return Array.from(seen, ([code, label]) => ({
-      value: code,
-      label: `${code} ${label}`,
-    }));
-  }, []);
 
   return (
+    <>
     <div className="flex flex-col gap-6">
       <TransactionStatCards />
 
@@ -137,18 +139,21 @@ export function TransactionListView() {
             setSearch(v);
             table.setPageIndex(0);
           }}
-          source={source}
-          onSourceChange={(v) => {
-            setSource(v);
+          channel={channel}
+          onChannelChange={(v) => {
+            setChannel(v);
             table.setPageIndex(0);
           }}
-          sourceOptions={sourceOptions}
           psp={psp}
           onPspChange={(v) => {
             setPsp(v);
             table.setPageIndex(0);
           }}
-          rows={filteredRows}
+          rowsPerPage={table.getState().pagination.pageSize}
+          onRowsPerPageChange={(n) => {
+            table.setPageSize(n);
+            table.setPageIndex(0);
+          }}
         />
         <DataTable
           table={table}
@@ -161,5 +166,13 @@ export function TransactionListView() {
         />
       </div>
     </div>
+
+    <TransactionDetailSheet
+      transaction={detailTx}
+      open={detailTx !== null}
+      onOpenChange={(open) => { if (!open) setDetailTx(null); }}
+      onRead={(t) => router.push(`/transaction/read?id=${t.code}`)}
+    />
+    </>
   );
 }

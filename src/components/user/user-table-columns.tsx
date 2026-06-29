@@ -43,20 +43,20 @@ export const userColumns: ColumnDef<User>[] = [
           table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
         }
         onChange={(c) => table.toggleAllRowsSelected(c)}
-        aria-label="Select all"
+        aria-label="เลือกทั้งหมด"
       />
     ),
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
         onChange={(c) => row.toggleSelected(c)}
-        aria-label={`Select ${row.original.name}`}
+        aria-label={`เลือก ${row.original.name}`}
       />
     ),
   },
   {
     accessorKey: "name",
-    header: "Name",
+    header: "ชื่อ-นามสกุล",
     enableSorting: true,
     cell: ({ row }) => {
       const u = row.original;
@@ -83,7 +83,7 @@ export const userColumns: ColumnDef<User>[] = [
   },
   {
     accessorKey: "phoneNumber",
-    header: "Phone number",
+    header: "เบอร์โทรศัพท์",
     enableSorting: false,
     cell: ({ getValue }) => (
       <span className="text-sm text-foreground">{getValue<string>()}</span>
@@ -91,7 +91,7 @@ export const userColumns: ColumnDef<User>[] = [
   },
   {
     accessorKey: "company",
-    header: "Company",
+    header: "บริษัท",
     enableSorting: false,
     cell: ({ getValue }) => (
       <span className="text-sm text-foreground">{getValue<string>()}</span>
@@ -99,7 +99,7 @@ export const userColumns: ColumnDef<User>[] = [
   },
   {
     accessorKey: "role",
-    header: "Role",
+    header: "บทบาท",
     enableSorting: false,
     cell: ({ getValue }) => (
       <span className="text-sm text-foreground">{getValue<string>()}</span>
@@ -107,7 +107,7 @@ export const userColumns: ColumnDef<User>[] = [
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: "สถานะ",
     enableSorting: false,
     cell: ({ row }) => (
       <span
@@ -133,7 +133,7 @@ export const userColumns: ColumnDef<User>[] = [
                 variant="ghost"
                 size="icon-lg"
                 className="size-10 cursor-pointer bg-grey-600/8 text-grey-700 hover:bg-grey-800 hover:text-white focus-visible:bg-grey-800 focus-visible:text-white"
-                aria-label={`View ${row.original.name}`}
+                aria-label={`ดู ${row.original.name}`}
               >
                 <Eye className="size-5" />
               </Button>
@@ -148,7 +148,7 @@ export const userColumns: ColumnDef<User>[] = [
                 variant="ghost"
                 size="icon-lg"
                 className="size-10 cursor-pointer bg-grey-600/8 text-grey-700 hover:bg-grey-800 hover:text-white focus-visible:bg-grey-800 focus-visible:text-white"
-                aria-label={`Edit ${row.original.name}`}
+                aria-label={`แก้ไข ${row.original.name}`}
               >
                 <Pencil className="size-5" />
               </Button>
@@ -161,7 +161,7 @@ export const userColumns: ColumnDef<User>[] = [
                 variant="ghost"
                 size="icon-lg"
                 className="size-10 cursor-pointer text-error hover:bg-error/8 hover:text-error"
-                aria-label={`Delete ${row.original.name}`}
+                aria-label={`ลบ ${row.original.name}`}
               >
                 <Trash2 className="size-5" />
               </Button>

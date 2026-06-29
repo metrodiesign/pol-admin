@@ -81,7 +81,7 @@ export function WebhookDetailView({ id }: { id?: string }) {
             <StatusSpine tone={tone} className="h-auto" />
             <div className="min-w-0">
               <span className="text-overline text-grey-500">
-                Control plane · Webhook event
+                Control plane · เหตุการณ์ Webhook
               </span>
               <h1 className="text-h5 text-foreground">{event.eventType}</h1>
               <p className="text-data mt-1 text-xs break-all text-grey-600">
@@ -161,14 +161,14 @@ export function WebhookDetailView({ id }: { id?: string }) {
               mono
             />
             <ReadField
-              label="Signature"
+              label="ลายเซ็น"
               value={event.signatureVerified ? "ยืนยันแล้ว" : "ไม่ผ่าน"}
             />
           </div>
         </DetailCard>
 
         <DetailCard
-          title="Raw payload"
+          title="Payload ดิบ"
           icon={<FileJson className="size-5 text-grey-600" />}
         >
           <p className="mb-4 text-sm text-grey-600">
@@ -181,7 +181,7 @@ export function WebhookDetailView({ id }: { id?: string }) {
         </DetailCard>
 
         <DetailCard
-          title="Idempotency & source of truth"
+          title="Idempotency และแหล่งความจริง"
           icon={<ShieldCheck className="size-5 text-grey-600" />}
         >
           <p className="text-sm text-grey-600">

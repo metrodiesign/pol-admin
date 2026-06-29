@@ -77,7 +77,7 @@ function FormSectionCard({
     >
       <div className="flex items-start justify-between px-6 pt-6 pb-0">
         <div>
-          <span className="block text-[18px] font-semibold leading-7 text-grey-800">
+          <span className="block text-base font-semibold leading-7 text-grey-800">
             {title}
           </span>
           <span className="text-sm text-grey-500">{caption}</span>
@@ -112,7 +112,7 @@ function OutlinedInput({
   rows = 3,
 }: OutlinedInputProps) {
   const baseClass =
-    "w-full rounded-[8px] border border-[var(--divider)] bg-transparent px-3.5 py-3 text-[15px] text-grey-800 placeholder:text-grey-400 outline-none focus:border-grey-800 focus:ring-1 focus:ring-inset focus:ring-grey-800 transition-colors resize-none";
+    "w-full rounded-[8px] border border-[var(--divider)] bg-transparent px-3.5 py-3 text-sm text-grey-800 placeholder:text-grey-400 outline-none focus:border-grey-800 focus:ring-1 focus:ring-inset focus:ring-grey-800 transition-colors resize-none";
   if (multiline) {
     return (
       <textarea
@@ -172,7 +172,7 @@ function ChipInput({ placeholder, options, value, onChange }: ChipInputProps) {
         {value.map((tag) => (
           <span
             key={tag}
-            className="inline-flex h-6 items-center gap-1 rounded-[8px] bg-info/16 px-2 text-[13px] font-normal text-info-dark"
+            className="inline-flex h-6 items-center gap-1 rounded-[8px] bg-info/16 px-2 text-xs font-normal text-info-dark"
           >
             {tag}
             <button
@@ -195,7 +195,7 @@ function ChipInput({ placeholder, options, value, onChange }: ChipInputProps) {
           }}
           onFocus={() => setOpen(true)}
           onBlur={() => setTimeout(() => setOpen(false), 150)}
-          className="flex-1 min-w-[80px] bg-transparent text-[15px] text-grey-800 placeholder:text-grey-400 outline-none"
+          className="flex-1 min-w-[80px] bg-transparent text-sm text-grey-800 placeholder:text-grey-400 outline-none"
         />
       </div>
       {open && filtered.length > 0 && (
@@ -298,7 +298,7 @@ function UploadDropzone({ value, onChange }: UploadDropzoneProps) {
         <circle cx="34" cy="140" r="2" fill="#FFAB00" fillOpacity="0.4"/>
       </svg>
       <div className="text-center">
-        <p className="text-[15px] font-bold text-grey-800">Drop or select a file</p>
+        <p className="text-sm font-bold text-grey-800">Drop or select a file</p>
         <p className="mt-1 text-sm text-grey-500">
           Drag a file here, or{" "}
           <span className="text-[#00A76F] underline cursor-pointer">browse</span> your device.
@@ -439,7 +439,7 @@ function RichTextEditor({ initialValue, onChange }: RichTextEditorProps) {
       {/* Editable area — seeded imperatively via useEffect, no innerHTML */}
       <div
         ref={editorRef}
-        className="min-h-[200px] p-4 text-[15px] text-grey-800 leading-relaxed outline-none empty:before:text-grey-400 empty:before:content-[attr(data-placeholder)]"
+        className="min-h-[200px] p-4 text-sm text-grey-800 leading-relaxed outline-none empty:before:text-grey-400 empty:before:content-[attr(data-placeholder)]"
         contentEditable
         suppressContentEditableWarning
         onInput={(e) => onChange(e.currentTarget.textContent ?? "")}
@@ -559,13 +559,13 @@ export function PostNewEditForm({
         <div className="flex items-center gap-3">
           <button
             type="button"
-            className="rounded-[8px] border border-grey-300 px-4 h-12 text-[15px] font-bold leading-[26px] text-grey-800 hover:bg-grey-100 transition-colors"
+            className="rounded-[8px] border border-grey-300 px-4 h-12 text-sm font-bold leading-[26px] text-grey-800 hover:bg-grey-100 transition-colors"
           >
             Preview
           </button>
           <button
             type="button"
-            className="rounded-[8px] bg-foreground px-4 h-12 text-[15px] font-bold leading-[26px] text-card hover:opacity-90 transition-opacity"
+            className="rounded-[8px] bg-foreground px-4 h-12 text-sm font-bold leading-[26px] text-card hover:opacity-90 transition-opacity"
           >
             {submitLabel}
           </button>

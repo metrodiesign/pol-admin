@@ -56,9 +56,9 @@ export function SelectField({
           aria-labelledby={id}
           placeholder={placeholder}
           className={cn(
-            "h-12 rounded-control border-[var(--divider)] text-[15px]",
+            "h-12 rounded-control border-[var(--divider)] text-sm",
             "focus-within:border-grey-800 focus-within:ring-1 focus-within:ring-inset focus-within:ring-grey-800",
-            "[&_[data-slot=input-group-control]]:pl-3.5 [&_[data-slot=input-group-control]]:text-[15px]",
+            "[&_[data-slot=input-group-control]]:pl-3.5 [&_[data-slot=input-group-control]]:text-sm",
           )}
         />
       </div>

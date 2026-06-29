@@ -33,7 +33,7 @@ export function ChatThreadHeader({ contact, onToggleInfo, infoOpen }: ChatThread
       </div>
       <div className="flex-1 min-w-0">
         <p className="truncate text-sm font-semibold leading-[22px] text-grey-800">{displayName}</p>
-        <p className={cn("text-[13px] leading-5", contact.online ? "text-success" : "text-grey-400")}>
+        <p className={cn("text-xs leading-5", contact.online ? "text-success" : "text-grey-400")}>
           {contact.online ? "online" : "offline"}
         </p>
       </div>

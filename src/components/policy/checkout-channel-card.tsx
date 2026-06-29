@@ -47,7 +47,7 @@ export function CheckoutChannelCard({ value, onChange }: CheckoutChannelCardProp
                 />
                 <span className="text-sm font-bold text-foreground">{opt.label}</span>
               </span>
-              <span className="text-[13px] leading-relaxed text-grey-500">{opt.caption}</span>
+              <span className="text-xs leading-relaxed text-grey-500">{opt.caption}</span>
             </span>
             <RadioGroupItem value={opt.value} className="sr-only" />
           </label>

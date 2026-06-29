@@ -79,7 +79,7 @@ export function ProductListToolbar({
             <button
               key={label}
               type="button"
-              className="flex h-[30px] items-center gap-1.5 rounded-lg px-2 text-[13px] font-bold text-grey-800 transition-colors duration-[250ms] hover:bg-[var(--action-hover)]"
+              className="flex h-[30px] items-center gap-1.5 rounded-lg px-2 text-xs font-bold text-grey-800 transition-colors duration-[250ms] hover:bg-[var(--action-hover)]"
             >
               <Icon className="size-4" />
               <span>{label}</span>
@@ -94,7 +94,7 @@ export function ProductListToolbar({
           <button
             key={label}
             type="button"
-            className="flex h-[30px] items-center gap-1.5 rounded-lg px-2 text-[13px] font-bold text-grey-800 transition-colors duration-[250ms] hover:bg-[var(--action-hover)]"
+            className="flex h-[30px] items-center gap-1.5 rounded-lg px-2 text-xs font-bold text-grey-800 transition-colors duration-[250ms] hover:bg-[var(--action-hover)]"
           >
             <Icon className="size-4" />
             <span>{label}</span>

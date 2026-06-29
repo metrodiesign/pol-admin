@@ -91,7 +91,7 @@ export function KanbanColumn({
       <div className="flex h-8 items-center gap-2">
         {/* Count badge — light grey pill matching live reference */}
         <span
-          className="flex h-5 min-w-[20px] items-center justify-center rounded-md px-1.5 text-[11px] font-bold leading-none text-grey-600"
+          className="flex h-5 min-w-[20px] items-center justify-center rounded-md px-1.5 text-xs font-bold leading-none text-grey-600"
           style={{ backgroundColor: "rgba(145,158,171,0.16)" }}
         >
           {column.cards.length}

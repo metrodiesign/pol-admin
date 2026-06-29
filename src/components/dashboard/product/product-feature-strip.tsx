@@ -25,7 +25,7 @@ export function ProductFeatureStrip() {
         <div key={f.title} className="flex flex-col items-center text-center">
           <CheckCircle2 className="mb-3 size-8 text-success" />
           <p className="text-sm font-semibold text-foreground">{f.title}</p>
-          <p className="mt-1 text-[13px] leading-relaxed text-grey-500">
+          <p className="mt-1 text-xs leading-relaxed text-grey-500">
             {f.caption}
           </p>
         </div>

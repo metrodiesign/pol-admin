@@ -22,7 +22,7 @@ export function ChartLegend({
       {items.map((it) => (
         <li
           key={it.label}
-          className="flex items-center gap-1.5 text-[13px] font-medium text-foreground"
+          className="flex items-center gap-1.5 text-xs font-medium text-foreground"
         >
           <span
             className="size-3 rounded-full"

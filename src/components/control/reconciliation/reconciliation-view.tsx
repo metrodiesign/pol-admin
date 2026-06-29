@@ -33,7 +33,7 @@ function StatCard({ label, value }: { label: string; value: string }) {
       style={{ boxShadow: "var(--shadow-card)" }}
     >
       <p className="text-sm font-semibold text-grey-600">{label}</p>
-      <p className="mt-2 text-[28px] font-bold text-foreground md:text-[32px]">
+      <p className="mt-2 text-2xl font-bold text-foreground md:text-3xl">
         {value}
       </p>
     </div>

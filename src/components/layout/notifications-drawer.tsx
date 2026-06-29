@@ -64,7 +64,7 @@ function PrimaryButton({ children }: { children: React.ReactNode }) {
   return (
     <button
       type="button"
-      className="rounded-lg bg-grey-800 px-3 py-1.5 text-[13px] font-bold text-white transition-colors hover:bg-grey-900"
+      className="rounded-lg bg-grey-800 px-3 py-1.5 text-xs font-bold text-white transition-colors hover:bg-grey-900"
     >
       {children}
     </button>
@@ -75,7 +75,7 @@ function OutlineButton({ children }: { children: React.ReactNode }) {
   return (
     <button
       type="button"
-      className="rounded-lg border border-grey-500/32 px-3 py-1.5 text-[13px] font-bold text-grey-800 transition-colors hover:bg-[var(--action-hover)]"
+      className="rounded-lg border border-grey-500/32 px-3 py-1.5 text-xs font-bold text-grey-800 transition-colors hover:bg-[var(--action-hover)]"
     >
       {children}
     </button>
