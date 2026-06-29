@@ -3,12 +3,14 @@
 import { useRef, useState } from "react";
 import Image from "next/image";
 import { Camera } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface AvatarUploadProps {
   src?: string;
   alt?: string;
   size?: number;
   onFileSelect?: (file: File) => void;
+  error?: boolean;
 }
 
 export function AvatarUpload({
@@ -16,6 +18,7 @@ export function AvatarUpload({
   alt = "Avatar",
   size = 126,
   onFileSelect,
+  error = false,
 }: AvatarUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
@@ -34,7 +37,12 @@ export function AvatarUpload({
       <button
         type="button"
         onClick={() => inputRef.current?.click()}
-        className="group relative overflow-hidden rounded-full border-2 border-dashed border-[rgba(145,158,171,0.2)] p-1 transition-colors hover:border-[rgba(145,158,171,0.32)]"
+        className={cn(
+          "group relative overflow-hidden rounded-full border-2 border-dashed p-1 transition-colors",
+          error
+            ? "border-error hover:border-error/70"
+            : "border-[rgba(145,158,171,0.2)] hover:border-[rgba(145,158,171,0.32)]",
+        )}
         style={{ width: size + 8, height: size + 8 }}
       >
         {imageSrc ? (

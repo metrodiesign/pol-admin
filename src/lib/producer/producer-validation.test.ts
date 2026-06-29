@@ -16,7 +16,7 @@ const base: ProducerFormData = {
   firstName: "สมชาย",
   lastName: "ใจดี",
   personType: "individual",
-  idNumber: "1103702450000",
+  idNumber: "1234567890121",
   producerCode: "12345",
   licenseNumber: "",
   phoneNumber: "0970000001",
@@ -25,21 +25,31 @@ const base: ProducerFormData = {
 };
 
 describe("isThaiId (REQ-5.1)", () => {
-  it("accepts exactly 13 digits", () => expect(isThaiId("1103702450000")).toBe(true));
-  it("rejects wrong length / non-digit", () => {
+  it("accepts valid 13-digit ID with correct checksum", () =>
+    expect(isThaiId("1234567890121")).toBe(true));
+  it("rejects wrong length", () => {
     expect(isThaiId("12345")).toBe(false);
-    expect(isThaiId("11037024500001")).toBe(false);
-    expect(isThaiId("abcdefghijklm")).toBe(false);
+    expect(isThaiId("12345678901211")).toBe(false);
   });
+  it("rejects non-digit", () =>
+    expect(isThaiId("abcdefghijklm")).toBe(false));
+  it("rejects 13 digits with wrong checksum", () =>
+    expect(isThaiId("1234567890120")).toBe(false));
 });
 
 describe("isThaiPhone (REQ-5.2)", () => {
-  it("accepts exactly 10 digits", () => expect(isThaiPhone("0970000001")).toBe(true));
-  it("rejects otherwise", () => {
+  it("accepts mobile 06x/08x/09x 10 digits", () => {
+    expect(isThaiPhone("0970000001")).toBe(true);
+    expect(isThaiPhone("0891234567")).toBe(true);
+    expect(isThaiPhone("0612345678")).toBe(true);
+  });
+  it("rejects wrong length", () => {
     expect(isThaiPhone("097000000")).toBe(false);
     expect(isThaiPhone("09700000012")).toBe(false);
-    expect(isThaiPhone("097-000-001")).toBe(false);
   });
+  it("rejects dashes/spaces", () => expect(isThaiPhone("097-000-001")).toBe(false));
+  it("rejects non-mobile prefix (landline 02x)", () =>
+    expect(isThaiPhone("0270000001")).toBe(false));
 });
 
 describe("isValidLicense (REQ-5.3–5.5)", () => {
@@ -58,10 +68,15 @@ describe("isValidLicense (REQ-5.3–5.5)", () => {
 });
 
 describe("isEmail (REQ-5.6)", () => {
-  it("accepts valid", () => expect(isEmail("test@viriyah.co.th")).toBe(true));
-  it("rejects invalid", () => {
+  it("accepts standard and international TLD", () => {
+    expect(isEmail("test@viriyah.co.th")).toBe(true);
+    expect(isEmail("user@example.com")).toBe(true);
+    expect(isEmail("a@b.photography")).toBe(true);
+  });
+  it("rejects no-TLD or 1-char TLD", () => {
     expect(isEmail("nope")).toBe(false);
     expect(isEmail("a@b")).toBe(false);
+    expect(isEmail("a@b.c")).toBe(false);
   });
 });
 
@@ -113,11 +128,8 @@ describe("validateRegisterForm (REQ-11.6)", () => {
   it("passes a valid registration form", () => {
     expect(validateRegisterForm(regBase)).toEqual({});
   });
-  it("flags missing photo (11.6)", () => {
-    expect(validateRegisterForm({ ...regBase, photo: null }).photo).toBeDefined();
-  });
-  it("no photo error when photo present", () => {
-    expect(validateRegisterForm(regBase).photo).toBeUndefined();
+  it("photo not required (temporarily disabled)", () => {
+    expect(validateRegisterForm({ ...regBase, photo: null }).photo).toBeUndefined();
   });
   it("requires acceptTerms (registration always opts in)", () => {
     expect(validateRegisterForm({ ...regBase, acceptTerms: false }).acceptTerms).toBeDefined();

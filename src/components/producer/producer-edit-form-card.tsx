@@ -74,6 +74,7 @@ export function ProducerEditFormCard({
     value: ProducerFormData[K],
   ) {
     setForm((prev) => ({ ...prev, [field]: value }));
+    setErrors((prev) => ({ ...prev, [field]: undefined }));
   }
 
   function handleSubmit(e: React.FormEvent) {
@@ -164,6 +165,7 @@ export function ProducerEditFormCard({
           <TextField
             label={form.personType === "juristic" ? "ชื่อบริษัท" : "ชื่อ"}
             required
+            maxLength={100}
             value={form.firstName}
             onChange={(v) => update("firstName", v)}
             error={errors.firstName}
@@ -171,6 +173,7 @@ export function ProducerEditFormCard({
           <TextField
             label={form.personType === "juristic" ? "สาขา" : "นามสกุล"}
             required
+            maxLength={100}
             value={form.lastName}
             onChange={(v) => update("lastName", v)}
             error={errors.lastName}
@@ -179,6 +182,7 @@ export function ProducerEditFormCard({
             label="เลขบัตรประชาชน/เลขผู้เสียภาษี"
             required
             placeholder="ตัวเลข 13 หลัก"
+            maxLength={13}
             value={form.idNumber}
             onChange={(v) => update("idNumber", v)}
             error={errors.idNumber}
@@ -186,12 +190,14 @@ export function ProducerEditFormCard({
           <TextField
             label="รหัสตัวแทน"
             required
+            maxLength={20}
             value={form.producerCode}
             onChange={(v) => update("producerCode", v)}
             error={errors.producerCode}
           />
           <TextField
             label="เลขที่ใบอนุญาตตัวแทน"
+            maxLength={form.personType === "individual" ? 10 : 50}
             value={form.licenseNumber}
             onChange={(v) => update("licenseNumber", v)}
             error={errors.licenseNumber}
@@ -206,6 +212,7 @@ export function ProducerEditFormCard({
             type="tel"
             required
             placeholder="ตัวเลข 10 หลัก"
+            maxLength={10}
             value={form.phoneNumber}
             onChange={(v) => update("phoneNumber", v)}
             error={errors.phoneNumber}
@@ -226,6 +233,7 @@ export function ProducerEditFormCard({
             label="อีเมล"
             type="email"
             required
+            maxLength={254}
             value={form.email}
             onChange={(v) => update("email", v)}
             error={errors.email}

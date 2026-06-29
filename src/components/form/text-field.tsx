@@ -21,6 +21,7 @@ interface TextFieldProps {
   startAdornment?: ReactNode;
   endAdornment?: ReactNode;
   className?: string;
+  maxLength?: number;
 }
 
 export function TextField({
@@ -41,6 +42,7 @@ export function TextField({
   startAdornment,
   endAdornment,
   className,
+  maxLength,
 }: TextFieldProps) {
   const reactId = useId();
   const fieldId = id ?? reactId;
@@ -99,6 +101,7 @@ export function TextField({
             value={current}
             placeholder={placeholder}
             disabled={disabled}
+            maxLength={maxLength}
             aria-invalid={hasError || undefined}
             aria-required={required || undefined}
             aria-describedby={describedBy}
@@ -115,6 +118,7 @@ export function TextField({
             value={current}
             placeholder={placeholder}
             disabled={disabled}
+            maxLength={maxLength}
             aria-invalid={hasError || undefined}
             aria-required={required || undefined}
             aria-describedby={describedBy}
