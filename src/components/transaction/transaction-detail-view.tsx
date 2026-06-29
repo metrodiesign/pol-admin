@@ -101,7 +101,7 @@ function Panel({
           <div className="px-6 py-5">
             <p className="text-base font-bold text-foreground">{title}</p>
             {description ? (
-              <p className="mt-0.5 text-[13px] text-grey-500">{description}</p>
+              <p className="mt-0.5 text-xs text-grey-500">{description}</p>
             ) : null}
           </div>
           <div className="border-t border-[var(--divider)]" />
@@ -128,9 +128,9 @@ const STEP_LABEL_COLOR: Record<StepState, string> = {
 };
 
 
-const fieldLabel = "mb-1.5 block text-[13px] font-semibold text-grey-700";
+const fieldLabel = "mb-1.5 block text-xs font-semibold text-grey-700";
 
-export function TransactionDetailView({ id }: { id: string | undefined }) {
+export function TransactionDetailView({ id, compact = false }: { id: string | undefined; compact?: boolean }) {
   const t = getTransactionById(id);
 
   if (!t) {
@@ -173,13 +173,14 @@ export function TransactionDetailView({ id }: { id: string | undefined }) {
             <TransactionStatusBadge status={t.status} />
           </div>
 
-          <div className="mt-4 flex items-center overflow-x-auto">
+          <div className={cn("mt-4 flex", compact ? "flex-col gap-1" : "items-center overflow-x-auto")}>
             {lifecycle.map((s, i) => (
               <Fragment key={s.label}>
                 {i > 0 ? (
                   <span
                     className={cn(
                       "mx-3 h-0.5 min-w-8 flex-1",
+                      compact && "hidden",
                       lifecycle[i - 1]?.state === "done" ? "bg-success" : "bg-grey-300",
                     )}
                   />
@@ -194,7 +195,7 @@ export function TransactionDetailView({ id }: { id: string | undefined }) {
             ))}
           </div>
 
-          <div className="mt-6 grid grid-cols-1 gap-x-8 gap-y-8 mmd:grid-cols-2">
+          <div className={cn("mt-6 grid grid-cols-1 gap-x-8 gap-y-8", !compact && "mmd:grid-cols-2")}>
             <div className="flex h-full flex-col items-center justify-center rounded-2xl bg-grey-100 px-6 py-7 gap-3">
               <QrCode className="size-24 text-grey-800" strokeWidth={1.5} />
               <span className="font-mono text-xs text-grey-500">{link.url}</span>
@@ -225,7 +226,7 @@ export function TransactionDetailView({ id }: { id: string | undefined }) {
                 </button>
               </div>
 
-              <div className="mt-4 flex gap-2.5">
+              <div className={cn("mt-4 gap-2.5", compact ? "grid grid-cols-1" : "flex")}>
                 <button
                   type="button"
                   className="inline-flex h-11 flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-control bg-success px-3 text-sm font-bold text-white transition-colors hover:bg-success-dark"
@@ -256,7 +257,7 @@ export function TransactionDetailView({ id }: { id: string | undefined }) {
       {/* ── 2. ใบแจ้งหนี้และเลขที่อ้างอิง (Advanced) ─────────────────────── */}
       <Panel title="ใบแจ้งหนี้และเลขที่อ้างอิง" description="รหัสธุรกรรม ที่มา และข้อมูลอ้างอิง">
         <div className="px-6 py-5">
-          <div className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
+          <div className={cn("grid grid-cols-1 gap-x-4 gap-y-4", !compact && "sm:grid-cols-2")}>
             <div>
               <p className={fieldLabel}>Invoice No</p>
               <p className="text-sm font-bold text-foreground">{t.code || <span className="text-grey-400">—</span>}</p>
@@ -266,7 +267,7 @@ export function TransactionDetailView({ id }: { id: string | undefined }) {
               <p className="text-sm font-bold text-foreground">{t.psp.toUpperCase() || <span className="text-grey-400">—</span>}</p>
             </div>
           </div>
-          <div className="mt-4 grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
+          <div className={cn("mt-4 grid grid-cols-1 gap-x-4 gap-y-4", !compact && "sm:grid-cols-2")}>
             <div>
               <p className={fieldLabel}>Reference 1</p>
               <p className="text-sm font-bold text-foreground">{t.source.code || <span className="text-grey-400">—</span>}</p>
@@ -294,7 +295,7 @@ export function TransactionDetailView({ id }: { id: string | undefined }) {
       {/* ── 2. ข้อมูลลูกค้า (Customer) ──────────────────────────────────────── */}
       <Panel title="ข้อมูลลูกค้า" description="ใช้สำหรับการแจ้งเตือนและออกใบเสร็จ">
         <div className="px-6 py-5">
-          <div className="grid grid-cols-1 gap-x-5 gap-y-5 mmd:grid-cols-2">
+          <div className={cn("grid grid-cols-1 gap-x-5 gap-y-5", !compact && "mmd:grid-cols-2")}>
             <div className="flex flex-col gap-1.5">
               <p className={fieldLabel}>ชื่อ-นามสกุล</p>
               <p className="text-sm font-bold text-foreground">{t.customerName || <span className="text-grey-400">—</span>}</p>
@@ -368,7 +369,7 @@ export function TransactionDetailView({ id }: { id: string | undefined }) {
             </table>
           </div>
 
-          <div className="mt-4 flex flex-col gap-3 rounded-2xl bg-info/8 px-5 py-4 mmd:flex-row mmd:items-center mmd:justify-between">
+          <div className={cn("mt-4 flex flex-col gap-3 rounded-2xl bg-info/8 px-5 py-4", !compact && "mmd:flex-row mmd:items-center mmd:justify-between")}>
             <p className="flex items-center gap-2 text-sm text-grey-600">
               <Info className="size-4 shrink-0 text-info" />
               ลูกค้าจะเห็นรายการย่อยทั้งหมดในหน้าชำระเงิน และจ่ายครั้งเดียว
@@ -399,7 +400,7 @@ export function TransactionDetailView({ id }: { id: string | undefined }) {
               </span>
             </div>
             {channel?.caption ? (
-              <p className="mt-2 text-[13px] leading-relaxed text-grey-500">{channel.caption}</p>
+              <p className="mt-2 text-xs leading-relaxed text-grey-500">{channel.caption}</p>
             ) : null}
           </div>
         </div>
@@ -503,7 +504,7 @@ export function TransactionDetailView({ id }: { id: string | undefined }) {
               return (
                 <li key={ev.key} className="relative flex gap-3 pb-6 last:pb-0">
                   {!last ? (
-                    <span className="absolute top-9 left-4 h-[calc(100%-1.5rem)] w-px bg-[var(--divider)]" />
+                    <span className="absolute top-9 left-4 h-[calc(100%-2.5rem)] w-px bg-[var(--divider)]" />
                   ) : null}
                   <span
                     className={cn(
@@ -517,11 +518,11 @@ export function TransactionDetailView({ id }: { id: string | undefined }) {
                   <div className="min-w-0 flex-1 pt-1">
                     <div className="flex items-start justify-between gap-3">
                       <p className="text-sm font-semibold text-foreground">{ev.title}</p>
-                      <span className="shrink-0 text-[13px] tabular-nums text-grey-500">
+                      <span className="shrink-0 text-xs tabular-nums text-grey-500">
                         {ev.time}
                       </span>
                     </div>
-                    <p className="mt-0.5 text-[13px] text-grey-500">{ev.desc}</p>
+                    <p className="mt-0.5 text-xs text-grey-500">{ev.desc}</p>
                   </div>
                 </li>
               );

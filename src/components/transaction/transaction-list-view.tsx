@@ -16,7 +16,8 @@ import { DataTable } from "@/components/table/data-table";
 import { TransactionStatCards } from "./transaction-stat-cards";
 import { TransactionListTabs } from "./transaction-list-tabs";
 import { TransactionListToolbar } from "./transaction-list-toolbar";
-import { transactionColumns } from "./transaction-table-columns";
+import { TransactionDetailSheet } from "./transaction-detail-sheet";
+import { buildTransactionColumns } from "./transaction-table-columns";
 import "@/types/table-meta";
 
 type TabValue = TransactionStatus | "all";
@@ -38,22 +39,33 @@ export function TransactionListView() {
   const [psp, setPsp] = useState("");
   const [statusTab, setStatusTab] = useState<TabValue>("all");
   const [dense, setDense] = useState(false);
+  const [detailTx, setDetailTx] = useState<Transaction | null>(null);
 
   const globalFilter = useMemo(
     () => ({ search, source, psp, status: statusTab }),
     [search, source, psp, statusTab],
   );
 
+  const columns = useMemo(
+    () =>
+      buildTransactionColumns({
+        onSelect: setDetailTx,
+        onRead: (t) => router.push(`/transaction/read?id=${t.code}`),
+      }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
+
   const table = useDataTable<Transaction>({
     data: TRANSACTIONS,
-    columns: transactionColumns,
+    columns,
     getRowId: (t) => t.id,
     enableRowSelection: true,
     enableSortingRemoval: false,
     autoResetPageIndex: false,
     state: { globalFilter },
     meta: {
-      onRowClick: (t) => router.push(`/transaction/read?id=${t.code}`),
+      onRowClick: setDetailTx,
     },
     globalFilterFn: (row, _columnId, value) => {
       const f = value as {
@@ -88,8 +100,7 @@ export function TransactionListView() {
   });
 
   const filteredCount = table.getFilteredRowModel().rows.length;
-  const filteredRows = table.getFilteredRowModel().rows.map((r) => r.original);
-
+  
   const count = (status: TabValue) =>
     status === "all"
       ? TRANSACTIONS.length
@@ -116,6 +127,7 @@ export function TransactionListView() {
   }, []);
 
   return (
+    <>
     <div className="flex flex-col gap-6">
       <TransactionStatCards />
 
@@ -148,7 +160,11 @@ export function TransactionListView() {
             setPsp(v);
             table.setPageIndex(0);
           }}
-          rows={filteredRows}
+          rowsPerPage={table.getState().pagination.pageSize}
+          onRowsPerPageChange={(n) => {
+            table.setPageSize(n);
+            table.setPageIndex(0);
+          }}
         />
         <DataTable
           table={table}
@@ -161,5 +177,13 @@ export function TransactionListView() {
         />
       </div>
     </div>
+
+    <TransactionDetailSheet
+      transaction={detailTx}
+      open={detailTx !== null}
+      onOpenChange={(open) => { if (!open) setDetailTx(null); }}
+      onRead={(t) => router.push(`/transaction/read?id=${t.code}`)}
+    />
+    </>
   );
 }

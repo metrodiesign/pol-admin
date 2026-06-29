@@ -1,13 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Search, SlidersHorizontal, Download, CalendarDays } from "lucide-react";
+import { Search, CalendarDays } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { TextField } from "@/components/form/text-field";
 import { SelectField } from "@/components/form/select-field";
-import { Button } from "@/components/ui/button";
-import { downloadCsv } from "@/lib/transaction";
-import type { Transaction } from "@/types/transaction";
 
 interface Option {
   value: string;
@@ -65,7 +62,8 @@ interface TransactionListToolbarProps {
   sourceOptions: Option[];
   psp: string;
   onPspChange: (v: string) => void;
-  rows: Transaction[];
+  rowsPerPage: number;
+  onRowsPerPageChange: (n: number) => void;
 }
 
 const ALL = "__all__";
@@ -76,6 +74,13 @@ const PSP_OPTIONS: Option[] = [
   { value: "2c2p", label: "2C2P" },
 ];
 
+const ROWS_OPTIONS: Option[] = [
+  { value: "10", label: "10" },
+  { value: "25", label: "25" },
+  { value: "50", label: "50" },
+  { value: "100", label: "100" },
+];
+
 export function TransactionListToolbar({
   search,
   onSearchChange,
@@ -84,15 +89,16 @@ export function TransactionListToolbar({
   sourceOptions,
   psp,
   onPspChange,
-  rows,
+  rowsPerPage,
+  onRowsPerPageChange,
 }: TransactionListToolbarProps) {
   const sourceSelectOptions = [{ value: ALL, label: "ทั้งหมด" }, ...sourceOptions];
 
   return (
-    <div className="flex flex-col gap-3 py-5 pr-2 pl-5 lg:flex-row lg:items-stretch lg:gap-2">
+    <div className="grid grid-cols-1 gap-x-4 gap-y-3 p-5 sm:grid-cols-2 lg:grid-cols-3">
+      {/* Row 1 */}
       <TextField
         label="ค้นหา"
-        className="flex-1"
         placeholder="ค้นหารหัสธุรกรรม, ลูกค้า, อีเมล..."
         value={search}
         onChange={onSearchChange}
@@ -101,7 +107,6 @@ export function TransactionListToolbar({
 
       <SelectField
         label="ที่มา"
-        className="w-full lg:w-[180px]"
         value={source || ALL}
         onChange={(v) => onSourceChange(v === ALL ? "" : v)}
         options={sourceSelectOptions}
@@ -109,40 +114,22 @@ export function TransactionListToolbar({
 
       <SelectField
         label="PSP"
-        className="w-full lg:w-[160px]"
         value={psp || ALL}
         onChange={(v) => onPspChange(v === ALL ? "" : v)}
         options={PSP_OPTIONS}
       />
 
+      {/* Row 2 */}
       {/* ponytail: visual only, ยังไม่ wire */}
-      <div className="w-full lg:w-[220px]">
-        <DateInput label="วันที่" value="24 พ.ค. 2569" onChange={() => {}} />
-      </div>
+      <DateInput label="วันที่" value="24 พ.ค. 2569" onChange={() => {}} />
 
-      {/* ponytail: visual only */}
-      <div className="hidden flex-col gap-1.5 lg:flex">
-        <span aria-hidden className="select-none text-sm font-medium">&nbsp;</span>
-        <div className="flex flex-1 items-center">
-          <button
-            type="button"
-            aria-label="ตัวกรองเพิ่มเติม"
-            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-control border border-[var(--divider)] text-grey-700 transition-colors hover:bg-[var(--action-hover)]"
-          >
-            <SlidersHorizontal className="size-4" />
-          </button>
-        </div>
-      </div>
+      <SelectField
+        label="จำนวนต่อหน้า"
+        value={String(rowsPerPage)}
+        onChange={(v) => onRowsPerPageChange(Number(v))}
+        options={ROWS_OPTIONS}
+      />
 
-      <div className="hidden flex-col gap-1.5 lg:flex">
-        <span aria-hidden className="select-none text-sm font-medium">&nbsp;</span>
-        <div className="flex flex-1 items-center">
-          <Button size="lg" className="shrink-0" onClick={() => downloadCsv("transactions.csv", rows)}>
-            <Download className="size-4" />
-            ส่งออก CSV
-          </Button>
-        </div>
-      </div>
     </div>
   );
 }
