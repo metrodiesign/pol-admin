@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Link from "next/link";
 import { CircleCheck } from "lucide-react";
 import { AvatarUpload } from "@/components/shared/avatar-upload";
 import { Fieldset, Field, Label, Description } from "@/components/shared/fieldset";
 import { ProducerEditFormCard } from "@/components/producer/producer-edit-form-card";
+import { Logo } from "@/components/layout/logo";
 import type { ProducerFormData } from "@/types/producer";
 
 // ponytail: shell-free public page — no layout.tsx in this folder, inherits only root
@@ -34,7 +35,47 @@ const linkButtonClass =
 export default function RegisterPage() {
   const [photo, setPhoto] = useState<File | null>(null);
   const [photoError, setPhotoError] = useState<string>();
+  const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+
+  const handleSave = useCallback(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setSubmitted(true);
+    }, 1500);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="fixed inset-0 z-[9998] flex items-center justify-center bg-white">
+        <div className="relative inline-flex items-center justify-center" style={{ width: 120, height: 120 }}>
+          <span
+            className="relative z-[9] inline-flex"
+            style={{ animation: "splash-logo-pulse 3s ease-in-out infinite" }}
+          >
+            <Logo size={64} idPrefix="register-loading" />
+          </span>
+          <span
+            className="absolute"
+            style={{
+              width: "calc(100% - 20px)",
+              height: "calc(100% - 20px)",
+              border: "solid 3px color-mix(in srgb, var(--color-primary-dark) 24%, transparent)",
+              animation: "splash-inner-ring 3.2s linear infinite",
+            }}
+          />
+          <span
+            className="absolute inset-0"
+            style={{
+              border: "solid 8px color-mix(in srgb, var(--color-primary-dark) 24%, transparent)",
+              animation: "splash-outer-ring 3.2s linear infinite",
+            }}
+          />
+        </div>
+      </div>
+    );
+  }
 
   if (submitted) {
     return (
@@ -75,6 +116,7 @@ export default function RegisterPage() {
             >
               <AvatarUpload
                 size={144}
+                error={Boolean(photoError)}
                 onFileSelect={(file) => {
                   setPhoto(file);
                   setPhotoError(undefined);
@@ -106,7 +148,7 @@ export default function RegisterPage() {
               submitLabel="ลงทะเบียน"
               showAcceptTerms
               photo={{ value: photo, onError: setPhotoError }}
-              onSave={() => setSubmitted(true)}
+              onSave={handleSave}
             />
           </div>
         </div>

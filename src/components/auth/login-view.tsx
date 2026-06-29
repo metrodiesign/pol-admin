@@ -1,9 +1,8 @@
 "use client";
 
-import Link from "next/link";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { login } from "@/lib/api/admin-api";
-import { cn } from "@/lib/utils";
+import { producerLogin } from "@/lib/api/producer-api";
 
 // landing หลัง login = /main (admin landing จริง). backend ต้องมี /main ใน AdminSession:ReturnUrlAllowlist
 // (ไม่งั้น reject -> falls back /). ดู coordination item ใน spec.
@@ -67,13 +66,16 @@ export function LoginView() {
           className="flex h-[240px] flex-col justify-center rounded-2xl bg-background px-5 pb-10 shadow-card"
         >
           <h2 className="text-center text-base font-semibold text-foreground">สำหรับตัวแทน/นายหน้า</h2>
-          <Link
-            href="/register"
-            className={cn(buttonVariants({ variant: "outline", size: "lg" }), "mx-auto mt-10 h-12 w-full max-w-[260px] gap-2")}
+          <Button
+            type="button"
+            variant="outline"
+            size="lg"
+            className="mx-auto mt-10 h-12 w-full max-w-[260px] gap-2"
+            onClick={() => producerLogin()}
           >
             <GoogleIcon />
             เข้าสู่ระบบด้วย Google
-          </Link>
+          </Button>
         </section>
       </div>
     </main>

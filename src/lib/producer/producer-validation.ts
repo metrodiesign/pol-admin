@@ -4,14 +4,17 @@ import type {
   ProducerRegisterFormData,
 } from "@/types/producer";
 
-/** เลขบัตรประชาชน/เลขผู้เสียภาษี — ตัวเลข 13 หลักเท่านั้น (REQ-5.1) */
+/** เลขบัตรประชาชน/เลขผู้เสียภาษี — 13 หลัก + checksum (REQ-5.1) */
 export function isThaiId(value: string): boolean {
-  return /^\d{13}$/.test(value);
+  if (!/^\d{13}$/.test(value)) return false;
+  const digits = value.split("").map(Number);
+  const sum = digits.slice(0, 12).reduce((acc, d, i) => acc + d * (13 - i), 0);
+  return digits[12] === (11 - (sum % 11)) % 10;
 }
 
-/** เบอร์โทร OTP — ตัวเลข 10 หลักเท่านั้น (REQ-5.2) */
+/** เบอร์มือถือไทย 06x/08x/09x 10 หลัก (REQ-5.2) */
 export function isThaiPhone(value: string): boolean {
-  return /^\d{10}$/.test(value);
+  return /^0[689]\d{8}$/.test(value);
 }
 
 /**
@@ -29,9 +32,9 @@ export function isValidLicense(
   return true;
 }
 
-/** email format ขั้นพื้นฐาน (REQ-5.6) */
+/** email — TLD ต้องมีอย่างน้อย 2 ตัวอักษร (REQ-5.6) */
 export function isEmail(value: string): boolean {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
 }
 
 export type ProducerFormErrors = Partial<Record<keyof ProducerFormData, string>>;
@@ -52,7 +55,7 @@ export function validateProducerForm(
 
   if (!form.idNumber.trim())
     errors.idNumber = "กรุณากรอกเลขบัตรประชาชน/เลขผู้เสียภาษี";
-  else if (!isThaiId(form.idNumber)) errors.idNumber = "ต้องเป็นตัวเลข 13 หลัก";
+  else if (!isThaiId(form.idNumber)) errors.idNumber = "ต้องเป็นตัวเลข 13 หลักที่ถูกต้อง";
 
   if (!form.producerCode.trim()) errors.producerCode = "กรุณากรอกรหัสตัวแทน";
 
@@ -62,7 +65,7 @@ export function validateProducerForm(
   if (!form.phoneNumber.trim())
     errors.phoneNumber = "กรุณากรอกหมายเลขโทรศัพท์";
   else if (!isThaiPhone(form.phoneNumber))
-    errors.phoneNumber = "ต้องเป็นตัวเลข 10 หลัก";
+    errors.phoneNumber = "ต้องเป็นเบอร์มือถือไทย (06x, 08x, 09x) 10 หลัก";
 
   if (!form.email.trim()) errors.email = "กรุณากรอกอีเมล";
   else if (!isEmail(form.email)) errors.email = "รูปแบบอีเมลไม่ถูกต้อง";
@@ -84,9 +87,5 @@ export type RegisterFormErrors = Partial<
 export function validateRegisterForm(
   form: ProducerRegisterFormData,
 ): RegisterFormErrors {
-  const errors: RegisterFormErrors = validateProducerForm(form, {
-    requireAcceptTerms: true,
-  });
-  if (!form.photo) errors.photo = "กรุณาแนบรูปถ่ายตัวแทนพร้อมบัตรประชาชน";
-  return errors;
+  return validateProducerForm(form, { requireAcceptTerms: true });
 }
