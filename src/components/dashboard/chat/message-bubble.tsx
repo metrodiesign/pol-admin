@@ -124,7 +124,7 @@ export function MessageGroup({
     <div className="flex flex-col gap-1.5">
       {/* Time label above the group, aligned to the sender side */}
       <div className={cn("flex", isOwn ? "justify-end" : "justify-start")}>
-        <span className="text-[12px] leading-5 text-grey-400">{groupTime}</span>
+        <span className="text-xs leading-5 text-grey-400">{groupTime}</span>
       </div>
 
       <div className={cn("flex gap-2", isOwn ? "flex-row-reverse" : "flex-row")}>
@@ -145,7 +145,7 @@ export function MessageGroup({
         <div className={cn("flex flex-col gap-1", isOwn ? "items-end" : "items-start")}>
           {/* Sender name — incoming only, above bubbles */}
           {!isOwn && (
-            <p className="px-1 text-[12px] leading-5 text-grey-500">{senderName}</p>
+            <p className="px-1 text-xs leading-5 text-grey-500">{senderName}</p>
           )}
 
           {messages.map((msg) => (

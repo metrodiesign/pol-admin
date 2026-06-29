@@ -41,7 +41,7 @@ export function FileManagerToolbar({
             onChange={(e) => onSearchChange(e.target.value)}
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
-            className="flex-1 bg-transparent text-[15px] text-foreground placeholder:text-grey-500 outline-none"
+            className="flex-1 bg-transparent text-sm text-foreground placeholder:text-grey-500 outline-none"
           />
         </div>
       </div>

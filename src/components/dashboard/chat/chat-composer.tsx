@@ -24,7 +24,7 @@ export function ChatComposer() {
         aria-label="Type a message"
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        className="flex-1 bg-transparent text-[15px] leading-6 text-grey-800 outline-none placeholder:text-grey-400"
+        className="flex-1 bg-transparent text-sm leading-6 text-grey-800 outline-none placeholder:text-grey-400"
       />
 
       {/* Trailing buttons */}

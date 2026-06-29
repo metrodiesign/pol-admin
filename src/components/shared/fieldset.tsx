@@ -78,7 +78,7 @@ export function Description({
   return (
     <p
       data-slot="description"
-      className={cn("text-[13px] text-grey-500", className)}
+      className={cn("text-xs text-grey-500", className)}
       {...props}
     />
   );

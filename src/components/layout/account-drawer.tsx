@@ -236,7 +236,7 @@ export function AccountDrawer({ variant = "white" }: AccountDrawerProps) {
               <p className="mt-0.5 text-sm font-semibold text-white">Power up Productivity!</p>
               <button
                 type="button"
-                className="mt-4 rounded-lg px-2 py-1 text-[13px] font-bold text-grey-900"
+                className="mt-4 rounded-lg px-2 py-1 text-xs font-bold text-grey-900"
                 style={{ background: "rgb(255, 171, 0)" }}
               >
                 Upgrade to Pro

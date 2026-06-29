@@ -195,14 +195,14 @@ function PostComposer() {
         <div className="flex gap-1">
           <button
             type="button"
-            className="flex h-9 items-center gap-1.5 rounded-full bg-[rgba(145,158,171,0.16)] px-2 text-[13px] font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]"
+            className="flex h-9 items-center gap-1.5 rounded-full bg-[rgba(145,158,171,0.16)] px-2 text-xs font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]"
           >
             <ImageIcon className="size-4 text-success" />
             Image/Video
           </button>
           <button
             type="button"
-            className="flex h-9 items-center gap-1.5 rounded-full bg-[rgba(145,158,171,0.16)] px-2 text-[13px] font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]"
+            className="flex h-9 items-center gap-1.5 rounded-full bg-[rgba(145,158,171,0.16)] px-2 text-xs font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]"
           >
             <Radio className="size-4 text-error" />
             Streaming

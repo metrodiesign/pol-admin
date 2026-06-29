@@ -103,7 +103,7 @@ export function ConversationList({
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
             aria-label="Search contacts"
-            className="flex-1 bg-transparent text-[15px] leading-6 text-grey-800 outline-none placeholder:text-grey-400"
+            className="flex-1 bg-transparent text-sm leading-6 text-grey-800 outline-none placeholder:text-grey-400"
           />
         </div>
       </div>
@@ -145,7 +145,7 @@ export function ConversationList({
               {/* Text */}
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-semibold leading-[22px] text-grey-800">{displayName}</p>
-                <p className="truncate text-[13px] leading-5 text-grey-500">
+                <p className="truncate text-xs leading-5 text-grey-500">
                   {contact.lastMessageIsOwn ? (
                     <span className="text-grey-600">You: </span>
                   ) : null}
@@ -154,7 +154,7 @@ export function ConversationList({
               </div>
 
               {/* Time */}
-              <span className="shrink-0 text-[11px] text-grey-400">
+              <span className="shrink-0 text-xs text-grey-400">
                 {contact.lastMessageTime}
               </span>
             </button>

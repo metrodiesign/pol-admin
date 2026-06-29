@@ -105,7 +105,7 @@ export function TextField({
             onChange={(e) => handleChange(e.target.value)}
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
-            className="w-full resize-none bg-transparent px-3.5 py-3 text-[15px] text-foreground outline-none placeholder:text-grey-500"
+            className="w-full resize-none bg-transparent px-3.5 py-3 text-sm text-foreground outline-none placeholder:text-grey-500"
           />
         ) : (
           <input
@@ -122,7 +122,7 @@ export function TextField({
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
             className={cn(
-              "h-full w-full bg-transparent px-3.5 text-[15px] text-foreground outline-none placeholder:text-grey-500",
+              "h-full w-full bg-transparent px-3.5 text-sm text-foreground outline-none placeholder:text-grey-500",
               startAdornment && "pl-2",
             )}
           />

@@ -108,7 +108,7 @@ export function JobCard({ job }: JobCardProps) {
         {/* title + posted */}
         <Link
           href={`/dashboard/job/${job.id}`}
-          className="mb-0.5 block text-[15px] font-bold leading-snug text-grey-800 hover:underline"
+          className="mb-0.5 block text-sm font-bold leading-snug text-grey-800 hover:underline"
         >
           {job.title}
         </Link>

@@ -79,7 +79,7 @@ export function RoutingDetailView({ id }: { id?: string }) {
             <StatusSpine tone={tone} className="h-auto" />
             <div className="min-w-0">
               <span className="text-overline text-grey-500">
-                Control plane · Routing rule
+                Control plane · กฎการกำหนดเส้นทาง
               </span>
               <h1 className="text-h5 text-foreground">
                 ลำดับ{" "}

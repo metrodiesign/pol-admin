@@ -73,7 +73,7 @@ export function CalendarToolbar({
         >
           <ChevronLeft className="size-4" />
         </button>
-        <span className="min-w-[120px] text-center text-[15px] font-semibold leading-7 text-grey-800 sm:text-[17px]">
+        <span className="min-w-[120px] text-center text-sm font-semibold leading-7 text-grey-800 sm:text-base">
           {periodLabel}
         </span>
         <button
@@ -90,7 +90,7 @@ export function CalendarToolbar({
         <button
           type="button"
           onClick={onToday}
-          className="rounded-lg px-2 py-1 text-[13px] font-bold leading-[22px] text-white transition-opacity hover:opacity-90"
+          className="rounded-lg px-2 py-1 text-xs font-bold leading-[22px] text-white transition-opacity hover:opacity-90"
           style={{ backgroundColor: "rgb(255, 86, 48)" }}
         >
           Today

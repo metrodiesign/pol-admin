@@ -79,7 +79,7 @@ export function FileManagerTableRow({
       {/* Modified */}
       <TableCell className={cn("px-4", py)}>
         <span className="block text-sm text-foreground">{item.modifiedDate}</span>
-        <span className="block text-[13px] text-grey-500">{item.modifiedTime}</span>
+        <span className="block text-xs text-grey-500">{item.modifiedTime}</span>
       </TableCell>
 
       {/* Shared */}
@@ -95,7 +95,7 @@ export function FileManagerTableRow({
               ))}
             </AvatarGroup>
             {item.sharedOverflow > 0 && (
-              <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-success/16 px-1 text-[11px] font-bold text-success-dark">
+              <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-success/16 px-1 text-xs font-bold text-success-dark">
                 +{item.sharedOverflow}
               </span>
             )}

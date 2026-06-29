@@ -127,10 +127,10 @@ export function CalendarAgenda({ events, weekDate, onEventClick }: CalendarAgend
         <div key={group.dateStr}>
           {/* Day header */}
           <div className="flex items-center justify-between bg-grey-100 px-4 py-2">
-            <span className="text-[13px] font-semibold text-grey-800">
+            <span className="text-xs font-semibold text-grey-800">
               {getDayName(group.dateStr)}
             </span>
-            <span className="text-[13px] font-semibold text-grey-800">
+            <span className="text-xs font-semibold text-grey-800">
               {formatDateLabel(group.dateStr)}
             </span>
           </div>
@@ -143,7 +143,7 @@ export function CalendarAgenda({ events, weekDate, onEventClick }: CalendarAgend
               onClick={() => onEventClick(ev)}
               className="flex w-full items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-grey-50"
             >
-              <span className="w-28 shrink-0 text-[12px] text-grey-500">
+              <span className="w-28 shrink-0 text-xs text-grey-500">
                 {getTimeLabel(ev)}
               </span>
               <span
@@ -152,7 +152,7 @@ export function CalendarAgenda({ events, weekDate, onEventClick }: CalendarAgend
                   DOT_COLORS[ev.color] ?? "bg-grey-400"
                 )}
               />
-              <span className="text-[13px] font-medium text-grey-800">{ev.title}</span>
+              <span className="text-xs font-medium text-grey-800">{ev.title}</span>
             </button>
           ))}
         </div>

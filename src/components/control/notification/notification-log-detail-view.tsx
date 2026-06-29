@@ -77,7 +77,7 @@ export function NotificationLogDetailView({ id }: { id?: string }) {
             <StatusSpine tone={tone} className="h-auto" />
             <div className="min-w-0">
               <span className="text-overline text-grey-500">
-                Control plane · Notification log
+                Control plane · ประวัติการแจ้งเตือน
               </span>
               <h1 className="text-h5 text-foreground">
                 {eventLabel(entry.event)}

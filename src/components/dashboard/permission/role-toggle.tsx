@@ -25,7 +25,7 @@ export function RoleToggle({ defaultRole = "admin" }: RoleToggleProps) {
               type="button"
               onClick={() => setRole(r)}
               className={cn(
-                "rounded-[8px] px-1 py-[5px] text-[13px] font-semibold capitalize leading-5 transition-colors",
+                "rounded-[8px] px-1 py-[5px] text-xs font-semibold capitalize leading-5 transition-colors",
                 isActive
                   ? "bg-[rgba(28,37,46,0.08)] text-grey-800 dark:bg-[rgba(255,255,255,0.08)]"
                   : "bg-transparent text-grey-600 hover:bg-[rgba(28,37,46,0.04)] dark:hover:bg-[rgba(255,255,255,0.04)]",

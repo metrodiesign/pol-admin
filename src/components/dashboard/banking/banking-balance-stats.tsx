@@ -61,7 +61,7 @@ export function BankingBalanceStats() {
             <span className="size-2.5 rounded-full" style={{ backgroundColor: item.color }} />
             <span className="text-grey-600">{item.label}</span>
             <span
-              className="rounded-full px-1.5 py-0.5 text-[11px] font-bold"
+              className="rounded-full px-1.5 py-0.5 text-xs font-bold"
               style={{
                 backgroundColor: `${item.color}18`,
                 color: item.color,

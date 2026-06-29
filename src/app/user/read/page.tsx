@@ -10,7 +10,7 @@ export default function UserReadPage() {
   return (
     <>
       <EditPageHeader
-        title="View"
+        title="ดู"
         backHref="/user/list"
         breadcrumbs={[
           { label: "ผู้ใช้งาน & สิทธิ์", href: "/user/list" },

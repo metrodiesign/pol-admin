@@ -13,10 +13,10 @@ export default function UserCreatePage() {
   return (
     <>
       <PageHeader
-        title="Create a new user"
+        title="เพิ่มผู้ใช้งานใหม่"
         breadcrumbs={[
           { label: "ผู้ใช้งาน & สิทธิ์", href: "/user/list" },
-          { label: "Create" },
+          { label: "เพิ่มใหม่" },
         ]}
       />
 
@@ -31,13 +31,13 @@ export default function UserCreatePage() {
           >
             <AvatarUpload size={144} />
 
-            <Fieldset aria-label="Account settings" className="mt-10">
+            <Fieldset aria-label="ตั้งค่าบัญชี" className="mt-10">
               <div className="space-y-5">
                 <Field className="flex-row items-start justify-between gap-4">
                   <div>
-                    <Label className="text-sm font-semibold">Email verified</Label>
+                    <Label className="text-sm font-semibold">ยืนยันอีเมลแล้ว</Label>
                     <Description>
-                      Disabling this will automatically send the user a verification email
+                      หากปิดตัวเลือกนี้ ระบบจะส่งอีเมลยืนยันให้ผู้ใช้โดยอัตโนมัติ
                     </Description>
                   </div>
                   <Switch
@@ -65,7 +65,7 @@ export default function UserCreatePage() {
               company: "",
               role: "",
             }}
-            submitLabel="Create user"
+            submitLabel="เพิ่มผู้ใช้งาน"
             cancelHref="/user/list"
           />
         </div>

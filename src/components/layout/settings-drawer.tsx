@@ -109,7 +109,7 @@ function SectionCard({
 }) {
   return (
     <div className="relative rounded-2xl border border-grey-500/12 px-4 pb-4 pt-7">
-      <span className="absolute -top-[11px] left-3 flex h-[22px] items-center rounded-full bg-grey-800 px-2.5 text-[13px] font-semibold text-white">
+      <span className="absolute -top-[11px] left-3 flex h-[22px] items-center rounded-full bg-grey-800 px-2.5 text-xs font-semibold text-white">
         {label}
       </span>
       {children}

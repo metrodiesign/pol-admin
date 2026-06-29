@@ -24,7 +24,7 @@ export const originatorColumns: ColumnDef<Originator>[] = [
   },
   {
     accessorKey: "code",
-    header: "Originator",
+    header: "ต้นทาง",
     enableSorting: true,
     cell: ({ row }) => {
       const o = row.original;
@@ -60,7 +60,7 @@ export const originatorColumns: ColumnDef<Originator>[] = [
   },
   {
     accessorKey: "linkedApiClientId",
-    header: "API client",
+    header: "ไคลเอนต์ API",
     enableSorting: false,
     cell: ({ row }) => (
       <span className="text-data text-xs text-grey-700">

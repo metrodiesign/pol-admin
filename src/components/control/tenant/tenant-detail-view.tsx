@@ -64,7 +64,7 @@ export function TenantDetailView({ id }: { id?: string }) {
             <StatusSpine tone={tone} className="h-auto" />
             <div className="min-w-0">
               <span className="text-overline text-grey-500">
-                Control plane · Tenant
+                Control plane · ผู้เช่า
               </span>
               <h1 className="text-h5 text-foreground">{tenant.name}</h1>
               <p className="text-data mt-1 text-xs break-all text-grey-600">
@@ -133,7 +133,7 @@ export function TenantDetailView({ id }: { id?: string }) {
                     <Badge
                       key={p}
                       variant="secondary"
-                      className="text-[11px] uppercase"
+                      className="text-xs uppercase"
                     >
                       {p}
                     </Badge>

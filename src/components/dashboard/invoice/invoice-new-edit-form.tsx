@@ -112,7 +112,7 @@ function FloatingField({
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           className={cn(
-            "h-full w-full bg-transparent text-[15px] outline-none",
+            "h-full w-full bg-transparent text-sm outline-none",
             prefix ? "pl-1 pr-3" : "px-3",
             disabled ? "text-grey-400" : "text-grey-800",
           )}
@@ -158,7 +158,7 @@ function FloatingTextarea({
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           rows={3}
-          className="w-full resize-none bg-transparent px-3 py-3 text-[15px] text-grey-800 outline-none"
+          className="w-full resize-none bg-transparent px-3 py-3 text-sm text-grey-800 outline-none"
         />
       </div>
     </div>
@@ -212,7 +212,7 @@ function FloatingSelect({
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
             className={cn(
-              "h-full w-full border-none pl-3 pr-3 text-[15px]",
+              "h-full w-full border-none pl-3 pr-3 text-sm",
               disabled ? "text-grey-400" : "text-grey-800",
             )}
           >
@@ -274,7 +274,7 @@ function DateField({
           onBlur={() => setFocused(false)}
           placeholder="MM/DD/YYYY"
           className={cn(
-            "h-full w-full bg-transparent pl-3 pr-10 text-[15px] outline-none",
+            "h-full w-full bg-transparent pl-3 pr-10 text-sm outline-none",
             disabled ? "text-grey-400" : "text-grey-800",
           )}
         />
@@ -495,7 +495,7 @@ export function InvoiceNewEditForm({ mode, initialData }: InvoiceNewEditFormProp
                 <button
                   type="button"
                   onClick={() => removeItem(idx)}
-                  className="inline-flex items-center gap-1.5 text-[13px] font-bold leading-[22px] text-error hover:opacity-80"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold leading-[22px] text-error hover:opacity-80"
                 >
                   <Trash2 className="size-4" />
                   Remove
@@ -513,7 +513,7 @@ export function InvoiceNewEditForm({ mode, initialData }: InvoiceNewEditFormProp
           <button
             type="button"
             onClick={addItem}
-            className="inline-flex items-center gap-1.5 text-[13px] font-bold leading-[22px] text-primary hover:opacity-80"
+            className="inline-flex items-center gap-1.5 text-xs font-bold leading-[22px] text-primary hover:opacity-80"
           >
             <Plus className="size-4" />
             Add item

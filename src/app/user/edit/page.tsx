@@ -12,7 +12,7 @@ export default function UserEditPage() {
   return (
     <>
       <EditPageHeader
-        title="Edit"
+        title="แก้ไข"
         backHref="/user/list"
         breadcrumbs={[
           { label: "ผู้ใช้งาน & สิทธิ์", href: "/user/list" },
@@ -47,7 +47,7 @@ export default function UserEditPage() {
               company: "Wuckert Inc",
               role: "Content Creator",
             }}
-            submitLabel="Save changes"
+            submitLabel="บันทึกการเปลี่ยนแปลง"
             cancelHref="/user/list"
           />
         </div>

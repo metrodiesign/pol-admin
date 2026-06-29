@@ -98,7 +98,7 @@ export function PspDetailView({ id }: { id?: string }) {
             <StatusSpine tone={tone} className="h-auto" />
             <div className="min-w-0">
               <span className="text-overline text-grey-500">
-                Control plane · PSP connection
+                Control plane · การเชื่อมต่อ PSP
               </span>
               <h1 className="text-h5 text-foreground">
                 {PROVIDER_LABEL[conn.provider]} · {ENV_LABEL[conn.environment]}
@@ -119,7 +119,7 @@ export function PspDetailView({ id }: { id?: string }) {
 
           <div className="grid grid-cols-2 gap-x-4 gap-y-5 border-t border-[var(--divider)] pt-5">
             <ReadField label="บริษัท" value={TENANT_LABEL[conn.tenantId]} />
-            <ReadField label="Environment" value={ENV_LABEL[conn.environment]} />
+            <ReadField label="สภาพแวดล้อม" value={ENV_LABEL[conn.environment]} />
             <ReadField
               label="Webhook ล่าสุด"
               value={formatDateTime(conn.lastWebhookAt)}
@@ -141,10 +141,10 @@ export function PspDetailView({ id }: { id?: string }) {
           icon={<Webhook className="size-5 text-grey-600" />}
         >
           <div className="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
-            <ReadField label="Provider" value={PROVIDER_LABEL[conn.provider]} />
-            <ReadField label="Environment" value={ENV_LABEL[conn.environment]} />
+            <ReadField label="ผู้ให้บริการ" value={PROVIDER_LABEL[conn.provider]} />
+            <ReadField label="สภาพแวดล้อม" value={ENV_LABEL[conn.environment]} />
             <ReadField
-              label="Public key"
+              label="คีย์สาธารณะ"
               value={conn.publicKey}
               mono
               className="sm:col-span-2"
@@ -155,7 +155,7 @@ export function PspDetailView({ id }: { id?: string }) {
         </DetailCard>
 
         <DetailCard
-          title="Credential vault"
+          title="ที่เก็บข้อมูลลับ"
           icon={<KeyRound className="size-5 text-grey-600" />}
         >
           <p className="mb-4 text-sm text-grey-600">
@@ -164,12 +164,12 @@ export function PspDetailView({ id }: { id?: string }) {
           </p>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
             <ReadField
-              label="Secret key"
+              label="คีย์ลับ"
               value={maskSecret(conn.secretKey)}
               mono
             />
             <ReadField
-              label="Webhook secret"
+              label="คีย์ลับ Webhook"
               value={maskSecret(conn.webhookSecret)}
               mono
             />

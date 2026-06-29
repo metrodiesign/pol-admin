@@ -21,7 +21,7 @@ interface CheckoutAdvancedCardProps {
   onChange: (next: AdvancedInfo) => void;
 }
 
-const fieldLabel = "mb-1.5 block text-[13px] font-semibold text-grey-700";
+const fieldLabel = "mb-1.5 block text-xs font-semibold text-grey-700";
 
 export function CheckoutAdvancedCard({ value, onChange }: CheckoutAdvancedCardProps) {
   const [open, setOpen] = useState(true);
@@ -46,7 +46,7 @@ export function CheckoutAdvancedCard({ value, onChange }: CheckoutAdvancedCardPr
           <span className="block text-base font-bold text-foreground">
             ใบแจ้งหนี้และเลขที่อ้างอิง (ขั้นสูง)
           </span>
-          <span className="mt-0.5 block text-[13px] text-grey-500">
+          <span className="mt-0.5 block text-xs text-grey-500">
             Invoice No, Reference 1-5 · ใช้กระทบยอดกับระบบต้นทาง
           </span>
         </span>

@@ -97,7 +97,7 @@ export function PspConnectionsView() {
               })),
             },
             {
-              label: "Environment",
+              label: "สภาพแวดล้อม",
               value: env,
               onChange: (v) => {
                 setEnv(v);

@@ -40,7 +40,7 @@ function NotFound() {
     >
       <p className="text-h6 text-foreground">ไม่พบบันทึกการตรวจสอบนี้</p>
       <p className="mt-1 text-sm text-grey-600">
-        รหัสบันทึกอาจไม่ถูกต้อง — บันทึกการตรวจสอบเป็นแบบ append-only ลบไม่ได้
+        รหัสบันทึกอาจไม่ถูกต้อง — บันทึกการตรวจสอบเป็นแบบเพิ่มต่อท้ายเท่านั้น ลบไม่ได้
       </p>
     </div>
   );
@@ -65,7 +65,7 @@ export function AuditDetailView({ id }: { id?: string }) {
             <StatusSpine tone={tone} className="h-auto" />
             <div className="min-w-0">
               <span className="text-overline text-grey-500">
-                Control plane · Audit entry
+                Control plane · รายการตรวจสอบ
               </span>
               <h1 className="text-h5 text-foreground">
                 {actionLabel(entry.action)}
@@ -83,7 +83,7 @@ export function AuditDetailView({ id }: { id?: string }) {
             />
             <span className="inline-flex items-center gap-1 rounded-md bg-grey-100 px-1.5 py-1 text-xs font-semibold text-grey-700 dark:bg-grey-900">
               <Lock className="size-3.5 text-grey-500" />
-              อ่านอย่างเดียว · append-only
+              อ่านอย่างเดียว · เพิ่มต่อท้ายเท่านั้น
             </span>
           </div>
 

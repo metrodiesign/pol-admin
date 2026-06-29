@@ -27,7 +27,7 @@ export const apiClientColumns: ColumnDef<ApiClient>[] = [
   },
   {
     accessorKey: "name",
-    header: "Client",
+    header: "ไคลเอนต์",
     enableSorting: true,
     cell: ({ row }) => (
       <div className="flex flex-col gap-0.5">
@@ -42,7 +42,7 @@ export const apiClientColumns: ColumnDef<ApiClient>[] = [
   },
   {
     id: "scopes",
-    header: "Scopes",
+    header: "ขอบเขต",
     enableSorting: false,
     cell: ({ row }) => {
       const scopes = row.original.scopes;

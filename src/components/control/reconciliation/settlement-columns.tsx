@@ -47,7 +47,7 @@ export const settlementColumns: ColumnDef<SettlementBatch>[] = [
   },
   {
     accessorKey: "batchRef",
-    header: "Batch",
+    header: "ชุดงาน",
     enableSorting: true,
     cell: ({ row }) => (
       <span className="text-data text-xs text-grey-700">
@@ -117,7 +117,7 @@ export const settlementColumns: ColumnDef<SettlementBatch>[] = [
   },
   {
     accessorKey: "settledAt",
-    header: "Settle เมื่อ",
+    header: "ชำระเมื่อ",
     enableSorting: true,
     cell: ({ row }) => (
       <span className="text-data text-xs text-grey-600">

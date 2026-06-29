@@ -163,7 +163,7 @@ export function KanbanCard({ card, onClick }: KanbanCardProps) {
                   </Avatar>
                 ))}
                 {overflowCount > 0 && (
-                  <AvatarGroupCount className="size-6 text-[10px] font-bold">
+                  <AvatarGroupCount className="size-6 text-xs font-bold">
                     +{overflowCount}
                   </AvatarGroupCount>
                 )}

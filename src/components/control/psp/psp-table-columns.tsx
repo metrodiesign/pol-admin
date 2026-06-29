@@ -42,7 +42,7 @@ export const pspColumns: ColumnDef<PspConnection>[] = [
           </span>
           <span
             className={cn(
-              "inline-flex h-5 items-center rounded-md px-1.5 text-[11px] font-bold",
+              "inline-flex h-5 items-center rounded-md px-1.5 text-xs font-bold",
               isLive
                 ? "bg-success/16 text-success-dark"
                 : "bg-grey-500/16 text-grey-600",
@@ -77,7 +77,7 @@ export const pspColumns: ColumnDef<PspConnection>[] = [
   },
   {
     accessorKey: "publicKey",
-    header: "Public key",
+    header: "คีย์สาธารณะ",
     enableSorting: false,
     cell: ({ row }) => (
       <span className="text-data text-xs text-grey-700">

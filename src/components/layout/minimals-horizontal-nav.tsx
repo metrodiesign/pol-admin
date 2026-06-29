@@ -51,7 +51,7 @@ const ENTRIES: NavItem[] = minimalsNavConfig.flatMap((g) => g.items);
 
 function Badge({ children }: { children: React.ReactNode }) {
   return (
-    <span className="ml-0.5 rounded-md bg-grey-200 px-1 py-0.5 text-[10px] font-bold leading-none text-grey-700">
+    <span className="ml-0.5 rounded-md bg-grey-200 px-1 py-0.5 text-xs font-bold leading-none text-grey-700">
       {children}
     </span>
   );

@@ -6,7 +6,7 @@ import { TextField } from "@/components/form/text-field";
 import { SelectField } from "@/components/form/select-field";
 
 const ROLE_OPTIONS = [
-  { value: "__all__", label: "All roles" },
+  { value: "__all__", label: "ทุกบทบาท" },
   ...USER_ROLES.map((r) => ({ value: r, label: r })),
 ];
 
@@ -26,7 +26,7 @@ export function UserListToolbar({
   return (
     <div className="flex flex-col gap-3 py-5 pr-2 pl-5 sm:flex-row sm:items-stretch sm:gap-2">
       <SelectField
-        label="Role"
+        label="บทบาท"
         className="w-full sm:w-[200px]"
         value={role || "__all__"}
         onChange={(v) => onRoleChange(v === "__all__" ? "" : v)}
@@ -34,9 +34,9 @@ export function UserListToolbar({
       />
 
       <TextField
-        label="Search"
+        label="ค้นหา"
         className="flex-1"
-        placeholder="Search..."
+        placeholder="ค้นหา..."
         value={search}
         onChange={onSearchChange}
         startAdornment={<Search className="size-5 text-grey-500" />}

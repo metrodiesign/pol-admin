@@ -45,7 +45,7 @@ export function OrderDetailItems({
               <p className="text-sm font-semibold text-foreground">
                 {item.name}
               </p>
-              <p className="text-[13px] text-grey-600">{item.sku}</p>
+              <p className="text-xs text-grey-600">{item.sku}</p>
             </div>
             <div className="flex items-center gap-8 text-sm text-foreground">
               <span className="text-grey-600">x{item.qty}</span>

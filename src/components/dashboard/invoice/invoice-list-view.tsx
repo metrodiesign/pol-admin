@@ -79,7 +79,7 @@ function DateInput({
           onChange={(e) => onChange(e.target.value)}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
-          className="min-w-0 flex-1 bg-transparent text-[15px] text-foreground placeholder:text-grey-500 outline-none"
+          className="min-w-0 flex-1 bg-transparent text-sm text-foreground placeholder:text-grey-500 outline-none"
         />
         <button
           type="button"

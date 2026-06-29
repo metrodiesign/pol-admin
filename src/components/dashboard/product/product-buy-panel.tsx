@@ -44,7 +44,7 @@ export function ProductBuyPanel({
       {/* Status eyebrow */}
       <span
         className={cn(
-          "text-[11px] font-bold uppercase tracking-wider",
+          "text-xs font-bold uppercase tracking-wider",
           isOutOfStock ? "text-error" : "text-success-dark",
         )}
       >
@@ -52,7 +52,7 @@ export function ProductBuyPanel({
       </span>
 
       {/* Name */}
-      <h5 className="mt-2 text-[19px] font-bold leading-tight text-foreground">
+      <h5 className="mt-2 text-lg font-bold leading-tight text-foreground">
         {name}
       </h5>
 
@@ -77,11 +77,11 @@ export function ProductBuyPanel({
       {/* Price */}
       <div className="mt-3 flex items-center gap-2">
         {priceSale < price && (
-          <span className="text-[19px] font-bold text-grey-500 line-through">
+          <span className="text-lg font-bold text-grey-500 line-through">
             ${price.toFixed(2)}
           </span>
         )}
-        <span className="text-[19px] font-bold text-foreground">
+        <span className="text-lg font-bold text-foreground">
           ${priceSale.toFixed(2)}
         </span>
       </div>
@@ -123,7 +123,7 @@ export function ProductBuyPanel({
             value={String(selectedSize)}
             onValueChange={(v) => setSelectedSize(Number(v))}
           >
-            <SelectTrigger aria-label="Size" className="h-10 w-[88px] text-[15px]">
+            <SelectTrigger aria-label="Size" className="h-10 w-[88px] text-sm">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

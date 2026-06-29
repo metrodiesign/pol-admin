@@ -11,12 +11,12 @@ export default function UserListPage() {
   return (
     <>
       <PageHeader
-        title="List"
+        title="รายชื่อผู้ใช้งาน"
         breadcrumbs={[
           { label: "ผู้ใช้งาน & สิทธิ์", href: "/user/list" },
-          { label: "List" },
+          { label: "รายชื่อ" },
         ]}
-        action={{ label: "Add user", href: "/user/new" }}
+        action={{ label: "เพิ่มผู้ใช้งาน", href: "/user/new" }}
       />
       <UserListView />
     </>

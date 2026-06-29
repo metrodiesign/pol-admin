@@ -26,7 +26,7 @@ export function EditPageHeader({
   const headingNode = (
     <Link
       href={backHref}
-      className="inline-flex items-center text-2xl font-bold leading-9 text-foreground hover:opacity-80 transition-opacity"
+      className="inline-flex items-center text-lg font-bold leading-9 text-foreground hover:opacity-80 transition-opacity"
     >
       {title}
     </Link>

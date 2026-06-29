@@ -84,7 +84,7 @@ export function BankingQuickTransfer() {
                     unoptimized
                   />
                 </span>
-                <span className="w-14 truncate text-center text-[10px] font-medium text-grey-600">
+                <span className="w-14 truncate text-center text-xs font-medium text-grey-600">
                   {c.name.split(" ")[0]}
                 </span>
               </button>
@@ -113,7 +113,7 @@ export function BankingQuickTransfer() {
         </p>
         <div className="mt-3 flex items-center justify-center gap-1">
           <span
-            className="text-[2.5rem] font-bold leading-none text-grey-800"
+            className="text-4xl font-bold leading-none text-grey-800"
             style={{ fontFamily: "var(--font-barlow, var(--font-sans))" }}
           >
             $
@@ -124,7 +124,7 @@ export function BankingQuickTransfer() {
             max={1000}
             value={amount}
             onChange={handleAmountChange}
-            className="w-32 bg-transparent text-center text-[2.5rem] font-bold leading-none text-grey-800 outline-none"
+            className="w-32 bg-transparent text-center text-4xl font-bold leading-none text-grey-800 outline-none"
             style={{ fontFamily: "var(--font-barlow, var(--font-sans))" }}
             aria-label="Insert amount"
           />

@@ -2,18 +2,18 @@ import { PageHeader } from "@/components/shared/page-header";
 import { TenantsView } from "@/components/control/tenant/tenants-view";
 
 export const metadata = {
-  title: "Tenants & Workspaces | POL Admin",
+  title: "ผู้เช่าและพื้นที่ทำงาน | POL Admin",
 };
 
 export default function TenantsPage() {
   return (
     <>
       <PageHeader
-        title="Tenants & Workspaces"
+        title="ผู้เช่าและพื้นที่ทำงาน"
         description="บริษัทในเครือที่ใช้แพลตฟอร์ม — แต่ละบริษัทเป็นนิติบุคคลแยก จัดการได้เฉพาะผู้ดูแลระดับ Super"
         breadcrumbs={[
           { label: "Control plane" },
-          { label: "Tenants & Workspaces" },
+          { label: "ผู้เช่าและพื้นที่ทำงาน" },
         ]}
       />
       <TenantsView />

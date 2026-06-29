@@ -20,7 +20,7 @@ export function WorkspaceSwitcher({ variant = "white" }: WorkspaceSwitcherProps)
       <span className={isGrey ? "hidden truncate text-sm font-semibold text-grey-800 lg:inline" : "hidden truncate text-sm font-semibold text-white lg:inline"}>
         Team 1
       </span>
-      <span className={isGrey ? "hidden rounded-md bg-grey-500/16 px-1.5 py-0.5 text-[11px] font-bold text-grey-600 lg:inline" : "hidden rounded-md bg-white/16 px-1.5 py-0.5 text-[11px] font-bold text-white lg:inline"}>
+      <span className={isGrey ? "hidden rounded-md bg-grey-500/16 px-1.5 py-0.5 text-xs font-bold text-grey-600 lg:inline" : "hidden rounded-md bg-white/16 px-1.5 py-0.5 text-xs font-bold text-white lg:inline"}>
         {isGrey ? "Free" : "HQ-001"}
       </span>
     </div>

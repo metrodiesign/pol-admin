@@ -54,7 +54,7 @@ export function CheckoutItemsCard({ items, total, onUpdate, onRemove }: Checkout
                   <span className="block font-bold text-primary underline underline-offset-2">
                     {it.policyNo}
                   </span>
-                  <span className="mt-0.5 block text-[13px] text-grey-500">
+                  <span className="mt-0.5 block text-xs text-grey-500">
                     {it.referenceType === "claim" ? "เลขรับแจ้ง" : "เลขกรมธรรม์"}
                   </span>
                 </td>
@@ -111,12 +111,12 @@ export function CheckoutItemsCard({ items, total, onUpdate, onRemove }: Checkout
       <div className="mt-5 flex items-center justify-between gap-4 rounded-xl bg-info/8 px-5 py-4">
         <div className="flex items-start gap-2.5">
           <Info className="mt-0.5 size-4.5 shrink-0 text-info" aria-hidden />
-          <p className="text-[13px] leading-relaxed text-grey-600">
+          <p className="text-xs leading-relaxed text-grey-600">
             ลูกค้าจะเห็นรายการย่อยทั้งหมดในหน้าชำระเงิน และจ่ายครั้งเดียว
           </p>
         </div>
         <div className="shrink-0 text-right">
-          <p className="text-[13px] text-grey-500">ยอดที่ลูกค้าต้องชำระ</p>
+          <p className="text-xs text-grey-500">ยอดที่ลูกค้าต้องชำระ</p>
           <p className="text-2xl font-bold tabular-nums text-primary">{formatTHB(total, 2)}</p>
         </div>
       </div>

@@ -85,7 +85,7 @@ export function OrderTableRow({
               <p className="text-sm font-semibold text-foreground">
                 {order.customer.name}
               </p>
-              <p className="truncate text-[13px] text-grey-600">
+              <p className="truncate text-xs text-grey-600">
                 {order.customer.email}
               </p>
             </div>
@@ -95,7 +95,7 @@ export function OrderTableRow({
         {/* Date */}
         <TableCell className={cn("px-4", py)}>
           <p className="text-sm text-foreground">{order.date}</p>
-          <p className="text-[13px] text-grey-600">{order.time}</p>
+          <p className="text-xs text-grey-600">{order.time}</p>
         </TableCell>
 
         {/* Items */}

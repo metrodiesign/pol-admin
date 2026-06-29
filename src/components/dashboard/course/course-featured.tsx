@@ -145,7 +145,7 @@ export function CourseFeatured() {
                   </p>
                   <button
                     type="button"
-                    className="rounded-control bg-foreground px-2 py-1 text-[13px] font-bold text-card transition-opacity hover:opacity-90"
+                    className="rounded-control bg-foreground px-2 py-1 text-xs font-bold text-card transition-opacity hover:opacity-90"
                   >
                     Join
                   </button>
