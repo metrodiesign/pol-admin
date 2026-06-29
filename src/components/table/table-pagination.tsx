@@ -1,7 +1,6 @@
 "use client";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -28,8 +27,6 @@ export function TablePagination({
   count,
   onPageChange,
   onRowsPerPageChange,
-  dense,
-  onDenseChange,
   rowsPerPageOptions = [5, 10, 25],
 }: TablePaginationProps) {
   const from = count === 0 ? 0 : page * rowsPerPage + 1;
@@ -37,15 +34,7 @@ export function TablePagination({
   const totalPages = Math.ceil(count / rowsPerPage);
 
   return (
-    <div className="flex flex-col-reverse gap-y-2 border-t border-dashed border-grey-200 px-5 py-3 dark:border-grey-800 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
-      {onDenseChange ? (
-        <label className="flex cursor-pointer select-none items-center gap-2">
-          <Switch checked={!!dense} onCheckedChange={onDenseChange} size="sm" />
-          <span className="text-sm text-grey-600">Dense</span>
-        </label>
-      ) : (
-        <span />
-      )}
+    <div className="flex flex-col-reverse gap-y-2 border-t border-dashed border-grey-200 px-5 py-3 dark:border-grey-800 sm:flex-row sm:flex-wrap sm:items-center sm:justify-end">
 
       <div className="flex items-center gap-3 text-sm text-grey-600">
         <div className="flex items-center gap-2">
