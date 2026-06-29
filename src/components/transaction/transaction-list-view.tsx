@@ -35,15 +35,15 @@ export function TransactionListView() {
   const router = useRouter();
 
   const [search, setSearch] = useState("");
-  const [source, setSource] = useState("");
+  const [channel, setChannel] = useState("");
   const [psp, setPsp] = useState("");
   const [statusTab, setStatusTab] = useState<TabValue>("all");
   const [dense, setDense] = useState(false);
   const [detailTx, setDetailTx] = useState<Transaction | null>(null);
 
   const globalFilter = useMemo(
-    () => ({ search, source, psp, status: statusTab }),
-    [search, source, psp, statusTab],
+    () => ({ search, channel, psp, status: statusTab }),
+    [search, channel, psp, statusTab],
   );
 
   const columns = useMemo(
@@ -70,13 +70,13 @@ export function TransactionListView() {
     globalFilterFn: (row, _columnId, value) => {
       const f = value as {
         search: string;
-        source: string;
+        channel: string;
         psp: string;
         status: TabValue;
       };
       const t = row.original;
       if (!(f.status === "all" || t.status === f.status)) return false;
-      if (f.source && t.source.code !== f.source) return false;
+      if (f.channel && t.channel !== f.channel) return false;
       if (f.psp && t.psp !== f.psp) return false;
       if (f.search) {
         const q = f.search.toLowerCase();
@@ -115,16 +115,6 @@ export function TransactionListView() {
     })),
   ];
 
-  const sourceOptions = useMemo(() => {
-    const seen = new Map<string, string>();
-    for (const t of TRANSACTIONS) {
-      if (!seen.has(t.source.code)) seen.set(t.source.code, t.source.label);
-    }
-    return Array.from(seen, ([code, label]) => ({
-      value: code,
-      label: `${code} ${label}`,
-    }));
-  }, []);
 
   return (
     <>
@@ -149,12 +139,11 @@ export function TransactionListView() {
             setSearch(v);
             table.setPageIndex(0);
           }}
-          source={source}
-          onSourceChange={(v) => {
-            setSource(v);
+          channel={channel}
+          onChannelChange={(v) => {
+            setChannel(v);
             table.setPageIndex(0);
           }}
-          sourceOptions={sourceOptions}
           psp={psp}
           onPspChange={(v) => {
             setPsp(v);

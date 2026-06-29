@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Search, CalendarDays } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { CHANNEL_LABEL } from "@/lib/transaction";
 import { TextField } from "@/components/form/text-field";
 import { SelectField } from "@/components/form/select-field";
 
@@ -57,9 +58,8 @@ function DateInput({
 interface TransactionListToolbarProps {
   search: string;
   onSearchChange: (v: string) => void;
-  source: string;
-  onSourceChange: (v: string) => void;
-  sourceOptions: Option[];
+  channel: string;
+  onChannelChange: (v: string) => void;
   psp: string;
   onPspChange: (v: string) => void;
   rowsPerPage: number;
@@ -67,6 +67,11 @@ interface TransactionListToolbarProps {
 }
 
 const ALL = "__all__";
+
+const CHANNEL_OPTIONS: Option[] = [
+  { value: ALL, label: "ทั้งหมด" },
+  ...Object.entries(CHANNEL_LABEL).map(([value, label]) => ({ value, label })),
+];
 
 const PSP_OPTIONS: Option[] = [
   { value: ALL, label: "ทั้งหมด" },
@@ -84,16 +89,13 @@ const ROWS_OPTIONS: Option[] = [
 export function TransactionListToolbar({
   search,
   onSearchChange,
-  source,
-  onSourceChange,
-  sourceOptions,
+  channel,
+  onChannelChange,
   psp,
   onPspChange,
   rowsPerPage,
   onRowsPerPageChange,
 }: TransactionListToolbarProps) {
-  const sourceSelectOptions = [{ value: ALL, label: "ทั้งหมด" }, ...sourceOptions];
-
   return (
     <div className="grid grid-cols-1 gap-x-4 gap-y-3 p-5 sm:grid-cols-2 lg:grid-cols-3">
       {/* Row 1 */}
@@ -106,10 +108,10 @@ export function TransactionListToolbar({
       />
 
       <SelectField
-        label="ที่มา"
-        value={source || ALL}
-        onChange={(v) => onSourceChange(v === ALL ? "" : v)}
-        options={sourceSelectOptions}
+        label="ช่องทาง"
+        value={channel || ALL}
+        onChange={(v) => onChannelChange(v === ALL ? "" : v)}
+        options={CHANNEL_OPTIONS}
       />
 
       <SelectField
