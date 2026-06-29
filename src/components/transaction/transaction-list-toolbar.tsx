@@ -14,7 +14,6 @@ interface Option {
   label: string;
 }
 
-/** date filter แบบ /dashboard/invoice/list — text + placeholder + ปุ่ม calendar (label บน). */
 function DateInput({
   label,
   value,
@@ -44,7 +43,7 @@ function DateInput({
           onChange={(e) => onChange(e.target.value)}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
-          className="min-w-0 flex-1 bg-transparent text-[15px] text-foreground outline-none placeholder:text-grey-500"
+          className="min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-grey-500"
         />
         <button
           type="button"
@@ -77,7 +76,6 @@ const PSP_OPTIONS: Option[] = [
   { value: "2c2p", label: "2C2P" },
 ];
 
-/** search + filters bar แถวเดียว (wrap บนจอเล็ก) สำหรับหน้ารายการธุรกรรม. */
 export function TransactionListToolbar({
   search,
   onSearchChange,
@@ -91,9 +89,9 @@ export function TransactionListToolbar({
   const sourceSelectOptions = [{ value: ALL, label: "ทั้งหมด" }, ...sourceOptions];
 
   return (
-    <div className="flex flex-col gap-3 px-5 py-5 lg:flex-row lg:items-end">
+    <div className="flex flex-col gap-3 py-5 pr-2 pl-5 lg:flex-row lg:items-stretch lg:gap-2">
       <TextField
-        label=""
+        label="ค้นหา"
         className="flex-1"
         placeholder="ค้นหารหัสธุรกรรม, ลูกค้า, อีเมล..."
         value={search}
@@ -103,7 +101,7 @@ export function TransactionListToolbar({
 
       <SelectField
         label="ที่มา"
-        className="w-full lg:w-[200px]"
+        className="w-full lg:w-[180px]"
         value={source || ALL}
         onChange={(v) => onSourceChange(v === ALL ? "" : v)}
         options={sourceSelectOptions}
@@ -111,31 +109,40 @@ export function TransactionListToolbar({
 
       <SelectField
         label="PSP"
-        className="w-full lg:w-[180px]"
+        className="w-full lg:w-[160px]"
         value={psp || ALL}
         onChange={(v) => onPspChange(v === ALL ? "" : v)}
         options={PSP_OPTIONS}
       />
 
       {/* ponytail: visual only, ยังไม่ wire */}
-      <DateInput
-        label="วันที่"
-        value="24 พ.ค. 2569"
-        onChange={() => {}}
-      />
+      <div className="w-full lg:w-[220px]">
+        <DateInput label="วันที่" value="24 พ.ค. 2569" onChange={() => {}} />
+      </div>
 
-      <div className="lg:flex-1" />
+      {/* ponytail: visual only */}
+      <div className="hidden flex-col gap-1.5 lg:flex">
+        <span aria-hidden className="select-none text-sm font-medium">&nbsp;</span>
+        <div className="flex flex-1 items-center">
+          <button
+            type="button"
+            aria-label="ตัวกรองเพิ่มเติม"
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-control border border-[var(--divider)] text-grey-700 transition-colors hover:bg-[var(--action-hover)]"
+          >
+            <SlidersHorizontal className="size-4" />
+          </button>
+        </div>
+      </div>
 
-      {/* ponytail: visual only, ยังไม่ wire */}
-      <Button variant="outline" size="lg">
-        <SlidersHorizontal className="size-4" />
-        ตัวกรองเพิ่มเติม
-      </Button>
-
-      <Button size="lg" onClick={() => downloadCsv("transactions.csv", rows)}>
-        <Download className="size-4" />
-        ส่งออก CSV
-      </Button>
+      <div className="hidden flex-col gap-1.5 lg:flex">
+        <span aria-hidden className="select-none text-sm font-medium">&nbsp;</span>
+        <div className="flex flex-1 items-center">
+          <Button size="lg" className="shrink-0" onClick={() => downloadCsv("transactions.csv", rows)}>
+            <Download className="size-4" />
+            ส่งออก CSV
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }

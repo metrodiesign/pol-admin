@@ -89,17 +89,19 @@ const ILLUSTRATIONS = [
 function PaymentSummaryCard({
   stat,
   IllustrationComponent,
+  captionMedium,
 }: {
   stat: PaymentSummaryStat;
   IllustrationComponent: React.ComponentType<{ color: string }>;
+  captionMedium?: boolean;
 }) {
   const TrendIcon = stat.trend.up ? ArrowUp : ArrowDown;
   return (
     <div className="dashboard-card flex h-full items-center justify-between gap-3 overflow-hidden p-6">
       <div className="min-w-0">
-        <p className="text-sm font-semibold leading-[22px] text-grey-800">{stat.title}</p>
+        <p className="text-base font-semibold leading-[22px] text-grey-800">{stat.title}</p>
         <p
-          className="mt-3 text-[32px] font-bold leading-[48px] text-grey-800"
+          className="mt-3 text-3xl font-bold leading-[48px] text-grey-800"
           style={{ fontFamily: "var(--font-barlow, 'Barlow', 'Public Sans Variable', sans-serif)" }}
         >
           {stat.total}
@@ -115,7 +117,7 @@ function PaymentSummaryCard({
             {stat.trend.up ? "+" : "-"}
             {stat.trend.value}%
           </span>
-          <span className="whitespace-nowrap text-grey-600">{stat.caption}</span>
+          <span className={cn("whitespace-nowrap text-grey-600", captionMedium && "font-medium")}>{stat.caption}</span>
         </div>
       </div>
       <div className="size-[88px] shrink-0">
@@ -132,7 +134,7 @@ export function PaymentSummaryWidgets() {
         const IllustrationComponent = ILLUSTRATIONS[i] ?? ILLUSTRATIONS[0]!;
         return (
           <div key={stat.title} className="mmd:col-span-3">
-            <PaymentSummaryCard stat={stat} IllustrationComponent={IllustrationComponent} />
+            <PaymentSummaryCard stat={stat} IllustrationComponent={IllustrationComponent} captionMedium={i > 0} />
           </div>
         );
       })}
