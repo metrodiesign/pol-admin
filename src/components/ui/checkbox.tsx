@@ -28,7 +28,7 @@ export function Checkbox({
       aria-invalid={error || undefined}
       onClick={() => onChange?.(!checked)}
       className={cn(
-        "inline-flex size-9 items-center justify-center rounded-full transition-colors hover:bg-primary/8",
+        "inline-flex size-9 items-center justify-center rounded-full",
         className
       )}
       {...props}

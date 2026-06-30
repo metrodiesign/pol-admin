@@ -190,7 +190,7 @@ export function ProducerEditFormCard({
           <TextField
             label="รหัสตัวแทน"
             required
-            maxLength={20}
+            maxLength={form.personType === "individual" ? 10 : 20}
             value={form.producerCode}
             onChange={(v) => update("producerCode", v)}
             error={errors.producerCode}
