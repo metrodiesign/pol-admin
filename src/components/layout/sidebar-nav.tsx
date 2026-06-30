@@ -59,7 +59,7 @@ function ChildLink({ child, treeline = true }: { child: NavItem; treeline?: bool
     "flex h-9 items-center rounded-control pr-3 text-sm outline-none transition-colors",
     treeline ? "ml-7 pl-2" : "gap-3 pl-3",
     active
-      ? "bg-[var(--primary-soft)] font-semibold text-primary"
+      ? "bg-crop-blue font-semibold text-crop-gold"
       : "text-grey-600 hover:bg-[var(--primary-soft)] hover:text-primary focus-visible:bg-[var(--primary-soft)] focus-visible:text-primary",
   );
 
@@ -69,7 +69,7 @@ function ChildLink({ child, treeline = true }: { child: NavItem; treeline?: bool
         <span
           className={cn(
             "size-1.5 shrink-0 rounded-full",
-            active ? "bg-primary" : "bg-grey-400",
+            active ? "bg-crop-gold" : "bg-grey-400",
           )}
         />
         {child.title}
@@ -84,7 +84,7 @@ function ChildLink({ child, treeline = true }: { child: NavItem; treeline?: bool
         aria-hidden
         className={cn(
           "pointer-events-none absolute left-[14px] top-1/2 size-2 -translate-y-1/2 rounded-full transition-colors",
-          active ? "bg-primary" : "bg-grey-400",
+          active ? "bg-crop-gold" : "bg-grey-400",
         )}
       />
       <Link href={child.path} className={linkClass}>
@@ -114,7 +114,7 @@ function ExpandedRow({ item }: { item: NavItem }) {
             // Live: primary tint only while a child route is active; a manually
             // expanded parent gets the neutral grey tint instead.
             childActive
-              ? "bg-[var(--primary-soft)] text-primary"
+              ? "bg-crop-blue text-crop-gold"
               : open
                 ? "bg-[rgba(145,158,171,0.08)] text-grey-800"
                 : "text-grey-600 hover:bg-[var(--primary-soft)] hover:text-primary focus-visible:bg-[var(--primary-soft)] focus-visible:text-primary",
@@ -149,7 +149,7 @@ function ExpandedRow({ item }: { item: NavItem }) {
         className={cn(
           "flex min-h-11 items-center gap-3 rounded-control py-1 pl-3 pr-2 text-sm outline-none transition-colors",
           active
-            ? "bg-[var(--primary-soft)] font-semibold text-primary"
+            ? "bg-crop-blue font-semibold text-crop-gold"
             : "font-medium text-grey-600 hover:bg-[var(--primary-soft)] hover:text-primary focus-visible:bg-[var(--primary-soft)] focus-visible:text-primary",
         )}
       >
@@ -180,7 +180,7 @@ function MiniItemInner({ item, active }: { item: NavItem; active: boolean }) {
       className={cn(
         "relative flex h-[58px] w-full flex-col items-center justify-center gap-1 rounded-control px-1 pb-1.5 pt-2 text-xs font-bold leading-none transition-colors",
         active
-          ? "bg-[var(--primary-soft)] text-primary"
+          ? "bg-crop-blue text-crop-gold"
           : "text-grey-600 hover:bg-[var(--primary-soft)] hover:text-primary",
       )}
     >
