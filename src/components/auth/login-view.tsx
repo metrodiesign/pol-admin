@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import { Button } from "@/components/ui/button";
 import { login } from "@/lib/api/admin-api";
 import { producerLogin } from "@/lib/api/producer-api";
@@ -32,51 +34,76 @@ function GoogleIcon() {
   );
 }
 
+// ปุ่ม SSO พื้นขาว ตัดกับการ์ดน้ำเงิน (เลียนแบบปุ่ม Sign In ขาวใน mockup)
+const SSO_BUTTON_CLASS =
+  "h-12 w-full justify-center gap-2 bg-white text-crop-blue hover:bg-white/90 hover:text-crop-blue";
+
 // server-side OIDC BFF: login = full-page navigate ไป backend แล้วกลับมาที่ returnTo (ไม่ใช่ fetch).
 export function LoginView() {
   return (
-    <main className="flex min-h-dvh flex-col items-center justify-center bg-grey-100 p-4">
-      <div className="mb-4 text-center">
-        <h1 className="text-xl font-bold text-foreground">เข้าสู่ระบบ vCentral Pay</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          เลือกประเภทผู้ใช้เพื่อเข้าสู่ระบบด้วย Google
-        </p>
+    <main className="flex min-h-dvh flex-col bg-white">
+      {/* 1. Header bar — โลโก้วิริยะ (พื้นน้ำเงิน → วางในกล่องขาวให้โลโก้น้ำเงินเห็นชัด) + tagline */}
+      <header className="flex h-[70px] shrink-0 items-center gap-4 bg-crop-blue pr-6">
+        <span className="flex h-full items-center bg-white px-5">
+          <Image
+            src="/viriyah-logo.jpg"
+            alt="วิริยะประกันภัย"
+            width={180}
+            height={64}
+            priority
+            className="h-full w-auto"
+          />
+        </span>
+        <span className="text-sm italic text-white/90">ความเป็นธรรม คือ พื้นฐาน</span>
+      </header>
+
+      {/* 2. Banner */}
+      <div className="relative h-[200px] w-full shrink-0 md:h-[280px]">
+        <Image
+          src="/v-central-pay-banner.jpg"
+          alt="V Central Pay"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
       </div>
 
-      <div className="grid w-full max-w-3xl grid-cols-1 gap-4 md:grid-cols-2">
-        <section
-          aria-label="สำหรับพนักงาน"
-          className="flex h-[240px] flex-col justify-center rounded-2xl bg-background px-5 pb-10 shadow-card"
-        >
-          <h2 className="text-center text-base font-semibold text-foreground">สำหรับพนักงาน</h2>
-          <Button
-            type="button"
-            variant="outline"
-            size="lg"
-            className="mx-auto mt-10 h-12 w-full max-w-[260px] gap-2"
-            onClick={() => login(RETURN_TO)}
+      {/* 3. การ์ด login 2 ใบ (พนักงาน / ตัวแทน) วางกลางพื้นขาว */}
+      <div className="flex flex-1 items-start justify-center px-4 py-12">
+        <div className="grid w-full max-w-3xl grid-cols-1 gap-4 md:grid-cols-2">
+          <section
+            aria-label="สำหรับพนักงาน"
+            className="flex min-h-[260px] flex-col justify-center rounded-2xl bg-crop-blue p-8 shadow-card"
           >
-            <GoogleIcon />
-            เข้าสู่ระบบด้วย Google
-          </Button>
-        </section>
+            <h2 className="text-center text-lg font-semibold text-white">สำหรับพนักงาน</h2>
+            <Button
+              type="button"
+              size="lg"
+              className={`mt-8 ${SSO_BUTTON_CLASS}`}
+              onClick={() => login(RETURN_TO)}
+            >
+              <GoogleIcon />
+              เข้าสู่ระบบด้วย Google
+            </Button>
+          </section>
 
-        <section
-          aria-label="สำหรับตัวแทน"
-          className="flex h-[240px] flex-col justify-center rounded-2xl bg-background px-5 pb-10 shadow-card"
-        >
-          <h2 className="text-center text-base font-semibold text-foreground">สำหรับตัวแทน/นายหน้า</h2>
-          <Button
-            type="button"
-            variant="outline"
-            size="lg"
-            className="mx-auto mt-10 h-12 w-full max-w-[260px] gap-2"
-            onClick={() => producerLogin()}
+          <section
+            aria-label="สำหรับตัวแทน/นายหน้า"
+            className="flex min-h-[260px] flex-col justify-center rounded-2xl bg-crop-blue p-8 shadow-card"
           >
-            <GoogleIcon />
-            เข้าสู่ระบบด้วย Google
-          </Button>
-        </section>
+            <h2 className="text-center text-lg font-semibold text-white">สำหรับตัวแทน/นายหน้า</h2>
+            <Button
+              type="button"
+              size="lg"
+              className={`mt-8 ${SSO_BUTTON_CLASS}`}
+              onClick={() => producerLogin()}
+            >
+              <GoogleIcon />
+              เข้าสู่ระบบด้วย Google
+            </Button>
+          </section>
+        </div>
       </div>
     </main>
   );
