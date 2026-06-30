@@ -57,7 +57,13 @@ export function validateProducerForm(
     errors.idNumber = "กรุณากรอกเลขบัตรประชาชน/เลขผู้เสียภาษี";
   else if (!isThaiId(form.idNumber)) errors.idNumber = "ต้องเป็นตัวเลข 13 หลักที่ถูกต้อง";
 
-  if (!form.producerCode.trim()) errors.producerCode = "กรุณากรอกรหัสตัวแทน";
+  if (!form.producerCode.trim()) {
+    errors.producerCode = "กรุณากรอกรหัสตัวแทน";
+  } else {
+    const maxCode = form.personType === "individual" ? 10 : 20;
+    if (form.producerCode.length > maxCode)
+      errors.producerCode = `รหัสตัวแทนต้องไม่เกิน ${maxCode} ตัวอักษร`;
+  }
 
   if (!isValidLicense(form.personType, form.licenseNumber))
     errors.licenseNumber = "กรณีบุคคลธรรมดาต้องเป็นตัวเลข 10 หลัก";

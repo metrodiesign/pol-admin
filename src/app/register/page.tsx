@@ -119,7 +119,7 @@ export default function RegisterPage() {
       <main className="flex min-h-dvh flex-col bg-grey-100">
         <RegisterHeader />
         <RegisterBanner />
-        <div className="flex flex-1 items-center justify-center p-4">
+        <div className="flex flex-1 items-center justify-center px-4 py-12">
         <div
           className="w-full max-w-md rounded-card bg-card px-6 py-12 text-center"
           style={cardStyle}
@@ -149,7 +149,7 @@ export default function RegisterPage() {
       <RegisterHeader />
       <RegisterBanner />
       <div className="mx-auto max-w-5xl px-4 py-10">
-        <h1 className="mb-6 text-2xl font-bold text-foreground">การลงทะเบียนตัวแทน</h1>
+        <h1 className="mb-6 text-xl font-bold text-foreground">การลงทะเบียนตัวแทน</h1>
 
         <div className="grid grid-cols-1 gap-6 mmd:grid-cols-12">
           <div className="mmd:col-span-4">
