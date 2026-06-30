@@ -132,6 +132,49 @@
   --text-h6: clamp(1.25rem, 1.206rem + 0.188vw, 1.375rem); /* 20→22px */
 }
 
+@theme {
+  /* ===== Viriyah corporate palette (CI Manual 2.11–2.16) — additive, ไม่กระทบ token เดิม ===== */
+
+  /* สีหลัก (2.11) */
+  --color-crop-blue: #0033a2;          /* น้ำเงินวิริยะ — PANTONE 286 C */
+  --color-crop-gold: #fcaf17;          /* เหลืองทอง — PANTONE 7409 C */
+  --color-crop-black: #000000;
+  --color-crop-white: #ffffff;
+
+  /* น้ำเงินวิริยะ — shade 100/80/60/40/20 (2.15) */
+  --color-crop-blue-100: #0033a2;
+  --color-crop-blue-80: #5165aa;
+  --color-crop-blue-60: #7b8ec5;
+  --color-crop-blue-40: #a8b4dc;
+  --color-crop-blue-20: #d5dcf1;
+
+  /* ดำ — shade 80/60/40/20 (2.15) */
+  --color-crop-black-80: #565759;
+  --color-crop-black-60: #898b8b;
+  --color-crop-black-40: #b1b2b1;
+  --color-crop-black-20: #c8c7c6;
+
+  /* สีรอง (2.12) */
+  --color-crop-grey-light: #d9d7d5;    /* เทาอ่อน — Cool Gray 1 */
+  --color-crop-grey: #a7a7a8;          /* เทาเงิน — Cool Gray 6 */
+  --color-crop-navy: #2b375f;          /* น้ำเงินเข้ม — PANTONE 288 */
+  --color-crop-silver: #898b8c;        /* เงินพิเศษ — PANTONE 877 */
+  --color-crop-gold-special: #7f7452;  /* ทองพิเศษ — PANTONE 871 */
+
+  /* น้ำเงินเข้ม — shade 100/80/60/40/20 (2.16) */
+  --color-crop-navy-100: #2b375f;
+  --color-crop-navy-80: #474f8a;
+  --color-crop-navy-60: #6e72a5;
+  --color-crop-navy-40: #9ba0c6;
+  --color-crop-navy-20: #ced1e0;
+
+  /* เทาเงิน (Cool Gray 6) — shade 80/60/40/20 (2.16) */
+  --color-crop-grey-80: #bbbab9;
+  --color-crop-grey-60: #c8c7c6;
+  --color-crop-grey-40: #d0cfcc;
+  --color-crop-grey-20: #d9d7d5;
+}
+
 /* ---- shadcn primitive tokens mapped to the Minimal palette ---- */
 :root {
   --radius: 0.5rem;
@@ -169,14 +212,41 @@
    var(--color-primary) at use-site, so overriding it on an ancestor recolors
    bg-/text-/ring-primary. ---- */
 .theme-minimals {
-  --color-primary-lighter: #c8fad6;
-  --color-primary-light: #5be49b;
-  --color-primary: #00a76f;
-  --color-primary-dark: #007867;
-  --color-primary-darker: #004b50;
-  --primary: #00a76f;
-  --ring: #00a76f;
-  --primary-soft: color-mix(in srgb, #00a76f 8%, transparent);
+  /* primary — น้ำเงินวิริยะ (CI 2.11); lighter/light = crop blue tint, dark/darker derived */
+  --color-primary-lighter: var(--color-crop-blue-20);
+  --color-primary-light: var(--color-crop-blue-60);
+  --color-primary: var(--color-crop-blue);
+  --color-primary-dark: var(--color-crop-navy);
+  --color-primary-darker: #1d2647;
+  --primary: var(--color-crop-blue);
+  --ring: var(--color-crop-blue);
+  --primary-soft: color-mix(in srgb, var(--color-crop-blue) 12%, transparent);
+  --shadow-primary: 0 8px 16px 0 rgba(0, 51, 162, 0.24);
+
+  /* === main content canvas = เทาอ่อน (CI 2.12 #D9D7D5); shell = น้ำเงิน === */
+  --color-bg: #fcfdfd;       /* main content (เทาอ่อนมาก เกือบขาว) */
+  --background: #fcfdfd;
+  --color-bg-neutral: #eceeef;
+
+  /* gold accent (5%) */
+  --color-secondary: var(--color-crop-gold);
+}
+
+/* Topbar น้ำเงิน — icon/text เป็นขาว */
+.theme-minimals [data-topbar] {
+  --color-grey-800: #ffffff;
+  --color-grey-700: #ffffff;
+  --color-grey-600: rgba(255, 255, 255, 0.86);
+  --color-grey-500: rgba(255, 255, 255, 0.56);
+}
+
+/* Horizontal nav (เมื่อ navLayout=horizontal) — text ขาว, active = ทอง */
+.theme-minimals [data-hnav] {
+  --color-primary: var(--color-crop-gold);
+  --color-grey-800: #ffffff;
+  --color-grey-700: #ffffff;
+  --color-grey-600: rgba(255, 255, 255, 0.72);
+  --color-grey-200: rgba(255, 255, 255, 0.12);
 }
 
 /* ---- Color presets — runtime switch via data-preset on the .theme-minimals root.

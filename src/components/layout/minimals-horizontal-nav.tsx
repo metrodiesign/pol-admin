@@ -114,7 +114,7 @@ export function MinimalsHorizontalNav() {
   const router = useRouter();
 
   return (
-    <nav className="hidden border-b border-[rgba(145,158,171,0.12)] bg-bg lg:block">
+    <nav data-hnav className="hidden border-b border-white/10 bg-bg lg:block">
       <ul className="mx-auto flex max-w-[1200px] items-center gap-1 overflow-x-auto px-4 py-2 sm:px-6 mlg:px-10">
         {ENTRIES.map((item) => {
           const active = itemActive(pathname, item);

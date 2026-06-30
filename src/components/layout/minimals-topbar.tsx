@@ -28,8 +28,9 @@ interface MinimalsTopbarProps {
 export function MinimalsTopbar({ onMenuClick }: MinimalsTopbarProps) {
   return (
     <header
+      data-topbar
       className={cn(
-        "sticky top-0 z-40 flex h-16 items-center gap-1 bg-bg/80 px-4 backdrop-blur-[6px] mlg:h-[72px] mlg:px-8",
+        "sticky top-0 z-40 flex h-16 items-center gap-1 bg-crop-blue px-4 mlg:h-[72px] mlg:px-8",
       )}
     >
       {/* Mobile hamburger — mlg:hidden (hidden once the sidebar appears at 1200px) */}
