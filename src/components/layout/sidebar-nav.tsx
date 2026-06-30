@@ -12,6 +12,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Logo } from "./logo";
 
@@ -27,7 +28,18 @@ function SidebarLogo({
       href="/"
       className={cn("inline-flex items-center", collapsed ? "px-0" : "px-1")}
     >
-      <Logo size={40} idPrefix={logoIdPrefix} />
+      {collapsed ? (
+        <Logo size={40} idPrefix={logoIdPrefix} />
+      ) : (
+        <Image
+          src="/viriyah-logo.jpg"
+          alt="วิริยะประกันภัย"
+          width={180}
+          height={64}
+          priority
+          className="h-16 w-auto"
+        />
+      )}
     </Link>
   );
 }
@@ -291,8 +303,8 @@ export function SidebarNav({
     <div className="flex h-full w-full flex-col bg-bg-paper">
       <div
         className={cn(
-          "pb-4 pt-4",
-          collapsed ? "flex justify-center px-2" : "px-5",
+          "flex h-[72px] items-center",
+          collapsed ? "justify-center px-2" : "px-5",
         )}
       >
         <SidebarLogo collapsed={collapsed} logoIdPrefix={logoIdPrefix} />
