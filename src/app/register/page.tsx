@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { CircleCheck } from "lucide-react";
 import { AvatarUpload } from "@/components/shared/avatar-upload";
 import { Fieldset, Field, Label, Description } from "@/components/shared/fieldset";
@@ -31,6 +32,42 @@ const emptyForm: ProducerFormData = {
 
 const linkButtonClass =
   "mt-8 inline-flex h-9 min-w-[160px] items-center justify-center rounded-control bg-grey-800 px-3 text-sm font-bold text-white transition-colors hover:bg-grey-900 dark:bg-white dark:text-grey-900 dark:hover:bg-grey-300";
+
+// Header bar — เหมือนหน้า /login (โลโก้วิริยะในกล่องขาว + tagline บนพื้นน้ำเงิน)
+function RegisterHeader() {
+  return (
+    <header className="flex min-h-[60px] shrink-0 items-stretch gap-3 bg-crop-blue pr-4 sm:min-h-[70px] sm:gap-4 sm:pr-6">
+      <span className="flex shrink-0 items-center bg-white px-3 sm:px-5">
+        <Image
+          src="/viriyah-logo.jpg"
+          alt="วิริยะประกันภัย"
+          width={180}
+          height={64}
+          priority
+          className="h-9 w-auto sm:h-12"
+        />
+      </span>
+      <span className="flex items-center text-xs italic text-white/90 sm:text-sm">
+        ความเป็นธรรม คือ พื้นฐาน
+      </span>
+    </header>
+  );
+}
+
+// Banner — responsive: scale ตาม aspect จริง (1280x300) ไม่ crop
+function RegisterBanner() {
+  return (
+    <Image
+      src="/v-central-pay-banner.jpg"
+      alt="V Central Pay"
+      width={1280}
+      height={300}
+      priority
+      sizes="100vw"
+      className="h-auto w-full shrink-0"
+    />
+  );
+}
 
 export default function RegisterPage() {
   const [photo, setPhoto] = useState<File | null>(null);
@@ -79,7 +116,10 @@ export default function RegisterPage() {
 
   if (submitted) {
     return (
-      <main className="flex min-h-dvh items-center justify-center bg-grey-100 p-4">
+      <main className="flex min-h-dvh flex-col bg-grey-100">
+        <RegisterHeader />
+        <RegisterBanner />
+        <div className="flex flex-1 items-center justify-center p-4">
         <div
           className="w-full max-w-md rounded-card bg-card px-6 py-12 text-center"
           style={cardStyle}
@@ -99,13 +139,16 @@ export default function RegisterPage() {
             ไปหน้าเข้าสู่ระบบ
           </Link>
         </div>
+        </div>
       </main>
     );
   }
 
   return (
-    <main className="min-h-dvh bg-grey-100 px-4 py-10">
-      <div className="mx-auto max-w-5xl">
+    <main className="min-h-dvh bg-grey-100">
+      <RegisterHeader />
+      <RegisterBanner />
+      <div className="mx-auto max-w-5xl px-4 py-10">
         <h1 className="mb-6 text-2xl font-bold text-foreground">การลงทะเบียนตัวแทน</h1>
 
         <div className="grid grid-cols-1 gap-6 mmd:grid-cols-12">

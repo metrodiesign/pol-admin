@@ -43,31 +43,32 @@ export function LoginView() {
   return (
     <main className="flex min-h-dvh flex-col bg-white">
       {/* 1. Header bar — โลโก้วิริยะ (พื้นน้ำเงิน → วางในกล่องขาวให้โลโก้น้ำเงินเห็นชัด) + tagline */}
-      <header className="flex h-[70px] shrink-0 items-center gap-4 bg-crop-blue pr-6">
-        <span className="flex h-full items-center bg-white px-5">
+      <header className="flex min-h-[60px] shrink-0 items-stretch gap-3 bg-crop-blue pr-4 sm:min-h-[70px] sm:gap-4 sm:pr-6">
+        <span className="flex shrink-0 items-center bg-white px-3 sm:px-5">
           <Image
             src="/viriyah-logo.jpg"
             alt="วิริยะประกันภัย"
             width={180}
             height={64}
             priority
-            className="h-full w-auto"
+            className="h-9 w-auto sm:h-12"
           />
         </span>
-        <span className="text-sm italic text-white/90">ความเป็นธรรม คือ พื้นฐาน</span>
+        <span className="flex items-center text-xs italic text-white/90 sm:text-sm">
+          ความเป็นธรรม คือ พื้นฐาน
+        </span>
       </header>
 
-      {/* 2. Banner */}
-      <div className="relative h-[200px] w-full shrink-0 md:h-[280px]">
-        <Image
-          src="/v-central-pay-banner.jpg"
-          alt="V Central Pay"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
-      </div>
+      {/* 2. Banner — responsive: scale ตาม aspect จริง (1280x300) ไม่ crop */}
+      <Image
+        src="/v-central-pay-banner.jpg"
+        alt="V Central Pay"
+        width={1280}
+        height={300}
+        priority
+        sizes="100vw"
+        className="h-auto w-full shrink-0"
+      />
 
       {/* 3. การ์ด login 2 ใบ (พนักงาน / ตัวแทน) วางกลางพื้นขาว */}
       <div className="flex flex-1 items-start justify-center px-4 py-12">
