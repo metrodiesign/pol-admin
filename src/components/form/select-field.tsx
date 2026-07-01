@@ -57,7 +57,7 @@ export function SelectField({
           placeholder={placeholder}
           className={cn(
             "h-12 rounded-control border-[var(--divider)] text-sm",
-            "focus-within:border-grey-800 focus-within:ring-1 focus-within:ring-inset focus-within:ring-grey-800",
+            "focus-within:border-primary focus-within:ring-1 focus-within:ring-inset focus-within:ring-primary",
             "[&_[data-slot=input-group-control]]:pl-3.5 [&_[data-slot=input-group-control]]:text-sm",
           )}
         />

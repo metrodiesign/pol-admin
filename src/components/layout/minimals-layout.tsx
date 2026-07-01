@@ -134,7 +134,7 @@ function MinimalsShell({ children }: { children: React.ReactNode }) {
           <main
             data-dashboard-main
             className={cn(
-              "mx-auto flex w-full flex-col px-4 pb-16 pt-4 sm:px-6 mlg:px-10",
+              "mx-auto flex w-full flex-col px-4 pb-6 pt-4 sm:px-6 mlg:px-10",
               fullBleed ? "max-w-none" : "max-w-[1600px]",
             )}
           >

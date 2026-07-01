@@ -118,7 +118,7 @@ export function ReportsView() {
             series={channelSeries}
             grouped
             valueFormatter={(v) =>
-              v >= 1000 ? `฿${Math.round(v / 1000)}K` : `฿${v}`
+              v >= 1000 ? `${Math.round(v / 1000)}K` : `${v}`
             }
           />
         </ChartCard>

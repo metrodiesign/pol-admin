@@ -25,11 +25,11 @@ export function CheckoutFooterBar({
       <div className="flex items-center gap-6">
         <div>
           <p className="text-sm text-grey-500">กรมธรรม์</p>
-          <p className="text-xl font-bold tabular-nums text-foreground">{count}</p>
+          <p className="text-xl font-bold tabular-nums text-secondary">{count}</p>
         </div>
         <div>
           <p className="text-sm text-grey-500">เบี้ยรวม</p>
-          <p className="text-xl font-bold tabular-nums text-foreground">{formatTHB(total, 2)}</p>
+          <p className="text-xl font-bold tabular-nums text-secondary">{formatTHB(total, 2)}</p>
         </div>
       </div>
 
@@ -45,7 +45,7 @@ export function CheckoutFooterBar({
           type="button"
           onClick={onIssue}
           disabled={!canIssue}
-          className="inline-flex h-11 items-center justify-center rounded-control bg-grey-800 px-5 text-sm font-bold text-white transition-colors hover:bg-grey-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-grey-800 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+          className="inline-flex h-11 items-center justify-center rounded-control bg-primary px-5 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:bg-grey-300 disabled:text-grey-500 disabled:hover:bg-grey-300"
         >
           ยืนยันคำสั่งซื้อกรมธรรม์
         </button>

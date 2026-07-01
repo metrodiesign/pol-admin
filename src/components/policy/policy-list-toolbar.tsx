@@ -29,7 +29,7 @@ function DateInput({
         className={cn(
           "flex h-12 items-center rounded-control border bg-transparent pl-3.5 pr-1.5 transition-colors",
           focused
-            ? "border-grey-800 ring-1 ring-inset ring-grey-800"
+            ? "border-primary ring-1 ring-inset ring-primary"
             : "border-[var(--divider)]",
         )}
       >

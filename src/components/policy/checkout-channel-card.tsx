@@ -15,9 +15,9 @@ interface CheckoutChannelCardProps {
 // โลโก้จริงวางที่ public/payment/<ช่องทาง>.svg (รองรับ .png ได้ — เปลี่ยนนามสกุลตรงนี้).
 // ใช้ <img> ธรรมดาเพื่อให้โลโก้คงสัดส่วนจริงของไฟล์ ไม่ว่าจะ aspect ใด.
 const IMAGES: Record<PaymentChannel, string> = {
-  credit_card: "/payment/credit-card.svg",
-  promptpay: "/payment/promptpay.svg",
-  installment: "/payment/installment.svg",
+  credit_card: "/payment/credit-card-v2.png",
+  promptpay: "/payment/promptpay-qr-v2.png",
+  installment: "/payment/installment-v2.png",
 };
 
 export function CheckoutChannelCard({ value, onChange }: CheckoutChannelCardProps) {
@@ -35,18 +35,16 @@ export function CheckoutChannelCard({ value, onChange }: CheckoutChannelCardProp
         {PAYMENT_CHANNEL_OPTIONS.map((opt) => (
           <label
             key={opt.value}
-            className="flex cursor-pointer items-center justify-between gap-3 rounded-xl border border-[var(--divider)] p-4 transition-colors hover:bg-grey-100 has-data-checked:border-primary has-data-checked:bg-primary/4"
+            className="flex cursor-pointer items-center gap-2.5 rounded-xl border border-[var(--divider)] p-3.5 transition-colors hover:bg-grey-100 has-data-checked:border-primary has-data-checked:bg-primary/4"
           >
-            <span className="flex flex-col gap-2">
-              <span className="flex items-center gap-2.5">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={IMAGES[opt.value]}
-                  alt={opt.label}
-                  className="h-9 w-auto object-contain"
-                />
-                <span className="text-sm font-bold text-foreground">{opt.label}</span>
-              </span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={IMAGES[opt.value]}
+              alt={opt.label}
+              className="h-20 w-20 shrink-0 object-contain"
+            />
+            <span className="flex min-w-0 flex-1 flex-col gap-1">
+              <span className="text-sm font-bold text-foreground">{opt.label}</span>
               <span className="text-xs leading-relaxed text-grey-500">{opt.caption}</span>
             </span>
             <RadioGroupItem value={opt.value} className="sr-only" />

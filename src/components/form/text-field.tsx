@@ -63,7 +63,7 @@ export function TextField({
   const borderState = hasError
     ? "border-error ring-1 ring-inset ring-error"
     : focused
-      ? "border-grey-800 ring-1 ring-inset ring-grey-800"
+      ? "border-primary ring-1 ring-inset ring-primary"
       : "border-[var(--divider)]";
 
   const describedBy = error || helperText ? descId : undefined;

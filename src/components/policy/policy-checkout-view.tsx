@@ -107,7 +107,7 @@ export function PolicyCheckoutView({ ids }: PolicyCheckoutViewProps) {
   }
 
   return (
-    <div className="flex flex-col gap-6 pb-4">
+    <div className="flex flex-col gap-6">
       <CheckoutAdvancedCard value={advanced} onChange={setAdvanced} />
 
       <CheckoutCustomerCard customer={customer} onChange={setCustomer} />

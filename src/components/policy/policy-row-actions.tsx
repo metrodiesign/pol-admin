@@ -63,7 +63,7 @@ export function PolicyRowActions({ policy, cart }: PolicyRowActionsProps) {
               className={cn(
                 "size-10 cursor-pointer",
                 inCart
-                  ? "bg-grey-800 text-white hover:bg-grey-800/90 focus-visible:bg-grey-800 focus-visible:text-white"
+                  ? "bg-secondary text-white hover:bg-secondary/90 hover:text-white focus-visible:bg-secondary focus-visible:text-white"
                   : "bg-grey-600/8 text-grey-700 hover:bg-grey-800 hover:text-white focus-visible:bg-grey-800 focus-visible:text-white",
               )}
               onClick={locked ? undefined : () => cart.toggle(policy)}
