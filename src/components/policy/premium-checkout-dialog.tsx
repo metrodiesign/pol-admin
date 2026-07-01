@@ -43,7 +43,7 @@ export function PremiumCheckoutDialog({
       <DialogContent className="theme-minimals sm:max-w-md" showCloseButton={false}>
         <DialogHeader>
           <DialogTitle className="text-lg font-bold text-foreground">
-            ยืนยันรับชำระเบี้ย
+            รายการคำสั่งซื้อ
           </DialogTitle>
           <DialogDescription>
             ตรวจสอบรายการ {count} กรมธรรม์ ก่อนดำเนินการรับชำระเบี้ย
@@ -51,9 +51,9 @@ export function PremiumCheckoutDialog({
         </DialogHeader>
 
         <div className="-mx-4 flex flex-col border-y border-[var(--divider)]">
-          <div className="flex items-center justify-between bg-grey-100 px-4 py-2.5">
-            <span className="text-sm font-semibold text-grey-700">กรมธรรม์</span>
-            <span className="text-sm font-semibold text-grey-700">เบี้ยรวม</span>
+          <div className="flex h-14 items-center justify-between bg-grey-200 px-4">
+            <span className="font-semibold text-grey-600">กรมธรรม์</span>
+            <span className="font-semibold text-grey-600">เบี้ยรวม</span>
           </div>
           <SimpleBar autoHide={false} style={{ maxHeight: "16rem" }} className="px-4">
             <ul className="flex flex-col">
@@ -66,7 +66,7 @@ export function PremiumCheckoutDialog({
                     <span className="block truncate text-sm font-bold text-foreground">
                       {p.customer.name}
                     </span>
-                    <span className="block truncate text-xs text-primary">{p.id}</span>
+                    <span className="block truncate text-xs font-semibold text-primary">{p.id}</span>
                   </span>
                   <span className="shrink-0 text-sm font-bold tabular-nums text-foreground">
                     {formatAmount(p.premium, 2)}
@@ -79,7 +79,7 @@ export function PremiumCheckoutDialog({
 
         <div className="flex items-center justify-between">
           <span className="text-base font-semibold text-foreground">เบี้ยรวม</span>
-          <span className="text-xl font-bold tabular-nums text-primary">
+          <span className="text-xl font-bold tabular-nums text-secondary">
             {formatAmount(total, 2)}
           </span>
         </div>
@@ -87,16 +87,16 @@ export function PremiumCheckoutDialog({
         <DialogFooter>
           <DialogClose
             render={
-              <Button className="h-9 min-w-[100px] bg-[rgba(145,158,171,0.16)] font-bold text-grey-800 hover:bg-[rgba(145,158,171,0.24)]" />
+              <Button className="h-11 min-w-[100px] px-5 bg-[rgba(145,158,171,0.16)] font-bold text-grey-800 hover:bg-[rgba(145,158,171,0.24)]" />
             }
           >
             ยกเลิก
           </DialogClose>
           <Button
             onClick={handleConfirm}
-            className="h-9 min-w-[100px] bg-grey-800 font-bold text-white hover:bg-grey-900"
+            className="h-11 min-w-[100px] px-5 bg-primary font-bold text-primary-foreground hover:bg-primary/90"
           >
-            ดำเนินการชำระเบี้ย
+            ยืนยันคำสั่งซื้อ
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -1,8 +1,9 @@
 "use client";
 
-import { X } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import type { Policy } from "@/types/policy";
 import { formatTHB } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 interface PremiumCartItemProps {
   policy: Policy;
@@ -16,19 +17,20 @@ export function PremiumCartItem({ policy, onRemove }: PremiumCartItemProps) {
         <span className="block truncate text-sm font-bold text-foreground">
           {policy.customer.name}
         </span>
-        <span className="block truncate text-xs text-primary">{policy.id}</span>
+        <span className="block truncate text-xs font-semibold text-primary">{policy.id}</span>
       </div>
       <span className="shrink-0 text-sm font-bold text-foreground">
         {formatTHB(policy.premium, 2)}
       </span>
-      <button
-        type="button"
+      <Button
+        variant="ghost"
+        size="icon-lg"
         onClick={() => onRemove(policy.id)}
         aria-label={`นำ ${policy.id} ออกจากตะกร้า`}
-        className="shrink-0 rounded-full p-1 text-grey-500 transition-colors hover:bg-error/8 hover:text-error focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-grey-800"
+        className="size-10 shrink-0 cursor-pointer text-error hover:bg-error/8 hover:text-error"
       >
-        <X className="size-4" />
-      </button>
+        <Trash2 className="size-5" />
+      </Button>
     </li>
   );
 }

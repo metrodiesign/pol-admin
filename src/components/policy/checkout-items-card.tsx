@@ -9,6 +9,7 @@ import {
 } from "@/lib/policy/checkout";
 import { formatAmount, formatTHB } from "@/lib/utils";
 import { CheckoutCard } from "./checkout-card";
+import { Button } from "@/components/ui/button";
 
 interface CheckoutItemsCardProps {
   items: CheckoutLineItem[];
@@ -17,7 +18,7 @@ interface CheckoutItemsCardProps {
   onRemove: (uid: string) => void;
 }
 
-const th = "px-3 py-2.5 text-sm font-semibold text-grey-600 whitespace-nowrap";
+const th = "h-14 px-3 font-semibold text-grey-600 whitespace-nowrap";
 const td = "px-3 py-3 text-sm text-foreground align-middle";
 
 export function CheckoutItemsCard({ items, total, onUpdate, onRemove }: CheckoutItemsCardProps) {
@@ -30,11 +31,11 @@ export function CheckoutItemsCard({ items, total, onUpdate, onRemove }: Checkout
       title="รายการกรมธรรม์ที่จะรับชำระ"
       description={`${items.length} รายการ · 1 ลิงก์ชำระครั้งเดียว`}
     >
-      <div className="-mx-2 overflow-x-auto">
+      <div className="-mx-6 overflow-x-auto">
         <table className="w-full min-w-[860px] border-collapse">
           <thead>
-            <tr className="border-b border-[var(--divider)] bg-grey-50 text-left">
-              <th className={th}>ลำดับ</th>
+            <tr className="border-b border-[var(--divider)] bg-grey-200 text-left">
+              <th className={`${th} pl-6`}>ลำดับ</th>
               <th className={th}>หมายเลขกรมธรรม์ / รับแจ้ง / สลักหลัง</th>
               <th className={th}>ชื่อ-นามสกุล</th>
               <th className={`${th} text-right`}>เบี้ยสุทธิ</th>
@@ -43,13 +44,13 @@ export function CheckoutItemsCard({ items, total, onUpdate, onRemove }: Checkout
               <th className={`${th} text-right`}>%จากเบี้ยสุทธิ</th>
               <th className={`${th} text-right`}>ยอดชำระ</th>
               <th className={th}>ข้อมูลอ้างอิง</th>
-              <th className={th} aria-label="ลบ" />
+              <th className={`${th} pr-6`} aria-label="ลบ" />
             </tr>
           </thead>
           <tbody>
             {items.map((it, idx) => (
               <tr key={it.uid} className="border-b border-[var(--divider)] last:border-b-0">
-                <td className={`${td} text-grey-500`}>{idx + 1}</td>
+                <td className={`${td} pl-6 text-grey-500`}>{idx + 1}</td>
                 <td className={`${td} whitespace-nowrap`}>
                   <span className="block font-bold text-primary underline underline-offset-2">
                     {it.policyNo}
@@ -81,7 +82,7 @@ export function CheckoutItemsCard({ items, total, onUpdate, onRemove }: Checkout
                       setDraft(it.discount ? String(it.discount) : "");
                     }}
                     onBlur={() => setFocusedUid(null)}
-                    className="h-9 w-28 rounded-md border border-dashed border-grey-400 bg-warning/8 px-2.5 text-right text-sm tabular-nums text-foreground outline-none focus:border-grey-800 focus:bg-warning/12 focus:ring-1 focus:ring-inset focus:ring-grey-800"
+                    className="h-9 w-28 rounded-control border border-[var(--divider)] bg-transparent px-2.5 text-right text-sm tabular-nums text-foreground outline-none focus:border-primary focus:ring-1 focus:ring-inset focus:ring-primary"
                   />
                 </td>
                 <td className={`${td} text-right tabular-nums text-grey-600`}>
@@ -91,16 +92,17 @@ export function CheckoutItemsCard({ items, total, onUpdate, onRemove }: Checkout
                   {formatAmount(lineItemAmountDue(it), 2)}
                 </td>
                 <td className={`${td} whitespace-nowrap text-grey-600`}>{it.reference}</td>
-                <td className={td}>
-                  <button
-                    type="button"
+                <td className={`${td} pr-6`}>
+                  <Button
+                    variant="ghost"
+                    size="icon-lg"
                     onClick={() => onRemove(it.uid)}
                     disabled={!canRemove}
                     aria-label={`ลบรายการ ${it.policyNo}`}
-                    className="flex size-8 items-center justify-center rounded-full text-error transition-colors hover:bg-error/10 disabled:cursor-not-allowed disabled:opacity-30"
+                    className="size-10 cursor-pointer text-error hover:bg-error/8 hover:text-error"
                   >
-                    <Trash2 className="size-4" aria-hidden />
-                  </button>
+                    <Trash2 className="size-5" aria-hidden />
+                  </Button>
                 </td>
               </tr>
             ))}

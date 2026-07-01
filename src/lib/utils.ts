@@ -17,7 +17,7 @@ export function formatAmount(amount: number, decimals = 0): string {
 }
 
 export function formatTHB(amount: number, decimals = 0): string {
-  return `฿${formatAmount(amount, decimals)}`
+  return formatAmount(amount, decimals)
 }
 
 const THAI_MONTHS_ABBR = [

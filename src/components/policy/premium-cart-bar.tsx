@@ -65,7 +65,7 @@ export function PremiumCartBar({
           aria-label={open ? "ย่อตะกร้ารับชำระเบี้ย" : "ขยายตะกร้ารับชำระเบี้ย"}
           className="flex w-full items-center gap-3 text-left mmd:w-auto"
         >
-          <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-info/16 text-info-dark">
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-secondary text-white">
             <ShoppingCart className="size-4.5" aria-hidden />
           </span>
           <span className="text-sm font-bold text-foreground">ตะกร้ารับชำระเบี้ย</span>
@@ -82,11 +82,11 @@ export function PremiumCartBar({
           <div className="flex items-center justify-between gap-6">
             <div>
               <p className="text-sm font-medium text-grey-500">กรมธรรม์</p>
-              <p className="text-xl font-bold tabular-nums text-foreground">{count}</p>
+              <p className="text-xl font-bold tabular-nums text-secondary">{count}</p>
             </div>
             <div>
               <p className="text-sm font-medium text-grey-500">เบี้ยรวม</p>
-              <p className="text-xl font-bold tabular-nums text-foreground">{formatTHB(total, 2)}</p>
+              <p className="text-xl font-bold tabular-nums text-secondary">{formatTHB(total, 2)}</p>
             </div>
           </div>
           <button
@@ -94,7 +94,7 @@ export function PremiumCartBar({
             onClick={onProceed}
             disabled={count === 0}
             aria-label="ดำเนินการชำระเบี้ย"
-            className="inline-flex h-11 w-full shrink-0 items-center justify-center rounded-control bg-grey-800 px-5 text-sm font-bold text-white transition-colors hover:bg-grey-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-grey-800 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 mmd:w-auto"
+            className="inline-flex h-11 w-full shrink-0 items-center justify-center rounded-control bg-primary px-5 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:bg-grey-300 disabled:text-grey-500 disabled:hover:bg-grey-300 mmd:w-auto"
           >
             ดำเนินการชำระเบี้ย
           </button>

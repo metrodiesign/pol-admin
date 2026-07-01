@@ -59,7 +59,7 @@ export function TablePagination({
               : "text-grey-700 hover:text-foreground",
           )}
         >
-          Previous
+          ก่อนหน้า
         </button>
 
         <div className="flex items-center gap-0.5">
@@ -100,7 +100,7 @@ export function TablePagination({
               : "text-grey-700 hover:text-foreground",
           )}
         >
-          Next
+          ถัดไป
         </button>
       </div>
     </div>
