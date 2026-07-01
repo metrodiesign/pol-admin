@@ -12,6 +12,9 @@ const REASON_MESSAGES: Record<string, string> = {
   "missing-subject": "ไม่พบข้อมูลบัญชีจาก Google",
   "resolve-failed": "ตรวจสอบสิทธิ์ไม่สำเร็จ กรุณาลองใหม่",
   "session-write-failed": "สร้าง session ไม่สำเร็จ กรุณาลองใหม่",
+  // FE-minted (จากหน้า /register เมื่อ submit ไม่ผ่าน terminal)
+  "registration-link-invalid": "ลิงก์ลงทะเบียนไม่ถูกต้องหรือหมดอายุ กรุณาเข้าสู่ระบบใหม่อีกครั้ง",
+  "already-registered": "บัญชีนี้ลงทะเบียนไว้แล้ว กรุณาเข้าสู่ระบบ",
 };
 const DEFAULT_MESSAGE = "เข้าสู่ระบบไม่สำเร็จ กรุณาลองใหม่";
 
