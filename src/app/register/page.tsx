@@ -31,7 +31,7 @@ const emptyForm: ProducerFormData = {
 };
 
 const linkButtonClass =
-  "mt-8 inline-flex h-9 min-w-[160px] items-center justify-center rounded-control bg-grey-800 px-3 text-sm font-bold text-white transition-colors hover:bg-grey-900 dark:bg-white dark:text-grey-900 dark:hover:bg-grey-300";
+  "mt-8 inline-flex h-11 min-w-[160px] items-center justify-center rounded-control bg-primary px-5 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1";
 
 // Header bar — เหมือนหน้า /login (โลโก้วิริยะในกล่องขาว + tagline บนพื้นน้ำเงิน)
 function RegisterHeader() {
