@@ -54,7 +54,7 @@ export const navConfig: NavGroup[] = [
         match: "/order",
       },
       {
-        title: "รายการธุรกรรม",
+        title: "รายการชำระเงิน",
         path: "/transaction/list",
         icon: "invoice",
         match: "/transaction",

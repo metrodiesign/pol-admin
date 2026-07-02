@@ -17,7 +17,7 @@ export default async function TransactionReadPage({
       <PageHeader
         title="รายละเอียดธุรกรรม"
         breadcrumbs={[
-          { label: "รายการธุรกรรม", href: "/transaction/list" },
+          { label: "รายการชำระเงิน", href: "/transaction/list" },
           { label: id ?? "รายละเอียด" },
         ]}
       />

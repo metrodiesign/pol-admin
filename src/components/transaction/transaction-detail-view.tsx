@@ -139,7 +139,7 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
         className="flex flex-col items-center justify-center gap-4 rounded-2xl bg-card px-6 py-16 text-center"
         style={{ boxShadow: "var(--shadow-card)" }}
       >
-        <p className="text-base font-bold text-foreground">ไม่พบรายการธุรกรรม</p>
+        <p className="text-base font-bold text-foreground">ไม่พบรายการชำระเงิน</p>
         <Button
           render={<Link href="/transaction/list" />}
           nativeButton={false}
