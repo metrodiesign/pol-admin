@@ -28,13 +28,6 @@ export const minimalsNavConfig: NavGroup[] = [
         icon: "order",
         match: "/order",
       },
-    ],
-  },
-
-  // ── รายการธุรกรรม ────────────────────────────────────────────────────────
-  {
-    subheader: "รายการธุรกรรม",
-    items: [
       {
         title: "รายการธุรกรรม",
         path: "/transaction/list",
