@@ -36,7 +36,7 @@ export const userColumns: ColumnDef<User>[] = [
   {
     id: "select",
     enableSorting: false,
-    meta: { headClassName: "w-12 pl-1 pr-0", cellClassName: "w-12 pl-1 pr-0" },
+    meta: { headClassName: "w-12 pl-1 pr-0 py-2", cellClassName: "w-12 pl-1 pr-0" },
     header: ({ table }) => (
       <Checkbox
         checked={table.getIsAllRowsSelected()}
