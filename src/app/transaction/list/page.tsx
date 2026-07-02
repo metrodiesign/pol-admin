@@ -3,16 +3,16 @@ import { TransactionListView } from "@/components/transaction/transaction-list-v
 import { TransactionCsvButton } from "@/components/transaction/transaction-csv-button";
 
 export const metadata = {
-  title: "รายการธุรกรรม | POL Admin",
+  title: "รายการชำระเงิน | POL Admin",
 };
 
 export default function TransactionListPage() {
   return (
     <>
       <PageHeader
-        title="รายการธุรกรรม"
+        title="รายการชำระเงิน"
         breadcrumbs={[
-          { label: "รายการธุรกรรม", href: "/transaction/list" },
+          { label: "รายการชำระเงิน", href: "/transaction/list" },
           { label: "รายการ" },
         ]}
         actions={<TransactionCsvButton />}

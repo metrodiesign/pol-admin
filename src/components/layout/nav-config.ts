@@ -53,15 +53,8 @@ export const navConfig: NavGroup[] = [
         icon: "order",
         match: "/order",
       },
-    ],
-  },
-
-  // ── รายการธุรกรรม ───────────────────────────────────────────────────────────
-  {
-    subheader: "รายการธุรกรรม",
-    items: [
       {
-        title: "รายการธุรกรรม",
+        title: "รายการชำระเงิน",
         path: "/transaction/list",
         icon: "invoice",
         match: "/transaction",
