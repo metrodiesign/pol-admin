@@ -1,13 +1,15 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { Suspense, useState, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import { CircleCheck } from "lucide-react";
 import { AvatarUpload } from "@/components/shared/avatar-upload";
 import { Fieldset, Field, Label, Description } from "@/components/shared/fieldset";
 import { ProducerEditFormCard } from "@/components/producer/producer-edit-form-card";
 import { Logo } from "@/components/layout/logo";
+import { buildRegisterFormData, producerRegister } from "@/lib/api/producer-api";
 import type { ProducerFormData } from "@/types/producer";
 
 // ponytail: shell-free public page — no layout.tsx in this folder, inherits only root
@@ -39,16 +41,22 @@ function RegisterHeader() {
     <header className="flex min-h-[60px] shrink-0 items-stretch gap-3 bg-crop-blue pr-4 sm:min-h-[70px] sm:gap-4 sm:pr-6">
       <span className="flex shrink-0 items-center bg-white px-3 sm:px-5">
         <Image
-          src="/viriyah-logo.jpg"
+          src="/viriyah-logo.png"
           alt="วิริยะประกันภัย"
-          width={180}
-          height={64}
+          width={667}
+          height={250}
           priority
-          className="h-9 w-auto sm:h-12"
+          className="h-12 w-auto sm:h-16"
         />
       </span>
-      <span className="flex items-center text-xs italic text-white/90 sm:text-sm">
-        ความเป็นธรรม คือ พื้นฐาน
+      <span className="flex items-center">
+        <Image
+          src="/fairness-tagline-white.png"
+          alt="ความเป็นธรรม คือ พื้นฐาน"
+          width={1147}
+          height={176}
+          className="h-6 w-auto sm:h-8"
+        />
       </span>
     </header>
   );
@@ -69,50 +77,97 @@ function RegisterBanner() {
   );
 }
 
-export default function RegisterPage() {
+// branded splash — render เป็น overlay ระหว่าง submit (ฟอร์มยัง mount อยู่ข้างล่าง → error transient
+// แล้วข้อมูลไม่หาย). fixed inset-0 คลุมทั้งจอ + กัน interaction.
+function SubmitOverlay() {
+  return (
+    <div className="fixed inset-0 z-[9998] flex items-center justify-center bg-white">
+      <div className="relative inline-flex items-center justify-center" style={{ width: 120, height: 120 }}>
+        <span
+          className="relative z-[9] inline-flex"
+          style={{ animation: "splash-logo-pulse 3s ease-in-out infinite" }}
+        >
+          <Logo size={64} idPrefix="register-loading" />
+        </span>
+        <span
+          className="absolute"
+          style={{
+            width: "calc(100% - 20px)",
+            height: "calc(100% - 20px)",
+            border: "solid 3px color-mix(in srgb, var(--color-primary-dark) 24%, transparent)",
+            animation: "splash-inner-ring 3.2s linear infinite",
+          }}
+        />
+        <span
+          className="absolute inset-0"
+          style={{
+            border: "solid 8px color-mix(in srgb, var(--color-primary-dark) 24%, transparent)",
+            animation: "splash-outer-ring 3.2s linear infinite",
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+
+function RegisterInner() {
+  const ticket = useSearchParams().get("ticket");
   const [photo, setPhoto] = useState<File | null>(null);
   const [photoError, setPhotoError] = useState<string>();
-  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string>();
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSave = useCallback(() => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setSubmitted(true);
-    }, 1500);
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="fixed inset-0 z-[9998] flex items-center justify-center bg-white">
-        <div className="relative inline-flex items-center justify-center" style={{ width: 120, height: 120 }}>
-          <span
-            className="relative z-[9] inline-flex"
-            style={{ animation: "splash-logo-pulse 3s ease-in-out infinite" }}
-          >
-            <Logo size={64} idPrefix="register-loading" />
-          </span>
-          <span
-            className="absolute"
-            style={{
-              width: "calc(100% - 20px)",
-              height: "calc(100% - 20px)",
-              border: "solid 3px color-mix(in srgb, var(--color-primary-dark) 24%, transparent)",
-              animation: "splash-inner-ring 3.2s linear infinite",
-            }}
-          />
-          <span
-            className="absolute inset-0"
-            style={{
-              border: "solid 8px color-mix(in srgb, var(--color-primary-dark) 24%, transparent)",
-              animation: "splash-outer-ring 3.2s linear infinite",
-            }}
-          />
-        </div>
-      </div>
-    );
-  }
+  const handleSave = useCallback(
+    async (data: ProducerFormData) => {
+      // identity มาจาก ticket เท่านั้น — ไม่มี ticket = ลิงก์ไม่ถูกต้อง/หมดอายุ (terminal)
+      if (!ticket) {
+        window.location.href = "/login-error?reason=registration-link-invalid";
+        return;
+      }
+      setSubmitError(undefined);
+      setSubmitting(true);
+      try {
+        const res = await producerRegister(buildRegisterFormData(data, ticket, photo));
+        if (res.status === 201) {
+          setSubmitted(true);
+          return;
+        }
+        if (res.status === 409) {
+          window.location.href = "/login-error?reason=already-registered";
+          return;
+        }
+        if (res.status === 413) {
+          setSubmitting(false);
+          setPhotoError("รูปภาพมีขนาดใหญ่เกินไป (สูงสุด 2MB)");
+          return;
+        }
+        if (res.status === 429) {
+          setSubmitting(false);
+          setSubmitError("มีคำขอมากเกินไป กรุณาลองใหม่ภายหลัง");
+          return;
+        }
+        if (res.status === 400) {
+          // ProblemDetails: ข้อความ ticket อยู่ใน `title`, photo อยู่ใน `title`/`detail` — เช็คทั้งคู่
+          const body = await res.json().catch(() => null);
+          const msg = `${body?.title ?? ""} ${body?.detail ?? ""}`.toLowerCase();
+          if (msg.includes("ticket")) {
+            window.location.href = "/login-error?reason=registration-link-invalid";
+            return;
+          }
+          setSubmitting(false);
+          setPhotoError("รูปภาพไม่ถูกต้อง (รองรับ jpg/png/webp)");
+          return;
+        }
+        setSubmitting(false);
+        setSubmitError("เกิดข้อผิดพลาด กรุณาลองใหม่");
+      } catch {
+        setSubmitting(false);
+        setSubmitError("เกิดข้อผิดพลาด กรุณาลองใหม่");
+      }
+    },
+    [ticket, photo],
+  );
 
   if (submitted) {
     return (
@@ -150,6 +205,12 @@ export default function RegisterPage() {
       <RegisterBanner />
       <div className="mx-auto max-w-5xl px-4 py-10">
         <h1 className="mb-6 text-xl font-bold text-foreground">การลงทะเบียนตัวแทน</h1>
+
+        {submitError && (
+          <div className="mb-6 rounded-control border border-error/24 bg-error/8 px-4 py-3 text-sm text-error">
+            {submitError}
+          </div>
+        )}
 
         <div className="grid grid-cols-1 gap-6 mmd:grid-cols-12">
           <div className="mmd:col-span-4">
@@ -196,6 +257,16 @@ export default function RegisterPage() {
           </div>
         </div>
       </div>
+      {submitting && <SubmitOverlay />}
     </main>
+  );
+}
+
+export default function RegisterPage() {
+  // useSearchParams ต้องอยู่ใน Suspense boundary (Next app-router)
+  return (
+    <Suspense>
+      <RegisterInner />
+    </Suspense>
   );
 }
