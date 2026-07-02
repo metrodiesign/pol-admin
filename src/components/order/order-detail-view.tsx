@@ -24,7 +24,7 @@ import {
   MessageSquare,
 } from "lucide-react";
 import {
-  getTransactionById,
+  getOrderById,
   paymentLifecycle,
   buildTimeline,
   policyItems,
@@ -33,10 +33,10 @@ import {
   payLink,
   type StepState,
   type TimelineIcon,
-} from "@/lib/transaction";
+} from "@/lib/order";
 import { cn, formatAmount, formatTHB } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { TransactionStatusBadge } from "./transaction-status-badge";
+import { OrderStatusBadge } from "./order-status-badge";
 
 const TIMELINE_ICON: Record<TimelineIcon, LucideIcon> = {
   webhook: Webhook,
@@ -130,8 +130,8 @@ const STEP_LABEL_COLOR: Record<StepState, string> = {
 
 const fieldLabel = "mb-1.5 block text-xs font-semibold text-grey-700";
 
-export function TransactionDetailView({ id, compact = false }: { id: string | undefined; compact?: boolean }) {
-  const t = getTransactionById(id);
+export function OrderDetailView({ id, compact = false }: { id: string | undefined; compact?: boolean }) {
+  const t = getOrderById(id);
 
   if (!t) {
     return (
@@ -141,7 +141,7 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
       >
         <p className="text-base font-bold text-foreground">ไม่พบรายการธุรกรรม</p>
         <Button
-          render={<Link href="/transaction/list" />}
+          render={<Link href="/order/list" />}
           nativeButton={false}
           className="mt-1 h-10 bg-grey-800 px-5 font-bold text-white hover:bg-grey-900"
         >
@@ -170,7 +170,7 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
                 LIFECYCLE
               </span>
             </p>
-            <TransactionStatusBadge status={t.status} />
+            <OrderStatusBadge status={t.status} />
           </div>
 
           <div className={cn("mt-4 flex", compact ? "flex-col gap-1" : "items-center overflow-x-auto")}>

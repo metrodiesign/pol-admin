@@ -47,6 +47,12 @@ export const navConfig: NavGroup[] = [
         icon: "invoice",
         match: "/policy",
       },
+      {
+        title: "คำสั่งซื้อ",
+        path: "/order/list",
+        icon: "order",
+        match: "/order",
+      },
     ],
   },
 
