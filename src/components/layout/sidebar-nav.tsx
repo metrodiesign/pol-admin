@@ -32,10 +32,10 @@ function SidebarLogo({
         <Logo size={40} idPrefix={logoIdPrefix} />
       ) : (
         <Image
-          src="/viriyah-logo.jpg"
+          src="/viriyah-logo.png"
           alt="วิริยะประกันภัย"
-          width={180}
-          height={64}
+          width={667}
+          height={250}
           priority
           className="h-16 w-auto"
         />
