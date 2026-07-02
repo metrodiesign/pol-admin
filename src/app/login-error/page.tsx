@@ -3,8 +3,8 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import { Clock } from "lucide-react";
 
-// backend redirect ปลายทางเมื่อ login callback ไม่ผ่าน (AdminAuthOptions.ErrorPath="/login-error")
-// พร้อม ?reason=<label>. label จาก AdminLoginService/AdminOidcAuthentication.DenyAsync.
+// backend redirect ปลายทางเมื่อ login callback ไม่ผ่าน (Admin/Producer OIDC ErrorPath="/login-error")
+// พร้อม ?reason=<label>. label จาก {Admin,Producer}LoginService/{Admin,Producer}OidcAuthentication.DenyAsync.
 const REASON_MESSAGES: Record<string, string> = {
   "not-provisioned": "บัญชี Google นี้ยังไม่ได้รับสิทธิ์ — ยังไม่ถูก provision เป็น admin. ติดต่อผู้ดูแลระบบ",
   suspended: "บัญชีถูกระงับการใช้งาน. ติดต่อผู้ดูแลระบบ",
@@ -12,11 +12,20 @@ const REASON_MESSAGES: Record<string, string> = {
   "missing-subject": "ไม่พบข้อมูลบัญชีจาก Google",
   "resolve-failed": "ตรวจสอบสิทธิ์ไม่สำเร็จ กรุณาลองใหม่",
   "session-write-failed": "สร้าง session ไม่สำเร็จ กรุณาลองใหม่",
+  // producer SSO callback (คู่มือ §6.2) — suspended/access-denied/resolve-failed/session-write-failed ใช้ร่วมด้านบน
+  "email-unverified": "อีเมล Google ของคุณยังไม่ได้ยืนยัน กรุณายืนยันอีเมลแล้วลองใหม่",
+  "hd-mismatch": "กรุณาใช้บัญชีอีเมลขององค์กรที่ได้รับอนุญาต",
+  "auth-failed": "การยืนยันตัวตนล้มเหลว กรุณาลองใหม่",
+  "ticket-issue-failed": "เกิดข้อผิดพลาดของระบบ กรุณาลองใหม่",
+  "missing-identity": "ไม่พบข้อมูลบัญชีจาก Google",
+  // FE-minted (จากหน้า /register เมื่อ submit ไม่ผ่าน terminal)
+  "registration-link-invalid": "ลิงก์ลงทะเบียนไม่ถูกต้องหรือหมดอายุ กรุณาเข้าสู่ระบบใหม่อีกครั้ง",
+  "already-registered": "บัญชีนี้ลงทะเบียนไว้แล้ว กรุณาเข้าสู่ระบบ",
 };
 const DEFAULT_MESSAGE = "เข้าสู่ระบบไม่สำเร็จ กรุณาลองใหม่";
 
 // รอ admin อนุมัติ — ไม่ใช่ error จริง (ผู้ใช้ลงทะเบียนสำเร็จ) จึงแสดงหัวข้อ/ไอคอนคนละแบบจากเคส deny อื่นๆ
-const PENDING_REASON = "registration-pending";
+const PENDING_REASON = "awaiting-approval";
 const PENDING_MESSAGE = "ระบบได้รับข้อมูลการลงทะเบียนของคุณแล้ว กรุณารอการอนุมัติจากผู้ดูแลระบบ";
 
 const linkButtonClass =
@@ -30,16 +39,22 @@ function LoginErrorHeader() {
     <header className="flex min-h-[60px] shrink-0 items-stretch gap-3 bg-crop-blue pr-4 sm:min-h-[70px] sm:gap-4 sm:pr-6">
       <span className="flex shrink-0 items-center bg-white px-3 sm:px-5">
         <Image
-          src="/viriyah-logo.jpg"
+          src="/viriyah-logo.png"
           alt="วิริยะประกันภัย"
-          width={180}
-          height={64}
+          width={667}
+          height={250}
           priority
-          className="h-9 w-auto sm:h-12"
+          className="h-12 w-auto sm:h-16"
         />
       </span>
-      <span className="flex items-center text-xs italic text-white/90 sm:text-sm">
-        ความเป็นธรรม คือ พื้นฐาน
+      <span className="flex items-center">
+        <Image
+          src="/fairness-tagline-white.png"
+          alt="ความเป็นธรรม คือ พื้นฐาน"
+          width={1147}
+          height={176}
+          className="h-6 w-auto sm:h-8"
+        />
       </span>
     </header>
   );
