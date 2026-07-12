@@ -241,12 +241,14 @@ export function buildTimeline(t: Order): TimelineEvent[] {
   const capture: TimelineEvent = { key: "capture", icon: "capture", tone: "ok", title: "Capture \u0e2a\u0e33\u0e40\u0e23\u0e47\u0e08", desc: `\u0e40\u0e01\u0e47\u0e1a\u0e22\u0e2d\u0e14 ${amt} \u0e08\u0e32\u0e01 ${psp}`, time: hms(t.time, 46) };
   const settled: TimelineEvent = { key: "settled", icon: "bank", tone: "ok", title: "Settled", desc: "\u0e23\u0e31\u0e1a\u0e40\u0e07\u0e34\u0e19\u0e40\u0e02\u0e49\u0e32\u0e1a\u0e31\u0e0d\u0e0a\u0e35\u0e15\u0e31\u0e27\u0e01\u0e25\u0e32\u0e07 (\u0e23\u0e2d\u0e1a T+2)", time: hms(t.time, 50) };
   const webhook: TimelineEvent = { key: "webhook", icon: "webhook", tone: "ok", title: "\u0e2a\u0e48\u0e07 Webhook \u0e2a\u0e33\u0e40\u0e23\u0e47\u0e08", desc: "payment.succeeded \u2192 policy-core", time: hms(t.time, 56) };
+  const reminder: TimelineEvent = { key: "reminder", icon: "webhook", tone: "info", title: "\u0e2a\u0e48\u0e07 SMS \u0e41\u0e08\u0e49\u0e07\u0e40\u0e15\u0e37\u0e2d\u0e19\u0e0b\u0e49\u0e33", desc: `\u0e41\u0e08\u0e49\u0e07\u0e40\u0e15\u0e37\u0e2d\u0e19\u0e25\u0e39\u0e01\u0e04\u0e49\u0e32\u0e2d\u0e35\u0e01\u0e04\u0e23\u0e31\u0e49\u0e07\u0e44\u0e1b\u0e22\u0e31\u0e07 ${customerPhone(t)}`, time: hms(t.time, 20) };
+  const created: TimelineEvent = { key: "created", icon: "link", tone: "muted", title: "\u0e2a\u0e23\u0e49\u0e32\u0e07\u0e25\u0e34\u0e07\u0e01\u0e4c\u0e0a\u0e33\u0e23\u0e30\u0e40\u0e07\u0e34\u0e19", desc: "\u0e23\u0e30\u0e1a\u0e1a\u0e2a\u0e23\u0e49\u0e32\u0e07 QR Code \u0e41\u0e25\u0e30\u0e25\u0e34\u0e07\u0e01\u0e4c\u0e0a\u0e33\u0e23\u0e30\u0e40\u0e07\u0e34\u0e19\u0e2d\u0e31\u0e15\u0e42\u0e19\u0e21\u0e31\u0e15\u0e34", time: hms(t.time, -120) };
   const refund: TimelineEvent = { key: "refund", icon: "refund", tone: "muted", title: "\u0e04\u0e37\u0e19\u0e40\u0e07\u0e34\u0e19\u0e2a\u0e33\u0e40\u0e23\u0e47\u0e08", desc: `\u0e04\u0e37\u0e19\u0e22\u0e2d\u0e14 ${amt} \u0e01\u0e25\u0e31\u0e1a\u0e1a\u0e31\u0e15\u0e23\u0e25\u0e39\u0e01\u0e04\u0e49\u0e32`, time: hms(t.time, 120) };
   const cancel: TimelineEvent = { key: "cancel", icon: "cancel", tone: "muted", title: "\u0e22\u0e01\u0e40\u0e25\u0e34\u0e01\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23", desc: "\u0e25\u0e34\u0e07\u0e01\u0e4c\u0e2b\u0e21\u0e14\u0e2d\u0e32\u0e22\u0e38 / \u0e22\u0e01\u0e40\u0e25\u0e34\u0e01\u0e01\u0e48\u0e2d\u0e19\u0e0a\u0e33\u0e23\u0e30", time: hms(t.time, 30) };
 
   switch (t.status) {
     case "completed":
-      return [webhook, settled, capture, authOk, redirect, open];
+      return [webhook, settled, capture, authOk, redirect, reminder, open, created];
     case "refunded":
       return [refund, webhook, settled, capture, authOk, redirect, open];
     case "processing":
