@@ -1,4 +1,4 @@
-import type { TenantId } from "@/types/tenant";
+import type { MerchantCode } from "@/types/merchant";
 
 export type ApprovalActionType =
   | "refund"
@@ -21,7 +21,7 @@ export interface ApprovalRequest {
   maker: string; // email of the operator who raised the request
   target: string; // entity id / reference the action applies to
   refAmount?: number; // present for refunds only
-  tenantId: TenantId;
+  merchantId: MerchantCode;
   requestedAt: string; // ISO datetime
   status: ApprovalStatus;
 }

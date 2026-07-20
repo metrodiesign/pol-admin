@@ -1,7 +1,7 @@
-import type { TenantId } from "@/types/tenant";
+import type { MerchantCode } from "@/types/merchant";
 
 export type OriginatorType = "branch" | "app" | "agent";
-export type OriginatorStatus = "active" | "disabled";
+export type OriginatorStatus = "active" | "inactive";
 
 /**
  * A payment SOURCE that initiates payment requests — a branch, a connected app,
@@ -14,7 +14,7 @@ export interface Originator {
   code: string;
   name: string;
   type: OriginatorType;
-  tenantId: TenantId;
+  merchantId: MerchantCode;
   linkedApiClientId?: string; // cli_live_... — present for app-type sources
   status: OriginatorStatus;
 }

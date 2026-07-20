@@ -6,7 +6,7 @@ import { useControlStore } from "@/lib/control/store";
 import { webhookStore, replayEvent } from "@/lib/control/webhook-store";
 import { showControlToast } from "@/components/control/shared/control-toast";
 import { PSP_LABEL, DELIVERY_LABEL, deliveryTone } from "@/lib/control/webhook";
-import { TENANT_LABEL } from "@/lib/mock/tenants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchants";
 import { formatDateTime } from "@/lib/control/format";
 import { ReadField } from "@/components/control/shared/read-field";
 import { ControlStatusBadge } from "@/components/control/shared/control-status-badge";
@@ -129,7 +129,7 @@ export function WebhookDetailView({ id }: { id?: string }) {
 
           <div className="grid grid-cols-2 gap-x-4 gap-y-5 border-t border-[var(--divider)] pt-5">
             <ReadField label="PSP" value={PSP_LABEL[event.psp]} />
-            <ReadField label="บริษัท" value={TENANT_LABEL[event.tenantId]} />
+            <ReadField label="บริษัท" value={MERCHANT_LABEL[event.merchantId]} />
             <ReadField label="ครั้งที่ส่ง" value={String(event.attempts)} mono />
             <ReadField
               label="รับเมื่อ"
@@ -148,7 +148,7 @@ export function WebhookDetailView({ id }: { id?: string }) {
         >
           <div className="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
             <ReadField label="PSP" value={PSP_LABEL[event.psp]} />
-            <ReadField label="บริษัท" value={TENANT_LABEL[event.tenantId]} />
+            <ReadField label="บริษัท" value={MERCHANT_LABEL[event.merchantId]} />
             <ReadField label="ประเภท event" value={event.eventType} />
             <ReadField
               label="สถานะการส่ง"

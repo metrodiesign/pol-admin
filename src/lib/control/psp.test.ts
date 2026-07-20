@@ -27,6 +27,6 @@ describe("healthTone", () => {
     expect(healthTone("healthy")).toBe("ok");
     expect(healthTone("degraded")).toBe("warn");
     expect(healthTone("error")).toBe("error");
-    expect(healthTone("disabled")).toBe("muted");
+    expect(healthTone("offline")).toBe("muted");
   });
 });

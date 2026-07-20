@@ -1,7 +1,7 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import type { Transaction } from "@/types/transaction";
+import type { PaymentSession } from "@/types/order-payment";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,21 +10,22 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { cn, formatTHB } from "@/lib/utils";
+import { cn } from "@/lib/utils";
+import { formatMoney } from "@/types/money";
 import { CHANNEL_LABEL, CHANNEL_DOT, PSP_LABEL } from "@/lib/transaction";
 import { TransactionLifecycle } from "./transaction-lifecycle";
 import { TransactionStatusBadge } from "./transaction-status-badge";
 import { Eye, Pencil, Copy, Trash2, Menu } from "lucide-react";
 
 interface BuildColumnsArgs {
-  onSelect?: (t: Transaction) => void;
-  onRead?: (t: Transaction) => void;
+  onSelect?: (t: PaymentSession) => void;
+  onRead?: (t: PaymentSession) => void;
 }
 
 export function buildTransactionColumns({
   onSelect: _onSelect,
   onRead,
-}: BuildColumnsArgs): ColumnDef<Transaction>[] {
+}: BuildColumnsArgs): ColumnDef<PaymentSession>[] {
   return [
   {
     id: "select",
@@ -68,22 +69,14 @@ export function buildTransactionColumns({
     },
   },
   {
-    accessorKey: "customerName",
-    header: "ลูกค้า",
+    accessorKey: "recipientEmail",
+    header: "อีเมล",
     enableSorting: true,
-    cell: ({ row }) => {
-      const t = row.original;
-      return (
-        <div className="min-w-0">
-          <span className="block truncate text-sm text-foreground">
-            {t.customerName}
-          </span>
-          <span className="block truncate text-sm text-grey-500">
-            {t.customerEmail}
-          </span>
-        </div>
-      );
-    },
+    cell: ({ row }) => (
+      <span className="block truncate text-sm text-foreground">
+        {row.original.recipientEmail ?? "—"}
+      </span>
+    ),
   },
   {
     id: "source",
@@ -132,7 +125,7 @@ export function buildTransactionColumns({
     meta: { headClassName: "text-right", cellClassName: "text-right" },
     cell: ({ row }) => (
       <span className="text-sm font-semibold text-foreground">
-        {formatTHB(row.original.amount, 2)}
+        {formatMoney(row.original.amount)}
       </span>
     ),
   },

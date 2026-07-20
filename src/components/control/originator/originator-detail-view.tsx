@@ -4,7 +4,7 @@ import { KeyRound, Radio } from "lucide-react";
 import type { Originator } from "@/types/originator";
 import { ORIGINATORS } from "@/lib/mock/originators";
 import { TYPE_LABEL, STATUS_LABEL, statusTone } from "@/lib/control/originator";
-import { TENANT_LABEL } from "@/lib/mock/tenants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchants";
 import { ReadField } from "@/components/control/shared/read-field";
 import { ControlStatusBadge } from "@/components/control/shared/control-status-badge";
 import { StatusSpine } from "@/components/control/shared/status-spine";
@@ -85,7 +85,7 @@ export function OriginatorDetailView({ id }: { id?: string }) {
           </div>
 
           <div className="grid grid-cols-2 gap-x-4 gap-y-5 border-t border-[var(--divider)] pt-5">
-            <ReadField label="บริษัท" value={TENANT_LABEL[originator.tenantId]} />
+            <ReadField label="บริษัท" value={MERCHANT_LABEL[originator.merchantId]} />
             <ReadField label="ประเภท" value={TYPE_LABEL[originator.type]} />
           </div>
         </div>
@@ -105,7 +105,7 @@ export function OriginatorDetailView({ id }: { id?: string }) {
               value={originator.name}
               className="sm:col-span-2"
             />
-            <ReadField label="บริษัท" value={TENANT_LABEL[originator.tenantId]} />
+            <ReadField label="บริษัท" value={MERCHANT_LABEL[originator.merchantId]} />
             <ReadField label="สถานะ" value={STATUS_LABEL[originator.status]} />
           </div>
         </DetailCard>

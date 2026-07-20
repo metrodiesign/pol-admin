@@ -1,3 +1,5 @@
+// UI-only, ไม่มี endpoint รองรับ — pol-core ไม่มี entity Policy เลย และ Product
+// ไม่มีฟิลด์ประกันสักตัว (REQ-7.2) ต้องมี Policy read endpoint ก่อนถึงจะ align ได้.
 // Typed mock data (NO backend) — กรมธรรม์สำหรับ Policy Marketplace.
 // 48 records: active 34 / due_soon 6 / awaiting 4 / lapsed 2 / cancelled 2 (REQ-2.2).
 // 9 แถวแรก seed จาก screenshot จริง; ที่เหลือ generate แบบ deterministic (ไม่มี random).

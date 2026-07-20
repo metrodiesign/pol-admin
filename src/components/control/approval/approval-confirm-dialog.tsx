@@ -2,7 +2,7 @@
 
 import type { ApprovalRequest } from "@/types/approval";
 import { ACTION_LABEL } from "@/lib/control/approval";
-import { TENANT_LABEL } from "@/lib/mock/tenants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchants";
 import { formatDateTime } from "@/lib/control/format";
 import { formatTHB } from "@/lib/utils";
 import {
@@ -77,7 +77,7 @@ export function ApprovalConfirmDialog({
               <ReadField label="ผู้ขอ" value={request.maker} mono />
               <ReadField
                 label="บริษัท"
-                value={TENANT_LABEL[request.tenantId]}
+                value={MERCHANT_LABEL[request.merchantId]}
               />
               <ReadField
                 label="ขอเมื่อ"

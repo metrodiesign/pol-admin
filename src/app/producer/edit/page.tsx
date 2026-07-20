@@ -1,19 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import type { ProducerStatus } from "@/types/producer";
+import type { MerchantUserStatus } from "@/types/merchant-user";
 import { EditPageHeader } from "@/components/shared/edit-page-header";
 import { ProducerEditProfileCard } from "@/components/producer/producer-edit-profile-card";
 import { ProducerEditFormCard } from "@/components/producer/producer-edit-form-card";
 
-const AVATAR =
-  "https://pub-c5e31b5cdafb419fb247a8ac2e78df7a.r2.dev/public/assets/images/mock/avatar/avatar-1.webp";
-
 export default function ProducerEditPage() {
-  const [banned, setBanned] = useState(false);
+  const [suspended, setSuspended] = useState(false);
   const [emailVerified, setEmailVerified] = useState(true);
   // เริ่มที่ "รอตรวจสอบ" เพื่อให้ admin เห็นปุ่มอนุมัติ (UI shell — flip เป็น active ในเครื่อง)
-  const [status, setStatus] = useState<ProducerStatus>("pending");
+  const [status, setStatus] = useState<MerchantUserStatus>("PendingApproval");
 
   return (
     <>
@@ -29,15 +26,14 @@ export default function ProducerEditPage() {
       <div className="grid grid-cols-1 gap-6 mmd:grid-cols-12">
         <div className="mmd:col-span-4">
           <ProducerEditProfileCard
-            avatarUrl={AVATAR}
             name="สมชาย ใจดี"
             status={status}
-            banned={banned}
+            suspended={suspended}
             emailVerified={emailVerified}
-            onBannedChange={setBanned}
+            onSuspendedChange={setSuspended}
             onEmailVerifiedChange={setEmailVerified}
             onDeleteProducer={() => {}}
-            onApprove={() => setStatus("active")}
+            onApprove={() => setStatus("Active")}
           />
         </div>
         <div className="mmd:col-span-8">
@@ -45,7 +41,7 @@ export default function ProducerEditPage() {
             initialData={{
               firstName: "สมชาย",
               lastName: "ใจดี",
-              personType: "individual",
+              personType: "Individual",
               idNumber: "1103702450000",
               producerCode: "AG10001",
               licenseNumber: "1234567890",

@@ -3,18 +3,21 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { ChevronRight, ShieldCheck } from "lucide-react";
 import type { PspConnection } from "@/types/psp-connection";
-import { TENANT_LABEL } from "@/lib/mock/tenants";
+import type { MerchantCode } from "@/types/merchant";
+import { MERCHANT_LABEL } from "@/lib/mock/merchants";
 import {
   PROVIDER_LABEL,
-  ENV_LABEL,
   HEALTH_LABEL,
   healthTone,
 } from "@/lib/control/psp";
 import { formatDateTime } from "@/lib/control/format";
-import { cn } from "@/lib/utils";
 import { StatusSpine } from "@/components/control/shared/status-spine";
 import { ControlStatusBadge } from "@/components/control/shared/control-status-badge";
 import "@/types/table-meta";
+
+function isMerchantCode(v: string | null): v is MerchantCode {
+  return v !== null && v in MERCHANT_LABEL;
+}
 
 export const pspColumns: ColumnDef<PspConnection>[] = [
   {
@@ -29,30 +32,14 @@ export const pspColumns: ColumnDef<PspConnection>[] = [
     ),
   },
   {
-    accessorKey: "provider",
+    accessorKey: "psp",
     header: "PSP",
     enableSorting: true,
-    cell: ({ row }) => {
-      const p = row.original;
-      const isLive = p.environment === "live";
-      return (
-        <div className="flex items-center gap-2.5">
-          <span className="text-sm font-semibold text-foreground">
-            {PROVIDER_LABEL[p.provider]}
-          </span>
-          <span
-            className={cn(
-              "inline-flex h-5 items-center rounded-md px-1.5 text-xs font-bold",
-              isLive
-                ? "bg-success/16 text-success-dark"
-                : "bg-grey-500/16 text-grey-600",
-            )}
-          >
-            {ENV_LABEL[p.environment]}
-          </span>
-        </div>
-      );
-    },
+    cell: ({ row }) => (
+      <span className="text-sm font-semibold text-foreground">
+        {PROVIDER_LABEL[row.original.psp]}
+      </span>
+    ),
   },
   {
     id: "redirect",
@@ -69,19 +56,22 @@ export const pspColumns: ColumnDef<PspConnection>[] = [
     id: "tenant",
     header: "บริษัท",
     enableSorting: false,
-    cell: ({ row }) => (
-      <span className="text-sm text-foreground">
-        {TENANT_LABEL[row.original.tenantId]}
-      </span>
-    ),
+    cell: ({ row }) => {
+      const code = row.original.merchantId;
+      return (
+        <span className="text-sm text-foreground">
+          {isMerchantCode(code) ? MERCHANT_LABEL[code] : "—"}
+        </span>
+      );
+    },
   },
   {
-    accessorKey: "publicKey",
-    header: "คีย์สาธารณะ",
+    id: "enabledMethods",
+    header: "ช่องทางที่เปิดใช้",
     enableSorting: false,
     cell: ({ row }) => (
-      <span className="text-data text-xs text-grey-700">
-        {row.original.publicKey}
+      <span className="text-sm text-foreground">
+        {row.original.enabledMethods.join(", ")}
       </span>
     ),
   },

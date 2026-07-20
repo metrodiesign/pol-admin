@@ -2,8 +2,8 @@
 
 import SimpleBar from "simplebar-react";
 import { ExternalLink, X } from "lucide-react";
-import type { Transaction } from "@/types/transaction";
-import { formatTHB } from "@/lib/utils";
+import type { PaymentSession } from "@/types/order-payment";
+import { formatMoney } from "@/types/money";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -15,10 +15,10 @@ import { TransactionStatusBadge } from "./transaction-status-badge";
 import { TransactionDetailView } from "./transaction-detail-view";
 
 interface TransactionDetailSheetProps {
-  transaction: Transaction | null;
+  transaction: PaymentSession | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onRead?: (t: Transaction) => void;
+  onRead?: (t: PaymentSession) => void;
 }
 
 export function TransactionDetailSheet({
@@ -47,9 +47,9 @@ export function TransactionDetailSheet({
             </div>
             {transaction && (
               <p className="mt-0.5 text-xs text-grey-500">
-                {transaction.customerName}
+                {transaction.recipientEmail ?? "—"}
                 {" · "}
-                {formatTHB(transaction.amount, 2)}
+                {formatMoney(transaction.amount)}
               </p>
             )}
           </div>

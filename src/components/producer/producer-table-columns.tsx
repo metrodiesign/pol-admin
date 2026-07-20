@@ -4,10 +4,10 @@ import Link from "next/link";
 import type { ColumnDef } from "@tanstack/react-table";
 import {
   PERSON_TYPE_LABEL,
-  type Producer,
-  type ProducerStatus,
-} from "@/types/producer";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+  type MerchantUser,
+  type MerchantUserStatus,
+} from "@/types/merchant-user";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,20 +18,18 @@ import {
 } from "@/components/ui/tooltip";
 import { Eye, Pencil, Trash2 } from "lucide-react";
 
-const statusStyles: Record<ProducerStatus, string> = {
-  active: "bg-success/16 text-success-dark",
-  pending: "bg-warning/16 text-warning-dark",
-  banned: "bg-error/16 text-error-dark",
-  rejected: "bg-grey-500/16 text-grey-600",
-  disabled: "bg-grey-500/16 text-grey-600",
+const statusStyles: Record<MerchantUserStatus, string> = {
+  Active: "bg-success/16 text-success-dark",
+  PendingApproval: "bg-warning/16 text-warning-dark",
+  Rejected: "bg-grey-500/16 text-grey-600",
+  Suspended: "bg-error/16 text-error-dark",
 };
 
-const statusLabel: Record<ProducerStatus, string> = {
-  active: "ใช้งาน",
-  pending: "รอตรวจสอบ",
-  banned: "ระงับ",
-  rejected: "ปฏิเสธ",
-  disabled: "ปิดใช้งาน",
+const statusLabel: Record<MerchantUserStatus, string> = {
+  Active: "ใช้งาน",
+  PendingApproval: "รอตรวจสอบ",
+  Rejected: "ปฏิเสธ",
+  Suspended: "ระงับ",
 };
 
 function getInitials(name: string): string {
@@ -43,7 +41,7 @@ function getInitials(name: string): string {
     .slice(0, 2);
 }
 
-export const producerColumns: ColumnDef<Producer>[] = [
+export const producerColumns: ColumnDef<MerchantUser>[] = [
   {
     id: "select",
     enableSorting: false,
@@ -76,8 +74,8 @@ export const producerColumns: ColumnDef<Producer>[] = [
       const name = `${p.firstName} ${p.lastName}`;
       return (
         <div className="flex items-center gap-4">
+          {/* photoObjectKey ไม่มี HTTP endpoint serve รูปจริง (REQ-4.9) — placeholder initials เสมอ */}
           <Avatar className="size-12">
-            <AvatarImage src={p.avatarUrl} alt={name} />
             <AvatarFallback>{getInitials(name)}</AvatarFallback>
           </Avatar>
           <div className="min-w-0">
@@ -100,25 +98,28 @@ export const producerColumns: ColumnDef<Producer>[] = [
     header: "รหัสตัวแทน",
     enableSorting: false,
     cell: ({ getValue }) => (
-      <span className="text-sm text-foreground">{getValue<string>()}</span>
+      <span className="text-sm text-foreground">{getValue<string | null>() ?? "-"}</span>
     ),
   },
   {
     accessorKey: "personType",
     header: "ประเภท",
     enableSorting: false,
-    cell: ({ row }) => (
-      <span className="text-sm text-foreground">
-        {PERSON_TYPE_LABEL[row.original.personType]}
-      </span>
-    ),
+    cell: ({ row }) => {
+      const pt = row.original.personType;
+      return (
+        <span className="text-sm text-foreground">
+          {pt ? PERSON_TYPE_LABEL[pt] : "-"}
+        </span>
+      );
+    },
   },
   {
-    accessorKey: "phoneNumber",
+    accessorKey: "phone",
     header: "โทรศัพท์",
     enableSorting: false,
     cell: ({ getValue }) => (
-      <span className="text-sm text-foreground">{getValue<string>()}</span>
+      <span className="text-sm text-foreground">{getValue<string | null>() ?? "-"}</span>
     ),
   },
   {
@@ -126,7 +127,7 @@ export const producerColumns: ColumnDef<Producer>[] = [
     header: "เลขที่ใบอนุญาต",
     enableSorting: false,
     cell: ({ getValue }) => (
-      <span className="text-sm text-foreground">{getValue<string>() || "-"}</span>
+      <span className="text-sm text-foreground">{getValue<string | null>() ?? "-"}</span>
     ),
   },
   {

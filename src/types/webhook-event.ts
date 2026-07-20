@@ -1,4 +1,4 @@
-import type { TenantId } from "@/types/tenant";
+import type { MerchantCode } from "@/types/merchant";
 
 export type WebhookPsp = "omise" | "2c2p";
 export type WebhookDeliveryStatus = "delivered" | "failed" | "pending";
@@ -13,7 +13,7 @@ export interface WebhookEvent {
   id: string; // "evt_..."
   eventType: string; // e.g. "payment.succeeded"
   psp: WebhookPsp;
-  tenantId: TenantId;
+  merchantId: MerchantCode;
   deliveryStatus: WebhookDeliveryStatus;
   attempts: number;
   signatureVerified: boolean;

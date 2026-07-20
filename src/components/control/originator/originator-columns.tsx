@@ -3,7 +3,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { ChevronRight } from "lucide-react";
 import type { Originator } from "@/types/originator";
-import { TENANT_LABEL } from "@/lib/mock/tenants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchants";
 import { TYPE_LABEL, STATUS_LABEL, statusTone } from "@/lib/control/originator";
 import { StatusSpine } from "@/components/control/shared/status-spine";
 import { ControlStatusBadge } from "@/components/control/shared/control-status-badge";
@@ -54,7 +54,7 @@ export const originatorColumns: ColumnDef<Originator>[] = [
     enableSorting: false,
     cell: ({ row }) => (
       <span className="text-sm text-foreground">
-        {TENANT_LABEL[row.original.tenantId]}
+        {MERCHANT_LABEL[row.original.merchantId]}
       </span>
     ),
   },

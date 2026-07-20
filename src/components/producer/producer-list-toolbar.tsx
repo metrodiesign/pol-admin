@@ -1,11 +1,11 @@
 "use client";
 
 import { Search, SlidersHorizontal } from "lucide-react";
-import { PERSON_TYPE_LABEL, type ProducerPersonType } from "@/types/producer";
+import { PERSON_TYPE_LABEL, type PersonType } from "@/types/merchant-user";
 import { TextField } from "@/components/form/text-field";
 import { SelectField } from "@/components/form/select-field";
 
-const PERSON_TYPES: ProducerPersonType[] = ["individual", "juristic"];
+const PERSON_TYPES: PersonType[] = ["Individual", "Juristic"];
 
 const PERSON_TYPE_OPTIONS = [
   { value: "__all__", label: "ทุกประเภท" },

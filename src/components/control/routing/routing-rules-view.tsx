@@ -8,7 +8,7 @@ import {
 } from "@tanstack/react-table";
 import { ShieldAlert } from "lucide-react";
 import type { RoutingRule } from "@/types/routing-rule";
-import { TENANT_LABEL } from "@/lib/mock/tenants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchants";
 import { useControlStore } from "@/lib/control/store";
 import { routingStore, toggleRule, moveRule } from "@/lib/control/routing-store";
 import { showControlToast } from "@/components/control/shared/control-toast";
@@ -61,7 +61,7 @@ export function RoutingRulesView() {
     },
     globalFilterFn: (row, _id, value) => {
       const f = value as { tenant: string };
-      if (f.tenant && row.original.tenantId !== f.tenant) return false;
+      if (f.tenant && row.original.merchantId !== f.tenant) return false;
       return true;
     },
     getCoreRowModel: getCoreRowModel(),
@@ -90,7 +90,7 @@ export function RoutingRulesView() {
               label: "บริษัท",
               value: tenant,
               onChange: setTenant,
-              options: Object.entries(TENANT_LABEL).map(([value, label]) => ({
+              options: Object.entries(MERCHANT_LABEL).map(([value, label]) => ({
                 value,
                 label,
               })),

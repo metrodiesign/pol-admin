@@ -15,9 +15,9 @@ import {
 } from "@/components/ui/dialog";
 import {
   PERSON_TYPE_LABEL,
-  type ProducerFormData,
-  type ProducerPersonType,
-} from "@/types/producer";
+  type MerchantUserFormData,
+  type PersonType,
+} from "@/types/merchant-user";
 import {
   validateProducerForm,
   validateRegisterForm,
@@ -26,8 +26,8 @@ import {
 } from "@/lib/producer/producer-validation";
 
 interface ProducerEditFormCardProps {
-  initialData: ProducerFormData;
-  onSave?: (data: ProducerFormData) => void;
+  initialData: MerchantUserFormData;
+  onSave?: (data: MerchantUserFormData) => void;
   submitLabel?: string;
   /** View-only: render values as plain text (no inputs), no submit button. */
   readOnly?: boolean;
@@ -35,6 +35,9 @@ interface ProducerEditFormCardProps {
   cancelHref?: string;
   /** create (registration) only: show + require the accept-terms checkbox. */
   showAcceptTerms?: boolean;
+  /** Public registration only: tint interactive accents (submit button, radio)
+   *  with the brand primary (viriyah navy) instead of the app-standard grey-800. */
+  brandAccent?: boolean;
   /**
    * Public registration only (REQ-11.6): bind photo into validation. When set,
    * submit validates with `validateRegisterForm` and reports the photo error via
@@ -55,7 +58,7 @@ const cardStyle = {
     "rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px",
 };
 
-const PERSON_TYPES: ProducerPersonType[] = ["individual", "juristic"];
+const PERSON_TYPES: PersonType[] = ["Individual", "Juristic"];
 
 export function ProducerEditFormCard({
   initialData,
@@ -64,14 +67,15 @@ export function ProducerEditFormCard({
   readOnly = false,
   cancelHref,
   showAcceptTerms = false,
+  brandAccent = false,
   photo,
 }: ProducerEditFormCardProps) {
-  const [form, setForm] = useState<ProducerFormData>(initialData);
+  const [form, setForm] = useState<MerchantUserFormData>(initialData);
   const [errors, setErrors] = useState<ProducerFormErrors>({});
 
-  function update<K extends keyof ProducerFormData>(
+  function update<K extends keyof MerchantUserFormData>(
     field: K,
-    value: ProducerFormData[K],
+    value: MerchantUserFormData[K],
   ) {
     setForm((prev) => ({ ...prev, [field]: value }));
     setErrors((prev) => ({ ...prev, [field]: undefined }));
@@ -97,7 +101,7 @@ export function ProducerEditFormCard({
   }
 
   if (readOnly) {
-    const isJuristic = form.personType === "juristic";
+    const isJuristic = form.personType === "Juristic";
     const rows: Array<[string, string]> = [
       [isJuristic ? "ชื่อบริษัท" : "ชื่อ", form.firstName],
       [isJuristic ? "สาขา" : "นามสกุล", form.lastName],
@@ -150,7 +154,7 @@ export function ProducerEditFormCard({
                   value={pt}
                   checked={form.personType === pt}
                   onChange={() => update("personType", pt)}
-                  className="size-6 accent-grey-800"
+                  className={brandAccent ? "size-6 accent-primary" : "size-6 accent-grey-800"}
                 />
                 {PERSON_TYPE_LABEL[pt]}
               </label>
@@ -163,7 +167,7 @@ export function ProducerEditFormCard({
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <TextField
-            label={form.personType === "juristic" ? "ชื่อบริษัท" : "ชื่อ"}
+            label={form.personType === "Juristic" ? "ชื่อบริษัท" : "ชื่อ"}
             required
             maxLength={100}
             value={form.firstName}
@@ -171,7 +175,7 @@ export function ProducerEditFormCard({
             error={errors.firstName}
           />
           <TextField
-            label={form.personType === "juristic" ? "สาขา" : "นามสกุล"}
+            label={form.personType === "Juristic" ? "สาขา" : "นามสกุล"}
             required
             maxLength={100}
             value={form.lastName}
@@ -190,19 +194,19 @@ export function ProducerEditFormCard({
           <TextField
             label="รหัสตัวแทน"
             required
-            maxLength={form.personType === "individual" ? 10 : 20}
+            maxLength={form.personType === "Individual" ? 10 : 20}
             value={form.producerCode}
             onChange={(v) => update("producerCode", v)}
             error={errors.producerCode}
           />
           <TextField
             label="เลขที่ใบอนุญาตตัวแทน"
-            maxLength={form.personType === "individual" ? 10 : 50}
+            maxLength={form.personType === "Individual" ? 10 : 50}
             value={form.licenseNumber}
             onChange={(v) => update("licenseNumber", v)}
             error={errors.licenseNumber}
             helperText={
-              form.personType === "individual"
+              form.personType === "Individual"
                 ? "ตัวเลข 10 หลัก (กรณีบุคคลธรรมดา)"
                 : "ระบุได้อิสระ (กรณีนิติบุคคล)"
             }
@@ -310,7 +314,11 @@ export function ProducerEditFormCard({
           )}
           <button
             type="submit"
-            className="inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-grey-800 px-3 text-sm font-bold text-white transition-colors hover:bg-grey-900 dark:bg-white dark:text-grey-900 dark:hover:bg-grey-300"
+            className={
+              brandAccent
+                ? "inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
+                : "inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-grey-800 px-3 text-sm font-bold text-white transition-colors hover:bg-grey-900 dark:bg-white dark:text-grey-900 dark:hover:bg-grey-300"
+            }
           >
             {submitLabel}
           </button>

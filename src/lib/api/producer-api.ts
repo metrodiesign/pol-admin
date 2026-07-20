@@ -1,4 +1,4 @@
-import type { ProducerFormData } from "@/types/producer";
+import type { MerchantUserFormData } from "@/types/merchant-user";
 
 // Producer BFF client — full-page navigate เริ่ม SSO; ไม่ถือ token (session = httpOnly cookie ฝั่ง backend).
 // contract: pol-core/docs/reference/producer-google-sso.md
@@ -14,11 +14,11 @@ export function producerLogin(returnTo: string = PRODUCER_DEFAULT_RETURN_TO): vo
   window.location.href = `${PRODUCER_LOGIN_PATH}?returnTo=${encodeURIComponent(returnTo)}`;
 }
 
-// map ProducerFormData -> multipart ตาม wire contract (§7). แยกเป็น pure fn เพราะ field-name
+// map MerchantUserFormData -> multipart ตาม wire contract (§7). แยกเป็น pure fn เพราะ field-name
 // mismatch = silent 400: `phoneNumber` ฝั่ง FE ต้องส่งเป็น `phone`; email/acceptTerms ไม่ส่ง
 // (backend อ่าน email จาก ticket, REQ-4.2); licenseNumber ว่างไม่ append. identity มาจาก ticket.
 export function buildRegisterFormData(
-  data: ProducerFormData,
+  data: MerchantUserFormData,
   ticket: string,
   photo: File | null,
 ): FormData {

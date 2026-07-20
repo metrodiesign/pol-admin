@@ -1,7 +1,7 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import type { Order } from "@/types/order-payment";
+import type { OrderRow } from "@/lib/order";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,21 +10,22 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { cn, formatTHB } from "@/lib/utils";
+import { cn } from "@/lib/utils";
+import { formatMoney } from "@/types/money";
 import { CHANNEL_LABEL, CHANNEL_DOT, PSP_LABEL } from "@/lib/order";
 import { OrderLifecycle } from "./order-lifecycle";
 import { OrderStatusBadge } from "./order-status-badge";
 import { Eye, Pencil, Copy, Trash2, Menu } from "lucide-react";
 
 interface BuildColumnsArgs {
-  onSelect?: (t: Order) => void;
-  onRead?: (t: Order) => void;
+  onSelect?: (t: OrderRow) => void;
+  onRead?: (t: OrderRow) => void;
 }
 
 export function buildOrderColumns({
   onSelect: _onSelect,
   onRead,
-}: BuildColumnsArgs): ColumnDef<Order>[] {
+}: BuildColumnsArgs): ColumnDef<OrderRow>[] {
   return [
   {
     id: "select",
@@ -44,53 +45,47 @@ export function buildOrderColumns({
       <Checkbox
         checked={row.getIsSelected()}
         onChange={(c) => row.toggleSelected(c)}
-        aria-label={`เลือก ${row.original.code}`}
+        aria-label={`เลือก ${row.original.session?.code ?? row.original.id}`}
       />
     ),
   },
   {
-    accessorKey: "code",
+    id: "code",
     header: "รหัสธุรกรรม",
     enableSorting: true,
+    accessorFn: (t) => t.session?.code ?? t.id,
     cell: ({ row }) => {
       const t = row.original;
       return (
         <div className="min-w-0">
           <span className="block text-sm font-semibold text-foreground">
-            {t.code}
+            {t.session?.code ?? t.id}
           </span>
           <span className="text-xs text-grey-500">
             <Menu className="mr-1 inline size-3.5" />
-            {t.subItems > 1 ? `${t.subItems} รายการย่อย` : "1 รายการ"}
+            {(t.session?.subItems ?? 1) > 1 ? `${t.session?.subItems} รายการย่อย` : "1 รายการ"}
           </span>
         </div>
       );
     },
   },
   {
-    accessorKey: "customerName",
-    header: "ลูกค้า",
-    enableSorting: true,
-    cell: ({ row }) => {
-      const t = row.original;
-      return (
-        <div className="min-w-0">
-          <span className="block truncate text-sm text-foreground">
-            {t.customerName}
-          </span>
-          <span className="block truncate text-sm text-grey-500">
-            {t.customerEmail}
-          </span>
-        </div>
-      );
-    },
+    id: "recipient",
+    header: "อีเมล",
+    enableSorting: false,
+    cell: ({ row }) => (
+      <span className="block truncate text-sm text-grey-500">
+        {row.original.session?.recipientEmail ?? "—"}
+      </span>
+    ),
   },
   {
     id: "source",
     header: "ที่มา",
     enableSorting: false,
     cell: ({ row }) => {
-      const s = row.original.source;
+      const s = row.original.session?.source;
+      if (!s) return <span className="text-sm text-grey-500">—</span>;
       return (
         <div className="flex items-center gap-2">
           <span className="inline-flex h-6 items-center rounded-md bg-grey-200 px-1.5 text-xs font-bold text-grey-700">
@@ -102,11 +97,12 @@ export function buildOrderColumns({
     },
   },
   {
-    accessorKey: "channel",
+    id: "channel",
     header: "ช่องทาง",
     enableSorting: false,
     cell: ({ row }) => {
-      const c = row.original.channel;
+      const c = row.original.session?.channel;
+      if (!c) return <span className="text-sm text-grey-500">—</span>;
       return (
         <span className="inline-flex items-center gap-2 text-sm text-foreground">
           <span className={cn("size-2 rounded-full", CHANNEL_DOT[c])} />
@@ -116,23 +112,27 @@ export function buildOrderColumns({
     },
   },
   {
-    accessorKey: "psp",
+    id: "psp",
     header: "PSP",
     enableSorting: false,
-    cell: ({ row }) => (
-      <span className="text-sm font-medium text-foreground">
-        {PSP_LABEL[row.original.psp]}
-      </span>
-    ),
+    cell: ({ row }) => {
+      const psp = row.original.session?.psp;
+      return (
+        <span className="text-sm font-medium text-foreground">
+          {psp ? PSP_LABEL[psp] : "—"}
+        </span>
+      );
+    },
   },
   {
-    accessorKey: "amount",
+    id: "amount",
     header: "จำนวน",
     enableSorting: true,
+    accessorFn: (t) => Number(t.amount.amount),
     meta: { headClassName: "text-right", cellClassName: "text-right" },
     cell: ({ row }) => (
       <span className="text-sm font-semibold text-foreground">
-        {formatTHB(row.original.amount, 2)}
+        {formatMoney(row.original.amount)}
       </span>
     ),
   },
@@ -149,11 +149,12 @@ export function buildOrderColumns({
     cell: ({ row }) => <OrderStatusBadge status={row.original.status} />,
   },
   {
-    accessorKey: "time",
+    id: "time",
     header: "เวลา",
     enableSorting: true,
+    accessorFn: (t) => t.session?.time ?? "",
     cell: ({ row }) => (
-      <span className="text-sm text-grey-600">{row.original.time} น.</span>
+      <span className="text-sm text-grey-600">{row.original.session?.time ?? "—"} น.</span>
     ),
   },
   {

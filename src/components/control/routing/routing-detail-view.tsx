@@ -6,7 +6,7 @@ import { CHANNEL_LABEL, PSP_LABEL, enabledTone } from "@/lib/control/routing";
 import { useControlStore } from "@/lib/control/store";
 import { routingStore, toggleRule } from "@/lib/control/routing-store";
 import { showControlToast } from "@/components/control/shared/control-toast";
-import { TENANT_LABEL } from "@/lib/mock/tenants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchants";
 import { formatTHB } from "@/lib/utils";
 import { ReadField } from "@/components/control/shared/read-field";
 import { ControlStatusBadge } from "@/components/control/shared/control-status-badge";
@@ -100,7 +100,7 @@ export function RoutingDetailView({ id }: { id?: string }) {
           </div>
 
           <div className="grid grid-cols-2 gap-x-4 gap-y-5 border-t border-[var(--divider)] pt-5">
-            <ReadField label="บริษัท" value={TENANT_LABEL[rule.tenantId]} />
+            <ReadField label="บริษัท" value={MERCHANT_LABEL[rule.merchantId]} />
             <ReadField label="ลำดับความสำคัญ" value={`#${rule.priority}`} mono />
           </div>
 
@@ -120,7 +120,7 @@ export function RoutingDetailView({ id }: { id?: string }) {
           icon={<ListOrdered className="size-5 text-grey-600" />}
         >
           <div className="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
-            <ReadField label="บริษัท" value={TENANT_LABEL[rule.tenantId]} />
+            <ReadField label="บริษัท" value={MERCHANT_LABEL[rule.merchantId]} />
             <ReadField label="ช่องทาง" value={CHANNEL_LABEL[rule.channel]} />
             <ReadField
               label="ช่วงจำนวนเงิน"

@@ -8,9 +8,8 @@ import {
   getSortedRowModel,
   getPaginationRowModel,
 } from "@tanstack/react-table";
-import type { Order, OrderStatus } from "@/types/order-payment";
-import { ORDERS } from "@/lib/mock/orders";
-import { STATUS_LABEL } from "@/lib/order";
+import type { OrderStatus } from "@/types/order-payment";
+import { ORDER_ROWS, ORDER_STATUS_LABEL, type OrderRow } from "@/lib/order";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";
 import { OrderStatCards } from "./order-stat-cards";
@@ -22,14 +21,7 @@ import "@/types/table-meta";
 
 type TabValue = OrderStatus | "all";
 
-const STATUS_ORDER: OrderStatus[] = [
-  "completed",
-  "pending",
-  "processing",
-  "failed",
-  "refunded",
-  "cancelled",
-];
+const STATUS_ORDER: OrderStatus[] = ["AwaitingPayment", "Paid", "Cancelled"];
 
 export function OrderListView() {
   const router = useRouter();
@@ -39,7 +31,7 @@ export function OrderListView() {
   const [psp, setPsp] = useState("");
   const [statusTab, setStatusTab] = useState<TabValue>("all");
   const [dense, setDense] = useState(false);
-  const [detailTx, setDetailTx] = useState<Order | null>(null);
+  const [detailTx, setDetailTx] = useState<OrderRow | null>(null);
 
   const globalFilter = useMemo(
     () => ({ search, channel, psp, status: statusTab }),
@@ -50,14 +42,14 @@ export function OrderListView() {
     () =>
       buildOrderColumns({
         onSelect: setDetailTx,
-        onRead: (t) => router.push(`/order/read?id=${t.code}`),
+        onRead: (t) => router.push(`/order/read?id=${t.session?.code ?? t.id}`),
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 
-  const table = useDataTable<Order>({
-    data: ORDERS,
+  const table = useDataTable<OrderRow>({
+    data: ORDER_ROWS,
     columns,
     getRowId: (t) => t.id,
     enableRowSelection: true,
@@ -76,14 +68,14 @@ export function OrderListView() {
       };
       const t = row.original;
       if (!(f.status === "all" || t.status === f.status)) return false;
-      if (f.channel && t.channel !== f.channel) return false;
-      if (f.psp && t.psp !== f.psp) return false;
+      if (f.channel && t.session?.channel !== f.channel) return false;
+      if (f.psp && t.session?.psp !== f.psp) return false;
       if (f.search) {
         const q = f.search.toLowerCase();
         if (
-          !t.code.toLowerCase().includes(q) &&
-          !t.customerName.toLowerCase().includes(q) &&
-          !t.customerEmail.toLowerCase().includes(q)
+          !(t.session?.code ?? t.id).toLowerCase().includes(q) &&
+          !(t.session?.source.label ?? "").toLowerCase().includes(q) &&
+          !(t.session?.recipientEmail ?? "").toLowerCase().includes(q)
         )
           return false;
       }
@@ -100,16 +92,16 @@ export function OrderListView() {
   });
 
   const filteredCount = table.getFilteredRowModel().rows.length;
-  
+
   const count = (status: TabValue) =>
     status === "all"
-      ? ORDERS.length
-      : ORDERS.filter((t) => t.status === status).length;
+      ? ORDER_ROWS.length
+      : ORDER_ROWS.filter((t) => t.status === status).length;
 
   const tabs = [
     { label: "ทั้งหมด", value: "all" as TabValue, count: count("all") },
     ...STATUS_ORDER.map((s) => ({
-      label: STATUS_LABEL[s],
+      label: ORDER_STATUS_LABEL[s],
       value: s as TabValue,
       count: count(s),
     })),
@@ -171,7 +163,7 @@ export function OrderListView() {
       order={detailTx}
       open={detailTx !== null}
       onOpenChange={(open) => { if (!open) setDetailTx(null); }}
-      onRead={(t) => router.push(`/order/read?id=${t.code}`)}
+      onRead={(t) => router.push(`/order/read?id=${t.session?.code ?? t.id}`)}
     />
     </>
   );

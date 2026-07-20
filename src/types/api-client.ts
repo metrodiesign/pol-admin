@@ -1,4 +1,4 @@
-import type { TenantId } from "@/types/tenant";
+import type { MerchantCode } from "@/types/merchant";
 
 export type ApiClientStatus = "active" | "revoked";
 
@@ -9,10 +9,10 @@ export type ApiClientStatus = "active" | "revoked";
  * which API operations the client may perform.
  */
 export interface ApiClient {
-  id: string; // "ACL-VCTL-01"
+  id: string; // "ACL-VPRV-01"
   clientId: string; // cli_live_... (safe to display)
   name: string;
-  tenantId: TenantId;
+  merchantId: MerchantCode;
   scopes: string[]; // e.g. ["payments:create", "payments:read"]
   clientSecret: string; // fake vault secret — NEVER rendered raw; always via maskSecret()
   lastUsedAt: string; // ISO datetime, or "" if never used

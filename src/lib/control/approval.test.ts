@@ -6,10 +6,10 @@ function makeRequest(over: Partial<ApprovalRequest> = {}): ApprovalRequest {
   return {
     id: "APR-2026-0001",
     actionType: "refund",
-    maker: "maker@vcentral.co.th",
-    target: "PAY-VCTL-991023",
+    maker: "maker@vprivilege.co.th",
+    target: "PAY-VPRV-991023",
     refAmount: 4200,
-    tenantId: "vcentral",
+    merchantId: "vprivilege",
     requestedAt: "2026-06-24T10:00:00",
     status: "pending",
     ...over,
@@ -18,23 +18,23 @@ function makeRequest(over: Partial<ApprovalRequest> = {}): ApprovalRequest {
 
 describe("canApprove", () => {
   it("blocks the maker from approving their own request", () => {
-    const req = makeRequest({ maker: "ops.admin@vcentral.co.th" });
-    expect(canApprove(req, "ops.admin@vcentral.co.th")).toBe(false);
+    const req = makeRequest({ maker: "ops.admin@vprivilege.co.th" });
+    expect(canApprove(req, "ops.admin@vprivilege.co.th")).toBe(false);
   });
 
   it("lets a different actor approve a pending request", () => {
-    const req = makeRequest({ maker: "maker@vcentral.co.th" });
-    expect(canApprove(req, "checker@vcentral.co.th")).toBe(true);
+    const req = makeRequest({ maker: "maker@vprivilege.co.th" });
+    expect(canApprove(req, "checker@vprivilege.co.th")).toBe(true);
   });
 
   it("blocks anyone from approving an already-approved request", () => {
     const req = makeRequest({ status: "approved" });
-    expect(canApprove(req, "checker@vcentral.co.th")).toBe(false);
+    expect(canApprove(req, "checker@vprivilege.co.th")).toBe(false);
   });
 
   it("blocks anyone from approving an already-rejected request", () => {
     const req = makeRequest({ status: "rejected" });
-    expect(canApprove(req, "checker@vcentral.co.th")).toBe(false);
+    expect(canApprove(req, "checker@vprivilege.co.th")).toBe(false);
   });
 });
 

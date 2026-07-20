@@ -8,9 +8,9 @@ import {
   getSortedRowModel,
   getPaginationRowModel,
 } from "@tanstack/react-table";
-import type { Transaction, TransactionStatus } from "@/types/transaction";
-import { TRANSACTIONS } from "@/lib/mock/transactions";
-import { STATUS_LABEL } from "@/lib/transaction";
+import type { PaymentSession, PaymentSessionStatus } from "@/types/order-payment";
+import { PAYMENT_SESSIONS } from "@/lib/mock/transactions";
+import { PAYMENT_SESSION_STATUS_LABEL } from "@/lib/transaction";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";
 import { TransactionStatCards } from "./transaction-stat-cards";
@@ -20,15 +20,14 @@ import { TransactionDetailSheet } from "./transaction-detail-sheet";
 import { buildTransactionColumns } from "./transaction-table-columns";
 import "@/types/table-meta";
 
-type TabValue = TransactionStatus | "all";
+type TabValue = PaymentSessionStatus | "all";
 
-const STATUS_ORDER: TransactionStatus[] = [
-  "completed",
-  "pending",
-  "processing",
-  "failed",
-  "refunded",
-  "cancelled",
+const STATUS_ORDER: PaymentSessionStatus[] = [
+  "Created",
+  "Redirected",
+  "Paid",
+  "Failed",
+  "Expired",
 ];
 
 export function TransactionListView() {
@@ -39,7 +38,7 @@ export function TransactionListView() {
   const [psp, setPsp] = useState("");
   const [statusTab, setStatusTab] = useState<TabValue>("all");
   const [dense, setDense] = useState(false);
-  const [detailTx, setDetailTx] = useState<Transaction | null>(null);
+  const [detailTx, setDetailTx] = useState<PaymentSession | null>(null);
 
   const globalFilter = useMemo(
     () => ({ search, channel, psp, status: statusTab }),
@@ -56,8 +55,8 @@ export function TransactionListView() {
     [],
   );
 
-  const table = useDataTable<Transaction>({
-    data: TRANSACTIONS,
+  const table = useDataTable<PaymentSession>({
+    data: PAYMENT_SESSIONS,
     columns,
     getRowId: (t) => t.id,
     enableRowSelection: true,
@@ -82,8 +81,8 @@ export function TransactionListView() {
         const q = f.search.toLowerCase();
         if (
           !t.code.toLowerCase().includes(q) &&
-          !t.customerName.toLowerCase().includes(q) &&
-          !t.customerEmail.toLowerCase().includes(q)
+          !t.source.label.toLowerCase().includes(q) &&
+          !(t.recipientEmail ?? "").toLowerCase().includes(q)
         )
           return false;
       }
@@ -103,13 +102,13 @@ export function TransactionListView() {
   
   const count = (status: TabValue) =>
     status === "all"
-      ? TRANSACTIONS.length
-      : TRANSACTIONS.filter((t) => t.status === status).length;
+      ? PAYMENT_SESSIONS.length
+      : PAYMENT_SESSIONS.filter((t) => t.status === status).length;
 
   const tabs = [
     { label: "ทั้งหมด", value: "all" as TabValue, count: count("all") },
     ...STATUS_ORDER.map((s) => ({
-      label: STATUS_LABEL[s],
+      label: PAYMENT_SESSION_STATUS_LABEL[s],
       value: s as TabValue,
       count: count(s),
     })),

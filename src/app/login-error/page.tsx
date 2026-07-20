@@ -31,7 +31,7 @@ const PENDING_MESSAGE = "ระบบได้รับข้อมูลกา�
 const linkButtonClass =
   "mt-8 inline-flex h-11 w-full items-center justify-center rounded-control bg-primary px-5 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1";
 
-export const metadata: Metadata = { title: "เข้าสู่ระบบไม่สำเร็จ vCentral Pay" };
+export const metadata: Metadata = { title: "เข้าสู่ระบบไม่สำเร็จ POL Pay" };
 
 // Header bar — เหมือนหน้า /login (โลโก้วิริยะในกล่องขาว + tagline บนพื้นน้ำเงิน)
 function LoginErrorHeader() {

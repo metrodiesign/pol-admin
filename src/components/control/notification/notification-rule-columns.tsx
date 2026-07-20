@@ -2,7 +2,7 @@
 
 import type { ColumnDef } from "@tanstack/react-table";
 import type { NotificationRule } from "@/types/notification";
-import { TENANT_LABEL } from "@/lib/mock/tenants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchants";
 import { CHANNEL_LABEL, eventLabel } from "@/lib/control/notification";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
@@ -65,7 +65,7 @@ export function buildNotificationRuleColumns(
       enableSorting: false,
       cell: ({ row }) => (
         <span className="text-sm text-foreground">
-          {TENANT_LABEL[row.original.tenantId]}
+          {MERCHANT_LABEL[row.original.merchantId]}
         </span>
       ),
     },

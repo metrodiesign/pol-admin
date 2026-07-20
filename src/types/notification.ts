@@ -1,4 +1,4 @@
-import type { TenantId } from "@/types/tenant";
+import type { MerchantCode } from "@/types/merchant";
 
 export type NotificationChannel = "email" | "webhook" | "inapp";
 export type NotificationLogStatus = "sent" | "failed";
@@ -14,7 +14,7 @@ export interface NotificationRule {
   channel: NotificationChannel;
   target: string; // email address or webhook URL
   threshold?: string; // optional qualifier, e.g. "> ฿50,000"
-  tenantId: TenantId;
+  merchantId: MerchantCode;
   enabled: boolean;
 }
 

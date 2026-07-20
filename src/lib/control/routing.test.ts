@@ -6,7 +6,7 @@ const rules: RoutingRule[] = [
   {
     id: "RR-1",
     priority: 10,
-    tenantId: "vcentral",
+    merchantId: "vprivilege",
     channel: "card",
     targetPsp: "omise",
     fallbackPsp: "2c2p",
@@ -15,7 +15,7 @@ const rules: RoutingRule[] = [
   {
     id: "RR-2",
     priority: 5,
-    tenantId: "vcentral",
+    merchantId: "vprivilege",
     channel: "card",
     targetPsp: "2c2p",
     enabled: true,
@@ -23,7 +23,7 @@ const rules: RoutingRule[] = [
   {
     id: "RR-3",
     priority: 1,
-    tenantId: "vcentral",
+    merchantId: "vprivilege",
     channel: "card",
     targetPsp: "omise",
     enabled: false, // disabled — must be skipped despite lowest priority
@@ -31,7 +31,7 @@ const rules: RoutingRule[] = [
   {
     id: "RR-4",
     priority: 20,
-    tenantId: "vcentral",
+    merchantId: "vprivilege",
     channel: "card",
     minAmount: 5000,
     maxAmount: 50000,
@@ -41,7 +41,7 @@ const rules: RoutingRule[] = [
   {
     id: "RR-5",
     priority: 30,
-    tenantId: "vcentral",
+    merchantId: "vprivilege",
     channel: "any",
     targetPsp: "omise",
     enabled: true,
@@ -49,7 +49,7 @@ const rules: RoutingRule[] = [
   {
     id: "RR-6",
     priority: 1,
-    tenantId: "vcommerce",
+    merchantId: "vcommerce",
     channel: "card",
     targetPsp: "omise",
     enabled: true,
@@ -62,7 +62,7 @@ describe("evaluateRouting", () => {
     const result = evaluateRouting(rules, {
       channel: "card",
       amount: 1000,
-      tenantId: "vcentral",
+      merchantId: "vprivilege",
     });
     expect(result).toEqual({ targetPsp: "2c2p" });
   });
@@ -74,7 +74,7 @@ describe("evaluateRouting", () => {
       evaluateRouting(subset, {
         channel: "card",
         amount: 1000,
-        tenantId: "vcentral",
+        merchantId: "vprivilege",
       }),
     ).toEqual({ targetPsp: "omise", fallbackPsp: "2c2p" });
   });
@@ -86,14 +86,14 @@ describe("evaluateRouting", () => {
       evaluateRouting(banded, {
         channel: "card",
         amount: 4999,
-        tenantId: "vcentral",
+        merchantId: "vprivilege",
       }),
     ).toBeNull();
     expect(
       evaluateRouting(banded, {
         channel: "card",
         amount: 5000,
-        tenantId: "vcentral",
+        merchantId: "vprivilege",
       }),
     ).toEqual({ targetPsp: "2c2p" });
   });
@@ -104,7 +104,7 @@ describe("evaluateRouting", () => {
       evaluateRouting(anyOnly, {
         channel: "promptpay",
         amount: 100,
-        tenantId: "vcentral",
+        merchantId: "vprivilege",
       }),
     ).toEqual({ targetPsp: "omise" });
   });
@@ -114,7 +114,7 @@ describe("evaluateRouting", () => {
       evaluateRouting(rules, {
         channel: "card",
         amount: 100,
-        tenantId: "vcommerce",
+        merchantId: "vcommerce",
       }),
     ).toEqual({ targetPsp: "omise" });
   });
@@ -124,7 +124,7 @@ describe("evaluateRouting", () => {
       evaluateRouting(rules, {
         channel: "installment",
         amount: 100,
-        tenantId: "vsouvenir",
+        merchantId: "vsouvenir",
       }),
     ).toBeNull();
   });

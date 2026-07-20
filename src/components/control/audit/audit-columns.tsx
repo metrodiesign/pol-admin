@@ -3,7 +3,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { ChevronRight } from "lucide-react";
 import type { AuditEntry } from "@/types/audit";
-import { TENANT_LABEL } from "@/lib/mock/tenants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchants";
 import { RESULT_LABEL, resultTone, actionLabel } from "@/lib/control/audit";
 import { formatDateTime } from "@/lib/control/format";
 import { StatusSpine } from "@/components/control/shared/status-spine";
@@ -63,7 +63,7 @@ export const auditColumns: ColumnDef<AuditEntry>[] = [
     enableSorting: false,
     cell: ({ row }) => (
       <span className="text-sm text-foreground">
-        {TENANT_LABEL[row.original.tenantId]}
+        {MERCHANT_LABEL[row.original.merchantId]}
       </span>
     ),
   },

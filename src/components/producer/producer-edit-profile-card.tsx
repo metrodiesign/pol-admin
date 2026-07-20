@@ -4,33 +4,31 @@ import { AvatarUpload } from "@/components/shared/avatar-upload";
 import { Fieldset, Field, Label, Description } from "@/components/shared/fieldset";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
-import type { ProducerStatus } from "@/types/producer";
+import type { MerchantUserStatus } from "@/types/merchant-user";
 
 interface ProducerEditProfileCardProps {
-  avatarUrl: string;
   name: string;
-  status: ProducerStatus;
-  banned: boolean;
+  status: MerchantUserStatus;
+  suspended: boolean;
   emailVerified: boolean;
-  onBannedChange: (value: boolean) => void;
+  onSuspendedChange: (value: boolean) => void;
   onEmailVerifiedChange: (value: boolean) => void;
   onDeleteProducer: () => void;
   onAvatarChange?: (file: File) => void;
-  /** Approve a pending producer (admin review). Button shows only when status === "pending". */
+  /** Approve a pending producer (admin review). Button shows only when status === "PendingApproval". */
   onApprove?: () => void;
   /** View-only: switches disabled, no delete button, avatar not editable. */
   readOnly?: boolean;
 }
 
 const statusConfig: Record<
-  ProducerStatus,
+  MerchantUserStatus,
   { label: string; bg: string; text: string }
 > = {
-  active: { label: "ใช้งาน", bg: "bg-success/16", text: "text-success-dark" },
-  pending: { label: "รอตรวจสอบ", bg: "bg-warning/16", text: "text-warning-dark" },
-  banned: { label: "ระงับ", bg: "bg-error/16", text: "text-error-dark" },
-  rejected: { label: "ปฏิเสธ", bg: "bg-grey-500/16", text: "text-grey-600" },
-  disabled: { label: "ปิดใช้งาน", bg: "bg-grey-500/16", text: "text-grey-600" },
+  Active: { label: "ใช้งาน", bg: "bg-success/16", text: "text-success-dark" },
+  PendingApproval: { label: "รอตรวจสอบ", bg: "bg-warning/16", text: "text-warning-dark" },
+  Rejected: { label: "ปฏิเสธ", bg: "bg-grey-500/16", text: "text-grey-600" },
+  Suspended: { label: "ระงับ", bg: "bg-error/16", text: "text-error-dark" },
 };
 
 function BoolBadge({ value }: { value: boolean }) {
@@ -49,12 +47,11 @@ function BoolBadge({ value }: { value: boolean }) {
 }
 
 export function ProducerEditProfileCard({
-  avatarUrl,
   name,
   status,
-  banned,
+  suspended,
   emailVerified,
-  onBannedChange,
+  onSuspendedChange,
   onEmailVerifiedChange,
   onDeleteProducer,
   onAvatarChange,
@@ -82,8 +79,9 @@ export function ProducerEditProfileCard({
       </span>
 
       <div className={readOnly ? "pointer-events-none" : undefined}>
+        {/* photoObjectKey ไม่มี HTTP endpoint serve รูปจริง (REQ-4.9) — placeholder เสมอ */}
         <AvatarUpload
-          src={avatarUrl}
+          src={undefined}
           alt={name}
           size={144}
           onFileSelect={onAvatarChange}
@@ -98,11 +96,11 @@ export function ProducerEditProfileCard({
               <Description>ปิดการใช้งานบัญชีตัวแทนนี้</Description>
             </div>
             {readOnly ? (
-              <BoolBadge value={banned} />
+              <BoolBadge value={suspended} />
             ) : (
               <Switch
-                checked={banned}
-                onCheckedChange={onBannedChange}
+                checked={suspended}
+                onCheckedChange={onSuspendedChange}
                 className="data-checked:bg-success"
               />
             )}
@@ -130,7 +128,7 @@ export function ProducerEditProfileCard({
 
       {!readOnly && (
         <div className="mt-6 flex flex-col items-center gap-3">
-          {status === "pending" && onApprove && (
+          {status === "PendingApproval" && onApprove && (
             <button
               type="button"
               onClick={onApprove}

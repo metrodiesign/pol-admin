@@ -8,7 +8,6 @@ import {
   CheckCircle2,
   XCircle,
   Ban,
-  RefreshCcw,
   Send,
   ShieldCheck,
   Webhook,
@@ -35,7 +34,8 @@ import {
   type StepState,
   type TimelineIcon,
 } from "@/lib/order";
-import { cn, formatAmount, formatTHB } from "@/lib/utils";
+import { cn, formatAmount } from "@/lib/utils";
+import { formatMoney } from "@/types/money";
 import { Button } from "@/components/ui/button";
 import { OrderStatusBadge } from "./order-status-badge";
 
@@ -46,7 +46,6 @@ const TIMELINE_ICON: Record<TimelineIcon, LucideIcon> = {
   auth: ShieldCheck,
   redirect: ExternalLink,
   link: Phone,
-  refund: RefreshCcw,
   cancel: Ban,
 };
 
@@ -157,7 +156,8 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
   const src = sourceDetail(t);
   const timeline = buildTimeline(t);
   const link = payLink(t);
-  const channel = CHANNEL_DISPLAY[t.channel];
+  const sessionChannel = t.session?.channel;
+  const channel = sessionChannel ? CHANNEL_DISPLAY[sessionChannel] : undefined;
 
   return (
     <div className="flex flex-col gap-6 pb-4">
@@ -305,29 +305,29 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
           <div className={cn("grid grid-cols-1 gap-x-4 gap-y-4", !compact && "sm:grid-cols-2")}>
             <div>
               <p className={fieldLabel}>หมายเลขคำสั่งซื้อ</p>
-              <p className="text-sm font-bold text-foreground">{t.code || <span className="text-grey-400">—</span>}</p>
+              <p className="text-sm font-bold text-foreground">{t.session?.code ?? t.id}</p>
             </div>
           </div>
           <div className={cn("mt-4 grid grid-cols-1 gap-x-4 gap-y-4", !compact && "sm:grid-cols-2")}>
             <div>
               <p className={fieldLabel}>หมายเลขอ้างอิง 1</p>
-              <p className="text-sm font-bold text-foreground">{t.source.code || <span className="text-grey-400">—</span>}</p>
+              <p className="text-sm font-bold text-foreground">{t.session?.source.code || <span className="text-grey-400">—</span>}</p>
             </div>
             <div>
               <p className={fieldLabel}>หมายเลขอ้างอิง 2</p>
-              <p className="text-sm font-bold text-foreground">{t.source.label || <span className="text-grey-400">—</span>}</p>
+              <p className="text-sm font-bold text-foreground">{t.session?.source.label || <span className="text-grey-400">—</span>}</p>
             </div>
             <div>
               <p className={fieldLabel}>หมายเลขอ้างอิง 3</p>
-              <p className="text-sm font-bold text-foreground">{`${src.role} · ${src.location}` || <span className="text-grey-400">—</span>}</p>
+              <p className="text-sm font-bold text-foreground">{src ? `${src.role} · ${src.location}` : <span className="text-grey-400">—</span>}</p>
             </div>
             <div>
               <p className={fieldLabel}>หมายเลขอ้างอิง 4</p>
-              <p className="text-sm font-bold text-foreground">{`${src.branchCode} · ${src.branchLabel}` || <span className="text-grey-400">—</span>}</p>
+              <p className="text-sm font-bold text-foreground">{src ? `${src.branchCode} · ${src.branchLabel}` : <span className="text-grey-400">—</span>}</p>
             </div>
             <div>
               <p className={fieldLabel}>หมายเลขอ้างอิง 5</p>
-              <p className="text-sm font-bold text-foreground">{src.linkRef || <span className="text-grey-400">—</span>}</p>
+              <p className="text-sm font-bold text-foreground">{src?.linkRef || <span className="text-grey-400">—</span>}</p>
             </div>
           </div>
         </div>
@@ -338,12 +338,8 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
         <div className="px-6 py-5">
           <div className={cn("grid grid-cols-1 gap-x-5 gap-y-5", !compact && "mmd:grid-cols-2")}>
             <div className="flex flex-col gap-1.5">
-              <p className={fieldLabel}>ชื่อ-นามสกุล</p>
-              <p className="text-sm font-bold text-foreground">{t.customerName || <span className="text-grey-400">—</span>}</p>
-            </div>
-            <div className="flex flex-col gap-1.5">
               <p className={fieldLabel}>อีเมล</p>
-              <p className="text-sm font-bold text-foreground">{t.customerEmail || <span className="text-grey-400">—</span>}</p>
+              <p className="text-sm font-bold text-foreground">{t.session?.recipientEmail || <span className="text-grey-400">—</span>}</p>
             </div>
             <div className="flex flex-col gap-1.5">
               <p className={fieldLabel}>เบอร์โทรศัพท์</p>
@@ -415,7 +411,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
             <div className="text-right">
               <p className="text-sm text-grey-500">ยอดที่ลูกค้าต้องชำระ</p>
               <p className="text-2xl font-bold tabular-nums text-primary">
-                {formatTHB(t.amount, 2)}
+                {formatMoney(t.amount)}
               </p>
             </div>
           </div>
@@ -430,12 +426,12 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={channel?.img ?? "/payment/credit-card-v2.png"}
-                alt={channel?.label ?? t.channel}
+                alt={channel?.label ?? sessionChannel ?? "—"}
                 className="h-20 w-20 shrink-0 object-contain"
               />
               <span className="flex min-w-0 flex-1 flex-col gap-1">
                 <span className="text-sm font-bold text-foreground">
-                  {channel?.label ?? t.channel}
+                  {channel?.label ?? sessionChannel ?? "—"}
                 </span>
                 {channel?.caption ? (
                   <span className="text-xs leading-relaxed text-grey-500">{channel.caption}</span>
@@ -511,7 +507,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
                     </span>
                   </div>
                   <div className="border-t border-[var(--divider)] px-4 py-3">
-                    <p className="text-sm font-bold text-foreground">{t.customerEmail}</p>
+                    <p className="text-sm font-bold text-foreground">{t.session?.recipientEmail ?? "—"}</p>
                   </div>
                 </div>
               </div>

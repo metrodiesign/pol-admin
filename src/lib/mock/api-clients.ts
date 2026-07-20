@@ -1,13 +1,15 @@
 import type { ApiClient } from "@/types/api-client";
 
+// UI-only, ไม่มี endpoint รองรับ — pol-core ไม่มี API client (OAuth2 client)
+// read endpoint เลย ต้องมี endpoint นี้ก่อนถึงจะ align ได้ (REQ-7.2).
 // Deterministic seed — fake credentials only. Client secrets are intentionally
 // obvious placeholders; they are masked at every render boundary (see maskSecret).
 export const API_CLIENTS: ApiClient[] = [
   {
-    id: "ACL-VCTL-01",
+    id: "ACL-VPRV-01",
     clientId: "cli_live_9f2a4c7e1b8d3a60",
     name: "Checkout backend (prod)",
-    tenantId: "vcentral",
+    merchantId: "vprivilege",
     scopes: ["payments:create", "payments:read", "webhooks:read"],
     clientSecret: "csec_live_sample_9f2a4c7e1b8d3a6055f1",
     lastUsedAt: "2026-06-24T13:51:42",
@@ -15,10 +17,10 @@ export const API_CLIENTS: ApiClient[] = [
     status: "active",
   },
   {
-    id: "ACL-VCTL-02",
+    id: "ACL-VPRV-02",
     clientId: "cli_live_3b7d1e9a6c2f8045",
     name: "Refund worker",
-    tenantId: "vcentral",
+    merchantId: "vprivilege",
     scopes: ["refunds:create", "refunds:read", "payments:read"],
     clientSecret: "csec_live_sample_3b7d1e9a6c2f8045aa12",
     lastUsedAt: "2026-06-24T09:14:08",
@@ -26,10 +28,10 @@ export const API_CLIENTS: ApiClient[] = [
     status: "active",
   },
   {
-    id: "ACL-VCTL-03",
+    id: "ACL-VPRV-03",
     clientId: "cli_test_5e8c2a1f4d7b9036",
     name: "Sandbox integration",
-    tenantId: "vcentral",
+    merchantId: "vprivilege",
     scopes: ["payments:create", "payments:read"],
     clientSecret: "csec_test_sample_5e8c2a1f4d7b9036cd34",
     lastUsedAt: "2026-05-30T16:22:55",
@@ -40,7 +42,7 @@ export const API_CLIENTS: ApiClient[] = [
     id: "ACL-VCOM-01",
     clientId: "cli_live_8a1c6f3e0d5b7294",
     name: "Storefront API",
-    tenantId: "vcommerce",
+    merchantId: "vcommerce",
     scopes: ["payments:create", "payments:read", "settlements:read"],
     clientSecret: "csec_live_sample_8a1c6f3e0d5b7294ef56",
     lastUsedAt: "2026-06-24T12:38:19",
@@ -51,7 +53,7 @@ export const API_CLIENTS: ApiClient[] = [
     id: "ACL-VCOM-02",
     clientId: "cli_live_2d9b4a7c1e6f8350",
     name: "Reporting pipeline",
-    tenantId: "vcommerce",
+    merchantId: "vcommerce",
     scopes: ["payments:read", "settlements:read", "webhooks:read"],
     clientSecret: "csec_live_sample_2d9b4a7c1e6f8350ab78",
     lastUsedAt: "2026-06-23T02:05:31",
@@ -62,7 +64,7 @@ export const API_CLIENTS: ApiClient[] = [
     id: "ACL-VCOM-03",
     clientId: "cli_test_7c3e9d2a5f1b8460",
     name: "Legacy webhook relay",
-    tenantId: "vcommerce",
+    merchantId: "vcommerce",
     scopes: ["webhooks:read"],
     clientSecret: "csec_test_sample_7c3e9d2a5f1b8460dc90",
     lastUsedAt: "2026-04-11T08:47:13",
@@ -73,7 +75,7 @@ export const API_CLIENTS: ApiClient[] = [
     id: "ACL-VSVN-01",
     clientId: "cli_live_4f6a1c8e3b9d7025",
     name: "Souvenir checkout",
-    tenantId: "vsouvenir",
+    merchantId: "vsouvenir",
     scopes: ["payments:create", "payments:read"],
     clientSecret: "csec_live_sample_4f6a1c8e3b9d7025fe12",
     lastUsedAt: "2026-06-24T10:59:04",
@@ -84,7 +86,7 @@ export const API_CLIENTS: ApiClient[] = [
     id: "ACL-VSVN-02",
     clientId: "cli_test_1b5d8a2f7c4e9360",
     name: "Onboarding sandbox",
-    tenantId: "vsouvenir",
+    merchantId: "vsouvenir",
     scopes: ["payments:create", "payments:read", "refunds:read"],
     clientSecret: "csec_test_sample_1b5d8a2f7c4e9360ba34",
     lastUsedAt: "",

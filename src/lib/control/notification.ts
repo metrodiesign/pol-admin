@@ -19,7 +19,7 @@ export const EVENT_LABEL: Record<string, string> = {
   "payment.succeeded": "ชำระเงินสำเร็จ",
   "webhook.delivery.failed": "ส่ง Webhook ล้มเหลว",
   "settlement.variance": "ยอดกระทบยอดไม่ตรง",
-  "settlement.completed": "กระทบยอดเสร็จสิ้น",
+  "settlement.summary.generated": "สรุปกระทบยอดพร้อมแล้ว",
   "refund.requested": "ขอคืนเงิน",
 };
 

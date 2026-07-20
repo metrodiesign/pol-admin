@@ -1,5 +1,5 @@
 import { lifecycleStage } from "@/lib/transaction";
-import type { TransactionStatus } from "@/types/transaction";
+import type { PaymentSessionStatus } from "@/types/order-payment";
 import { cn } from "@/lib/utils";
 
 // 4-dot horizontal stepper: ●—●—●—●
@@ -8,7 +8,7 @@ export function TransactionLifecycle({
   status,
   className,
 }: {
-  status: TransactionStatus;
+  status: PaymentSessionStatus;
   className?: string;
 }) {
   const { done, active, tone } = lifecycleStage(status);

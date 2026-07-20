@@ -1,3 +1,5 @@
+// UI-only, ไม่มี endpoint รองรับ — pol-core ไม่มี analytics/summary-stat endpoint
+// เลย ต้องมี dashboard summary endpoint ก่อนถึงจะ align ได้ (REQ-7.2).
 export interface AnalyticsStat {
   title: string;
   total: string;

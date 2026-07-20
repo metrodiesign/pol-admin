@@ -168,7 +168,7 @@ describe("getRole", () => {
   it("encode code ใน path", async () => {
     const { calls } = stubFetch(404, undefined);
     await getRole("a/b");
-    expect(calls[0].path).toBe("/admin/roles/a%2Fb");
+    expect(calls[0]!.path).toBe("/admin/roles/a%2Fb");
   });
 });
 
@@ -190,10 +190,10 @@ describe("createRole", () => {
   it("POST /admin/roles พร้อม body เต็ม (มี code) + CSRF header", async () => {
     const { calls } = stubFetch(201, undefined);
     await createRole(SAMPLE_INPUT);
-    expect(calls[0].path).toBe("/admin/roles");
-    expect(calls[0].init.method).toBe("POST");
-    expect(JSON.parse(calls[0].init.body as string)).toEqual(SAMPLE_INPUT);
-    expect(new Headers(calls[0].init.headers).get("X-CSRF-Token")).toBe("tok");
+    expect(calls[0]!.path).toBe("/admin/roles");
+    expect(calls[0]!.init.method).toBe("POST");
+    expect(JSON.parse(calls[0]!.init.body as string)).toEqual(SAMPLE_INPUT);
+    expect(new Headers(calls[0]!.init.headers).get("X-CSRF-Token")).toBe("tok");
   });
   it("คืน Response ดิบ (409 ตรวจได้)", async () => {
     stubFetch(409, undefined);
@@ -206,9 +206,9 @@ describe("updateRole", () => {
   it("PUT /admin/roles/{code} และ body ไม่มี code", async () => {
     const { calls } = stubFetch(200, undefined);
     await updateRole("finance_admin", SAMPLE_INPUT);
-    expect(calls[0].path).toBe("/admin/roles/finance_admin");
-    expect(calls[0].init.method).toBe("PUT");
-    const body = JSON.parse(calls[0].init.body as string);
+    expect(calls[0]!.path).toBe("/admin/roles/finance_admin");
+    expect(calls[0]!.init.method).toBe("PUT");
+    const body = JSON.parse(calls[0]!.init.body as string);
     expect(body.code).toBeUndefined();
     expect(body.name).toBe("ผู้ดูแลการเงิน");
     expect(body.permissions).toEqual(["txn.view"]);
@@ -219,8 +219,8 @@ describe("deleteRole", () => {
   it("DELETE ไป path ที่ encode แล้ว", async () => {
     const { calls } = stubFetch(204, undefined);
     const res = await deleteRole("a b");
-    expect(calls[0].path).toBe("/admin/roles/a%20b");
-    expect(calls[0].init.method).toBe("DELETE");
+    expect(calls[0]!.path).toBe("/admin/roles/a%20b");
+    expect(calls[0]!.init.method).toBe("DELETE");
     expect(res.status).toBe(204);
   });
 });

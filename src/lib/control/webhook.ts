@@ -28,6 +28,5 @@ export const EVENT_TYPES = [
   "payment.succeeded",
   "payment.failed",
   "payment.pending",
-  "charge.refunded",
   "charge.expired",
 ] as const;

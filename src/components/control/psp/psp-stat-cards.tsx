@@ -14,20 +14,20 @@ function StatCard({ label, value }: { label: string; value: string }) {
   );
 }
 
-/** Summary row for PSP connections: total · live · test · degraded/error. */
+/** Summary row for PSP connections: total · healthy · degraded/error · offline. */
 export function PspStatCards({ rows }: { rows: PspConnection[] }) {
-  const live = rows.filter((r) => r.environment === "live").length;
-  const test = rows.filter((r) => r.environment === "test").length;
+  const healthy = rows.filter((r) => r.health === "healthy").length;
   const unhealthy = rows.filter(
     (r) => r.health === "degraded" || r.health === "error",
   ).length;
+  const offline = rows.filter((r) => r.health === "offline").length;
 
   return (
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
       <StatCard label="การเชื่อมต่อทั้งหมด" value={String(rows.length)} />
-      <StatCard label="Live" value={String(live)} />
-      <StatCard label="Test" value={String(test)} />
+      <StatCard label="เชื่อมต่อปกติ" value={String(healthy)} />
       <StatCard label="ต้องตรวจสอบ" value={String(unhealthy)} />
+      <StatCard label="ปิดใช้งาน" value={String(offline)} />
     </div>
   );
 }
