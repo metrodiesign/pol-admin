@@ -2,7 +2,7 @@ import { EditPageHeader } from "@/components/shared/edit-page-header";
 import { TenantDetailView } from "@/components/control/tenant/tenant-detail-view";
 
 export const metadata = {
-  title: "รายละเอียด Tenant | POL Admin",
+  title: "รายละเอียด Merchant | POL Admin",
 };
 
 export default async function TenantReadPage({
@@ -15,7 +15,7 @@ export default async function TenantReadPage({
   return (
     <>
       <EditPageHeader
-        title="รายละเอียด Tenant"
+        title="รายละเอียด Merchant"
         backHref="/control/tenants"
         breadcrumbs={[
           { label: "Control plane" },

@@ -65,7 +65,7 @@ export default function ProducerCreatePage() {
             initialData={{
               firstName: "",
               lastName: "",
-              personType: "individual",
+              personType: "Individual",
               idNumber: "",
               producerCode: "",
               licenseNumber: "",

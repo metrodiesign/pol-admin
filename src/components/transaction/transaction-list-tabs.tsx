@@ -1,19 +1,18 @@
 "use client";
 
-import type { TransactionStatus } from "@/types/transaction";
+import type { PaymentSessionStatus } from "@/types/order-payment";
 import { cn } from "@/lib/utils";
 
-const BADGE_COLOR: Record<TransactionStatus | "all", string> = {
+const BADGE_COLOR: Record<PaymentSessionStatus | "all", string> = {
   all:        "bg-foreground text-card",
-  completed:  "bg-[rgba(34,197,94,0.16)] text-[rgb(17,141,87)]",
-  pending:    "bg-[rgba(255,171,0,0.16)] text-[rgb(183,110,0)]",
-  processing: "bg-[rgba(0,184,217,0.16)] text-[rgb(0,108,156)]",
-  failed:     "bg-[rgba(255,86,48,0.16)] text-[rgb(183,29,24)]",
-  refunded:   "bg-[rgba(142,51,255,0.16)] text-[rgb(142,51,255)]",
-  cancelled:  "bg-[rgba(145,158,171,0.16)] text-[rgb(99,115,129)]",
+  Created:    "bg-[rgba(255,171,0,0.16)] text-[rgb(183,110,0)]",
+  Redirected: "bg-[rgba(0,184,217,0.16)] text-[rgb(0,108,156)]",
+  Paid:       "bg-[rgba(34,197,94,0.16)] text-[rgb(17,141,87)]",
+  Failed:     "bg-[rgba(255,86,48,0.16)] text-[rgb(183,29,24)]",
+  Expired:    "bg-[rgba(145,158,171,0.16)] text-[rgb(99,115,129)]",
 };
 
-type TabValue = TransactionStatus | "all";
+type TabValue = PaymentSessionStatus | "all";
 
 interface TabItem {
   label: string;

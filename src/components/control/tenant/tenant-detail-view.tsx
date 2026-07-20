@@ -1,11 +1,9 @@
 "use client";
 
 import { Building2, CreditCard } from "lucide-react";
-import type { TenantId } from "@/types/tenant";
-import { tenantById } from "@/lib/mock/tenants";
-import { TENANT_STATUS_LABEL, tenantStatusTone } from "@/lib/control/tenant";
+import type { MerchantCode } from "@/types/merchant";
+import { merchantByCode } from "@/lib/mock/merchants";
 import { ReadField } from "@/components/control/shared/read-field";
-import { ControlStatusBadge } from "@/components/control/shared/control-status-badge";
 import { StatusSpine } from "@/components/control/shared/status-spine";
 import { Badge } from "@/components/ui/badge";
 
@@ -47,10 +45,8 @@ function NotFound() {
 }
 
 export function TenantDetailView({ id }: { id?: string }) {
-  const tenant = tenantById(id as TenantId);
+  const tenant = merchantByCode(id as MerchantCode);
   if (!tenant) return <NotFound />;
-
-  const tone = tenantStatusTone(tenant.status);
 
   return (
     <div className="grid grid-cols-1 gap-6 mmd:grid-cols-12">
@@ -61,7 +57,8 @@ export function TenantDetailView({ id }: { id?: string }) {
           style={{ boxShadow: "var(--shadow-card)" }}
         >
           <div className="flex items-stretch gap-3">
-            <StatusSpine tone={tone} className="h-auto" />
+            {/* MerchantStatus มีค่าเดียว ("Active") — spine ไม่มีอะไรให้ต่างสี, คง "ok" ตายตัว (REQ-3.3) */}
+            <StatusSpine tone="ok" className="h-auto" />
             <div className="min-w-0">
               <span className="text-overline text-grey-500">
                 Control plane · ผู้เช่า
@@ -74,10 +71,6 @@ export function TenantDetailView({ id }: { id?: string }) {
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            <ControlStatusBadge
-              tone={tone}
-              label={TENANT_STATUS_LABEL[tenant.status]}
-            />
             <span className="inline-flex items-center gap-1 rounded-md bg-grey-500/12 px-1.5 py-1 text-xs font-semibold text-grey-700">
               <Building2 className="size-3.5" />
               นิติบุคคลแยกต่างหาก
@@ -105,17 +98,13 @@ export function TenantDetailView({ id }: { id?: string }) {
           <div className="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
             <ReadField
               label="นิติบุคคล"
-              value={tenant.legalEntity}
+              value={tenant.legalEntityId}
               className="sm:col-span-2"
             />
             <ReadField
               label="ขอบเขต SAQ"
               value={tenant.saqScope}
               className="sm:col-span-2"
-            />
-            <ReadField
-              label="สถานะ"
-              value={TENANT_STATUS_LABEL[tenant.status]}
             />
           </div>
         </DetailCard>

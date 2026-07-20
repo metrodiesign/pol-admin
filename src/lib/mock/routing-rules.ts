@@ -1,12 +1,14 @@
 import type { RoutingRule } from "@/types/routing-rule";
 
-// Deterministic seed — ordered by priority within each tenant. Lower priority
-// numbers take precedence; one rule is intentionally disabled.
+// UI-only, ไม่มี endpoint รองรับ — pol-core ไม่มี routing-rule read endpoint เลย
+// ต้องมี endpoint นี้ก่อนถึงจะ align ได้ (REQ-7.2).
+// Deterministic seed — ordered by priority within each merchant. Lower priority
+// numbers take precedence; one rule intentionally has `enabled: false`.
 export const ROUTING_RULES: RoutingRule[] = [
   {
-    id: "RR-VCTL-CARD-HI",
+    id: "RR-VPRV-CARD-HI",
     priority: 1,
-    tenantId: "vcentral",
+    merchantId: "vprivilege",
     channel: "card",
     minAmount: 50000,
     targetPsp: "2c2p",
@@ -14,9 +16,9 @@ export const ROUTING_RULES: RoutingRule[] = [
     enabled: true,
   },
   {
-    id: "RR-VCTL-CARD-LO",
+    id: "RR-VPRV-CARD-LO",
     priority: 2,
-    tenantId: "vcentral",
+    merchantId: "vprivilege",
     channel: "card",
     maxAmount: 49999,
     targetPsp: "omise",
@@ -24,18 +26,18 @@ export const ROUTING_RULES: RoutingRule[] = [
     enabled: true,
   },
   {
-    id: "RR-VCTL-INSTALLMENT",
+    id: "RR-VPRV-INSTALLMENT",
     priority: 3,
-    tenantId: "vcentral",
+    merchantId: "vprivilege",
     channel: "installment",
     minAmount: 3000,
     targetPsp: "2c2p",
     enabled: true,
   },
   {
-    id: "RR-VCTL-ANY",
+    id: "RR-VPRV-ANY",
     priority: 9,
-    tenantId: "vcentral",
+    merchantId: "vprivilege",
     channel: "any",
     targetPsp: "omise",
     enabled: true,
@@ -43,7 +45,7 @@ export const ROUTING_RULES: RoutingRule[] = [
   {
     id: "RR-VCOM-CARD",
     priority: 1,
-    tenantId: "vcommerce",
+    merchantId: "vcommerce",
     channel: "card",
     targetPsp: "omise",
     fallbackPsp: "2c2p",
@@ -52,7 +54,7 @@ export const ROUTING_RULES: RoutingRule[] = [
   {
     id: "RR-VCOM-PROMPTPAY",
     priority: 2,
-    tenantId: "vcommerce",
+    merchantId: "vcommerce",
     channel: "promptpay",
     targetPsp: "omise",
     enabled: false,
@@ -60,7 +62,7 @@ export const ROUTING_RULES: RoutingRule[] = [
   {
     id: "RR-VSVN-PROMPTPAY",
     priority: 1,
-    tenantId: "vsouvenir",
+    merchantId: "vsouvenir",
     channel: "promptpay",
     maxAmount: 20000,
     targetPsp: "2c2p",
@@ -69,7 +71,7 @@ export const ROUTING_RULES: RoutingRule[] = [
   {
     id: "RR-VSVN-ANY",
     priority: 5,
-    tenantId: "vsouvenir",
+    merchantId: "vsouvenir",
     channel: "any",
     targetPsp: "2c2p",
     fallbackPsp: "omise",

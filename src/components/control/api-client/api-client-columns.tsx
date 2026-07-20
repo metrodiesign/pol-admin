@@ -3,7 +3,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { ChevronRight } from "lucide-react";
 import type { ApiClient } from "@/types/api-client";
-import { TENANT_LABEL } from "@/lib/mock/tenants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchants";
 import { STATUS_LABEL, statusTone, scopeLabel } from "@/lib/control/api-client";
 import { formatDateTime } from "@/lib/control/format";
 import { StatusSpine } from "@/components/control/shared/status-spine";
@@ -70,7 +70,7 @@ export const apiClientColumns: ColumnDef<ApiClient>[] = [
     enableSorting: false,
     cell: ({ row }) => (
       <span className="text-sm text-foreground">
-        {TENANT_LABEL[row.original.tenantId]}
+        {MERCHANT_LABEL[row.original.merchantId]}
       </span>
     ),
   },

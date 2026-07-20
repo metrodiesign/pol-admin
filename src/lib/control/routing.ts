@@ -3,7 +3,7 @@ import type {
   RoutingChannel,
   RoutingPsp,
 } from "@/types/routing-rule";
-import type { TenantId } from "@/types/tenant";
+import type { MerchantCode } from "@/types/merchant";
 import type { Tone } from "@/lib/control/status";
 
 export const CHANNEL_LABEL: Record<RoutingChannel, string> = {
@@ -30,11 +30,11 @@ export function enabledTone(enabled: boolean): Tone {
  */
 export function evaluateRouting(
   rules: RoutingRule[],
-  ctx: { channel: RoutingChannel; amount: number; tenantId: TenantId },
+  ctx: { channel: RoutingChannel; amount: number; merchantId: MerchantCode },
 ): { targetPsp: RoutingPsp; fallbackPsp?: RoutingPsp } | null {
   const match = rules
     .filter((r) => r.enabled)
-    .filter((r) => r.tenantId === ctx.tenantId)
+    .filter((r) => r.merchantId === ctx.merchantId)
     .filter((r) => r.channel === "any" || r.channel === ctx.channel)
     .filter(
       (r) =>

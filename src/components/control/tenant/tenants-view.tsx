@@ -9,9 +9,8 @@ import {
   getPaginationRowModel,
 } from "@tanstack/react-table";
 import { ShieldAlert } from "lucide-react";
-import type { Tenant } from "@/types/tenant";
-import { TENANTS } from "@/lib/mock/tenants";
-import { TENANT_STATUS_LABEL } from "@/lib/control/tenant";
+import type { Merchant } from "@/types/merchant";
+import { MERCHANTS } from "@/lib/mock/merchants";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";
 import { ControlListToolbar } from "@/components/control/shared/control-list-toolbar";
@@ -21,23 +20,21 @@ import "@/types/table-meta";
 export function TenantsView() {
   const router = useRouter();
   const [search, setSearch] = useState("");
-  const [status, setStatus] = useState("");
   const [dense, setDense] = useState(false);
 
-  const globalFilter = useMemo(() => ({ search, status }), [search, status]);
+  const globalFilter = useMemo(() => ({ search }), [search]);
 
-  const table = useDataTable<Tenant>({
-    data: TENANTS,
+  const table = useDataTable<Merchant>({
+    data: MERCHANTS,
     columns: tenantColumns,
     getRowId: (t) => t.id,
     enableSortingRemoval: false,
     autoResetPageIndex: false,
     state: { globalFilter },
-    meta: { onRowClick: (t) => router.push(`/control/tenants/read?id=${t.id}`) },
+    meta: { onRowClick: (t) => router.push(`/control/tenants/read?id=${t.code}`) },
     globalFilterFn: (row, _id, value) => {
-      const f = value as { search: string; status: string };
+      const f = value as { search: string };
       const t = row.original;
-      if (f.status && t.status !== f.status) return false;
       if (f.search) {
         const q = f.search.toLowerCase();
         if (
@@ -82,19 +79,7 @@ export function TenantsView() {
             resetPage();
           }}
           searchPlaceholder="ค้นหารหัส, ชื่อบริษัท..."
-          filters={[
-            {
-              label: "สถานะ",
-              value: status,
-              onChange: (v) => {
-                setStatus(v);
-                resetPage();
-              },
-              options: Object.entries(TENANT_STATUS_LABEL).map(
-                ([value, label]) => ({ value, label }),
-              ),
-            },
-          ]}
+          filters={[]}
         />
         <DataTable
           table={table}

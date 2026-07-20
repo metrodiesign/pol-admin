@@ -1,3 +1,5 @@
+// UI-only, ไม่มี endpoint รองรับ — pol-core ไม่มี dashboard summary endpoint เลย
+// ต้องมี endpoint คืนสถิติสรุปเหล่านี้ก่อนถึงจะ align ได้ (REQ-7.2).
 export interface Trend {
   value: number;
   up: boolean;

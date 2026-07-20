@@ -1,4 +1,4 @@
-import type { TenantId } from "@/types/tenant";
+import type { MerchantCode } from "@/types/merchant";
 
 export type AuditResult = "success" | "denied";
 
@@ -14,7 +14,7 @@ export interface AuditEntry {
   actor: string; // operator email
   action: string; // dotted action key, e.g. "psp.credential.rotate"
   entityId: string; // the affected resource id
-  tenantId: TenantId;
+  merchantId: MerchantCode;
   result: AuditResult;
   ip: string;
   before?: string; // JSON string — prior state (mutating actions only)

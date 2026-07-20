@@ -3,7 +3,7 @@
 import { Lock, FileClock, GitCompareArrows } from "lucide-react";
 import { AUDIT_LOG } from "@/lib/mock/audit-log";
 import { RESULT_LABEL, resultTone, actionLabel } from "@/lib/control/audit";
-import { TENANT_LABEL } from "@/lib/mock/tenants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchants";
 import { formatDateTime } from "@/lib/control/format";
 import { ReadField } from "@/components/control/shared/read-field";
 import { ControlStatusBadge } from "@/components/control/shared/control-status-badge";
@@ -94,7 +94,7 @@ export function AuditDetailView({ id }: { id?: string }) {
               mono
               className="col-span-2"
             />
-            <ReadField label="บริษัท" value={TENANT_LABEL[entry.tenantId]} />
+            <ReadField label="บริษัท" value={MERCHANT_LABEL[entry.merchantId]} />
             <ReadField
               label="เวลา"
               value={formatDateTime(entry.timestamp)}
@@ -123,7 +123,7 @@ export function AuditDetailView({ id }: { id?: string }) {
               mono
               className="sm:col-span-2"
             />
-            <ReadField label="บริษัท" value={TENANT_LABEL[entry.tenantId]} />
+            <ReadField label="บริษัท" value={MERCHANT_LABEL[entry.merchantId]} />
             <ReadField label="ผลลัพธ์" value={RESULT_LABEL[entry.result]} />
             <ReadField label="IP" value={entry.ip} mono />
           </div>

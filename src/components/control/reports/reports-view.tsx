@@ -5,8 +5,8 @@ import { ControlListToolbar } from "@/components/control/shared/control-list-too
 import { DonutChart, DonutLegend } from "@/components/charts/donut-chart";
 import { StackedBarChart } from "@/components/charts/stacked-bar-chart";
 import { CATEGORICAL } from "@/components/charts/chart-colors";
-import { TRANSACTIONS } from "@/lib/mock/transactions";
-import { TENANT_LABEL } from "@/lib/mock/tenants";
+import { PAYMENT_SESSIONS } from "@/lib/mock/transactions";
+import { MERCHANT_LABEL } from "@/lib/mock/merchants";
 import {
   pspSplit,
   channelSplit,
@@ -40,7 +40,7 @@ export function ReportsView() {
   const [period, setPeriod] = useState("");
 
   // Mock data has no tenant/period dimension — the filters are visual only.
-  const txns = TRANSACTIONS;
+  const txns = PAYMENT_SESSIONS;
 
   const psp = useMemo(() => pspSplit(txns), [txns]);
   const channels = useMemo(() => channelSplit(txns), [txns]);
@@ -66,7 +66,7 @@ export function ReportsView() {
               label: "บริษัท",
               value: tenant,
               onChange: setTenant,
-              options: Object.entries(TENANT_LABEL).map(([value, label]) => ({
+              options: Object.entries(MERCHANT_LABEL).map(([value, label]) => ({
                 value,
                 label,
               })),

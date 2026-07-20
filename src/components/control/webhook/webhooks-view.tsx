@@ -15,7 +15,7 @@ import { useControlStore } from "@/lib/control/store";
 import { webhookStore, replayEvent } from "@/lib/control/webhook-store";
 import { showControlToast } from "@/components/control/shared/control-toast";
 import { PSP_LABEL, DELIVERY_LABEL } from "@/lib/control/webhook";
-import { TENANT_LABEL } from "@/lib/mock/tenants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchants";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";
 import { ControlListToolbar } from "@/components/control/shared/control-list-toolbar";
@@ -23,7 +23,7 @@ import { webhookColumns } from "./webhook-columns";
 import "@/types/table-meta";
 
 function EndpointCard({
-  tenantId,
+  merchantId,
   url,
   deliveredToday,
   failedToday,
@@ -34,7 +34,7 @@ function EndpointCard({
       style={{ boxShadow: "var(--shadow-card)" }}
     >
       <p className="text-sm font-semibold text-grey-600">
-        {TENANT_LABEL[tenantId]}
+        {MERCHANT_LABEL[merchantId]}
       </p>
       <p className="text-data text-xs break-all text-grey-700">{url}</p>
       <div className="flex items-center gap-4">
@@ -99,7 +99,7 @@ export function WebhooksView() {
         deliveryStatus: string;
       };
       const e = row.original;
-      if (f.tenant && e.tenantId !== f.tenant) return false;
+      if (f.tenant && e.merchantId !== f.tenant) return false;
       if (f.psp && e.psp !== f.psp) return false;
       if (f.deliveryStatus && e.deliveryStatus !== f.deliveryStatus) return false;
       if (f.search) {
@@ -129,7 +129,7 @@ export function WebhooksView() {
     <div className="flex flex-col gap-6">
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {WEBHOOK_ENDPOINTS.map((ep) => (
-          <EndpointCard key={ep.tenantId} {...ep} />
+          <EndpointCard key={ep.merchantId} {...ep} />
         ))}
       </div>
 
@@ -160,7 +160,7 @@ export function WebhooksView() {
                 setTenant(v);
                 resetPage();
               },
-              options: Object.entries(TENANT_LABEL).map(([value, label]) => ({
+              options: Object.entries(MERCHANT_LABEL).map(([value, label]) => ({
                 value,
                 label,
               })),

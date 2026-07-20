@@ -3,7 +3,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { ChevronRight, Loader2, RotateCw, ShieldAlert, ShieldCheck } from "lucide-react";
 import type { WebhookEvent } from "@/types/webhook-event";
-import { TENANT_LABEL } from "@/lib/mock/tenants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchants";
 import {
   PSP_LABEL,
   DELIVERY_LABEL,
@@ -71,7 +71,7 @@ export function webhookColumns({
       enableSorting: false,
       cell: ({ row }) => (
         <span className="text-sm text-foreground">
-          {TENANT_LABEL[row.original.tenantId]}
+          {MERCHANT_LABEL[row.original.merchantId]}
         </span>
       ),
     },

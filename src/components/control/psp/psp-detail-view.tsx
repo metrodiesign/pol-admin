@@ -8,14 +8,17 @@ import { CURRENT_ACTOR } from "@/lib/mock/approvals";
 import { showControlToast } from "@/components/control/shared/control-toast";
 import {
   PROVIDER_LABEL,
-  ENV_LABEL,
   HEALTH_LABEL,
   healthTone,
-  maskSecret,
   pspById,
 } from "@/lib/control/psp";
-import { TENANT_LABEL } from "@/lib/mock/tenants";
+import type { MerchantCode } from "@/types/merchant";
+import { MERCHANT_LABEL } from "@/lib/mock/merchants";
 import { formatDateTime } from "@/lib/control/format";
+
+function isMerchantCode(v: string | null): v is MerchantCode {
+  return v !== null && v in MERCHANT_LABEL;
+}
 import { ReadField } from "@/components/control/shared/read-field";
 import { ControlStatusBadge } from "@/components/control/shared/control-status-badge";
 import { StatusSpine } from "@/components/control/shared/status-spine";
@@ -67,7 +70,8 @@ export function PspDetailView({ id }: { id?: string }) {
   const tone = healthTone(conn.health);
 
   function requestRotation() {
-    if (!conn) return;
+    if (!conn || !isMerchantCode(conn.merchantId)) return;
+    const merchantId = conn.merchantId;
     setRotating(true);
     const now = new Date().toISOString().slice(0, 19);
     setTimeout(() => {
@@ -75,8 +79,8 @@ export function PspDetailView({ id }: { id?: string }) {
         id: `APR-${now.replace(/[-:T]/g, "").slice(2)}`,
         actionType: "credential_rotation",
         maker: CURRENT_ACTOR,
-        target: conn.id,
-        tenantId: conn.tenantId,
+        target: conn.pspConnectionId,
+        merchantId,
         requestedAt: now,
         status: "pending",
       });
@@ -101,10 +105,10 @@ export function PspDetailView({ id }: { id?: string }) {
                 Control plane · การเชื่อมต่อ PSP
               </span>
               <h1 className="text-h5 text-foreground">
-                {PROVIDER_LABEL[conn.provider]} · {ENV_LABEL[conn.environment]}
+                {PROVIDER_LABEL[conn.psp]}
               </h1>
               <p className="text-data mt-1 text-xs break-all text-grey-600">
-                {conn.id}
+                {conn.pspConnectionId}
               </p>
             </div>
           </div>
@@ -118,16 +122,13 @@ export function PspDetailView({ id }: { id?: string }) {
           </div>
 
           <div className="grid grid-cols-2 gap-x-4 gap-y-5 border-t border-[var(--divider)] pt-5">
-            <ReadField label="บริษัท" value={TENANT_LABEL[conn.tenantId]} />
-            <ReadField label="สภาพแวดล้อม" value={ENV_LABEL[conn.environment]} />
+            <ReadField
+              label="บริษัท"
+              value={isMerchantCode(conn.merchantId) ? MERCHANT_LABEL[conn.merchantId] : "—"}
+            />
             <ReadField
               label="Webhook ล่าสุด"
               value={formatDateTime(conn.lastWebhookAt)}
-              mono
-            />
-            <ReadField
-              label="สร้างเมื่อ"
-              value={formatDateTime(conn.createdAt)}
               mono
             />
           </div>
@@ -141,16 +142,14 @@ export function PspDetailView({ id }: { id?: string }) {
           icon={<Webhook className="size-5 text-grey-600" />}
         >
           <div className="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
-            <ReadField label="ผู้ให้บริการ" value={PROVIDER_LABEL[conn.provider]} />
-            <ReadField label="สภาพแวดล้อม" value={ENV_LABEL[conn.environment]} />
+            <ReadField label="ผู้ให้บริการ" value={PROVIDER_LABEL[conn.psp]} />
+            <ReadField label="สถานะ" value={HEALTH_LABEL[conn.health]} />
             <ReadField
-              label="คีย์สาธารณะ"
-              value={conn.publicKey}
-              mono
+              label="ช่องทางที่เปิดใช้"
+              value={conn.enabledMethods.join(", ")}
               className="sm:col-span-2"
             />
             <ReadField label="โหมดการชำระเงิน" value="Redirect-only (PCI SAQ A)" />
-            <ReadField label="สถานะ" value={HEALTH_LABEL[conn.health]} />
           </div>
         </DetailCard>
 
@@ -165,12 +164,12 @@ export function PspDetailView({ id }: { id?: string }) {
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
             <ReadField
               label="คีย์ลับ"
-              value={maskSecret(conn.secretKey)}
+              value={conn.maskedSecrets.secret ?? "—"}
               mono
             />
             <ReadField
               label="คีย์ลับ Webhook"
-              value={maskSecret(conn.webhookSecret)}
+              value={conn.maskedSecrets.webhookSigningSecret ?? "—"}
               mono
             />
           </div>

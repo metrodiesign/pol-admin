@@ -2,22 +2,21 @@
 
 import type { ColumnDef } from "@tanstack/react-table";
 import { ChevronRight } from "lucide-react";
-import type { Tenant } from "@/types/tenant";
-import { TENANT_STATUS_LABEL, tenantStatusTone } from "@/lib/control/tenant";
+import type { Merchant } from "@/types/merchant";
 import { StatusSpine } from "@/components/control/shared/status-spine";
-import { ControlStatusBadge } from "@/components/control/shared/control-status-badge";
 import { Badge } from "@/components/ui/badge";
 import "@/types/table-meta";
 
-export const tenantColumns: ColumnDef<Tenant>[] = [
+export const tenantColumns: ColumnDef<Merchant>[] = [
   {
     id: "spine",
     enableSorting: false,
     meta: { headClassName: "w-1.5 p-0", cellClassName: "w-1.5 p-0" },
     header: () => null,
-    cell: ({ row }) => (
+    cell: () => (
       <div className="flex h-full items-stretch pl-1.5">
-        <StatusSpine tone={tenantStatusTone(row.original.status)} />
+        {/* MerchantStatus มีค่าเดียว ("Active") — spine ไม่มีอะไรให้ต่างสี, คง "ok" ตายตัว (REQ-3.3) */}
+        <StatusSpine tone="ok" />
       </div>
     ),
   },
@@ -40,11 +39,11 @@ export const tenantColumns: ColumnDef<Tenant>[] = [
     },
   },
   {
-    accessorKey: "legalEntity",
+    accessorKey: "legalEntityId",
     header: "นิติบุคคล",
     enableSorting: false,
     cell: ({ row }) => (
-      <span className="text-sm text-foreground">{row.original.legalEntity}</span>
+      <span className="text-sm text-foreground">{row.original.legalEntityId}</span>
     ),
   },
   {
@@ -79,17 +78,6 @@ export const tenantColumns: ColumnDef<Tenant>[] = [
       <span className="text-data text-sm text-foreground">
         {row.original.adminCount}
       </span>
-    ),
-  },
-  {
-    accessorKey: "status",
-    header: "สถานะ",
-    enableSorting: true,
-    cell: ({ row }) => (
-      <ControlStatusBadge
-        tone={tenantStatusTone(row.original.status)}
-        label={TENANT_STATUS_LABEL[row.original.status]}
-      />
     ),
   },
   {

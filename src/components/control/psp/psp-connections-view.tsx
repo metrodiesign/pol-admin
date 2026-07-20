@@ -11,7 +11,7 @@ import {
 import type { PspConnection } from "@/types/psp-connection";
 import { PSP_CONNECTIONS } from "@/lib/mock/psp-connections";
 import { PROVIDER_LABEL } from "@/lib/control/psp";
-import { TENANT_LABEL } from "@/lib/mock/tenants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchants";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";
 import { ControlListToolbar } from "@/components/control/shared/control-list-toolbar";
@@ -23,33 +23,30 @@ export function PspConnectionsView() {
   const router = useRouter();
   const [search, setSearch] = useState("");
   const [tenant, setTenant] = useState("");
-  const [env, setEnv] = useState("");
   const [dense, setDense] = useState(false);
 
   const globalFilter = useMemo(
-    () => ({ search, tenant, env }),
-    [search, tenant, env],
+    () => ({ search, tenant }),
+    [search, tenant],
   );
 
   const table = useDataTable<PspConnection>({
     data: PSP_CONNECTIONS,
     columns: pspColumns,
-    getRowId: (p) => p.id,
+    getRowId: (p) => p.pspConnectionId,
     enableSortingRemoval: false,
     autoResetPageIndex: false,
     state: { globalFilter },
-    meta: { onRowClick: (p) => router.push(`/control/psp/read?id=${p.id}`) },
+    meta: { onRowClick: (p) => router.push(`/control/psp/read?id=${p.pspConnectionId}`) },
     globalFilterFn: (row, _id, value) => {
-      const f = value as { search: string; tenant: string; env: string };
+      const f = value as { search: string; tenant: string };
       const p = row.original;
-      if (f.tenant && p.tenantId !== f.tenant) return false;
-      if (f.env && p.environment !== f.env) return false;
+      if (f.tenant && p.merchantId !== f.tenant) return false;
       if (f.search) {
         const q = f.search.toLowerCase();
         if (
-          !p.id.toLowerCase().includes(q) &&
-          !p.publicKey.toLowerCase().includes(q) &&
-          !PROVIDER_LABEL[p.provider].toLowerCase().includes(q)
+          !p.pspConnectionId.toLowerCase().includes(q) &&
+          !PROVIDER_LABEL[p.psp].toLowerCase().includes(q)
         )
           return false;
       }
@@ -82,7 +79,7 @@ export function PspConnectionsView() {
             setSearch(v);
             resetPage();
           }}
-          searchPlaceholder="ค้นหา PSP, public key, รหัสการเชื่อมต่อ..."
+          searchPlaceholder="ค้นหา PSP, รหัสการเชื่อมต่อ..."
           filters={[
             {
               label: "บริษัท",
@@ -91,22 +88,10 @@ export function PspConnectionsView() {
                 setTenant(v);
                 resetPage();
               },
-              options: Object.entries(TENANT_LABEL).map(([value, label]) => ({
+              options: Object.entries(MERCHANT_LABEL).map(([value, label]) => ({
                 value,
                 label,
               })),
-            },
-            {
-              label: "สภาพแวดล้อม",
-              value: env,
-              onChange: (v) => {
-                setEnv(v);
-                resetPage();
-              },
-              options: [
-                { value: "live", label: "Live" },
-                { value: "test", label: "Test" },
-              ],
             },
           ]}
         />

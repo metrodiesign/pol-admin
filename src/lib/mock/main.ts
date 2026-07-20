@@ -1,3 +1,5 @@
+// UI-only, ไม่มี endpoint รองรับ — payment summary stat นี้ไม่มี endpoint จริงใน
+// pol-core ต้องมี summary endpoint ก่อนถึงจะ align ได้ (REQ-7.2).
 import type { AccentColor, Trend } from "./dashboard";
 
 export interface PaymentSummaryStat {

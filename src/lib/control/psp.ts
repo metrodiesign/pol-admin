@@ -1,7 +1,6 @@
 import type {
   PspConnection,
   PspProvider,
-  PspEnvironment,
   PspHealth,
 } from "@/types/psp-connection";
 import type { Tone } from "@/lib/control/status";
@@ -11,16 +10,11 @@ export const PROVIDER_LABEL: Record<PspProvider, string> = {
   "2c2p": "2C2P",
 };
 
-export const ENV_LABEL: Record<PspEnvironment, string> = {
-  test: "Test",
-  live: "Live",
-};
-
 export const HEALTH_LABEL: Record<PspHealth, string> = {
   healthy: "เชื่อมต่อปกติ",
   degraded: "ประสิทธิภาพลดลง",
   error: "เชื่อมต่อล้มเหลว",
-  disabled: "ปิดใช้งาน",
+  offline: "ปิดใช้งาน",
 };
 
 export function healthTone(health: PspHealth): Tone {
@@ -31,7 +25,7 @@ export function healthTone(health: PspHealth): Tone {
       return "warn";
     case "error":
       return "error";
-    case "disabled":
+    case "offline":
       return "muted";
   }
 }
@@ -52,5 +46,5 @@ export function pspById(
   id: string | undefined,
 ): PspConnection | undefined {
   if (!id) return undefined;
-  return list.find((p) => p.id === id);
+  return list.find((p) => p.pspConnectionId === id);
 }

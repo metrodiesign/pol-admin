@@ -23,6 +23,7 @@ const p = (id: string) => ({ id }) as Policy;
 const item = (overrides: Partial<CheckoutLineItem> = {}): CheckoutLineItem => ({
   uid: "POL-A",
   policyNo: "06303-69100/รย/023880",
+  referenceType: "policy",
   payerName: "นายสมชาย ใจดี",
   netPremium: 10000,
   grossPremium: 15000,

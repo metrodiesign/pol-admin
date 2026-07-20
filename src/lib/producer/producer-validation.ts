@@ -1,8 +1,8 @@
 import type {
-  ProducerFormData,
-  ProducerPersonType,
-  ProducerRegisterFormData,
-} from "@/types/producer";
+  MerchantUserFormData,
+  PersonType,
+  MerchantUserRegisterFormData,
+} from "@/types/merchant-user";
 
 /** เลขบัตรประชาชน/เลขผู้เสียภาษี — 13 หลัก + checksum (REQ-5.1) */
 export function isThaiId(value: string): boolean {
@@ -24,11 +24,11 @@ export function isThaiPhone(value: string): boolean {
  * - juristic: free text
  */
 export function isValidLicense(
-  personType: ProducerPersonType,
+  personType: PersonType,
   value: string,
 ): boolean {
   if (value.trim() === "") return true;
-  if (personType === "individual") return /^\d{10}$/.test(value);
+  if (personType === "Individual") return /^\d{10}$/.test(value);
   return true;
 }
 
@@ -37,14 +37,14 @@ export function isEmail(value: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
 }
 
-export type ProducerFormErrors = Partial<Record<keyof ProducerFormData, string>>;
+export type ProducerFormErrors = Partial<Record<keyof MerchantUserFormData, string>>;
 
 /**
  * รวมกฎ required (REQ-5.7) + format (REQ-5.1–5.6). คืน map ของ field -> ข้อความ error
  * (ว่าง = ผ่าน). `requireAcceptTerms` เปิดเฉพาะหน้า create (REQ-4.9).
  */
 export function validateProducerForm(
-  form: ProducerFormData,
+  form: MerchantUserFormData,
   opts: { requireAcceptTerms?: boolean } = {},
 ): ProducerFormErrors {
   const errors: ProducerFormErrors = {};
@@ -60,7 +60,7 @@ export function validateProducerForm(
   if (!form.producerCode.trim()) {
     errors.producerCode = "กรุณากรอกรหัสตัวแทน";
   } else {
-    const maxCode = form.personType === "individual" ? 10 : 20;
+    const maxCode = form.personType === "Individual" ? 10 : 20;
     if (form.producerCode.length > maxCode)
       errors.producerCode = `รหัสตัวแทนต้องไม่เกิน ${maxCode} ตัวอักษร`;
   }
@@ -83,7 +83,7 @@ export function validateProducerForm(
 }
 
 export type RegisterFormErrors = Partial<
-  Record<keyof ProducerRegisterFormData, string>
+  Record<keyof MerchantUserRegisterFormData, string>
 >;
 
 /**
@@ -91,7 +91,7 @@ export type RegisterFormErrors = Partial<
  * (acceptTerms required) แล้วเพิ่มกฎ photo required. ไม่ duplicate regex.
  */
 export function validateRegisterForm(
-  form: ProducerRegisterFormData,
+  form: MerchantUserRegisterFormData,
 ): RegisterFormErrors {
   return validateProducerForm(form, { requireAcceptTerms: true });
 }

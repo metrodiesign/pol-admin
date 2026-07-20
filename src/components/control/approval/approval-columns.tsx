@@ -3,7 +3,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { Loader2 } from "lucide-react";
 import type { ApprovalRequest } from "@/types/approval";
-import { TENANT_LABEL } from "@/lib/mock/tenants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchants";
 import {
   ACTION_LABEL,
   STATUS_LABEL,
@@ -99,7 +99,7 @@ export function approvalColumns({
       enableSorting: false,
       cell: ({ row }) => (
         <span className="text-sm text-foreground">
-          {TENANT_LABEL[row.original.tenantId]}
+          {MERCHANT_LABEL[row.original.merchantId]}
         </span>
       ),
     },

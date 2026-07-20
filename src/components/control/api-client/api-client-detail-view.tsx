@@ -11,7 +11,7 @@ import {
   scopeLabel,
   maskSecret,
 } from "@/lib/control/api-client";
-import { TENANT_LABEL } from "@/lib/mock/tenants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchants";
 import { formatDateTime } from "@/lib/control/format";
 import { ReadField } from "@/components/control/shared/read-field";
 import { ControlStatusBadge } from "@/components/control/shared/control-status-badge";
@@ -123,7 +123,7 @@ export function ApiClientDetailView({ id }: { id?: string }) {
           </div>
 
           <div className="grid grid-cols-2 gap-x-4 gap-y-5 border-t border-[var(--divider)] pt-5">
-            <ReadField label="บริษัท" value={TENANT_LABEL[client.tenantId]} />
+            <ReadField label="บริษัท" value={MERCHANT_LABEL[client.merchantId]} />
             <ReadField label="รหัส client" value={client.id} mono />
             <ReadField
               label="สร้างเมื่อ"
@@ -147,7 +147,7 @@ export function ApiClientDetailView({ id }: { id?: string }) {
         >
           <div className="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
             <ReadField label="ชื่อ" value={client.name} />
-            <ReadField label="บริษัท" value={TENANT_LABEL[client.tenantId]} />
+            <ReadField label="บริษัท" value={MERCHANT_LABEL[client.merchantId]} />
             <ReadField
               label="รหัสไคลเอนต์"
               value={client.clientId}

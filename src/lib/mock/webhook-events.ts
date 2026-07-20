@@ -1,6 +1,8 @@
-import type { TenantId } from "@/types/tenant";
+import type { MerchantCode } from "@/types/merchant";
 import type { WebhookEvent } from "@/types/webhook-event";
 
+// UI-only, ไม่มี endpoint รองรับ — pol-core ไม่มี webhook-event read endpoint
+// เลย ต้องมี endpoint นี้ก่อนถึงจะ align ได้ (REQ-7.2).
 // Deterministic seed — fake events only. Payloads are pretty-printed at module
 // load (JSON.stringify with 2-space indent) so the raw block reads like a real
 // PSP payload without committing a wall of literal JSON.
@@ -13,7 +15,7 @@ export const WEBHOOK_EVENTS: WebhookEvent[] = [
     id: "evt_5f8a2c9d4e7b3f16",
     eventType: "payment.succeeded",
     psp: "omise",
-    tenantId: "vcentral",
+    merchantId: "vprivilege",
     deliveryStatus: "delivered",
     attempts: 1,
     signatureVerified: true,
@@ -35,7 +37,7 @@ export const WEBHOOK_EVENTS: WebhookEvent[] = [
     id: "evt_7b3f1602d9e4a2c9",
     eventType: "payment.failed",
     psp: "omise",
-    tenantId: "vcentral",
+    merchantId: "vprivilege",
     deliveryStatus: "failed",
     attempts: 4,
     signatureVerified: true,
@@ -57,7 +59,7 @@ export const WEBHOOK_EVENTS: WebhookEvent[] = [
     id: "evt_88c1f0a7e2d5b9c3",
     eventType: "payment.succeeded",
     psp: "2c2p",
-    tenantId: "vcentral",
+    merchantId: "vprivilege",
     deliveryStatus: "delivered",
     attempts: 1,
     signatureVerified: true,
@@ -79,7 +81,7 @@ export const WEBHOOK_EVENTS: WebhookEvent[] = [
     id: "evt_a2c9d4e7b3f1602d",
     eventType: "payment.pending",
     psp: "omise",
-    tenantId: "vcommerce",
+    merchantId: "vcommerce",
     deliveryStatus: "pending",
     attempts: 0,
     signatureVerified: true,
@@ -99,23 +101,22 @@ export const WEBHOOK_EVENTS: WebhookEvent[] = [
   },
   {
     id: "evt_d4e7b3f1602d9e4a",
-    eventType: "charge.refunded",
+    eventType: "charge.expired",
     psp: "omise",
-    tenantId: "vcommerce",
+    merchantId: "vcommerce",
     deliveryStatus: "delivered",
     attempts: 1,
     signatureVerified: true,
     receivedAt: "2026-06-24T10:48:29",
     payload: payload({
       id: "evt_d4e7b3f1602d9e4a",
-      type: "charge.refunded",
+      type: "charge.expired",
       object: "event",
       data: {
         chargeId: "chrg_test_d4e7b3f160",
-        refundId: "rfnd_test_2d9e4a2c9d",
         amount: 50000,
         currency: "THB",
-        status: "refunded",
+        status: "expired",
       },
     }),
   },
@@ -123,7 +124,7 @@ export const WEBHOOK_EVENTS: WebhookEvent[] = [
     id: "evt_61f8a2c9d4e7b3f1",
     eventType: "payment.succeeded",
     psp: "omise",
-    tenantId: "vcommerce",
+    merchantId: "vcommerce",
     deliveryStatus: "delivered",
     attempts: 2,
     signatureVerified: true,
@@ -145,7 +146,7 @@ export const WEBHOOK_EVENTS: WebhookEvent[] = [
     id: "evt_902145d9e4a2c9d4",
     eventType: "payment.failed",
     psp: "2c2p",
-    tenantId: "vsouvenir",
+    merchantId: "vsouvenir",
     deliveryStatus: "failed",
     attempts: 6,
     signatureVerified: false,
@@ -167,7 +168,7 @@ export const WEBHOOK_EVENTS: WebhookEvent[] = [
     id: "evt_1602d9e4a2c9d4e7",
     eventType: "charge.expired",
     psp: "2c2p",
-    tenantId: "vsouvenir",
+    merchantId: "vsouvenir",
     deliveryStatus: "delivered",
     attempts: 1,
     signatureVerified: true,
@@ -189,7 +190,7 @@ export const WEBHOOK_EVENTS: WebhookEvent[] = [
     id: "evt_3f1602d9e4a2c9d4",
     eventType: "payment.succeeded",
     psp: "2c2p",
-    tenantId: "vsouvenir",
+    merchantId: "vsouvenir",
     deliveryStatus: "delivered",
     attempts: 1,
     signatureVerified: true,
@@ -211,7 +212,7 @@ export const WEBHOOK_EVENTS: WebhookEvent[] = [
     id: "evt_e2d5b9c3f0a7e2d5",
     eventType: "payment.pending",
     psp: "omise",
-    tenantId: "vcentral",
+    merchantId: "vprivilege",
     deliveryStatus: "pending",
     attempts: 0,
     signatureVerified: true,
@@ -233,7 +234,7 @@ export const WEBHOOK_EVENTS: WebhookEvent[] = [
     id: "evt_b9c3f0a7e2d5b9c3",
     eventType: "payment.failed",
     psp: "omise",
-    tenantId: "vcommerce",
+    merchantId: "vcommerce",
     deliveryStatus: "failed",
     attempts: 3,
     signatureVerified: true,
@@ -253,30 +254,30 @@ export const WEBHOOK_EVENTS: WebhookEvent[] = [
   },
   {
     id: "evt_d9e4a2c9d4e7b3f1",
-    eventType: "charge.refunded",
+    eventType: "charge.expired",
     psp: "2c2p",
-    tenantId: "vcentral",
+    merchantId: "vprivilege",
     deliveryStatus: "delivered",
     attempts: 1,
     signatureVerified: true,
     receivedAt: "2026-06-23T11:47:21",
     payload: payload({
       id: "evt_d9e4a2c9d4e7b3f1",
-      type: "charge.refunded",
+      type: "charge.expired",
       merchantID: "merchant_457012_live",
       paymentResponse: {
         invoiceNo: "INV-2026-008702",
         amount: 42000,
         currencyCode: "THB",
-        respCode: "0000",
-        respDesc: "Refund success",
+        respCode: "0003",
+        respDesc: "Transaction expired",
       },
     }),
   },
 ];
 
 export interface WebhookEndpoint {
-  tenantId: TenantId;
+  merchantId: MerchantCode;
   url: string;
   deliveredToday: number;
   failedToday: number;
@@ -284,19 +285,19 @@ export interface WebhookEndpoint {
 
 export const WEBHOOK_ENDPOINTS: WebhookEndpoint[] = [
   {
-    tenantId: "vcentral",
-    url: "https://api.vcentral.co.th/webhooks/psp",
+    merchantId: "vprivilege",
+    url: "https://api.vprivilege.co.th/webhooks/psp",
     deliveredToday: 412,
     failedToday: 3,
   },
   {
-    tenantId: "vcommerce",
+    merchantId: "vcommerce",
     url: "https://pay.vcommerce.co.th/hooks/inbound",
     deliveredToday: 287,
     failedToday: 1,
   },
   {
-    tenantId: "vsouvenir",
+    merchantId: "vsouvenir",
     url: "https://shop.vsouvenir.co.th/api/psp-events",
     deliveredToday: 64,
     failedToday: 5,

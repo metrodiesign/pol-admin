@@ -16,7 +16,7 @@ import {
   rejectRequest,
 } from "@/lib/control/approvals-store";
 import { showControlToast } from "@/components/control/shared/control-toast";
-import { TENANT_LABEL } from "@/lib/mock/tenants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchants";
 import { formatDateTime } from "@/lib/control/format";
 import { formatTHB } from "@/lib/utils";
 import { ReadField } from "@/components/control/shared/read-field";
@@ -141,7 +141,7 @@ export function ApprovalDetailView({ id }: { id?: string }) {
 
           <div className="grid grid-cols-2 gap-x-4 gap-y-5 border-t border-[var(--divider)] pt-5">
             <ReadField label="รหัสคำขอ" value={req.id} mono />
-            <ReadField label="บริษัท" value={TENANT_LABEL[req.tenantId]} />
+            <ReadField label="บริษัท" value={MERCHANT_LABEL[req.merchantId]} />
             <ReadField
               label="ขอเมื่อ"
               value={formatDateTime(req.requestedAt)}
@@ -165,7 +165,7 @@ export function ApprovalDetailView({ id }: { id?: string }) {
             />
             <ReadField label="เป้าหมาย" value={req.target} mono />
             <ReadField label="ผู้ขอ" value={req.maker} mono />
-            <ReadField label="บริษัท" value={TENANT_LABEL[req.tenantId]} />
+            <ReadField label="บริษัท" value={MERCHANT_LABEL[req.merchantId]} />
             <ReadField
               label="ขอเมื่อ"
               value={formatDateTime(req.requestedAt)}

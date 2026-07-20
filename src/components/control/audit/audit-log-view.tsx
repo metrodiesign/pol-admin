@@ -16,7 +16,7 @@ import {
   distinctActions,
   distinctActors,
 } from "@/lib/control/audit";
-import { TENANT_LABEL } from "@/lib/mock/tenants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchants";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";
 import { ControlListToolbar } from "@/components/control/shared/control-list-toolbar";
@@ -54,7 +54,7 @@ export function AuditLogView() {
       const e = row.original;
       if (f.actor && e.actor !== f.actor) return false;
       if (f.action && e.action !== f.action) return false;
-      if (f.tenant && e.tenantId !== f.tenant) return false;
+      if (f.tenant && e.merchantId !== f.tenant) return false;
       if (f.search) {
         const q = f.search.toLowerCase();
         if (
@@ -127,7 +127,7 @@ export function AuditLogView() {
                 setTenant(v);
                 resetPage();
               },
-              options: Object.entries(TENANT_LABEL).map(([value, label]) => ({
+              options: Object.entries(MERCHANT_LABEL).map(([value, label]) => ({
                 value,
                 label,
               })),

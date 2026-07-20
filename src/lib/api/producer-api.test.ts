@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { buildRegisterFormData, producerLogin } from "./producer-api";
-import type { ProducerFormData } from "@/types/producer";
+import type { MerchantUserFormData } from "@/types/merchant-user";
 
 afterEach(() => {
   vi.unstubAllGlobals();
@@ -24,10 +24,10 @@ describe("producerLogin", () => {
 });
 
 describe("buildRegisterFormData", () => {
-  const base: ProducerFormData = {
+  const base: MerchantUserFormData = {
     firstName: "สมชาย",
     lastName: "ใจดี",
-    personType: "individual",
+    personType: "Individual",
     idNumber: "1234567890121",
     producerCode: "P001",
     licenseNumber: "1234567890",
@@ -53,7 +53,7 @@ describe("buildRegisterFormData", () => {
     expect(fd.get("ticket")).toBe("tkt");
     expect(fd.get("firstName")).toBe("สมชาย");
     expect(fd.get("lastName")).toBe("ใจดี");
-    expect(fd.get("personType")).toBe("individual");
+    expect(fd.get("personType")).toBe("Individual");
     expect(fd.get("idNumber")).toBe("1234567890121");
     expect(fd.get("producerCode")).toBe("P001");
   });

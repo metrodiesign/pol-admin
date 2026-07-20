@@ -7,8 +7,8 @@ import {
   getSortedRowModel,
   getPaginationRowModel,
 } from "@tanstack/react-table";
-import type { Producer } from "@/types/producer";
-import { PRODUCERS } from "@/lib/mock/producers";
+import type { MerchantUser } from "@/types/merchant-user";
+import { MERCHANT_USERS } from "@/lib/mock/merchant-users";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";
 import { ProducerListToolbar } from "./producer-list-toolbar";
@@ -26,8 +26,8 @@ export function ProducerListView() {
     [personType, search],
   );
 
-  const table = useDataTable<Producer>({
-    data: PRODUCERS,
+  const table = useDataTable<MerchantUser>({
+    data: MERCHANT_USERS,
     columns: producerColumns,
     getRowId: (p) => p.id,
     enableRowSelection: true,

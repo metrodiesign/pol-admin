@@ -11,7 +11,7 @@ import {
 import type { Originator } from "@/types/originator";
 import { ORIGINATORS } from "@/lib/mock/originators";
 import { TYPE_LABEL } from "@/lib/control/originator";
-import { TENANT_LABEL } from "@/lib/mock/tenants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchants";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";
 import { ControlListToolbar } from "@/components/control/shared/control-list-toolbar";
@@ -43,7 +43,7 @@ export function OriginatorsView() {
     globalFilterFn: (row, _id, value) => {
       const f = value as { search: string; tenant: string; type: string };
       const o = row.original;
-      if (f.tenant && o.tenantId !== f.tenant) return false;
+      if (f.tenant && o.merchantId !== f.tenant) return false;
       if (f.type && o.type !== f.type) return false;
       if (f.search) {
         const q = f.search.toLowerCase();
@@ -89,7 +89,7 @@ export function OriginatorsView() {
                 setTenant(v);
                 resetPage();
               },
-              options: Object.entries(TENANT_LABEL).map(([value, label]) => ({
+              options: Object.entries(MERCHANT_LABEL).map(([value, label]) => ({
                 value,
                 label,
               })),

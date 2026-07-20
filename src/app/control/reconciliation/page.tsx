@@ -10,7 +10,7 @@ export default function ReconciliationPage() {
     <>
       <PageHeader
         title="การกระทบยอด"
-        description="ตรวจยอดที่ PSP โอนเข้าบริษัทเทียบกับยอดที่คาดไว้ — เงิน settle เข้าบัญชีบริษัทโดยตรง แพลตฟอร์มติดตามสถานะเท่านั้น"
+        description="สรุปออเดอร์แยกตามสถานะและสกุลเงิน — เงินจาก PSP เข้าบัญชีบริษัทโดยตรง แพลตฟอร์มติดตามสถานะเท่านั้น"
         breadcrumbs={[
           { label: "Control plane" },
           { label: "การกระทบยอด" },

@@ -4,13 +4,10 @@ import type { OrderStatus } from "@/types/order-payment";
 import { cn } from "@/lib/utils";
 
 const BADGE_COLOR: Record<OrderStatus | "all", string> = {
-  all:        "bg-foreground text-card",
-  completed:  "bg-[rgba(34,197,94,0.16)] text-[rgb(17,141,87)]",
-  pending:    "bg-[rgba(255,171,0,0.16)] text-[rgb(183,110,0)]",
-  processing: "bg-[rgba(0,184,217,0.16)] text-[rgb(0,108,156)]",
-  failed:     "bg-[rgba(255,86,48,0.16)] text-[rgb(183,29,24)]",
-  refunded:   "bg-[rgba(142,51,255,0.16)] text-[rgb(142,51,255)]",
-  cancelled:  "bg-[rgba(145,158,171,0.16)] text-[rgb(99,115,129)]",
+  all:             "bg-foreground text-card",
+  AwaitingPayment: "bg-[rgba(255,171,0,0.16)] text-[rgb(183,110,0)]",
+  Paid:            "bg-[rgba(34,197,94,0.16)] text-[rgb(17,141,87)]",
+  Cancelled:       "bg-[rgba(145,158,171,0.16)] text-[rgb(99,115,129)]",
 };
 
 type TabValue = OrderStatus | "all";

@@ -3,7 +3,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowUp, ArrowDown, ArrowRight } from "lucide-react";
 import type { RoutingRule } from "@/types/routing-rule";
-import { TENANT_LABEL } from "@/lib/mock/tenants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchants";
 import { CHANNEL_LABEL, PSP_LABEL, enabledTone } from "@/lib/control/routing";
 import { formatTHB } from "@/lib/utils";
 import { ControlStatusBadge } from "@/components/control/shared/control-status-badge";
@@ -47,7 +47,7 @@ export function routingColumns({
       enableSorting: false,
       cell: ({ row }) => (
         <span className="text-sm text-foreground">
-          {TENANT_LABEL[row.original.tenantId]}
+          {MERCHANT_LABEL[row.original.merchantId]}
         </span>
       ),
     },

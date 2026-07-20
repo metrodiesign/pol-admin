@@ -8,14 +8,14 @@ import {
   validateRegisterForm,
 } from "./producer-validation";
 import type {
-  ProducerFormData,
-  ProducerRegisterFormData,
-} from "@/types/producer";
+  MerchantUserFormData,
+  MerchantUserRegisterFormData,
+} from "@/types/merchant-user";
 
-const base: ProducerFormData = {
+const base: MerchantUserFormData = {
   firstName: "สมชาย",
   lastName: "ใจดี",
-  personType: "individual",
+  personType: "Individual",
   idNumber: "1234567890121",
   producerCode: "12345",
   licenseNumber: "",
@@ -54,16 +54,16 @@ describe("isThaiPhone (REQ-5.2)", () => {
 
 describe("isValidLicense (REQ-5.3–5.5)", () => {
   it("empty allowed for both types", () => {
-    expect(isValidLicense("individual", "")).toBe(true);
-    expect(isValidLicense("juristic", "")).toBe(true);
+    expect(isValidLicense("Individual", "")).toBe(true);
+    expect(isValidLicense("Juristic", "")).toBe(true);
   });
   it("individual requires 10 digits when present", () => {
-    expect(isValidLicense("individual", "1234567890")).toBe(true);
-    expect(isValidLicense("individual", "12345")).toBe(false);
-    expect(isValidLicense("individual", "ABCD123456")).toBe(false);
+    expect(isValidLicense("Individual", "1234567890")).toBe(true);
+    expect(isValidLicense("Individual", "12345")).toBe(false);
+    expect(isValidLicense("Individual", "ABCD123456")).toBe(false);
   });
   it("juristic allows free text", () => {
-    expect(isValidLicense("juristic", "LIC/CORP/001")).toBe(true);
+    expect(isValidLicense("Juristic", "LIC/CORP/001")).toBe(true);
   });
 });
 
@@ -97,7 +97,7 @@ describe("validateProducerForm", () => {
   });
   it("allows juristic free-text license (5.4)", () => {
     expect(
-      validateProducerForm({ ...base, personType: "juristic", licenseNumber: "LIC-CORP" })
+      validateProducerForm({ ...base, personType: "Juristic", licenseNumber: "LIC-CORP" })
         .licenseNumber,
     ).toBeUndefined();
   });
@@ -123,7 +123,7 @@ describe("validateProducerForm", () => {
 
 describe("validateRegisterForm (REQ-11.6)", () => {
   const fakePhoto = new File(["x"], "id-card.jpg", { type: "image/jpeg" });
-  const regBase: ProducerRegisterFormData = { ...base, photo: fakePhoto };
+  const regBase: MerchantUserRegisterFormData = { ...base, photo: fakePhoto };
 
   it("passes a valid registration form", () => {
     expect(validateRegisterForm(regBase)).toEqual({});

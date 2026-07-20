@@ -5,7 +5,6 @@ import {
   CheckCircle2,
   XCircle,
   Ban,
-  RefreshCcw,
   Send,
   ShieldCheck,
   Webhook,
@@ -34,7 +33,8 @@ import {
   type StepState,
   type TimelineIcon,
 } from "@/lib/transaction";
-import { cn, formatAmount, formatTHB } from "@/lib/utils";
+import { cn, formatAmount } from "@/lib/utils";
+import { formatMoney } from "@/types/money";
 import { Button } from "@/components/ui/button";
 import { TransactionStatusBadge } from "./transaction-status-badge";
 
@@ -45,7 +45,6 @@ const TIMELINE_ICON: Record<TimelineIcon, LucideIcon> = {
   auth: ShieldCheck,
   redirect: ExternalLink,
   link: Phone,
-  refund: RefreshCcw,
   cancel: Ban,
 };
 
@@ -297,12 +296,8 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
         <div className="px-6 py-5">
           <div className={cn("grid grid-cols-1 gap-x-5 gap-y-5", !compact && "mmd:grid-cols-2")}>
             <div className="flex flex-col gap-1.5">
-              <p className={fieldLabel}>ชื่อ-นามสกุล</p>
-              <p className="text-sm font-bold text-foreground">{t.customerName || <span className="text-grey-400">—</span>}</p>
-            </div>
-            <div className="flex flex-col gap-1.5">
               <p className={fieldLabel}>อีเมล</p>
-              <p className="text-sm font-bold text-foreground">{t.customerEmail || <span className="text-grey-400">—</span>}</p>
+              <p className="text-sm font-bold text-foreground">{t.recipientEmail || <span className="text-grey-400">—</span>}</p>
             </div>
             <div className="flex flex-col gap-1.5">
               <p className={fieldLabel}>เบอร์โทรศัพท์</p>
@@ -377,7 +372,7 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
             <div className="text-right">
               <p className="text-sm text-grey-500">ยอดที่ลูกค้าต้องชำระ</p>
               <p className="text-2xl font-bold tabular-nums text-success-dark">
-                {formatTHB(t.amount, 2)}
+                {formatMoney(t.amount)}
               </p>
             </div>
           </div>
@@ -473,7 +468,7 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
                     </span>
                   </div>
                   <div className="border-t border-[var(--divider)] px-4 py-3">
-                    <p className="text-sm font-bold text-foreground">{t.customerEmail}</p>
+                    <p className="text-sm font-bold text-foreground">{t.recipientEmail ?? "—"}</p>
                   </div>
                 </div>
               </div>

@@ -2,8 +2,8 @@
 
 import SimpleBar from "simplebar-react";
 import { ExternalLink, X } from "lucide-react";
-import type { Order } from "@/types/order-payment";
-import { formatTHB } from "@/lib/utils";
+import type { OrderRow } from "@/lib/order";
+import { formatMoney } from "@/types/money";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -15,10 +15,10 @@ import { OrderStatusBadge } from "./order-status-badge";
 import { OrderDetailView } from "./order-detail-view";
 
 interface OrderDetailSheetProps {
-  order: Order | null;
+  order: OrderRow | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onRead?: (t: Order) => void;
+  onRead?: (t: OrderRow) => void;
 }
 
 export function OrderDetailSheet({
@@ -39,7 +39,7 @@ export function OrderDetailSheet({
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
               <SheetTitle className="font-mono text-sm font-semibold text-foreground">
-                {order?.code ?? "—"}
+                {order?.session?.code ?? order?.id ?? "—"}
               </SheetTitle>
               {order && (
                 <OrderStatusBadge status={order.status} />
@@ -47,9 +47,9 @@ export function OrderDetailSheet({
             </div>
             {order && (
               <p className="mt-0.5 text-xs text-grey-500">
-                {order.customerName}
+                {order.session?.recipientEmail ?? "—"}
                 {" · "}
-                {formatTHB(order.amount, 2)}
+                {formatMoney(order.amount)}
               </p>
             )}
           </div>
@@ -77,7 +77,7 @@ export function OrderDetailSheet({
 
         {/* Scrollable content */}
         <SimpleBar className="min-h-0 flex-1">
-          <OrderDetailView id={order?.code} compact />
+          <OrderDetailView id={order?.session?.code ?? order?.id} compact />
         </SimpleBar>
       </SheetContent>
     </Sheet>
