@@ -39,7 +39,12 @@
        - viewports: n/a — pure logic
        - deviations: เพิ่ม name/sub/email เข้า required-claims (design list อ้าง aud/exp/email_verified) เพราะ MockSession.name จำเป็น + design ระบุอ่าน sub/email เพื่อ check — superset, ไม่กระทบเคสที่ระบุ
 
-- [ ] 3. GIS dual-client spike — พิสูจน์ว่า `google.accounts.id.initialize({client_id})` + `renderButton(slot)`
+- [x] 3. ~~GIS dual-client spike~~ **SUPERSEDED — ไม่ implement.** Resolution (2026-07-20): backend เปลี่ยนเป็น
+     BFF ก่อนสร้าง production impl; `src/lib/auth/gis.ts` (+ spike code) ถูกลบใน B5. งานจริงคือ B1-B8 (เสร็จแล้ว).
+     ปิด checkbox เพื่อสะท้อนสถานะจริง (จะไม่มีการ implement task นี้ตามที่เขียนไว้อีก) — ไม่ใช่ code-green claim.
+     Evidence: n/a — reconciliation only, ไม่มี code เขียนใหม่ (ดู B1-B8 แทน); deviations: closed as superseded, ไม่ใช่ completed-as-spec'd.
+
+  > ต้นฉบับ task 3 (เก็บไว้อ่านประกอบ, ไม่ใช่ task ที่ต้องทำ — ดู resolution ด้านบน): GIS dual-client spike — พิสูจน์ว่า `google.accounts.id.initialize({client_id})` + `renderButton(slot)`
      แบบ render-on-demand 1 client/ครั้ง คืน credential ผ่าน callback ที่ผูก `client_id` ถูกตัวเมื่อสลับ audience (admin<->producer),
      และ `aud` ใน ID token ตรง client_id ที่ตั้งใจ. ใช้ client_id จริงใน `.env.local` (ไม่ commit). บันทึกลำดับ init/render ที่ใช้ได้จริง
      ลงท้าย design.md (หรือ note ในงาน) ก่อนล็อก T4. ถ้า binding ไม่ reliable -> สลับ pattern ตาม ceiling ใน design.
@@ -50,7 +55,12 @@
      ค้าง (manual, รอ real client_id ใน .env.local): ยืนยัน `aud` จริง = client_id ผ่าน GIS popup ที่ :5200. คง `[ ]` จนกว่า verify จริง.
      Live verify (2026-06-23, browser :5200, .env.local จริง): คลิก Admin -> iframe `client_id=888188...`; สลับ Producer -> `client_id=331131...` (คนละตัว, ปุ่มเดิมถูก `replaceChildren`) = render-on-demand binding จริงผ่าน, no clobber. ค้างจริง: `aud` จาก token ต้อง sign-in (ติด origin config — ดู flag). binding goal ของ spike = ผ่าน (unit + live distinct client_id).
 
-- [ ] 4. Login page + GIS wiring + toast — `src/app/login/page.tsx` (shell-free, render `<LoginView/>`),
+- [x] 4. ~~Login page + GIS wiring + toast~~ **SUPERSEDED — ไม่ implement ตาม spec เดิม.**
+     Resolution (2026-07-20): `login-view.tsx`/`login/page.tsx` ถูกสร้างจริงแล้วแต่เป็น flow BFF ปุ่มเดียว (B4),
+     ไม่ใช่ GIS 2-audience ตามที่เขียนไว้ล่างนี้; `session-storage.ts`/`use-auth-toast.ts` ถูกลบใน B5.
+     Evidence: n/a — reconciliation only, งานจริงคือ B4 (Evidence อยู่ที่ B4); deviations: closed as superseded.
+
+  > ต้นฉบับ task 4 (เก็บไว้อ่านประกอบ, ไม่ใช่ task ที่ต้องทำ — ดู resolution ด้านบน): Login page + GIS wiring + toast — `src/app/login/page.tsx` (shell-free, render `<LoginView/>`),
      `src/components/auth/login-view.tsx` (`"use client"`: โหลด GIS ผ่าน `next/script` + ready/error/retry[bump key];
      initial `checking` กัน flash; อ่าน session เดิม -> redirect ตาม `chooseLanding`; 2 ปุ่ม audience + slot renderButton;
      `getClientId` null -> ปุ่ม disabled + inline config error, หายทั้งคู่ -> empty-state; callback -> `verifyAndBuildSession`
@@ -68,7 +78,12 @@
      Live verify (2026-06-23, browser :5200): /login no-shell + 2 ปุ่ม+aria-label (1.1-1.4); GIS โหลด (`google.accounts.id`=true) + ปุ่ม enabled (1.5); ปุ่ม Google render ต่อ audience (2.1-2.4,2.6); session ใช้ได้ -> เด้ง /main (4.4); หมดอายุ -> ล้าง+คง /login (4.5); responsive 320/375/768/1440 clientWidth===target no h-scroll (7.3); Tab -> focus ring 3px ทั้ง 2 ปุ่ม (7.1); ก่อน sign-in ไม่มี token/PII ใน localStorage (3.7). ค้าง: happy-path sign-in สำเร็จ + error/cancel toast (5.x) + config-error/empty-state (2.5) + script-fail retry (1.6) — ต้อง Google login จริง/force-fail; ติด origin config.
      2-card amend (2026-06-23): `login-view` เป็น **2 card**, ปุ่ม Google โชว์พร้อมกันต่อ card (ไม่ต้องเลือกก่อน); config error ต่อ card. verified live :5200: 2 region + h2, ปุ่มทั้งคู่ render client_id ถูกตัว, 375 no h-scroll, ไม่มี error ใหม่. tsc/lint/build เขียว, 29 unit tests pass.
 
-- [ ] 5. Sign-out (logout route) — `src/app/logout/page.tsx` (`"use client"`: `clearSession()` -> `router.replace("/login")`).
+- [x] 5. ~~Sign-out (logout route)~~ **SUPERSEDED — ไม่ implement ตาม spec เดิม.**
+     Resolution (2026-07-20): `logout/page.tsx` ถูกสร้างจริงแล้วแต่เรียก BFF `logout()` (admin-api), ไม่ใช่
+     `clearSession()` localStorage ตามที่เขียนไว้ล่างนี้ (ฟังก์ชันนั้นถูกลบใน B5).
+     Evidence: n/a — reconciliation only, งานจริงคือ B4 (Evidence อยู่ที่ B4); deviations: closed as superseded.
+
+  > ต้นฉบับ task 5 (เก็บไว้อ่านประกอบ, ไม่ใช่ task ที่ต้องทำ — ดู resolution ด้านบน): Sign-out (logout route) — `src/app/logout/page.tsx` (`"use client"`: `clearSession()` -> `router.replace("/login")`).
      Satisfies: REQ-8 (8.1-8.3). Depends on: 4 (session-storage). Verify: `npm run dev` — เข้า `/logout` ล้าง session + เด้ง `/login`;
      หลังจากนั้นเข้า `/login` แสดงหน้า login (ไม่เด้งออก) จนกว่า login ใหม่.
      Progress (2026-06-23, option 1): เขียน `src/app/logout/page.tsx` (`clearSession()` -> `router.replace("/login")`). `npm run build` -> `/logout` prerender ○ Static.
