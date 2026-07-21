@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 5200",
+    "dev:clean": "rm -rf .next tsconfig.tsbuildinfo && next dev -p 5200",
     "build": "next build",
     "start": "next start -p 5200",
     "lint": "eslint",
@@ -20,6 +21,7 @@
     "react-dom": "19.2.4",
     "recharts": "^3.8.1",
     "shadcn": "^4.8.0",
+    "sharp": "^0.34.5",
     "simplebar": "^6.3.3",
     "simplebar-react": "^3.3.2",
     "tailwind-merge": "^3.6.0",
