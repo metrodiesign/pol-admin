@@ -3,8 +3,8 @@
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
-import { login } from "@/lib/api/admin-api";
-import { producerLogin } from "@/lib/api/producer-api";
+import { login, microsoftLogin } from "@/lib/api/admin-api";
+import { producerLogin, producerMicrosoftLogin } from "@/lib/api/producer-api";
 
 // landing หลัง login = /main (admin landing จริง). backend ต้องมี /main ใน AdminSession:ReturnUrlAllowlist
 // (ไม่งั้น reject -> falls back /). ดู coordination item ใน spec.
@@ -30,6 +30,18 @@ function GoogleIcon() {
         fill="#EA4335"
         d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0A9 9 0 0 0 .96 4.95l3.01 2.33C4.68 5.16 6.66 3.58 9 3.58Z"
       />
+    </svg>
+  );
+}
+
+// โลโก้ Microsoft (4 สี่เหลี่ยมมาตรฐาน)
+function MicrosoftIcon() {
+  return (
+    <svg viewBox="0 0 21 21" aria-hidden className="size-[18px]">
+      <rect x="1" y="1" width="9" height="9" fill="#F25022" />
+      <rect x="11" y="1" width="9" height="9" fill="#7FBA00" />
+      <rect x="1" y="11" width="9" height="9" fill="#00A4EF" />
+      <rect x="11" y="11" width="9" height="9" fill="#FFB900" />
     </svg>
   );
 }
@@ -93,6 +105,15 @@ export function LoginView() {
               <GoogleIcon />
               เข้าสู่ระบบด้วย Google
             </Button>
+            <Button
+              type="button"
+              size="lg"
+              className={`mt-3 ${SSO_BUTTON_CLASS}`}
+              onClick={() => microsoftLogin(RETURN_TO)}
+            >
+              <MicrosoftIcon />
+              เข้าสู่ระบบด้วย Microsoft
+            </Button>
           </section>
 
           <section
@@ -108,6 +129,15 @@ export function LoginView() {
             >
               <GoogleIcon />
               เข้าสู่ระบบด้วย Google
+            </Button>
+            <Button
+              type="button"
+              size="lg"
+              className={`mt-3 ${SSO_BUTTON_CLASS}`}
+              onClick={() => producerMicrosoftLogin()}
+            >
+              <MicrosoftIcon />
+              เข้าสู่ระบบด้วย Microsoft
             </Button>
           </section>
         </div>

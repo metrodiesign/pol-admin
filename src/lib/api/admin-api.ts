@@ -12,7 +12,11 @@ import type {
 // Admin BFF client — FE ไม่ถือ token; session อยู่ใน httpOnly cookie ที่ backend จัดการ.
 // contract: pol-core/docs/reference/admin-fe-integration.md
 
-const LOGIN_PATH = "/admin/auth/login";
+// login เป็น top-level navigation ตรงไป backend origin (callback ลงทะเบียนที่ backend host จริง) —
+// ไม่ผ่าน Next rewrite proxy เพราะ redirect_uri ที่ ASP.NET OIDC handler สร้างต้องตรง host ที่ browser navigate ไปเป๊ะ.
+const API_ORIGIN = process.env.NEXT_PUBLIC_API_ORIGIN ?? "";
+const LOGIN_PATH = `${API_ORIGIN}/api/v1/admins/auth/google/login`;
+const MICROSOFT_LOGIN_PATH = `${API_ORIGIN}/api/v1/admins/auth/microsoft/login`;
 const CSRF_COOKIE = "adm_csrf";
 const CSRF_HEADER = "X-CSRF-Token";
 const MUTATION_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"]);
@@ -40,9 +44,14 @@ function clampReturnTo(returnTo: string): string {
   return RETURN_TO_ALLOWLIST.includes(returnTo) ? returnTo : DEFAULT_RETURN_TO;
 }
 
-/** สร้าง URL เริ่ม SSO: `/admin/auth/login?returnTo=<encoded,clamped>`. */
+/** สร้าง URL เริ่ม SSO: `/admin/auth/google/login?returnTo=<encoded,clamped>`. */
 export function buildLoginUrl(returnTo: string): string {
   return `${LOGIN_PATH}?returnTo=${encodeURIComponent(clampReturnTo(returnTo))}`;
+}
+
+/** สร้าง URL เริ่ม SSO ผ่าน Microsoft/Entra: `/admin/auth/microsoft/login?returnTo=<encoded,clamped>`. */
+export function buildMicrosoftLoginUrl(returnTo: string): string {
+  return `${MICROSOFT_LOGIN_PATH}?returnTo=${encodeURIComponent(clampReturnTo(returnTo))}`;
 }
 
 /** ประกอบ RequestInit: `credentials:'include'` เสมอ; แนบ `X-CSRF-Token` เฉพาะ mutation ที่มี csrf. */
@@ -62,6 +71,11 @@ export function cookie(name: string): string | null {
 /** เริ่ม SSO ด้วย full-page navigate (ไม่ใช่ fetch — flow เด้งออกไป Google แล้วกลับมาที่ returnTo). */
 export function login(returnTo: string = DEFAULT_RETURN_TO): void {
   window.location.href = buildLoginUrl(returnTo);
+}
+
+/** เริ่ม SSO ผ่าน Microsoft/Entra ด้วย full-page navigate. */
+export function microsoftLogin(returnTo: string = DEFAULT_RETURN_TO): void {
+  window.location.href = buildMicrosoftLoginUrl(returnTo);
 }
 
 export interface AdminFetchOptions extends RequestInit {
