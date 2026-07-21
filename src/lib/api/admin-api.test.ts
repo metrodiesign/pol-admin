@@ -49,16 +49,16 @@ describe("isMutation", () => {
 
 describe("buildLoginUrl", () => {
   it("encode returnTo ที่อยู่ใน allowlist", () => {
-    expect(buildLoginUrl("/dashboard")).toBe("/admin/auth/login?returnTo=%2Fdashboard");
+    expect(buildLoginUrl("/dashboard")).toBe("/api/v1/admins/auth/google/login?returnTo=%2Fdashboard");
   });
   it("allow '/'", () => {
-    expect(buildLoginUrl("/")).toBe("/admin/auth/login?returnTo=%2F");
+    expect(buildLoginUrl("/")).toBe("/api/v1/admins/auth/google/login?returnTo=%2F");
   });
   it("allow /main", () => {
-    expect(buildLoginUrl("/main")).toBe("/admin/auth/login?returnTo=%2Fmain");
+    expect(buildLoginUrl("/main")).toBe("/api/v1/admins/auth/google/login?returnTo=%2Fmain");
   });
   it("clamp path นอก allowlist -> /main (default)", () => {
-    expect(buildLoginUrl("/transaction")).toBe("/admin/auth/login?returnTo=%2Fmain");
+    expect(buildLoginUrl("/transaction")).toBe("/api/v1/admins/auth/google/login?returnTo=%2Fmain");
   });
 });
 

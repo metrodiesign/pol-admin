@@ -8,18 +8,18 @@ afterEach(() => {
 });
 
 describe("producerLogin", () => {
-  it("navigate ไป /producer/auth/login พร้อม returnTo default (/register, encoded)", () => {
+  it("navigate ไป /api/v1/merchants/auth/google/login พร้อม returnTo default (/register, encoded)", () => {
     const location = { href: "" };
     vi.stubGlobal("window", { location });
     producerLogin();
-    expect(location.href).toBe("/producer/auth/login?returnTo=%2Fregister");
+    expect(location.href).toBe("/api/v1/merchants/auth/google/login?returnTo=%2Fregister");
   });
 
   it("encode returnTo ที่ส่งเข้ามา", () => {
     const location = { href: "" };
     vi.stubGlobal("window", { location });
     producerLogin("/a/b");
-    expect(location.href).toBe("/producer/auth/login?returnTo=%2Fa%2Fb");
+    expect(location.href).toBe("/api/v1/merchants/auth/google/login?returnTo=%2Fa%2Fb");
   });
 });
 

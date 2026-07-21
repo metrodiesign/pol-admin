@@ -6,6 +6,7 @@ import type { NextConfig } from "next";
 const adminApiOrigin = process.env.ADMIN_API_ORIGIN;
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   images: {
     remotePatterns: [
       {
@@ -25,8 +26,8 @@ const nextConfig: NextConfig = {
   async rewrites() {
     if (!adminApiOrigin) return [];
     return [
-      { source: "/admin/:path*", destination: `${adminApiOrigin}/admin/:path*` },
-      { source: "/producer/:path*", destination: `${adminApiOrigin}/producer/:path*` },
+      { source: "/admin/:path*", destination: `${adminApiOrigin}/api/v1/admins/:path*` },
+      { source: "/producer/:path*", destination: `${adminApiOrigin}/api/v1/merchants/:path*` },
     ];
   },
 };

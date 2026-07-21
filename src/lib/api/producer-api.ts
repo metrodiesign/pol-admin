@@ -2,7 +2,10 @@ import type { MerchantUserFormData } from "@/types/merchant-user";
 
 // Producer BFF client — full-page navigate เริ่ม SSO; ไม่ถือ token (session = httpOnly cookie ฝั่ง backend).
 // contract: pol-core/docs/reference/producer-google-sso.md
-const PRODUCER_LOGIN_PATH = "/producer/auth/login";
+// login เป็น top-level navigation ตรงไป backend origin (เหตุผลเดียวกับ admin-api.ts: redirect_uri ต้องตรง host จริง).
+const API_ORIGIN = process.env.NEXT_PUBLIC_API_ORIGIN ?? "";
+const PRODUCER_LOGIN_PATH = `${API_ORIGIN}/api/v1/merchants/auth/google/login`;
+const PRODUCER_MICROSOFT_LOGIN_PATH = `${API_ORIGIN}/api/v1/merchants/auth/microsoft/login`;
 const PRODUCER_REGISTER_PATH = "/producer/register";
 
 // landing หลัง login สำเร็จ (active producer). ต้องอยู่ใน Producer:Session:ReturnUrlAllowlist ฝั่ง backend.
@@ -12,6 +15,11 @@ const PRODUCER_DEFAULT_RETURN_TO = "/register";
 /** เริ่ม SSO ด้วย full-page navigate (flow เด้งออกไป Google แล้วกลับมาที่ returnTo). */
 export function producerLogin(returnTo: string = PRODUCER_DEFAULT_RETURN_TO): void {
   window.location.href = `${PRODUCER_LOGIN_PATH}?returnTo=${encodeURIComponent(returnTo)}`;
+}
+
+/** เริ่ม SSO ผ่าน Microsoft/Entra ด้วย full-page navigate. */
+export function producerMicrosoftLogin(returnTo: string = PRODUCER_DEFAULT_RETURN_TO): void {
+  window.location.href = `${PRODUCER_MICROSOFT_LOGIN_PATH}?returnTo=${encodeURIComponent(returnTo)}`;
 }
 
 // map MerchantUserFormData -> multipart ตาม wire contract (§7). แยกเป็น pure fn เพราะ field-name
