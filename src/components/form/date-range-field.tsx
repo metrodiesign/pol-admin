@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useState, type ChangeEvent } from "react";
+import SimpleBar from "simplebar-react";
 import { CalendarDays } from "lucide-react";
 import {
   DayPicker,
@@ -69,12 +70,19 @@ function CalendarDropdown({ options = [], value, onChange, "aria-label": ariaLab
       >
         <SelectValue>{selected?.label}</SelectValue>
       </SelectTrigger>
-      <SelectContent className="max-h-72">
-        {options.map((o) => (
-          <SelectItem key={o.value} value={String(o.value)} disabled={o.disabled} className="py-2.5">
-            {o.label}
-          </SelectItem>
-        ))}
+      <SelectContent>
+        <SimpleBar autoHide={false} style={{ maxHeight: 288 }}>
+          {options.map((o) => (
+            <SelectItem
+              key={o.value}
+              value={String(o.value)}
+              disabled={o.disabled}
+              className="py-2.5"
+            >
+              {o.label}
+            </SelectItem>
+          ))}
+        </SimpleBar>
       </SelectContent>
     </Select>
   );
