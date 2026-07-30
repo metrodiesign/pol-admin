@@ -18,16 +18,15 @@ export function AreaInstalled() {
 
   return (
     <WidgetCard
-      title="Area installed"
-      subtitle="(+43%) than last year"
+      title="ธุรกรรมตามช่องทางชำระเงิน"
       action={
         <Select value={year} onValueChange={(v) => v && setYear(v)}>
-          <SelectTrigger className="h-8 w-[88px] rounded-control text-sm">
+          <SelectTrigger className="h-10 w-[100px] rounded-control text-sm data-[size=default]:h-10">
             <SelectValue />
           </SelectTrigger>
           <SelectContent align="end">
             {areaInstalled.years.map((y) => (
-              <SelectItem key={y} value={y}>
+              <SelectItem key={y} value={y} className="py-2.5">
                 {y}
               </SelectItem>
             ))}
@@ -51,8 +50,9 @@ export function AreaInstalled() {
         categories={areaInstalled.categories}
         series={areaInstalled.regions}
         grouped
-        yDomain={[0, 80]}
-        yTicks={[0, 20, 40, 60, 80]}
+        yDomain={[0, 800000]}
+        yTicks={[0, 200000, 400000, 600000, 800000]}
+        valueFormatter={(v) => `฿${v.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
       />
     </WidgetCard>
   );

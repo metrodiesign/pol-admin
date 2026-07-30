@@ -13,7 +13,7 @@ export const ACCENT_HEX: Record<AccentColor, string> = {
 export const CATEGORICAL = ["#00a76f", "#ffab00", "#00b8d9", "#ff5630", "#8e33ff"];
 
 /** Single-hue primary ramp (lighter -> darker) — /dashboard "Current download" donut. */
-export const PRIMARY_RAMP = ["#c8fad6", "#5be49b", "#007867", "#004b50"];
+export const PRIMARY_RAMP = ["#d0ecfe", "#73bafb", "#0c68e9", "#063cb4"];
 
 /** Dark variants — ใช้กับ gradient (dark -> main) + line sparkline แบบ analytics. */
 export const ACCENT_DARK: Record<AccentColor, string> = {
