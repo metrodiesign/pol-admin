@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { Search, CalendarDays } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { CHANNEL_LABEL } from "@/lib/order";
+import { CHANNEL_LABEL, ORDER_STATUS_LABEL } from "@/lib/order";
 import { TextField } from "@/components/form/text-field";
 import { SelectField } from "@/components/form/select-field";
 
@@ -22,9 +22,12 @@ function DateInput({
   onChange: (v: string) => void;
 }) {
   const [focused, setFocused] = useState(false);
+  const id = useId();
   return (
     <div className="flex w-full flex-col gap-1.5">
-      <span className="select-none text-sm font-medium text-grey-800">{label}</span>
+      <label id={id} className="text-sm font-medium text-grey-800">
+        {label}
+      </label>
       <div
         className={cn(
           "flex h-12 items-center rounded-control border bg-transparent pl-3.5 pr-1.5 transition-colors",
@@ -35,7 +38,7 @@ function DateInput({
       >
         <input
           type="text"
-          aria-label={label}
+          aria-labelledby={id}
           placeholder="YYYY-MM-DD"
           value={value}
           onChange={(e) => onChange(e.target.value)}
@@ -60,27 +63,23 @@ interface OrderListToolbarProps {
   onSearchChange: (v: string) => void;
   channel: string;
   onChannelChange: (v: string) => void;
-  psp: string;
-  onPspChange: (v: string) => void;
+  status: string;
+  onStatusChange: (v: string) => void;
   rowsPerPage: number;
   onRowsPerPageChange: (n: number) => void;
 }
 
-const ALL = "__all__";
+const CHANNEL_OPTIONS: Option[] = Object.entries(CHANNEL_LABEL).map(([value, label]) => ({
+  value,
+  label,
+}));
 
-const CHANNEL_OPTIONS: Option[] = [
-  { value: ALL, label: "ทั้งหมด" },
-  ...Object.entries(CHANNEL_LABEL).map(([value, label]) => ({ value, label })),
-];
-
-const PSP_OPTIONS: Option[] = [
-  { value: ALL, label: "ทั้งหมด" },
-  { value: "omise", label: "Omise" },
-  { value: "2c2p", label: "2C2P" },
-];
+const STATUS_OPTIONS: Option[] = Object.entries(ORDER_STATUS_LABEL).map(([value, label]) => ({
+  value,
+  label,
+}));
 
 const ROWS_OPTIONS: Option[] = [
-  { value: "10", label: "10" },
   { value: "25", label: "25" },
   { value: "50", label: "50" },
   { value: "100", label: "100" },
@@ -91,8 +90,8 @@ export function OrderListToolbar({
   onSearchChange,
   channel,
   onChannelChange,
-  psp,
-  onPspChange,
+  status,
+  onStatusChange,
   rowsPerPage,
   onRowsPerPageChange,
 }: OrderListToolbarProps) {
@@ -108,17 +107,21 @@ export function OrderListToolbar({
       />
 
       <SelectField
-        label="ช่องทาง"
-        value={channel || ALL}
-        onChange={(v) => onChannelChange(v === ALL ? "" : v)}
+        label="ช่องทางชำระเงิน"
+        value={channel}
+        onChange={onChannelChange}
         options={CHANNEL_OPTIONS}
+        placeholder="ทั้งหมด"
+        clearable
       />
 
       <SelectField
-        label="PSP"
-        value={psp || ALL}
-        onChange={(v) => onPspChange(v === ALL ? "" : v)}
-        options={PSP_OPTIONS}
+        label="สถานะ"
+        value={status}
+        onChange={onStatusChange}
+        options={STATUS_OPTIONS}
+        placeholder="ทั้งหมด"
+        clearable
       />
 
       {/* Row 2 */}

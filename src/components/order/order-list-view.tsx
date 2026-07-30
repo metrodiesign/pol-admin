@@ -12,7 +12,6 @@ import type { OrderStatus } from "@/types/order-payment";
 import { ORDER_ROWS, ORDER_STATUS_LABEL, type OrderRow } from "@/lib/order";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";
-import { OrderStatCards } from "./order-stat-cards";
 import { OrderListTabs } from "./order-list-tabs";
 import { OrderListToolbar } from "./order-list-toolbar";
 import { OrderDetailSheet } from "./order-detail-sheet";
@@ -28,14 +27,13 @@ export function OrderListView() {
 
   const [search, setSearch] = useState("");
   const [channel, setChannel] = useState("");
-  const [psp, setPsp] = useState("");
   const [statusTab, setStatusTab] = useState<TabValue>("all");
   const [dense, setDense] = useState(false);
   const [detailTx, setDetailTx] = useState<OrderRow | null>(null);
 
   const globalFilter = useMemo(
-    () => ({ search, channel, psp, status: statusTab }),
-    [search, channel, psp, statusTab],
+    () => ({ search, channel, status: statusTab }),
+    [search, channel, statusTab],
   );
 
   const columns = useMemo(
@@ -63,13 +61,11 @@ export function OrderListView() {
       const f = value as {
         search: string;
         channel: string;
-        psp: string;
         status: TabValue;
       };
       const t = row.original;
       if (!(f.status === "all" || t.status === f.status)) return false;
       if (f.channel && t.session?.channel !== f.channel) return false;
-      if (f.psp && t.session?.psp !== f.psp) return false;
       if (f.search) {
         const q = f.search.toLowerCase();
         if (
@@ -87,7 +83,7 @@ export function OrderListView() {
     getPaginationRowModel: getPaginationRowModel(),
     initialState: {
       sorting: [{ id: "time", desc: true }],
-      pagination: { pageIndex: 0, pageSize: 10 },
+      pagination: { pageIndex: 0, pageSize: 25 },
     },
   });
 
@@ -111,8 +107,6 @@ export function OrderListView() {
   return (
     <>
     <div className="flex flex-col gap-6">
-      <OrderStatCards />
-
       <div
         className="overflow-hidden rounded-2xl bg-card"
         style={{ boxShadow: "var(--shadow-card)" }}
@@ -136,9 +130,9 @@ export function OrderListView() {
             setChannel(v);
             table.setPageIndex(0);
           }}
-          psp={psp}
-          onPspChange={(v) => {
-            setPsp(v);
+          status={statusTab === "all" ? "" : statusTab}
+          onStatusChange={(v) => {
+            setStatusTab((v || "all") as TabValue);
             table.setPageIndex(0);
           }}
           rowsPerPage={table.getState().pagination.pageSize}
@@ -152,7 +146,7 @@ export function OrderListView() {
           total={filteredCount}
           dense={dense}
           onDenseChange={setDense}
-          rowsPerPageOptions={[10, 25, 50]}
+          rowsPerPageOptions={[25, 50, 100]}
           searchQuery={search}
           showSelectionAction={false}
         />

@@ -23,6 +23,7 @@ interface SelectFieldProps {
   options: SelectOption[];
   placeholder?: string;
   className?: string;
+  clearable?: boolean;
 }
 
 /**
@@ -37,6 +38,7 @@ export function SelectField({
   options,
   placeholder,
   className,
+  clearable = false,
 }: SelectFieldProps) {
   const id = useId();
   const selected = options.find((o) => o.value === value) ?? null;
@@ -55,6 +57,7 @@ export function SelectField({
         <ComboboxInput
           aria-labelledby={id}
           placeholder={placeholder}
+          showClear={clearable}
           className={cn(
             "h-12 rounded-control border-[var(--divider)] text-sm",
             "focus-within:border-primary focus-within:ring-1 focus-within:ring-inset focus-within:ring-primary",
@@ -66,7 +69,7 @@ export function SelectField({
         <ComboboxEmpty>No results</ComboboxEmpty>
         <ComboboxList>
           {(item: SelectOption) => (
-            <ComboboxItem key={item.value} value={item}>
+            <ComboboxItem key={item.value} value={item} className="py-2.5">
               {item.label}
             </ComboboxItem>
           )}

@@ -96,7 +96,7 @@ export function DataTable<TData>({
                           ) : sorted === "desc" ? (
                             <ArrowDown className="size-3.5" />
                           ) : (
-                            <ArrowUpDown className="size-3.5 opacity-0 transition-opacity group-hover:opacity-50" />
+                            <ArrowUpDown className="size-3.5 opacity-50" />
                           )}
                         </button>
                       ) : (

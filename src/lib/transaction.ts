@@ -20,11 +20,11 @@ export const PAYMENT_SESSION_STATUS_DOT: Record<PaymentSessionStatus, string> = 
   Failed: "bg-error", Expired: "bg-grey-500",
 };
 export const CHANNEL_LABEL: Record<PaymentChannel, string> = {
-  card: "บัตรเครดิต/เดบิต", promptpay: "PromptPay QR", installment: "ผ่อนชำระ",
+  card: "บัตรเครดิต/เดบิต", promptpay: "พร้อมเพย์", installment: "ผ่อนชำระ",
 };
-// channel dot colors (Minimals palette): card=blue info, promptpay=green success, installment=purple
+// channel dot colors (Minimals palette): matches /main dashboard channel legend (CATEGORICAL[0..2])
 export const CHANNEL_DOT: Record<PaymentChannel, string> = {
-  card: "bg-info", promptpay: "bg-success", installment: "bg-[#8E33FF]",
+  card: "bg-success", promptpay: "bg-warning", installment: "bg-info",
 };
 export const PSP_LABEL: Record<Psp, string> = { omise: "Omise", "2c2p": "2C2P" };
 
