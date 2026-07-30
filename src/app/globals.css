@@ -601,6 +601,10 @@ tbody tr {
   --rdp-day-height: 40px;
   --rdp-day_button-width: 40px;
   --rdp-day_button-height: 40px;
+  /* nav ปุ่มต้องจัตุรัส ไม่งั้น radius เต็มได้ทรงแคปซูล (default 2.25x2.75rem) */
+  --rdp-nav-height: 40px;
+  --rdp-nav_button-width: 40px;
+  --rdp-nav_button-height: 40px;
   font-size: 0.875rem;
 }
 .date-range-calendar .rdp-month_caption {
