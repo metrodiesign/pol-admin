@@ -43,3 +43,17 @@
   - prop signature ที่จะแทน `<DateInput label="วันที่" value="24 พ.ค. 2569" onChange={() => {}} />`: `<DateRangeField label="วันที่" value={dateRange} onChange={setDateRange} />` โดย `dateRange: DateRange | null` (ยัง local state ใน toolbar เอง ตาม REQ-6.4 ไม่ต้อง wire เข้า `order-list-view.tsx`/`PaymentSession`)
   - `DateInput` helper component เดิมใน `order-list-toolbar.tsx` (บรรทัด ~15-59) จะกลายเป็น orphan หลัง Task 4 แทนที่ — ต้องลบทิ้งตาม tasks.md Task 4 spec
   - placeholder default ของ `DateRangeField` คือ `"กำหนดเอง"` แล้ว (REQ-4.6) ไม่ต้องส่ง prop เพิ่มถ้าใช้ค่า default
+
+## Task 4 — wire แทน DateInput ใน order-list-toolbar
+- สถานะ: DONE
+- ไฟล์ที่แก้: `src/components/order/order-list-toolbar.tsx`
+  - แทน `<DateInput label="วันที่" value="24 พ.ค. 2569" onChange={() => {}} />` ด้วย `<DateRangeField label="วันที่" value={dateRange} onChange={setDateRange} />` โดยเพิ่ม local state `const [dateRange, setDateRange] = useState<DateRange | null>(null);` ใน `OrderListToolbar` (UI-only, ยังไม่ wire เข้า `order-list-view.tsx`/`PaymentSession` ตาม REQ-6.4) — grid layout เดิม (`grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`) และตำแหน่ง field อื่นไม่ถูกแตะ
+  - เพิ่ม import: `DateRangeField` จาก `@/components/form/date-range-field`, type `DateRange` จาก `@/lib/date-range`
+- Orphan ที่ลบออกจากไฟล์นี้: local function `DateInput` (เดิมบรรทัด ~15-59) พร้อม import ที่ไม่เหลือใครใช้แล้ว — `CalendarDays` (lucide-react), `cn` (`@/lib/utils`), `useId` (react) — เช็คแล้วว่า `DateInput` ใน repo เป็น local function แยกไฟล์ (ไม่ shared export) มีอีก 4 ไฟล์ (`transaction-list-toolbar.tsx`, `dashboard/order/order-list-toolbar.tsx`, `dashboard/invoice/invoice-list-view.tsx`, `policy-list-toolbar.tsx`) ที่มี `DateInput` ของตัวเอง — อยู่นอก scope Task 4 ไม่แตะ
+- ไม่ได้แตะ: `order-list-view.tsx`, `PaymentSession` type (ตาม scope)
+- Evidence:
+  - `npx tsc --noEmit -p .` → `TypeScript: No errors found`
+  - `npx eslint src/components/order/order-list-toolbar.tsx` → `ESLint: No issues found`
+  - `npm run build` → ผ่านทั้งหมดทุกหน้า รวม `/order/list`
+  - `npm test -- --run` → `Test Files 12 passed (12)`, `Tests 156 passed (156)` (ไม่มี regression)
+- สรุป: spec `date-range-picker` ครบทุก task แล้ว (Task 1-4 DONE) พร้อม `/run` เช็คด้วยตาจริง แล้วเปิด PR
