@@ -27,6 +27,7 @@ import {
   computePreset,
   detectPreset,
   formatThaiRange,
+  sameDay,
   thaiMonthDropdown,
   thaiMonthYearCaption,
   thaiWeekday,
@@ -95,6 +96,8 @@ export function DateRangeField({
   );
   // recompute ทุกครั้งที่เปิด (ห้าม render อะไรที่พึ่ง today นอก popover — กัน hydration drift ข้ามเที่ยงคืน)
   const [today, setToday] = useState<Date>(() => new Date());
+  // วันที่ hover/focus อยู่ ใช้ทำ preview range ระหว่างเลือกครึ่งเดียว
+  const [hovered, setHovered] = useState<Date | null>(null);
 
   useScrollLock(open);
 
@@ -105,6 +108,7 @@ export function DateRangeField({
       setDraft(value);
       setMonthState(startOfMonth(value ? value.start : now));
     }
+    setHovered(null);
     setOpen(next);
   }
 
@@ -149,6 +153,14 @@ export function DateRangeField({
 
   const activePreset: PresetKey =
     draft?.end !== undefined ? detectPreset({ start: draft.start, end: draft.end }, today) : "custom";
+
+  // preview range: มี start แล้วแต่ยังไม่มี end และกำลัง hover/focus วันอื่นอยู่
+  const preview =
+    draft && draft.end === undefined && hovered && !sameDay(hovered, draft.start)
+      ? hovered < draft.start
+        ? { from: hovered, to: draft.start }
+        : { from: draft.start, to: hovered }
+      : null;
 
   return (
     <div className="flex w-full flex-col gap-1.5">
@@ -206,6 +218,19 @@ export function DateRangeField({
                 selected={draft ? { from: draft.start, to: draft.end } : undefined}
                 onSelect={handleSelect}
                 onDayClick={handleDayClick}
+                onDayMouseEnter={(day) => setHovered(day)}
+                onDayMouseLeave={() => setHovered(null)}
+                // keyboard parity: เลื่อน focus ด้วยลูกศรก็เห็น preview เหมือนเมาส์
+                onDayFocus={(day) => setHovered(day)}
+                onDayBlur={() => setHovered(null)}
+                modifiers={{
+                  preview_middle: preview ? { after: preview.from, before: preview.to } : [],
+                  preview_end: preview ? [preview.from, preview.to] : [],
+                }}
+                modifiersClassNames={{
+                  preview_middle: "rdp-preview_middle",
+                  preview_end: "rdp-preview_end",
+                }}
                 formatters={{
                   formatCaption: thaiMonthYearCaption,
                   formatWeekdayName: thaiWeekday,

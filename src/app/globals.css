@@ -645,13 +645,27 @@ tbody tr {
   color: var(--primary-foreground);
   border-radius: 9999px;
 }
-/* day hover state (วันที่ยังไม่ถูกเลือก) — อิง shadcn ghost hover */
-.date-range-calendar .rdp-day:not(.rdp-selected) .rdp-day_button:hover {
+/* preview range: เลือก start แล้ว hover/focus วันอื่น — บอกล่วงหน้าว่าช่วงจะกินถึงไหน */
+.date-range-calendar .rdp-preview_middle:not(.rdp-selected) .rdp-day_button {
+  background-color: var(--primary-soft);
+  border-radius: 0;
+}
+.date-range-calendar .rdp-preview_end:not(.rdp-selected) .rdp-day_button {
+  background-color: var(--primary-soft);
+  border-radius: 9999px;
+  font-weight: 600;
+}
+/* day hover state (วันที่ยังไม่ถูกเลือก และไม่อยู่ใน preview — ไม่งั้นทับสี preview) */
+.date-range-calendar
+  .rdp-day:not(.rdp-selected):not(.rdp-preview_middle):not(.rdp-preview_end)
+  .rdp-day_button:hover {
   background-color: var(--action-hover);
   border-radius: 9999px;
 }
-/* today: วงพื้น muted แบบ subtle เมื่อยังไม่อยู่ใน selection */
-.date-range-calendar .rdp-today:not(.rdp-selected) .rdp-day_button {
+/* today: วงพื้น muted แบบ subtle เมื่อยังไม่อยู่ใน selection/preview */
+.date-range-calendar
+  .rdp-today:not(.rdp-selected):not(.rdp-preview_middle):not(.rdp-preview_end)
+  .rdp-day_button {
   background-color: var(--muted);
   border-radius: 9999px;
   font-weight: 600;
