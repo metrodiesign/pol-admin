@@ -617,8 +617,14 @@ tbody tr {
   font-weight: 600;
   font-size: 0.875rem;
 }
+/* วันกลางช่วง: วงกลมรายวันเหมือน endpoint (ไม่ใช่แถบต่อเนื่อง) — RDP ทาพื้นไว้ที่ td ย้ายมาที่ปุ่ม */
 .date-range-calendar .rdp-range_middle {
   color: var(--foreground);
+  background-color: transparent;
+}
+.date-range-calendar .rdp-range_middle .rdp-day_button {
+  background-color: var(--primary-soft);
+  border-radius: 9999px;
 }
 /* nav chevron: ghost icon button แบบ toolbar (ไม่ใช่ accent ฟ้าสด) — อิง shadcn calendar */
 .date-range-calendar .rdp-button_previous,
@@ -648,7 +654,7 @@ tbody tr {
 /* preview range: เลือก start แล้ว hover/focus วันอื่น — บอกล่วงหน้าว่าช่วงจะกินถึงไหน */
 .date-range-calendar .rdp-preview_middle:not(.rdp-selected) .rdp-day_button {
   background-color: var(--primary-soft);
-  border-radius: 0;
+  border-radius: 9999px;
 }
 .date-range-calendar .rdp-preview_end:not(.rdp-selected) .rdp-day_button {
   background-color: var(--primary-soft);
