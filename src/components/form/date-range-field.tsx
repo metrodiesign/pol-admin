@@ -69,7 +69,7 @@ function CalendarDropdown({ options = [], value, onChange, "aria-label": ariaLab
       >
         <SelectValue>{selected?.label}</SelectValue>
       </SelectTrigger>
-      <SelectContent className="max-h-72 min-w-0">
+      <SelectContent className="max-h-72">
         {options.map((o) => (
           <SelectItem key={o.value} value={String(o.value)} disabled={o.disabled}>
             {o.label}
