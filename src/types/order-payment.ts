@@ -13,7 +13,7 @@ export interface PaymentSessionItem { name: string; amount: Money; }
 
 export interface PaymentSession {
   id: string;            // = code, ใช้เป็น key
-  code: string;          // "TXN-2026-100000"
+  code: string;          // "ORD6900000001" (ORD + BE year 2 digits + 8-digit running)
   recipientEmail: string | null;
   source: { code: string; label: string };  // ที่มา เช่น { code: "CPK", label: "ชยพร โกศลกิจ" }
   channel: PaymentChannel;
