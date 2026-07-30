@@ -457,6 +457,12 @@ button, a, input, select, textarea {
   border-radius: 4px;
 }
 
+/* ภายใน select popup ไม่ใช้ outline หนา — item มี data-highlighted bg เป็น focus indicator อยู่แล้ว */
+[data-slot="select-content"]:focus-visible,
+[data-slot="select-content"] :focus-visible {
+  outline: none;
+}
+
 /* ---- Shared form input style (used in invoice-form, etc.) ---- */
 .form-input {
   display: block;
@@ -580,4 +586,112 @@ tbody tr {
 /* ---- Settings: high contrast (stronger card elevation) ---- */
 [data-contrast="true"] .dashboard-card {
   box-shadow: var(--shadow-z16);
+}
+
+/* ---- date-range-field: react-day-picker colors -> semantic tokens (Viriyah palette
+   flows through --primary/--primary-soft already) — only CSS variable overrides,
+   layout/structure stays react-day-picker/style.css default. ---- */
+.date-range-calendar .rdp-root {
+  --rdp-accent-color: var(--primary);
+  --rdp-accent-background-color: var(--primary-soft);
+  --rdp-today-color: var(--primary);
+  /* จูนให้เข้าธีม: endpoint เป็นวงกลมทึบไม่มีเส้นขอบ, ขนาด/ตัวอักษรเท่า data table */
+  --rdp-selected-border: none;
+  --rdp-day-width: 40px;
+  --rdp-day-height: 40px;
+  --rdp-day_button-width: 40px;
+  --rdp-day_button-height: 40px;
+  /* nav ปุ่มต้องจัตุรัส ไม่งั้น radius เต็มได้ทรงแคปซูล (default 2.25x2.75rem) */
+  --rdp-nav-height: 40px;
+  --rdp-nav_button-width: 40px;
+  --rdp-nav_button-height: 40px;
+  font-size: 0.875rem;
+}
+.date-range-calendar .rdp-month_caption {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+.date-range-calendar .rdp-weekday {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-grey-500);
+}
+.date-range-calendar .rdp-selected {
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+/* endpoint: RDP ทาพื้นครึ่งซ้าย/ขวาไว้ที่ td (ต่อแถบ) — โผล่เป็นเหลี่ยมข้างวงกลม ตัดทิ้ง */
+.date-range-calendar .rdp-range_start,
+.date-range-calendar .rdp-range_end {
+  background: transparent;
+}
+/* วันกลางช่วง: วงกลมรายวันเหมือน endpoint (ไม่ใช่แถบต่อเนื่อง) — RDP ทาพื้นไว้ที่ td ย้ายมาที่ปุ่ม */
+.date-range-calendar .rdp-range_middle {
+  color: var(--foreground);
+  background-color: transparent;
+}
+.date-range-calendar .rdp-range_middle .rdp-day_button {
+  background-color: var(--primary-soft);
+  border-radius: 9999px;
+}
+/* nav chevron: ghost icon button แบบ toolbar (ไม่ใช่ accent ฟ้าสด) — อิง shadcn calendar */
+.date-range-calendar .rdp-button_previous,
+.date-range-calendar .rdp-button_next {
+  border-radius: 9999px;
+  transition: background-color 0.15s;
+}
+.date-range-calendar .rdp-button_previous:hover,
+.date-range-calendar .rdp-button_next:hover {
+  background-color: var(--action-hover);
+}
+.date-range-calendar .rdp-chevron {
+  fill: var(--color-grey-600);
+  width: 18px;
+  height: 18px;
+}
+/* single-selected (คลิกวันเริ่มต้น ยังไม่มีวันสิ้นสุด): วงกลมทึบ primary
+   — RDP ให้แค่ .rdp-selected (ไม่มี range_*) และ default border ถูกปิดด้วย
+   --rdp-selected-border ข้างบน; อิง shadcn data-selected-single -> bg-primary */
+.date-range-calendar
+  .rdp-selected:not(.rdp-range_start):not(.rdp-range_end):not(.rdp-range_middle)
+  .rdp-day_button {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  border-radius: 9999px;
+}
+/* preview range: เลือก start แล้ว hover/focus วันอื่น — บอกล่วงหน้าว่าช่วงจะกินถึงไหน */
+.date-range-calendar .rdp-preview_middle:not(.rdp-selected) .rdp-day_button {
+  background-color: var(--primary-soft);
+  border-radius: 9999px;
+}
+.date-range-calendar .rdp-preview_end:not(.rdp-selected) .rdp-day_button {
+  background-color: var(--primary-soft);
+  border-radius: 9999px;
+  font-weight: 600;
+}
+/* day hover state (วันที่ยังไม่ถูกเลือก และไม่อยู่ใน preview — ไม่งั้นทับสี preview) */
+.date-range-calendar
+  .rdp-day:not(.rdp-selected):not(.rdp-preview_middle):not(.rdp-preview_end)
+  .rdp-day_button:hover {
+  background-color: var(--action-hover);
+  border-radius: 9999px;
+}
+/* today: วงพื้น muted แบบ subtle เมื่อยังไม่อยู่ใน selection/preview */
+.date-range-calendar
+  .rdp-today:not(.rdp-selected):not(.rdp-preview_middle):not(.rdp-preview_end)
+  .rdp-day_button {
+  background-color: var(--muted);
+  border-radius: 9999px;
+  font-weight: 600;
+}
+/* focus-visible ring บนวัน (keyboard nav) — อิง shadcn focused-day ring */
+.date-range-calendar .rdp-day_button:focus-visible {
+  outline: none;
+  border-radius: 9999px;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 50%, transparent);
+}
+/* caption dropdown (เดือน/ปี พ.ศ.) ใช้ ui/select ผ่าน components.Dropdown — จัดแค่ระยะ */
+.date-range-calendar .rdp-dropdowns {
+  gap: 0.25rem;
 }
