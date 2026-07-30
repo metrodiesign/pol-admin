@@ -603,8 +603,8 @@ tbody tr {
   color: var(--foreground);
 }
 .date-range-calendar .rdp-weekday {
-  font-size: 0.75rem;
-  font-weight: 500;
+  font-size: 0.8rem;
+  font-weight: 400;
   color: var(--color-grey-500);
 }
 .date-range-calendar .rdp-selected {
@@ -613,4 +613,30 @@ tbody tr {
 }
 .date-range-calendar .rdp-range_middle {
   color: var(--foreground);
+}
+/* nav chevron: ghost icon button แบบ toolbar (ไม่ใช่ accent ฟ้าสด) — อิง shadcn calendar */
+.date-range-calendar .rdp-button_previous,
+.date-range-calendar .rdp-button_next {
+  border-radius: 9999px;
+  transition: background-color 0.15s;
+}
+.date-range-calendar .rdp-button_previous:hover,
+.date-range-calendar .rdp-button_next:hover {
+  background-color: var(--action-hover);
+}
+.date-range-calendar .rdp-chevron {
+  fill: var(--color-grey-600);
+  width: 18px;
+  height: 18px;
+}
+/* day hover state (วันที่ยังไม่ถูกเลือก) — อิง shadcn ghost hover */
+.date-range-calendar .rdp-day:not(.rdp-selected) .rdp-day_button:hover {
+  background-color: var(--action-hover);
+  border-radius: 9999px;
+}
+/* today: วงพื้น muted แบบ subtle เมื่อยังไม่อยู่ใน selection */
+.date-range-calendar .rdp-today:not(.rdp-selected) .rdp-day_button {
+  background-color: var(--muted);
+  border-radius: 9999px;
+  font-weight: 600;
 }
