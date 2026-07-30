@@ -8,9 +8,9 @@ import { PAYMENT_SESSIONS } from "@/lib/mock/transactions";
 // เฉพาะ session เดิมมาจากสถานะเงินคืนที่ตัดออกไปแล้ว — ปิด OQ-A: session สำเร็จ (Paid) แต่ order ถูกยกเลิกภายหลัง
 // (Cancelled). แถวอื่นทั้งหมดใช้ default rule ด้านล่าง ไม่ต้องมี entry ที่นี่.
 const ORDER_STATUS_OVERRIDE: Record<string, OrderStatus> = {
-  "TXN-2026-100020": "Cancelled",
-  "TXN-2026-100035": "Cancelled",
-  "TXN-2026-100046": "Cancelled",
+  "ORD6900000021": "Cancelled",
+  "ORD6900000036": "Cancelled",
+  "ORD6900000047": "Cancelled",
 };
 
 function defaultOrderStatus(s: PaymentSessionStatus): OrderStatus {
