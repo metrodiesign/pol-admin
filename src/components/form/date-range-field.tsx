@@ -254,12 +254,20 @@ export function DateRangeField({
               {draft?.end !== undefined ? formatThaiRange({ start: draft.start, end: draft.end }) : "เลือกวันที่"}
             </span>
             <div className="flex shrink-0 gap-2">
-              <Button type="button" variant="outline" size="sm" onClick={() => setOpen(false)}>
+              {/* ขนาดตามธีมของ footer ปุ่มในฟอร์ม (role-edit-view): h-9 min-w-[100px] text-sm font-bold */}
+              <Button
+                type="button"
+                variant="outline"
+                size="lg"
+                className="min-w-[100px] rounded-control px-3 text-sm font-bold"
+                onClick={() => setOpen(false)}
+              >
                 ยกเลิก
               </Button>
               <Button
                 type="button"
-                size="sm"
+                size="lg"
+                className="min-w-[100px] rounded-control px-3 text-sm font-bold"
                 disabled={!draft || draft.end === undefined}
                 onClick={handleConfirm}
               >
