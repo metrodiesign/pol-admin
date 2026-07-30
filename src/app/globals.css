@@ -589,4 +589,28 @@ tbody tr {
   --rdp-accent-color: var(--primary);
   --rdp-accent-background-color: var(--primary-soft);
   --rdp-today-color: var(--primary);
+  /* จูนให้เข้าธีม: endpoint เป็นวงกลมทึบไม่มีเส้นขอบ, ขนาด/ตัวอักษรเท่า data table */
+  --rdp-selected-border: none;
+  --rdp-day-width: 40px;
+  --rdp-day-height: 40px;
+  --rdp-day_button-width: 40px;
+  --rdp-day_button-height: 40px;
+  font-size: 0.875rem;
+}
+.date-range-calendar .rdp-month_caption {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+.date-range-calendar .rdp-weekday {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-grey-500);
+}
+.date-range-calendar .rdp-selected {
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+.date-range-calendar .rdp-range_middle {
+  color: var(--foreground);
 }

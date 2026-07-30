@@ -135,7 +135,7 @@ export function DateRangeField({
                 <Button
                   key={preset.key}
                   type="button"
-                  variant={activePreset === preset.key ? "secondary" : "ghost"}
+                  variant={activePreset === preset.key ? "default" : "ghost"}
                   size="sm"
                   className="justify-start sm:w-full"
                   onClick={() => handlePresetClick(preset.key)}
