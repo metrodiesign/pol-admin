@@ -12,10 +12,9 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { formatMoney } from "@/types/money";
-import { CHANNEL_LABEL, CHANNEL_DOT, PSP_LABEL } from "@/lib/order";
-import { OrderLifecycle } from "./order-lifecycle";
+import { CHANNEL_LABEL, CHANNEL_DOT, customerPhone } from "@/lib/order";
 import { OrderStatusBadge } from "./order-status-badge";
-import { Eye, Pencil, Copy, Trash2, Menu } from "lucide-react";
+import { Eye, Pencil, Copy, Trash2 } from "lucide-react";
 
 interface BuildColumnsArgs {
   onSelect?: (t: OrderRow) => void;
@@ -50,9 +49,25 @@ export function buildOrderColumns({
     ),
   },
   {
-    id: "code",
-    header: "รหัสธุรกรรม",
+    id: "time",
+    header: "วันที่ทำรายการ",
     enableSorting: true,
+    meta: { headClassName: "w-[180px]", cellClassName: "w-[180px]" },
+    accessorFn: (t) => t.session?.time ?? "",
+    // ponytail: session.time เก็บแค่ "HH:MM" ไม่มี date จริงในโมเดล — mock ทั้งหมดคือรายการ "วันนี้"
+    // (ตรงกับ stat card อื่นในหน้านี้) เลย prefix วันที่คงที่ตรงนี้ ถ้าจะทำ per-row date จริง
+    // ต้องเพิ่ม field date ใน PaymentSession ก่อน
+    cell: ({ row }) => (
+      <span className="text-sm text-grey-600">
+        {row.original.session?.time ? `30 ก.ค. 2569 ${row.original.session.time}` : "—"}
+      </span>
+    ),
+  },
+  {
+    id: "code",
+    header: "รหัสคำสั่งซื้อ",
+    enableSorting: true,
+    meta: { headClassName: "w-[220px]", cellClassName: "w-[220px]" },
     accessorFn: (t) => t.session?.code ?? t.id,
     cell: ({ row }) => {
       const t = row.original;
@@ -61,8 +76,7 @@ export function buildOrderColumns({
           <span className="block text-sm font-semibold text-foreground">
             {t.session?.code ?? t.id}
           </span>
-          <span className="text-xs text-grey-500">
-            <Menu className="mr-1 inline size-3.5" />
+          <span className="font-semibold text-primary">
             {(t.session?.subItems ?? 1) > 1 ? `${t.session?.subItems} รายการย่อย` : "1 รายการ"}
           </span>
         </div>
@@ -70,97 +84,60 @@ export function buildOrderColumns({
     },
   },
   {
-    id: "recipient",
-    header: "อีเมล",
-    enableSorting: false,
-    cell: ({ row }) => (
-      <span className="block truncate text-sm text-grey-500">
-        {row.original.session?.recipientEmail ?? "—"}
-      </span>
-    ),
-  },
-  {
     id: "source",
-    header: "ที่มา",
+    header: "ผู้เอาประกันภัย",
     enableSorting: false,
     cell: ({ row }) => {
-      const s = row.original.session?.source;
+      const t = row.original;
+      const s = t.session?.source;
       if (!s) return <span className="text-sm text-grey-500">—</span>;
       return (
-        <div className="flex items-center gap-2">
-          <span className="inline-flex h-6 items-center rounded-md bg-grey-200 px-1.5 text-xs font-bold text-grey-700">
-            {s.code}
-          </span>
-          <span className="text-sm text-foreground">{s.label}</span>
+        <div className="min-w-0">
+          <span className="block text-sm font-semibold text-foreground">{s.label}</span>
+          <span className="text-xs text-grey-500">{customerPhone(t)}</span>
         </div>
       );
     },
   },
   {
     id: "channel",
-    header: "ช่องทาง",
+    header: "ช่องทางชำระเงิน",
     enableSorting: false,
+    meta: { headClassName: "w-[200px]", cellClassName: "w-[200px]" },
     cell: ({ row }) => {
       const c = row.original.session?.channel;
       if (!c) return <span className="text-sm text-grey-500">—</span>;
       return (
         <span className="inline-flex items-center gap-2 text-sm text-foreground">
-          <span className={cn("size-2 rounded-full", CHANNEL_DOT[c])} />
+          <span className={cn("size-3 rounded-full", CHANNEL_DOT[c])} />
           {CHANNEL_LABEL[c]}
         </span>
       );
     },
   },
   {
-    id: "psp",
-    header: "PSP",
-    enableSorting: false,
-    cell: ({ row }) => {
-      const psp = row.original.session?.psp;
-      return (
-        <span className="text-sm font-medium text-foreground">
-          {psp ? PSP_LABEL[psp] : "—"}
-        </span>
-      );
-    },
-  },
-  {
     id: "amount",
-    header: "จำนวน",
+    header: "ยอดชำระเงิน",
     enableSorting: true,
     accessorFn: (t) => Number(t.amount.amount),
-    meta: { headClassName: "text-right", cellClassName: "text-right" },
+    meta: { headClassName: "w-[180px] text-right", cellClassName: "w-[180px] text-right" },
     cell: ({ row }) => (
       <span className="text-sm font-semibold text-foreground">
-        {formatMoney(row.original.amount)}
+        {formatMoney(row.original.amount).replace(` ${row.original.amount.currency}`, "")}
       </span>
     ),
-  },
-  {
-    id: "lifecycle",
-    header: "วงจร",
-    enableSorting: false,
-    cell: ({ row }) => <OrderLifecycle status={row.original.status} />,
   },
   {
     accessorKey: "status",
     header: "สถานะ",
     enableSorting: true,
+    meta: { headClassName: "w-[140px]", cellClassName: "w-[140px]" },
     cell: ({ row }) => <OrderStatusBadge status={row.original.status} />,
-  },
-  {
-    id: "time",
-    header: "เวลา",
-    enableSorting: true,
-    accessorFn: (t) => t.session?.time ?? "",
-    cell: ({ row }) => (
-      <span className="text-sm text-grey-600">{row.original.session?.time ?? "—"} น.</span>
-    ),
   },
   {
     id: "actions",
     enableSorting: false,
-    meta: { headClassName: "w-48", cellClassName: "w-48", ignoreRowClick: true },
+    meta: { headClassName: "w-[220px]", cellClassName: "w-[220px]", ignoreRowClick: true },
     header: () => null,
     cell: ({ row }) => (
       <TooltipProvider>
@@ -174,13 +151,13 @@ export function buildOrderColumns({
                 variant="ghost"
                 size="icon-lg"
                 className="size-10 cursor-pointer bg-grey-600/8 text-grey-700 hover:bg-grey-800 hover:text-white focus-visible:bg-grey-800 focus-visible:text-white"
-                aria-label="ดู"
+                aria-label="ดูรายละเอียด"
                 onClick={() => onRead?.(row.original)}
               >
                 <Eye className="size-5" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>ดู</TooltipContent>
+            <TooltipContent>ดูรายละเอียด</TooltipContent>
           </Tooltip>
           {[
             { icon: Pencil, label: "แก้ไข" },
