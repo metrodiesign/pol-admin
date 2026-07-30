@@ -457,6 +457,12 @@ button, a, input, select, textarea {
   border-radius: 4px;
 }
 
+/* ภายใน select popup ไม่ใช้ outline หนา — item มี data-highlighted bg เป็น focus indicator อยู่แล้ว */
+[data-slot="select-content"]:focus-visible,
+[data-slot="select-content"] :focus-visible {
+  outline: none;
+}
+
 /* ---- Shared form input style (used in invoice-form, etc.) ---- */
 .form-input {
   display: block;
