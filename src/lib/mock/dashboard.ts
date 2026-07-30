@@ -45,12 +45,11 @@ export interface DownloadSlice {
 }
 
 export const currentDownload: { total: number; data: DownloadSlice[] } = {
-  total: 188245,
+  total: 2682,
   data: [
-    { label: "Mac", value: 56000 },
-    { label: "Window", value: 50000 },
-    { label: "iOS", value: 44000 },
-    { label: "Android", value: 38245 },
+    { label: "ลิงก์รอชำระ", value: 184 },
+    { label: "ธุรกรรมสำเร็จ", value: 2466 },
+    { label: "ธุรกรรมไม่สำเร็จ", value: 32 },
   ],
 };
 
@@ -66,16 +65,25 @@ export const areaInstalled: {
   totals: { name: string; value: string }[];
 } = {
   years: ["2023", "2022"],
-  categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+  categories: ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."],
   regions: [
-    { name: "Asia", data: [12, 10, 18, 22, 20, 12, 8, 21, 20, 14, 16, 10] },
-    { name: "Europe", data: [10, 14, 12, 16, 10, 16, 14, 10, 12, 13, 11, 15] },
-    { name: "Americas", data: [6, 18, 14, 9, 20, 12, 10, 14, 8, 12, 9, 16] },
+    {
+      name: "บัตรเครดิต/เดบิต",
+      data: [120000, 100000, 180000, 220000, 200000, 120000, 80000, 210000, 200000, 140000, 160000, 100000],
+    },
+    {
+      name: "พร้อมเพย์",
+      data: [100000, 140000, 120000, 160000, 100000, 160000, 140000, 100000, 120000, 130000, 110000, 150000],
+    },
+    {
+      name: "ผ่อนชำระ",
+      data: [60000, 180000, 140000, 90000, 200000, 120000, 100000, 140000, 80000, 120000, 90000, 160000],
+    },
   ],
   totals: [
-    { name: "Asia", value: "1.23k" },
-    { name: "Europe", value: "6.79k" },
-    { name: "Americas", value: "1.01k" },
+    { name: "บัตรเครดิต/เดบิต", value: "1,830,000.00" },
+    { name: "พร้อมเพย์", value: "1,530,000.00" },
+    { name: "ผ่อนชำระ", value: "1,480,000.00" },
   ],
 };
 

@@ -61,7 +61,14 @@ export function StackedBarChart({
             tickFormatter={valueFormatter}
             width={valueFormatter ? 56 : undefined}
           />
-          <Tooltip cursor={{ fill: "rgba(145,158,171,0.08)" }} content={<ChartTooltip />} />
+          <Tooltip
+            cursor={{ fill: "rgba(145,158,171,0.08)" }}
+            content={
+              <ChartTooltip
+                valueFormatter={valueFormatter && ((v) => valueFormatter(Number(v)))}
+              />
+            }
+          />
           {series.map((s, i) => (
             <Bar
               key={s.name}
