@@ -629,6 +629,16 @@ tbody tr {
   width: 18px;
   height: 18px;
 }
+/* single-selected (คลิกวันเริ่มต้น ยังไม่มีวันสิ้นสุด): วงกลมทึบ primary
+   — RDP ให้แค่ .rdp-selected (ไม่มี range_*) และ default border ถูกปิดด้วย
+   --rdp-selected-border ข้างบน; อิง shadcn data-selected-single -> bg-primary */
+.date-range-calendar
+  .rdp-selected:not(.rdp-range_start):not(.rdp-range_end):not(.rdp-range_middle)
+  .rdp-day_button {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  border-radius: 9999px;
+}
 /* day hover state (วันที่ยังไม่ถูกเลือก) — อิง shadcn ghost hover */
 .date-range-calendar .rdp-day:not(.rdp-selected) .rdp-day_button:hover {
   background-color: var(--action-hover);
