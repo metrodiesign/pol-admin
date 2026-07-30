@@ -621,6 +621,11 @@ tbody tr {
   font-weight: 600;
   font-size: 0.875rem;
 }
+/* endpoint: RDP ทาพื้นครึ่งซ้าย/ขวาไว้ที่ td (ต่อแถบ) — โผล่เป็นเหลี่ยมข้างวงกลม ตัดทิ้ง */
+.date-range-calendar .rdp-range_start,
+.date-range-calendar .rdp-range_end {
+  background: transparent;
+}
 /* วันกลางช่วง: วงกลมรายวันเหมือน endpoint (ไม่ใช่แถบต่อเนื่อง) — RDP ทาพื้นไว้ที่ td ย้ายมาที่ปุ่ม */
 .date-range-calendar .rdp-range_middle {
   color: var(--foreground);
