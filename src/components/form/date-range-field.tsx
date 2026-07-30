@@ -15,8 +15,10 @@ import {
   computePreset,
   detectPreset,
   formatThaiRange,
+  thaiMonthDropdown,
   thaiMonthYearCaption,
   thaiWeekday,
+  thaiYearDropdown,
   type DateRange,
   type PresetKey,
 } from "@/lib/date-range";
@@ -152,6 +154,10 @@ export function DateRangeField({
                 weekStartsOn={0}
                 showOutsideDays
                 navLayout="around"
+                captionLayout="dropdown"
+                // ขอบเขต dropdown ปี: ย้อนหลัง 10 ปี ถึงปีหน้า (คำนวณจาก today ใน popover เท่านั้น — กัน hydration)
+                startMonth={new Date(today.getFullYear() - 10, 0)}
+                endMonth={new Date(today.getFullYear() + 1, 11)}
                 month={month}
                 onMonthChange={setMonthState}
                 selected={draft ? { from: draft.start, to: draft.end } : undefined}
@@ -160,6 +166,8 @@ export function DateRangeField({
                 formatters={{
                   formatCaption: thaiMonthYearCaption,
                   formatWeekdayName: thaiWeekday,
+                  formatMonthDropdown: thaiMonthDropdown,
+                  formatYearDropdown: thaiYearDropdown,
                 }}
               />
             </div>

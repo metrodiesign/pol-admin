@@ -135,3 +135,11 @@ export function thaiMonthYearCaption(d: Date): string {
 export function thaiWeekday(d: Date): string {
   return THAI_WEEKDAYS_ABBR[d.getDay()]!;
 }
+
+export function thaiMonthDropdown(d: Date): string {
+  return THAI_MONTHS_FULL[d.getMonth()]!;
+}
+
+export function thaiYearDropdown(d: Date): string {
+  return String(d.getFullYear() + BE_OFFSET);
+}

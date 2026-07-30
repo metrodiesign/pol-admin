@@ -6,6 +6,8 @@ import {
   formatThaiRange,
   thaiMonthYearCaption,
   thaiWeekday,
+  thaiMonthDropdown,
+  thaiYearDropdown,
   PRESETS,
 } from "./date-range";
 
@@ -147,5 +149,17 @@ describe("thaiMonthYearCaption / thaiWeekday", () => {
     expect(thaiWeekday(new Date(2026, 6, 26))).toBe("อา"); // Sunday
     expect(thaiWeekday(new Date(2026, 6, 27))).toBe("จ"); // Monday
     expect(thaiWeekday(new Date(2026, 7, 1))).toBe("ส"); // Saturday
+  });
+});
+
+describe("thaiMonthDropdown / thaiYearDropdown", () => {
+  it("formats full Thai month name for dropdown option", () => {
+    expect(thaiMonthDropdown(new Date(2026, 0, 1))).toBe("มกราคม");
+    expect(thaiMonthDropdown(new Date(2026, 11, 1))).toBe("ธันวาคม");
+  });
+
+  it("formats BE year for dropdown option", () => {
+    expect(thaiYearDropdown(new Date(2026, 6, 30))).toBe("2569");
+    expect(thaiYearDropdown(new Date(2016, 0, 1))).toBe("2559");
   });
 });
