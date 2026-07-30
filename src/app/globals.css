@@ -613,8 +613,8 @@ tbody tr {
   color: var(--foreground);
 }
 .date-range-calendar .rdp-weekday {
-  font-size: 0.8rem;
-  font-weight: 400;
+  font-size: 0.875rem;
+  font-weight: 500;
   color: var(--color-grey-500);
 }
 .date-range-calendar .rdp-selected {
