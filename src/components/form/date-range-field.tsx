@@ -200,8 +200,8 @@ export function DateRangeField({
                   key={preset.key}
                   type="button"
                   variant={activePreset === preset.key ? "default" : "ghost"}
-                  size="sm"
-                  className="justify-start sm:w-full"
+                  size="lg"
+                  className="justify-start rounded-control px-3 text-sm font-medium sm:w-full"
                   onClick={() => handlePresetClick(preset.key)}
                 >
                   {preset.label}
