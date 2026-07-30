@@ -1,13 +1,25 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useId, useState, type ChangeEvent } from "react";
 import { CalendarDays } from "lucide-react";
-import { DayPicker, type DateRange as RdpRange, type Modifiers } from "react-day-picker";
+import {
+  DayPicker,
+  type DateRange as RdpRange,
+  type DropdownProps,
+  type Modifiers,
+} from "react-day-picker";
 import "react-day-picker/style.css";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import { useScrollLock } from "@/hooks/use-scroll-lock";
 import {
@@ -35,6 +47,37 @@ interface DateRangeFieldProps {
 
 function startOfMonth(d: Date): Date {
   return new Date(d.getFullYear(), d.getMonth(), 1);
+}
+
+// แทน native <select> ของ RDP ด้วย Select ของธีม (base-ui popup เดียวกับ toolbar)
+// RDP ส่ง onChange แบบ ChangeEventHandler<HTMLSelectElement> — ยิง synthetic event กลับ
+function CalendarDropdown({ options = [], value, onChange, "aria-label": ariaLabel }: DropdownProps) {
+  // base-ui SelectValue ไม่ map value -> label ให้เอง — resolve label จาก options ตรงนี้
+  const selected = options.find((o) => String(o.value) === String(value));
+  return (
+    <Select
+      value={String(value)}
+      onValueChange={(v) => {
+        if (v == null) return;
+        onChange?.({ target: { value: String(v) } } as ChangeEvent<HTMLSelectElement>);
+      }}
+    >
+      <SelectTrigger
+        size="sm"
+        aria-label={ariaLabel}
+        className="gap-1 border-transparent px-1.5 font-semibold hover:bg-[var(--action-hover)]"
+      >
+        <SelectValue>{selected?.label}</SelectValue>
+      </SelectTrigger>
+      <SelectContent className="max-h-72 min-w-0">
+        {options.map((o) => (
+          <SelectItem key={o.value} value={String(o.value)} disabled={o.disabled}>
+            {o.label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  );
 }
 
 export function DateRangeField({
@@ -169,6 +212,7 @@ export function DateRangeField({
                   formatMonthDropdown: thaiMonthDropdown,
                   formatYearDropdown: thaiYearDropdown,
                 }}
+                components={{ Dropdown: CalendarDropdown }}
               />
             </div>
           </div>

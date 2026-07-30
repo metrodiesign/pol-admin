@@ -656,21 +656,7 @@ tbody tr {
   border-radius: 9999px;
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 50%, transparent);
 }
-/* caption dropdown (เดือน/ปี พ.ศ.): จัด label + select ให้เข้าธีม */
+/* caption dropdown (เดือน/ปี พ.ศ.) ใช้ ui/select ผ่าน components.Dropdown — จัดแค่ระยะ */
 .date-range-calendar .rdp-dropdowns {
-  gap: 0.375rem;
-}
-.date-range-calendar .rdp-dropdown_root .rdp-caption_label {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--foreground);
-  border-radius: 8px;
-  padding: 2px 6px;
-  transition: background-color 0.15s;
-}
-.date-range-calendar .rdp-dropdown_root:hover .rdp-caption_label {
-  background-color: var(--action-hover);
-}
-.date-range-calendar .rdp-dropdown_root:has(select:focus-visible) .rdp-caption_label {
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 50%, transparent);
+  gap: 0.25rem;
 }
