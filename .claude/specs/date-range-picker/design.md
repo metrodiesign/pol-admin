@@ -1,6 +1,6 @@
 # Design: Date Range Picker (order list toolbar)
 
-> Status: approved 2026-07-30
+> Status: approved 2026-07-30, amended 2026-07-30
 
 ## Architecture Overview
 
@@ -101,9 +101,9 @@ Boundary mapping กับ react-day-picker: lib logic ของเราใช�
 - ขาเข้า DayPicker `selected`: มี draft → `{ from, to }`; **ไม่มี draft → ส่ง `undefined`** (ไม่ใช่ `{from:undefined,to:undefined}`) (m1)
 - ขาออก `onSelect(rdpRange, clickedDay)`: handle `undefined` (deselect) → `draftRange = null`; ระหว่างเลือกครึ่งเดียว `to` undefined → เก็บ `{start: from, end: undefined-in-draft}`, ปุ่มตกลง disabled จนกว่า `to` มา (REQ-3.5/3.6/4.5)
 - **REQ-3.7 (คลิก end ก่อน start) คุมเองใน `onSelect` ไม่พึ่ง default ของ RDP** — เมื่อมี start อยู่แล้วและ `clickedDay < start` ให้ set `{start: clickedDay, end: undefined}` (เริ่มช่วงใหม่จากวันที่คลิก รอ end ถัดไป) แทนที่จะปิดเป็น `{from:clicked,to:oldStart}` ตาม default lib
-- **REQ-3.9 (คลิก outside day → เลื่อน view) คุมเองด้วย `onDayClick`** — controlled `month` ไม่เลื่อนเองเมื่อคลิก outside day; เมื่อวันที่คลิกอยู่คนละเดือนกับ view ให้ `setMonth(วันที่คลิก)` (`showOutsideDays` แค่แสดงวัน ไม่เลื่อน)
+- **REQ-3.9 (ไม่แสดง outside day)** — ไม่ตั้ง `showOutsideDays` (default false) ช่องล้นเดือนเว้นว่าง; ไม่ต้องมี `onDayClick` nav
 
-react-day-picker props ที่ใช้: `mode="range"`, `numberOfMonths={isMobile?1:2}`, `selected`, `onSelect`, `onDayClick`, `month`/`onMonthChange` (controlled — init + preset sync + outside-day nav), `weekStartsOn={0}` (อาทิตย์, REQ-3.3), `showOutsideDays` (REQ-3.9), `navLayout="around"`, `formatters={{ formatCaption: thaiMonthYearCaption, formatWeekdayName: thaiWeekday }}`.
+react-day-picker props ที่ใช้: `mode="range"`, `numberOfMonths={isMobile?1:2}`, `selected`, `onSelect`, `month`/`onMonthChange` (controlled — init + preset sync), `weekStartsOn={0}` (อาทิตย์, REQ-3.3), `navLayout="around"`, `formatters={{ formatCaption: thaiMonthYearCaption, formatWeekdayName: thaiWeekday }}`.
 
 **Styling (M2)**: import `react-day-picker/style.css` เพื่อได้ layout ของ grid ทั้งหมด (months flex, table, weekday row, cell sizing) แล้ว **override เฉพาะสี/รูปทรงผ่าน RDP CSS variables** (`--rdp-accent-color`, `--rdp-range_middle-*` ฯลฯ) ให้ชี้ไปที่ semantic token ของโปรเจกต์ (primary, primary/10) — ไม่ทำซ้ำค่าดิบ (ตรง single-source token). ไม่ reconstruct classNames ระดับ structural slot เอง (หลีกเลี่ยง effort ระดับ shadcn calendar ทั้งไฟล์). scoped override วางใน CSS ข้าง component หรือ globals ที่ scope ด้วย wrapper class.
 
@@ -155,7 +155,7 @@ Gate note (m5): behavior ไม่มี automated test → ผ่าน task ga
 | `formatters.formatWeekdayName` + `weekStartsOn={0}` | REQ-3.3 |
 | `navLayout="around"` + onMonthChange | REQ-3.4 |
 | onSelect custom (2-click + swap เมื่อ end<start) | REQ-3.5, 3.6, 3.7, 3.8 |
-| `showOutsideDays` + onDayClick setMonth | REQ-3.9 |
+| ไม่ตั้ง `showOutsideDays` (ซ่อนวันนอกเดือน) | REQ-3.9 |
 | `Footer` summary + formatThaiRange | REQ-4.1 |
 | `Footer` ปุ่ม ยกเลิก/ตกลง | REQ-4.2 |
 | commit draft → onChange + close | REQ-4.3 |

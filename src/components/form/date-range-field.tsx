@@ -7,7 +7,6 @@ import {
   DayPicker,
   type DateRange as RdpRange,
   type DropdownProps,
-  type Modifiers,
 } from "react-day-picker";
 import "react-day-picker/style.css";
 
@@ -146,12 +145,6 @@ export function DateRangeField({
     setDraft({ start: draft.start, end: triggerDate });
   }
 
-  function handleDayClick(day: Date, modifiers: Modifiers) {
-    if (modifiers.outside) {
-      setMonthState(startOfMonth(day));
-    }
-  }
-
   function handleConfirm() {
     if (!draft || draft.end === undefined) return;
     onChange({ start: draft.start, end: draft.end });
@@ -214,7 +207,6 @@ export function DateRangeField({
                 mode="range"
                 numberOfMonths={isMobile ? 1 : 2}
                 weekStartsOn={0}
-                showOutsideDays
                 navLayout="around"
                 captionLayout="dropdown"
                 // ขอบเขต dropdown ปี: ย้อนหลัง 10 ปี ถึงปีหน้า (คำนวณจาก today ใน popover เท่านั้น — กัน hydration)
@@ -224,7 +216,6 @@ export function DateRangeField({
                 onMonthChange={setMonthState}
                 selected={draft ? { from: draft.start, to: draft.end } : undefined}
                 onSelect={handleSelect}
-                onDayClick={handleDayClick}
                 onDayMouseEnter={(day) => setHovered(day)}
                 onDayMouseLeave={() => setHovered(null)}
                 // keyboard parity: เลื่อน focus ด้วยลูกศรก็เห็น preview เหมือนเมาส์
