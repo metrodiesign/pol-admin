@@ -64,15 +64,14 @@ function CalendarDropdown({ options = [], value, onChange, "aria-label": ariaLab
       }}
     >
       <SelectTrigger
-        size="sm"
         aria-label={ariaLabel}
-        className="gap-1 border-transparent px-1.5 font-semibold hover:bg-[var(--action-hover)]"
+        className="h-10 gap-1 rounded-control border-transparent px-2.5 font-semibold hover:bg-[var(--action-hover)] data-[size=default]:h-10"
       >
         <SelectValue>{selected?.label}</SelectValue>
       </SelectTrigger>
       <SelectContent className="max-h-72">
         {options.map((o) => (
-          <SelectItem key={o.value} value={String(o.value)} disabled={o.disabled}>
+          <SelectItem key={o.value} value={String(o.value)} disabled={o.disabled} className="py-2.5">
             {o.label}
           </SelectItem>
         ))}
