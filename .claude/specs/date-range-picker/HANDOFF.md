@@ -23,3 +23,23 @@
   - const เสริมที่ export ด้วย (เผื่อใช้ตรงใน component/formatter อื่น): `BE_OFFSET`, `THAI_MONTHS_FULL`, `THAI_MONTHS_ABBR`, `THAI_WEEKDAYS_ABBR`
   - **map {start,end} <-> {from,to} ที่ Task 3 ต้องทำเอง** (lib นี้ไม่รู้จัก RDP shape เลย): ขาเข้า DayPicker `selected` = draft ? `{ from: draft.start, to: draft.end }` : `undefined`; ขาออก `onSelect(rdpRange)` → เก็บ draft เป็น `{ start: rdpRange.from, end: rdpRange.to }` (ระวัง `to` อาจ `undefined` ระหว่างเลือกครึ่งเดียว — draft type ฝั่ง component ต้องยอม `end` เป็น `Date | undefined` ก่อน commit จริง ผิดกับ `DateRange` ของ lib ที่ fields บังคับทั้งคู่)
   - ทุกฟังก์ชัน pure, ไม่ import React/network/react-day-picker ตามข้อกำหนด
+
+## Task 3 — DateRangeField component
+- สถานะ: DONE
+- ไฟล์ที่สร้าง: `src/components/form/date-range-field.tsx` (named export `DateRangeField`, `"use client"`)
+- ไฟล์ที่แก้เพิ่ม (นอกเหนือ scope Task 3 เดิมนิดหน่อย แต่จำเป็นสำหรับ M2 styling): `src/app/globals.css` — เพิ่ม block ท้ายไฟล์ override RDP CSS vars ผ่าน scope class `.date-range-calendar .rdp-root` (`--rdp-accent-color: var(--primary)`, `--rdp-accent-background-color: var(--primary-soft)`, `--rdp-today-color: var(--primary)`) ไม่แตะ token อื่น
+- Evidence:
+  - `npx tsc --noEmit -p .` → `TypeScript: No errors found`
+  - `npm run build` → ผ่านทั้งหมดทุกหน้า (รวม `/order/list`), ไม่มี error
+  - `npm test` → `Test Files 12 passed (12)`, `Tests 156 passed (156)` (ไม่มี regression, ยังไม่มี component test ตาม gate note m5 ใน design)
+  - `npx eslint src/components/form/date-range-field.tsx` → ไม่มี error
+- Decision: CSS override วิธี — import `react-day-picker/style.css` ตรงในไฟล์ component (layout/grid เต็มจาก lib) แล้ว override เฉพาะ CSS custom properties สี 3 ตัวใน `globals.css` ผ่าน scope selector `.date-range-calendar .rdp-root` (wrapper div รอบ `<DayPicker>` มี class `date-range-calendar`) → ไม่ reconstruct classNames structural เอง ตรง M2/spec
+- Logic decision (`onSelect`): คุมเองทั้งหมดจาก `draft` state + `triggerDate` (ไม่อ่าน RDP-computed `range` param ยกเว้นกรณี `undefined` = deselect → เคลียร์ draft) — ครอบ REQ-3.5/3.6/3.7/3.8 แบบ deterministic: ไม่มี draft หรือ draft ครบแล้ว → เริ่ม range ใหม่จาก `triggerDate`; มี start รอ end → `triggerDate < start` สลับเป็น start ใหม่ ไม่งั้น commit เป็น end (คลิกวันเดิมซ้ำ = end=start ผ่าน `!(triggerDate < start)`)
+- `onDayClick`: เช็ค `modifiers.outside` แล้ว `setMonth(startOfMonth(day))` เท่านั้น (คนละหน้าที่กับ `onSelect` ที่ยิงคู่กันทุกคลิก)
+- `today`/`month`/`draft` state reset ใน `handleOpenChange(true)` เท่านั้น — recompute `today` ทุกครั้งที่เปิดจริงตามที่ M4 กำหนด
+- ปุ่ม preset ใช้ `<Button variant="secondary">` สำหรับ active / `variant="ghost"` สำหรับ inactive (ใช้ component ที่มีอยู่แล้ว ไม่สร้าง custom pill ใหม่)
+- หมายเหตุถึง Task 4 (wiring ใน `order-list-toolbar.tsx`):
+  - import: `import { DateRangeField } from "@/components/form/date-range-field";` และ type `DateRange` จาก `@/lib/date-range` ถ้าต้องประกาศ local state
+  - prop signature ที่จะแทน `<DateInput label="วันที่" value="24 พ.ค. 2569" onChange={() => {}} />`: `<DateRangeField label="วันที่" value={dateRange} onChange={setDateRange} />` โดย `dateRange: DateRange | null` (ยัง local state ใน toolbar เอง ตาม REQ-6.4 ไม่ต้อง wire เข้า `order-list-view.tsx`/`PaymentSession`)
+  - `DateInput` helper component เดิมใน `order-list-toolbar.tsx` (บรรทัด ~15-59) จะกลายเป็น orphan หลัง Task 4 แทนที่ — ต้องลบทิ้งตาม tasks.md Task 4 spec
+  - placeholder default ของ `DateRangeField` คือ `"กำหนดเอง"` แล้ว (REQ-4.6) ไม่ต้องส่ง prop เพิ่มถ้าใช้ค่า default

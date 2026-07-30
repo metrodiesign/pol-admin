@@ -581,3 +581,12 @@ tbody tr {
 [data-contrast="true"] .dashboard-card {
   box-shadow: var(--shadow-z16);
 }
+
+/* ---- date-range-field: react-day-picker colors -> semantic tokens (Viriyah palette
+   flows through --primary/--primary-soft already) — only CSS variable overrides,
+   layout/structure stays react-day-picker/style.css default. ---- */
+.date-range-calendar .rdp-root {
+  --rdp-accent-color: var(--primary);
+  --rdp-accent-background-color: var(--primary-soft);
+  --rdp-today-color: var(--primary);
+}
