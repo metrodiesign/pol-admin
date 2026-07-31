@@ -29,9 +29,14 @@ export function buildOrderColumns({
   {
     id: "select",
     enableSorting: false,
-    meta: { headClassName: "w-12 pl-1 pr-0 py-2", cellClassName: "w-12 pl-1 pr-0" },
+    meta: {
+      headClassName: "w-12 pl-1 pr-0 py-2",
+      cellClassName: "w-12 pl-1 pr-0",
+      ignoreRowClick: true,
+    },
     header: ({ table }) => (
       <Checkbox
+        className="justify-end"
         checked={table.getIsAllRowsSelected()}
         indeterminate={
           table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
@@ -42,6 +47,7 @@ export function buildOrderColumns({
     ),
     cell: ({ row }) => (
       <Checkbox
+        className="justify-end"
         checked={row.getIsSelected()}
         onChange={(c) => row.toggleSelected(c)}
         aria-label={`เลือก ${row.original.session?.code ?? row.original.id}`}
