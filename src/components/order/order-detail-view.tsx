@@ -258,7 +258,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
           <div className={cn("grid grid-cols-1 gap-x-4 gap-y-4", !compact && "sm:grid-cols-2")}>
             <div>
               <p className={fieldLabel}>หมายเลขคำสั่งซื้อ</p>
-              <p className="text-sm font-bold text-foreground">{t.session?.code ?? t.id}</p>
+              <p className="text-sm font-bold text-foreground">{t.id}</p>
             </div>
           </div>
           <div className={cn("mt-4 grid grid-cols-1 gap-x-4 gap-y-4", !compact && "sm:grid-cols-2")}>

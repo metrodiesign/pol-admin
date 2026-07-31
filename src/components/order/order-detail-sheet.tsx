@@ -39,7 +39,7 @@ export function OrderDetailSheet({
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
               <SheetTitle className="font-mono text-sm font-semibold text-foreground">
-                {order?.session?.code ?? order?.id ?? "—"}
+                {order?.id ?? "—"}
               </SheetTitle>
               {order && (
                 <OrderStatusBadge status={order.status} />
@@ -77,7 +77,7 @@ export function OrderDetailSheet({
 
         {/* Scrollable content */}
         <SimpleBar className="min-h-0 flex-1">
-          <OrderDetailView id={order?.session?.code ?? order?.id} compact />
+          <OrderDetailView id={order?.id} compact />
         </SimpleBar>
       </SheetContent>
     </Sheet>

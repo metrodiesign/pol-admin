@@ -76,7 +76,7 @@ export function buildTransactionColumns({
       return (
         <div className="min-w-0">
           <span className="block text-sm font-semibold text-foreground">
-            {t.code.replace(/^ORD/, "VCP")}
+            {t.code}
           </span>
           <span className="font-semibold text-primary">
             {t.subItems > 1 ? `${t.subItems} รายการย่อย` : "1 รายการ"}
