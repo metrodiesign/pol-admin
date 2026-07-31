@@ -1,4 +1,4 @@
-import type { PaymentSession, PaymentSessionStatus, PaymentChannel, Psp } from "@/types/order-payment";
+import type { PaymentSession, PaymentSessionStatus, PaymentChannel, Psp, OrderStatus } from "@/types/order-payment";
 import { PAYMENT_SESSIONS } from "@/lib/mock/transactions";
 import { formatMoney } from "@/types/money";
 
@@ -27,6 +27,34 @@ export const CHANNEL_DOT: Record<PaymentChannel, string> = {
   card: "bg-success", promptpay: "bg-warning", installment: "bg-info",
 };
 export const PSP_LABEL: Record<Psp, string> = { omise: "Omise", "2c2p": "2C2P" };
+
+// ponytail: transaction/list ต้องแสดง tab/สถานะ 3 กลุ่มให้ตรงกับ order/list เป๊ะ (เทียบ order-list-view.tsx)
+// แต่ PaymentSessionStatus มี 5 ค่าจริง — map ลง 3 กลุ่มแค่ตอน render list นี้ ไม่แตะ status จริงที่หน้าอื่นใช้
+export function orderLikeStatus(status: PaymentSessionStatus): OrderStatus {
+  switch (status) {
+    case "Created":
+    case "Redirected":
+      return "AwaitingPayment";
+    case "Paid":
+      return "Paid";
+    case "Failed":
+    case "Expired":
+      return "Cancelled";
+  }
+}
+
+// label/style/dot สำหรับ 3 กลุ่มสถานะของ transaction/list (คนละไฟล์คนละชุดจาก order — ห้าม reuse ข้ามโดเมน)
+export const LIST_STATUS_LABEL: Record<OrderStatus, string> = {
+  AwaitingPayment: "รอชำระ", Paid: "สำเร็จ", Cancelled: "ยกเลิก",
+};
+export const LIST_STATUS_STYLE: Record<OrderStatus, string> = {
+  AwaitingPayment: "bg-warning/16 text-warning-dark",
+  Paid: "bg-success/16 text-success-dark",
+  Cancelled: "bg-grey-500/16 text-grey-600",
+};
+export const LIST_STATUS_DOT: Record<OrderStatus, string> = {
+  AwaitingPayment: "bg-warning", Paid: "bg-success", Cancelled: "bg-grey-500",
+};
 
 // 4-dot lifecycle stepper state. done = filled green, active = current (blue), rest empty.
 // failed/expired use the tone to color the active/last dot.

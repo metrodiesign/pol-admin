@@ -8,41 +8,34 @@ import {
   getSortedRowModel,
   getPaginationRowModel,
 } from "@tanstack/react-table";
-import type { PaymentSession, PaymentSessionStatus } from "@/types/order-payment";
+import type { PaymentSession } from "@/types/order-payment";
+import type { OrderStatus } from "@/types/order-payment";
 import { PAYMENT_SESSIONS } from "@/lib/mock/transactions";
-import { PAYMENT_SESSION_STATUS_LABEL } from "@/lib/transaction";
+import { orderLikeStatus, LIST_STATUS_LABEL } from "@/lib/transaction";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";
-import { TransactionStatCards } from "./transaction-stat-cards";
-import { TransactionListTabs } from "./transaction-list-tabs";
-import { TransactionListToolbar } from "./transaction-list-toolbar";
-import { TransactionDetailSheet } from "./transaction-detail-sheet";
-import { buildTransactionColumns } from "./transaction-table-columns";
+import { TransactionListTabs } from "@/components/transaction/transaction-list-tabs";
+import { TransactionListToolbar } from "@/components/transaction/transaction-list-toolbar";
+import { TransactionDetailSheet } from "@/components/transaction/transaction-detail-sheet";
+import { buildTransactionColumns } from "@/components/transaction/transaction-table-columns";
 import "@/types/table-meta";
 
-type TabValue = PaymentSessionStatus | "all";
+type TabValue = OrderStatus | "all";
 
-const STATUS_ORDER: PaymentSessionStatus[] = [
-  "Created",
-  "Redirected",
-  "Paid",
-  "Failed",
-  "Expired",
-];
+const STATUS_ORDER: OrderStatus[] = ["AwaitingPayment", "Paid", "Cancelled"];
 
 export function TransactionListView() {
   const router = useRouter();
 
   const [search, setSearch] = useState("");
   const [channel, setChannel] = useState("");
-  const [psp, setPsp] = useState("");
   const [statusTab, setStatusTab] = useState<TabValue>("all");
   const [dense, setDense] = useState(false);
   const [detailTx, setDetailTx] = useState<PaymentSession | null>(null);
 
   const globalFilter = useMemo(
-    () => ({ search, channel, psp, status: statusTab }),
-    [search, channel, psp, statusTab],
+    () => ({ search, channel, status: statusTab }),
+    [search, channel, statusTab],
   );
 
   const columns = useMemo(
@@ -70,13 +63,11 @@ export function TransactionListView() {
       const f = value as {
         search: string;
         channel: string;
-        psp: string;
         status: TabValue;
       };
       const t = row.original;
-      if (!(f.status === "all" || t.status === f.status)) return false;
+      if (!(f.status === "all" || orderLikeStatus(t.status) === f.status)) return false;
       if (f.channel && t.channel !== f.channel) return false;
-      if (f.psp && t.psp !== f.psp) return false;
       if (f.search) {
         const q = f.search.toLowerCase();
         if (
@@ -94,21 +85,21 @@ export function TransactionListView() {
     getPaginationRowModel: getPaginationRowModel(),
     initialState: {
       sorting: [{ id: "time", desc: true }],
-      pagination: { pageIndex: 0, pageSize: 10 },
+      pagination: { pageIndex: 0, pageSize: 25 },
     },
   });
 
   const filteredCount = table.getFilteredRowModel().rows.length;
-  
+
   const count = (status: TabValue) =>
     status === "all"
       ? PAYMENT_SESSIONS.length
-      : PAYMENT_SESSIONS.filter((t) => t.status === status).length;
+      : PAYMENT_SESSIONS.filter((t) => orderLikeStatus(t.status) === status).length;
 
   const tabs = [
     { label: "ทั้งหมด", value: "all" as TabValue, count: count("all") },
     ...STATUS_ORDER.map((s) => ({
-      label: PAYMENT_SESSION_STATUS_LABEL[s],
+      label: LIST_STATUS_LABEL[s],
       value: s as TabValue,
       count: count(s),
     })),
@@ -118,8 +109,6 @@ export function TransactionListView() {
   return (
     <>
     <div className="flex flex-col gap-6">
-      <TransactionStatCards />
-
       <div
         className="overflow-hidden rounded-2xl bg-card"
         style={{ boxShadow: "var(--shadow-card)" }}
@@ -143,9 +132,9 @@ export function TransactionListView() {
             setChannel(v);
             table.setPageIndex(0);
           }}
-          psp={psp}
-          onPspChange={(v) => {
-            setPsp(v);
+          status={statusTab === "all" ? "" : statusTab}
+          onStatusChange={(v) => {
+            setStatusTab((v || "all") as TabValue);
             table.setPageIndex(0);
           }}
           rowsPerPage={table.getState().pagination.pageSize}
@@ -159,7 +148,7 @@ export function TransactionListView() {
           total={filteredCount}
           dense={dense}
           onDenseChange={setDense}
-          rowsPerPageOptions={[10, 25, 50]}
+          rowsPerPageOptions={[25, 50, 100]}
           searchQuery={search}
           showSelectionAction={false}
         />
