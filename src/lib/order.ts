@@ -110,7 +110,7 @@ export interface LifecycleStep {
   state: StepState;
 }
 export function paymentLifecycle(status: OrderStatus): LifecycleStep[] {
-  const labels = ["Authorize", "Capture", "Settled"] as const;
+  const labels = ["อนุมัติวงเงิน", "เรียกเก็บเงิน", "ชำระเงินสำเร็จ"] as const;
   const mk = (a: StepState, b: StepState, c: StepState): LifecycleStep[] => [
     { label: labels[0], state: a },
     { label: labels[1], state: b },

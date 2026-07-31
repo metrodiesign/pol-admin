@@ -1,12 +1,10 @@
 "use client";
 
-import { Fragment } from "react";
 import Link from "next/link";
 import SimpleBar from "simplebar-react";
+import QRCode from "react-qr-code";
 import {
   type LucideIcon,
-  CheckCircle2,
-  XCircle,
   Ban,
   Send,
   ShieldCheck,
@@ -16,7 +14,6 @@ import {
   ExternalLink,
   Phone,
   Mail,
-  QrCode,
   Download,
   Copy,
   Clock,
@@ -25,13 +22,11 @@ import {
 } from "lucide-react";
 import {
   getOrderById,
-  paymentLifecycle,
   buildTimeline,
   policyItems,
   sourceDetail,
   customerPhone,
   payLink,
-  type StepState,
   type TimelineIcon,
 } from "@/lib/order";
 import { cn, formatAmount } from "@/lib/utils";
@@ -112,22 +107,6 @@ function Panel({
   );
 }
 
-function stepCircle(state: StepState) {
-  if (state === "done") return <CheckCircle2 className="size-5 text-success" />;
-  if (state === "failed") return <XCircle className="size-5 text-error" />;
-  if (state === "current")
-    return <span className="size-5 rounded-full border-2 border-info" />;
-  return <span className="size-5 rounded-full border-2 border-grey-300" />;
-}
-
-const STEP_LABEL_COLOR: Record<StepState, string> = {
-  done: "text-success",
-  current: "text-info",
-  failed: "text-error",
-  pending: "text-grey-500",
-};
-
-
 const fieldLabel = "mb-1.5 block text-xs font-semibold text-grey-700";
 
 export function OrderDetailView({ id, compact = false }: { id: string | undefined; compact?: boolean }) {
@@ -151,7 +130,6 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
     );
   }
 
-  const lifecycle = paymentLifecycle(t.status);
   const items = policyItems(t);
   const src = sourceDetail(t);
   const timeline = buildTimeline(t);
@@ -165,42 +143,14 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
       <div className="grid grid-cols-1 gap-6 mmd:grid-cols-2">
       <Panel title="สถานะลิงก์และชำระเงิน">
         <div className="px-6 py-5">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <p className="text-sm font-bold text-foreground">
-              สถานะ{" "}
-              <span className="font-semibold uppercase tracking-wide text-grey-500">
-                LIFECYCLE
-              </span>
-            </p>
+          <div className="flex flex-wrap items-center gap-3">
+            <p className="text-sm font-bold text-foreground">สถานะ</p>
             <OrderStatusBadge status={t.status} />
           </div>
 
-          <div className={cn("mt-4 flex", compact ? "flex-col gap-1" : "items-center overflow-x-auto")}>
-            {lifecycle.map((s, i) => (
-              <Fragment key={s.label}>
-                {i > 0 ? (
-                  <span
-                    className={cn(
-                      "mx-3 h-0.5 min-w-8 flex-1",
-                      compact && "hidden",
-                      lifecycle[i - 1]?.state === "done" ? "bg-success" : "bg-grey-300",
-                    )}
-                  />
-                ) : null}
-                <span className="flex shrink-0 items-center gap-2">
-                  {stepCircle(s.state)}
-                  <span className={cn("text-sm font-semibold", STEP_LABEL_COLOR[s.state])}>
-                    {s.label}
-                  </span>
-                </span>
-              </Fragment>
-            ))}
-          </div>
-
           <div className={cn("mt-6 grid grid-cols-1 gap-x-8 gap-y-8", !compact && "mmd:grid-cols-2")}>
-            <div className="flex h-full flex-col items-center justify-center rounded-2xl bg-grey-100 px-6 py-7 gap-3">
-              <QrCode className="size-24 text-grey-800" strokeWidth={1.5} />
-              <span className="font-mono text-xs text-grey-500">{link.url}</span>
+            <div className="flex h-full flex-col items-center justify-center rounded-2xl bg-grey-100 px-6 py-7">
+              <QRCode value={link.url} size={220} />
             </div>
 
             <div>
@@ -228,24 +178,27 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
                 </button>
               </div>
 
-              <div className={cn("mt-4 gap-2.5", compact ? "grid grid-cols-1" : "flex")}>
+              <div className={cn("mt-4 grid gap-2.5", compact ? "grid-cols-1" : "grid-cols-2")}>
                 <button
                   type="button"
-                  className="inline-flex h-11 flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-control bg-success px-3 text-sm font-bold text-white transition-colors hover:bg-success-dark"
+                  className={cn(
+                    "inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-control bg-success px-3 text-sm font-bold text-white transition-colors hover:bg-success-dark",
+                    !compact && "col-span-2",
+                  )}
                 >
                   <ExternalLink className="size-4 shrink-0" />
                   เปิดลิงก์
                 </button>
                 <button
                   type="button"
-                  className="inline-flex h-11 flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-control border border-[var(--divider)] px-3 text-sm font-bold text-foreground transition-colors hover:bg-grey-100"
+                  className="inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-control border border-[var(--divider)] px-3 text-sm font-bold text-foreground transition-colors hover:bg-grey-100"
                 >
                   <Download className="size-4 shrink-0" />
                   ดาวน์โหลด QR
                 </button>
                 <button
                   type="button"
-                  className="inline-flex h-11 flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-control border border-[var(--divider)] px-3 text-sm font-bold text-foreground transition-colors hover:bg-grey-100"
+                  className="inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-control border border-[var(--divider)] px-3 text-sm font-bold text-foreground transition-colors hover:bg-grey-100"
                 >
                   <Copy className="size-4 shrink-0" />
                   คัดลอกลิงก์
@@ -262,7 +215,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
         </div>
         <div className="border-t border-[var(--divider)]" />
         <div className="py-5">
-          <SimpleBar className="max-h-[380px]" autoHide={false}>
+          <SimpleBar className="max-h-[335px]" autoHide={false}>
             <ol className="flex flex-col px-6">
               {timeline.map((ev, i) => {
                 const Icon = TIMELINE_ICON[ev.icon];
@@ -337,6 +290,10 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
       <Panel title="ข้อมูลลูกค้า">
         <div className="px-6 py-5">
           <div className={cn("grid grid-cols-1 gap-x-5 gap-y-5", !compact && "mmd:grid-cols-2")}>
+            <div className="flex flex-col gap-1.5">
+              <p className={fieldLabel}>ชื่อ-นามสกุล</p>
+              <p className="text-sm font-bold text-foreground">{t.session?.source.label || <span className="text-grey-400">—</span>}</p>
+            </div>
             <div className="flex flex-col gap-1.5">
               <p className={fieldLabel}>อีเมล</p>
               <p className="text-sm font-bold text-foreground">{t.session?.recipientEmail || <span className="text-grey-400">—</span>}</p>
@@ -447,7 +404,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
         <div className="px-6 py-5">
           <div className="flex flex-col gap-6">
             <div>
-              <span className="mb-2 block text-sm font-semibold text-foreground">
+              <span className="mb-2 block text-sm font-semibold text-grey-700">
                 ระยะเวลาก่อนลิงก์หมดอายุ
               </span>
               <span className="inline-flex h-9 items-center rounded-full border border-primary bg-primary/8 px-4 text-sm font-semibold text-primary">
@@ -456,7 +413,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
             </div>
 
             <div>
-              <span className="mb-2 block text-sm font-semibold text-foreground">
+              <span className="mb-2 block text-sm font-semibold text-grey-700">
                 การแจ้งเตือนลูกค้า
               </span>
               <span className="inline-flex h-9 items-center rounded-full border border-primary bg-primary/8 px-4 text-sm font-semibold text-primary">
@@ -470,7 +427,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
                       <MessageSquare className="size-4" />
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block text-sm font-bold text-foreground">ส่ง SMS แจ้งลิงก์</span>
+                      <span className="block text-sm font-bold text-grey-700">ส่ง SMS แจ้งลิงก์</span>
                     </span>
                   </div>
                   <div className="border-t border-[var(--divider)] px-4 py-3">
@@ -480,7 +437,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
               </div>
             </div>
             <div>
-              <span className="mb-2 block text-sm font-semibold text-foreground">
+              <span className="mb-2 block text-sm font-semibold text-grey-700">
                 การแจ้งเตือนกำหนดผู้รับเอง
               </span>
               <div className="flex flex-col gap-3">
@@ -490,7 +447,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
                       <MessageSquare className="size-4" />
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block text-sm font-bold text-foreground">ส่ง SMS ถึงผู้รับที่กำหนด</span>
+                      <span className="block text-sm font-bold text-grey-700">ส่ง SMS ถึงผู้รับที่กำหนด</span>
                     </span>
                   </div>
                   <div className="border-t border-[var(--divider)] px-4 py-3">
@@ -503,7 +460,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
                       <Mail className="size-4" />
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block text-sm font-bold text-foreground">ส่งอีเมลถึงผู้รับที่กำหนด</span>
+                      <span className="block text-sm font-bold text-grey-700">ส่งอีเมลถึงผู้รับที่กำหนด</span>
                     </span>
                   </div>
                   <div className="border-t border-[var(--divider)] px-4 py-3">
