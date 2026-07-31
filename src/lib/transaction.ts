@@ -185,7 +185,7 @@ export interface LifecycleStep {
   state: StepState;
 }
 export function paymentLifecycle(status: PaymentSessionStatus): LifecycleStep[] {
-  const labels = ["Authorize", "Capture", "Settled"] as const;
+  const labels = ["อนุมัติวงเงิน", "เรียกเก็บเงิน", "ชำระเงินสำเร็จ"] as const;
   const mk = (a: StepState, b: StepState, c: StepState): LifecycleStep[] => [
     { label: labels[0], state: a },
     { label: labels[1], state: b },
@@ -233,10 +233,10 @@ export function buildTimeline(t: PaymentSession): TimelineEvent[] {
   const amt = formatMoney(t.amount);
   const open: TimelineEvent = { key: "open", icon: "link", tone: "info", title: "ลูกค้าเปิดลิงก์", desc: `จาก SMS ที่ส่งไปยัง ${customerPhone(t)}`, time: hms(t.time, 0) };
   const redirect: TimelineEvent = { key: "redirect", icon: "redirect", tone: "info", title: "ลูกค้าเริ่มชำระเงิน", desc: `Redirect ไป Hosted Payment Page (${psp})`, time: hms(t.time, 36) };
-  const authOk: TimelineEvent = { key: "auth", icon: "auth", tone: "ok", title: "Authorize สำเร็จ", desc: "อนุมัติวงเงินจากธนาคารผู้ออกบัตร", time: hms(t.time, 42) };
-  const authFail: TimelineEvent = { key: "auth", icon: "auth", tone: "error", title: "Authorize ล้มเหลว", desc: "ธนาคารผู้ออกบัตรปฏิเสธรายการ", time: hms(t.time, 42) };
-  const capture: TimelineEvent = { key: "capture", icon: "capture", tone: "ok", title: "Capture สำเร็จ", desc: `เก็บยอด ${amt} จาก ${psp}`, time: hms(t.time, 46) };
-  const settled: TimelineEvent = { key: "settled", icon: "bank", tone: "ok", title: "Settled", desc: "รับเงินเข้าบัญชีตัวกลาง (รอบ T+2)", time: hms(t.time, 50) };
+  const authOk: TimelineEvent = { key: "auth", icon: "auth", tone: "ok", title: "อนุมัติวงเงินสำเร็จ", desc: "อนุมัติวงเงินจากธนาคารผู้ออกบัตร", time: hms(t.time, 42) };
+  const authFail: TimelineEvent = { key: "auth", icon: "auth", tone: "error", title: "อนุมัติวงเงินล้มเหลว", desc: "ธนาคารผู้ออกบัตรปฏิเสธรายการ", time: hms(t.time, 42) };
+  const capture: TimelineEvent = { key: "capture", icon: "capture", tone: "ok", title: "เรียกเก็บเงินสำเร็จ", desc: `เก็บยอด ${amt} จาก ${psp}`, time: hms(t.time, 46) };
+  const settled: TimelineEvent = { key: "settled", icon: "bank", tone: "ok", title: "ชำระเงินสำเร็จ", desc: "รับเงินเข้าบัญชีตัวกลาง (รอบ T+2)", time: hms(t.time, 50) };
   const webhook: TimelineEvent = { key: "webhook", icon: "webhook", tone: "ok", title: "ส่ง Webhook สำเร็จ", desc: "payment.succeeded → policy-core", time: hms(t.time, 56) };
   const cancel: TimelineEvent = { key: "cancel", icon: "cancel", tone: "muted", title: "ยกเลิกรายการ", desc: "ลิงก์หมดอายุ / ยกเลิกก่อนชำระ", time: hms(t.time, 30) };
 
