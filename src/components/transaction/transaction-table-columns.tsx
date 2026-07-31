@@ -12,10 +12,9 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { formatMoney } from "@/types/money";
-import { CHANNEL_LABEL, CHANNEL_DOT, PSP_LABEL } from "@/lib/transaction";
-import { TransactionLifecycle } from "./transaction-lifecycle";
-import { TransactionStatusBadge } from "./transaction-status-badge";
-import { Eye, Pencil, Copy, Trash2, Menu } from "lucide-react";
+import { CHANNEL_LABEL, CHANNEL_DOT, customerPhone, orderLikeStatus } from "@/lib/transaction";
+import { TransactionListStatusBadge } from "@/components/transaction/transaction-list-status-badge";
+import { Eye, Pencil, Copy, Trash2 } from "lucide-react";
 
 interface BuildColumnsArgs {
   onSelect?: (t: PaymentSession) => void;
@@ -30,9 +29,14 @@ export function buildTransactionColumns({
   {
     id: "select",
     enableSorting: false,
-    meta: { headClassName: "w-12 pl-1 pr-0 py-2", cellClassName: "w-12 pl-1 pr-0" },
+    meta: {
+      headClassName: "w-12 pl-1 pr-0 py-2",
+      cellClassName: "w-12 pl-1 pr-0",
+      ignoreRowClick: true,
+    },
     header: ({ table }) => (
       <Checkbox
+        className="justify-end"
         checked={table.getIsAllRowsSelected()}
         indeterminate={
           table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
@@ -43,6 +47,7 @@ export function buildTransactionColumns({
     ),
     cell: ({ row }) => (
       <Checkbox
+        className="justify-end"
         checked={row.getIsSelected()}
         onChange={(c) => row.toggleSelected(c)}
         aria-label={`เลือก ${row.original.code}`}
@@ -50,18 +55,30 @@ export function buildTransactionColumns({
     ),
   },
   {
+    accessorKey: "time",
+    header: "วันที่ทำรายการ",
+    enableSorting: true,
+    meta: { headClassName: "w-[180px]", cellClassName: "w-[180px]" },
+    // ponytail: time เก็บแค่ "HH:MM" ไม่มี date จริงในโมเดล — mock ทั้งหมดคือรายการ "วันนี้" (เหมือน order-table-columns.tsx)
+    cell: ({ row }) => (
+      <span className="text-sm text-grey-600">
+        {row.original.time ? `30 ก.ค. 2569 ${row.original.time}` : "—"}
+      </span>
+    ),
+  },
+  {
     accessorKey: "code",
     header: "รหัสธุรกรรม",
     enableSorting: true,
+    meta: { headClassName: "w-[220px]", cellClassName: "w-[220px]" },
     cell: ({ row }) => {
       const t = row.original;
       return (
         <div className="min-w-0">
           <span className="block text-sm font-semibold text-foreground">
-            {t.code}
+            {t.code.replace(/^ORD/, "VCP")}
           </span>
-          <span className="text-xs text-grey-500">
-            <Menu className="mr-1 inline size-3.5" />
+          <span className="font-semibold text-primary">
             {t.subItems > 1 ? `${t.subItems} รายการย่อย` : "1 รายการ"}
           </span>
         </div>
@@ -69,90 +86,59 @@ export function buildTransactionColumns({
     },
   },
   {
-    accessorKey: "recipientEmail",
-    header: "อีเมล",
-    enableSorting: true,
-    cell: ({ row }) => (
-      <span className="block truncate text-sm text-foreground">
-        {row.original.recipientEmail ?? "—"}
-      </span>
-    ),
-  },
-  {
     id: "source",
-    header: "ที่มา",
+    header: "ผู้เอาประกันภัย",
     enableSorting: false,
     cell: ({ row }) => {
-      const s = row.original.source;
+      const t = row.original;
+      const s = t.source;
       return (
-        <div className="flex items-center gap-2">
-          <span className="inline-flex h-6 items-center rounded-md bg-grey-200 px-1.5 text-xs font-bold text-grey-700">
-            {s.code}
-          </span>
-          <span className="text-sm text-foreground">{s.label}</span>
+        <div className="min-w-0">
+          <span className="block text-sm font-semibold text-foreground">{s.label}</span>
+          <span className="text-xs text-grey-500">{customerPhone(t)}</span>
         </div>
       );
     },
   },
   {
     accessorKey: "channel",
-    header: "ช่องทาง",
+    header: "ช่องทางชำระเงิน",
     enableSorting: false,
+    meta: { headClassName: "w-[200px]", cellClassName: "w-[200px]" },
     cell: ({ row }) => {
       const c = row.original.channel;
       return (
         <span className="inline-flex items-center gap-2 text-sm text-foreground">
-          <span className={cn("size-2 rounded-full", CHANNEL_DOT[c])} />
+          <span className={cn("size-3 rounded-full", CHANNEL_DOT[c])} />
           {CHANNEL_LABEL[c]}
         </span>
       );
     },
   },
   {
-    accessorKey: "psp",
-    header: "PSP",
-    enableSorting: false,
-    cell: ({ row }) => (
-      <span className="text-sm font-medium text-foreground">
-        {PSP_LABEL[row.original.psp]}
-      </span>
-    ),
-  },
-  {
-    accessorKey: "amount",
-    header: "จำนวน",
+    id: "amount",
+    header: "ยอดชำระเงิน",
     enableSorting: true,
-    meta: { headClassName: "text-right", cellClassName: "text-right" },
+    accessorFn: (t) => Number(t.amount.amount),
+    meta: { headClassName: "w-[180px] text-right", cellClassName: "w-[180px] text-right" },
     cell: ({ row }) => (
       <span className="text-sm font-semibold text-foreground">
-        {formatMoney(row.original.amount)}
+        {formatMoney(row.original.amount).replace(` ${row.original.amount.currency}`, "")}
       </span>
     ),
   },
   {
-    id: "lifecycle",
-    header: "วงจร",
-    enableSorting: false,
-    cell: ({ row }) => <TransactionLifecycle status={row.original.status} />,
-  },
-  {
-    accessorKey: "status",
+    id: "status",
     header: "สถานะ",
     enableSorting: true,
-    cell: ({ row }) => <TransactionStatusBadge status={row.original.status} />,
-  },
-  {
-    accessorKey: "time",
-    header: "เวลา",
-    enableSorting: true,
-    cell: ({ row }) => (
-      <span className="text-sm text-grey-600">{row.original.time} น.</span>
-    ),
+    accessorFn: (t) => orderLikeStatus(t.status),
+    meta: { headClassName: "w-[140px]", cellClassName: "w-[140px]" },
+    cell: ({ row }) => <TransactionListStatusBadge status={orderLikeStatus(row.original.status)} />,
   },
   {
     id: "actions",
     enableSorting: false,
-    meta: { headClassName: "w-48", cellClassName: "w-48", ignoreRowClick: true },
+    meta: { headClassName: "w-[220px]", cellClassName: "w-[220px]", ignoreRowClick: true },
     header: () => null,
     cell: ({ row }) => (
       <TooltipProvider>
@@ -166,13 +152,13 @@ export function buildTransactionColumns({
                 variant="ghost"
                 size="icon-lg"
                 className="size-10 cursor-pointer bg-grey-600/8 text-grey-700 hover:bg-grey-800 hover:text-white focus-visible:bg-grey-800 focus-visible:text-white"
-                aria-label="ดู"
+                aria-label="ดูรายละเอียด"
                 onClick={() => onRead?.(row.original)}
               >
                 <Eye className="size-5" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>ดู</TooltipContent>
+            <TooltipContent>ดูรายละเอียด</TooltipContent>
           </Tooltip>
           {[
             { icon: Pencil, label: "แก้ไข" },
