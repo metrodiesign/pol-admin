@@ -50,7 +50,7 @@ export function buildOrderColumns({
         className="justify-end"
         checked={row.getIsSelected()}
         onChange={(c) => row.toggleSelected(c)}
-        aria-label={`เลือก ${row.original.session?.code ?? row.original.id}`}
+        aria-label={`เลือก ${row.original.id}`}
       />
     ),
   },
@@ -74,13 +74,13 @@ export function buildOrderColumns({
     header: "รหัสคำสั่งซื้อ",
     enableSorting: true,
     meta: { headClassName: "w-[220px]", cellClassName: "w-[220px]" },
-    accessorFn: (t) => t.session?.code ?? t.id,
+    accessorFn: (t) => t.id,
     cell: ({ row }) => {
       const t = row.original;
       return (
         <div className="min-w-0">
           <span className="block text-sm font-semibold text-foreground">
-            {t.session?.code ?? t.id}
+            {t.id}
           </span>
           <span className="font-semibold text-primary">
             {(t.session?.subItems ?? 1) > 1 ? `${t.session?.subItems} รายการย่อย` : "1 รายการ"}

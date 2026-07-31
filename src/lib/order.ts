@@ -57,7 +57,7 @@ export const ORDER_ROWS: OrderRow[] = ORDERS.map((o) => ({
 
 export function getOrderById(id: string | undefined): OrderRow | undefined {
   if (!id) return undefined;
-  return ORDER_ROWS.find((o) => o.id === id || o.session?.code === id);
+  return ORDER_ROWS.find((o) => o.id === id);
 }
 
 // CSV export (client-side). header ไทย.
@@ -65,7 +65,7 @@ export function toCsv(rows: OrderRow[]): string {
   const head = ["รหัสคำสั่งซื้อ", "อีเมล", "ที่มา", "ช่องทาง", "PSP", "จำนวน", "สถานะ", "เวลา"];
   const esc = (v: string) => /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
   const body = rows.map((o) => [
-    o.session?.code ?? o.id,
+    o.id,
     o.session?.recipientEmail ?? "",
     o.session ? `${o.session.source.code} ${o.session.source.label}` : "",
     o.session ? CHANNEL_LABEL[o.session.channel] : "",

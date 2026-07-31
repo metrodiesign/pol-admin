@@ -1,9 +1,10 @@
-import { Fragment } from "react";
+"use client";
+
 import Link from "next/link";
+import SimpleBar from "simplebar-react";
+import QRCode from "react-qr-code";
 import {
   type LucideIcon,
-  CheckCircle2,
-  XCircle,
   Ban,
   Send,
   ShieldCheck,
@@ -13,9 +14,6 @@ import {
   ExternalLink,
   Phone,
   Mail,
-  History,
-  QrCode,
-  Printer,
   Download,
   Copy,
   Clock,
@@ -24,13 +22,11 @@ import {
 } from "lucide-react";
 import {
   getTransactionById,
-  paymentLifecycle,
   buildTimeline,
   policyItems,
   sourceDetail,
   customerPhone,
   payLink,
-  type StepState,
   type TimelineIcon,
 } from "@/lib/transaction";
 import { cn, formatAmount } from "@/lib/utils";
@@ -98,7 +94,7 @@ function Panel({
       {title ? (
         <>
           <div className="px-6 py-5">
-            <p className="text-base font-bold text-foreground">{title}</p>
+            <p className="text-base font-bold text-primary">{title}</p>
             {description ? (
               <p className="mt-0.5 text-xs text-grey-500">{description}</p>
             ) : null}
@@ -110,22 +106,6 @@ function Panel({
     </section>
   );
 }
-
-function stepCircle(state: StepState) {
-  if (state === "done") return <CheckCircle2 className="size-5 text-success" />;
-  if (state === "failed") return <XCircle className="size-5 text-error" />;
-  if (state === "current")
-    return <span className="size-5 rounded-full border-2 border-info" />;
-  return <span className="size-5 rounded-full border-2 border-grey-300" />;
-}
-
-const STEP_LABEL_COLOR: Record<StepState, string> = {
-  done: "text-success",
-  current: "text-info",
-  failed: "text-error",
-  pending: "text-grey-500",
-};
-
 
 const fieldLabel = "mb-1.5 block text-xs font-semibold text-grey-700";
 
@@ -150,7 +130,6 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
     );
   }
 
-  const lifecycle = paymentLifecycle(t.status);
   const items = policyItems(t);
   const src = sourceDetail(t);
   const timeline = buildTimeline(t);
@@ -159,45 +138,18 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
 
   return (
     <div className="flex flex-col gap-6 pb-4">
-      {/* ── 1. สถานะลิงก์และชำระเงิน (Lifecycle + QR) ─────────────────────── */}
-      <Panel title="สถานะลิงก์และชำระเงิน" description="สถานะปัจจุบัน QR Code และการดำเนินการ">
+      {/* ── 1. สถานะลิงก์และชำระเงิน + ไทม์ไลน์ (2 คอลัมน์) ─────────────────── */}
+      <div className="grid grid-cols-1 gap-6 mmd:grid-cols-2">
+      <Panel title="สถานะลิงก์และชำระเงิน">
         <div className="px-6 py-5">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <p className="text-sm font-bold text-foreground">
-              สถานะ{" "}
-              <span className="font-semibold uppercase tracking-wide text-grey-500">
-                LIFECYCLE
-              </span>
-            </p>
+          <div className="flex flex-wrap items-center gap-3">
+            <p className="text-sm font-bold text-foreground">สถานะ</p>
             <TransactionStatusBadge status={t.status} />
           </div>
 
-          <div className={cn("mt-4 flex", compact ? "flex-col gap-1" : "items-center overflow-x-auto")}>
-            {lifecycle.map((s, i) => (
-              <Fragment key={s.label}>
-                {i > 0 ? (
-                  <span
-                    className={cn(
-                      "mx-3 h-0.5 min-w-8 flex-1",
-                      compact && "hidden",
-                      lifecycle[i - 1]?.state === "done" ? "bg-success" : "bg-grey-300",
-                    )}
-                  />
-                ) : null}
-                <span className="flex shrink-0 items-center gap-2">
-                  {stepCircle(s.state)}
-                  <span className={cn("text-sm font-semibold", STEP_LABEL_COLOR[s.state])}>
-                    {s.label}
-                  </span>
-                </span>
-              </Fragment>
-            ))}
-          </div>
-
           <div className={cn("mt-6 grid grid-cols-1 gap-x-8 gap-y-8", !compact && "mmd:grid-cols-2")}>
-            <div className="flex h-full flex-col items-center justify-center rounded-2xl bg-grey-100 px-6 py-7 gap-3">
-              <QrCode className="size-24 text-grey-800" strokeWidth={1.5} />
-              <span className="font-mono text-xs text-grey-500">{link.url}</span>
+            <div className="flex h-full flex-col items-center justify-center rounded-2xl bg-grey-100 px-6 py-7">
+              <QRCode value={link.url} size={220} />
             </div>
 
             <div>
@@ -225,24 +177,27 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
                 </button>
               </div>
 
-              <div className={cn("mt-4 gap-2.5", compact ? "grid grid-cols-1" : "flex")}>
+              <div className={cn("mt-4 grid gap-2.5", compact ? "grid-cols-1" : "grid-cols-2")}>
                 <button
                   type="button"
-                  className="inline-flex h-11 flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-control bg-success px-3 text-sm font-bold text-white transition-colors hover:bg-success-dark"
+                  className={cn(
+                    "inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-control bg-success px-3 text-sm font-bold text-white transition-colors hover:bg-success-dark",
+                    !compact && "col-span-2",
+                  )}
                 >
-                  <Printer className="size-4 shrink-0" />
-                  พิมพ์ QR Code
+                  <ExternalLink className="size-4 shrink-0" />
+                  เปิดลิงก์
                 </button>
                 <button
                   type="button"
-                  className="inline-flex h-11 flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-control border border-[var(--divider)] px-3 text-sm font-bold text-foreground transition-colors hover:bg-grey-100"
+                  className="inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-control border border-[var(--divider)] px-3 text-sm font-bold text-foreground transition-colors hover:bg-grey-100"
                 >
                   <Download className="size-4 shrink-0" />
                   ดาวน์โหลด QR
                 </button>
                 <button
                   type="button"
-                  className="inline-flex h-11 flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-control border border-[var(--divider)] px-3 text-sm font-bold text-foreground transition-colors hover:bg-grey-100"
+                  className="inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-control border border-[var(--divider)] px-3 text-sm font-bold text-foreground transition-colors hover:bg-grey-100"
                 >
                   <Copy className="size-4 shrink-0" />
                   คัดลอกลิงก์
@@ -253,8 +208,51 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
         </div>
       </Panel>
 
+      <Panel>
+        <div className="px-6 py-5">
+          <h2 className="text-base font-bold text-primary">ประวัติการดำเนินงาน</h2>
+        </div>
+        <div className="border-t border-[var(--divider)]" />
+        <div className="py-5">
+          <SimpleBar className="max-h-[335px]" autoHide={false}>
+            <ol className="flex flex-col px-6">
+              {timeline.map((ev, i) => {
+                const Icon = TIMELINE_ICON[ev.icon];
+                const last = i === timeline.length - 1;
+                return (
+                  <li key={ev.key} className="relative flex gap-3 pb-6 last:pb-0">
+                    {!last ? (
+                      <span className="absolute top-9 left-4 h-[calc(100%-2.5rem)] w-px bg-[var(--divider)]" />
+                    ) : null}
+                    <span
+                      className={cn(
+                        "relative z-10 flex size-8 shrink-0 items-center justify-center rounded-full",
+                        TONE_BG[ev.tone],
+                        TONE_TEXT[ev.tone],
+                      )}
+                    >
+                      <Icon className="size-4" />
+                    </span>
+                    <div className="min-w-0 flex-1 pt-1">
+                      <div className="flex items-start justify-between gap-3">
+                        <p className="text-sm font-semibold text-foreground">{ev.title}</p>
+                        <span className="shrink-0 text-xs tabular-nums text-grey-500">
+                          {ev.time}
+                        </span>
+                      </div>
+                      <p className="mt-0.5 text-xs text-grey-500">{ev.desc}</p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+          </SimpleBar>
+        </div>
+      </Panel>
+      </div>
+
       {/* ── 2. ใบแจ้งหนี้และเลขที่อ้างอิง (Advanced) ─────────────────────── */}
-      <Panel title="ใบแจ้งหนี้และเลขที่อ้างอิง" description="รหัสธุรกรรม ที่มา และข้อมูลอ้างอิง">
+      <Panel title="ใบแจ้งหนี้และเลขที่อ้างอิง">
         <div className="px-6 py-5">
           <div className={cn("grid grid-cols-1 gap-x-4 gap-y-4", !compact && "sm:grid-cols-2")}>
             <div>
@@ -268,33 +266,37 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
           </div>
           <div className={cn("mt-4 grid grid-cols-1 gap-x-4 gap-y-4", !compact && "sm:grid-cols-2")}>
             <div>
-              <p className={fieldLabel}>Reference 1</p>
+              <p className={fieldLabel}>หมายเลขอ้างอิง 1</p>
               <p className="text-sm font-bold text-foreground">{t.source.code || <span className="text-grey-400">—</span>}</p>
             </div>
             <div>
-              <p className={fieldLabel}>Reference 2</p>
+              <p className={fieldLabel}>หมายเลขอ้างอิง 2</p>
               <p className="text-sm font-bold text-foreground">{t.source.label || <span className="text-grey-400">—</span>}</p>
             </div>
             <div>
-              <p className={fieldLabel}>Reference 3</p>
-              <p className="text-sm font-bold text-foreground">{`${src.role} · ${src.location}` || <span className="text-grey-400">—</span>}</p>
+              <p className={fieldLabel}>หมายเลขอ้างอิง 3</p>
+              <p className="text-sm font-bold text-foreground">{src ? `${src.role} · ${src.location}` : <span className="text-grey-400">—</span>}</p>
             </div>
             <div>
-              <p className={fieldLabel}>Reference 4</p>
-              <p className="text-sm font-bold text-foreground">{`${src.branchCode} · ${src.branchLabel}` || <span className="text-grey-400">—</span>}</p>
+              <p className={fieldLabel}>หมายเลขอ้างอิง 4</p>
+              <p className="text-sm font-bold text-foreground">{src ? `${src.branchCode} · ${src.branchLabel}` : <span className="text-grey-400">—</span>}</p>
             </div>
             <div>
-              <p className={fieldLabel}>Reference 5</p>
-              <p className="text-sm font-bold text-foreground">{src.linkRef || <span className="text-grey-400">—</span>}</p>
+              <p className={fieldLabel}>หมายเลขอ้างอิง 5</p>
+              <p className="text-sm font-bold text-foreground">{src?.linkRef || <span className="text-grey-400">—</span>}</p>
             </div>
           </div>
         </div>
       </Panel>
 
       {/* ── 2. ข้อมูลลูกค้า (Customer) ──────────────────────────────────────── */}
-      <Panel title="ข้อมูลลูกค้า" description="ใช้สำหรับการแจ้งเตือนและออกใบเสร็จ">
+      <Panel title="ข้อมูลลูกค้า">
         <div className="px-6 py-5">
           <div className={cn("grid grid-cols-1 gap-x-5 gap-y-5", !compact && "mmd:grid-cols-2")}>
+            <div className="flex flex-col gap-1.5">
+              <p className={fieldLabel}>ชื่อ-นามสกุล</p>
+              <p className="text-sm font-bold text-foreground">{t.source.label || <span className="text-grey-400">—</span>}</p>
+            </div>
             <div className="flex flex-col gap-1.5">
               <p className={fieldLabel}>อีเมล</p>
               <p className="text-sm font-bold text-foreground">{t.recipientEmail || <span className="text-grey-400">—</span>}</p>
@@ -308,26 +310,23 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
       </Panel>
 
       {/* ── 3. รายการกรมธรรม์ที่จะรับชำระ (Items) ───────────────────────────── */}
-      <Panel
-        title="รายการกรมธรรม์ที่จะรับชำระ"
-        description={`${items.length} รายการ · 1 ลิงก์ชำระครั้งเดียว`}
-      >
+      <Panel title="รายการกรมธรรม์ที่จะรับชำระ">
         <div className="px-6 py-5">
-          <div className="-mx-2 overflow-x-auto">
+          <div className="-mx-6 overflow-x-auto">
             <table className="w-full min-w-[880px] border-collapse">
               <thead>
-                <tr className="bg-grey-100 text-sm text-grey-500">
-                  <th className="rounded-l-lg px-3 py-3 text-left font-semibold">ลำดับ</th>
-                  <th className="px-3 py-3 text-left font-semibold">
+                <tr className="bg-grey-200 text-sm font-semibold text-grey-600 dark:bg-grey-900">
+                  <th className="whitespace-nowrap py-4 pr-4 pl-6 text-left">ลำดับ</th>
+                  <th className="whitespace-nowrap px-4 py-4 text-left">
                     หมายเลขกรมธรรม์ / รับแจ้ง / สลักหลัง
                   </th>
-                  <th className="px-3 py-3 text-left font-semibold">ชื่อ-นามสกุล</th>
-                  <th className="px-3 py-3 text-right font-semibold">เบี้ยสุทธิ</th>
-                  <th className="px-3 py-3 text-right font-semibold">เบี้ยรวม</th>
-                  <th className="px-3 py-3 text-right font-semibold">ส่วนลด</th>
-                  <th className="px-3 py-3 text-right font-semibold">%จากเบี้ยสุทธิ</th>
-                  <th className="px-3 py-3 text-right font-semibold">ยอดชำระ</th>
-                  <th className="rounded-r-lg px-3 py-3 text-left font-semibold">
+                  <th className="whitespace-nowrap px-4 py-4 text-left">ชื่อ-นามสกุล</th>
+                  <th className="whitespace-nowrap px-4 py-4 text-right">เบี้ยสุทธิ</th>
+                  <th className="whitespace-nowrap px-4 py-4 text-right">เบี้ยรวม</th>
+                  <th className="whitespace-nowrap px-4 py-4 text-right">ส่วนลด</th>
+                  <th className="whitespace-nowrap px-4 py-4 text-right">%จากเบี้ยสุทธิ</th>
+                  <th className="whitespace-nowrap px-4 py-4 text-right">ยอดชำระ</th>
+                  <th className="whitespace-nowrap py-4 pr-6 pl-4 text-left">
                     ข้อมูลอ้างอิง
                   </th>
                 </tr>
@@ -338,9 +337,9 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
                     key={it.seq}
                     className="border-b border-dashed border-[var(--divider)] align-top text-sm"
                   >
-                    <td className="px-3 py-4 text-grey-600">{it.seq}</td>
+                    <td className="py-4 pr-3 pl-6 text-grey-600">{it.seq}</td>
                     <td className="px-3 py-4">
-                      <p className="font-semibold text-success-dark">{it.docNo}</p>
+                      <p className="font-semibold text-primary">{it.docNo}</p>
                       <p className="mt-0.5 text-xs text-grey-500">{it.docType}</p>
                     </td>
                     <td className="px-3 py-4 text-foreground">{it.insuredName}</td>
@@ -357,7 +356,7 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
                     <td className="px-3 py-4 text-right font-semibold tabular-nums text-foreground">
                       {formatAmount(it.grossPremium, 2)}
                     </td>
-                    <td className="px-3 py-4 text-grey-600">{it.ref}</td>
+                    <td className="py-4 pr-6 pl-3 text-grey-600">{it.ref}</td>
                   </tr>
                 ))}
               </tbody>
@@ -371,7 +370,7 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
             </p>
             <div className="text-right">
               <p className="text-sm text-grey-500">ยอดที่ลูกค้าต้องชำระ</p>
-              <p className="text-2xl font-bold tabular-nums text-success-dark">
+              <p className="text-2xl font-bold tabular-nums text-primary">
                 {formatMoney(t.amount)}
               </p>
             </div>
@@ -380,7 +379,7 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
       </Panel>
 
       {/* ── 4. ช่องทางการชำระเงิน (Channel) ────────────────────────────────── */}
-      <Panel title="ช่องทางการชำระเงิน" description="ช่องทางที่ลูกค้าใช้ชำระ">
+      <Panel title="ช่องทางการชำระเงิน">
         <div className="px-6 py-5">
           <div className="max-w-xs rounded-xl border-2 border-primary bg-primary/4 p-4">
             <div className="flex items-center gap-2.5">
@@ -408,7 +407,7 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
         <div className="px-6 py-5">
           <div className="flex flex-col gap-6">
             <div>
-              <span className="mb-2 block text-sm font-semibold text-foreground">
+              <span className="mb-2 block text-sm font-semibold text-grey-700">
                 ระยะเวลาก่อนลิงก์หมดอายุ
               </span>
               <span className="inline-flex h-9 items-center rounded-full border border-primary bg-primary/8 px-4 text-sm font-semibold text-primary">
@@ -417,7 +416,7 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
             </div>
 
             <div>
-              <span className="mb-2 block text-sm font-semibold text-foreground">
+              <span className="mb-2 block text-sm font-semibold text-grey-700">
                 การแจ้งเตือนลูกค้า
               </span>
               <span className="inline-flex h-9 items-center rounded-full border border-primary bg-primary/8 px-4 text-sm font-semibold text-primary">
@@ -431,7 +430,7 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
                       <MessageSquare className="size-4" />
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block text-sm font-bold text-foreground">ส่ง SMS แจ้งลิงก์</span>
+                      <span className="block text-sm font-bold text-grey-700">ส่ง SMS แจ้งลิงก์</span>
                     </span>
                   </div>
                   <div className="border-t border-[var(--divider)] px-4 py-3">
@@ -441,7 +440,7 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
               </div>
             </div>
             <div>
-              <span className="mb-2 block text-sm font-semibold text-foreground">
+              <span className="mb-2 block text-sm font-semibold text-grey-700">
                 การแจ้งเตือนกำหนดผู้รับเอง
               </span>
               <div className="flex flex-col gap-3">
@@ -451,7 +450,7 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
                       <MessageSquare className="size-4" />
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block text-sm font-bold text-foreground">ส่ง SMS ถึงผู้รับที่กำหนด</span>
+                      <span className="block text-sm font-bold text-grey-700">ส่ง SMS ถึงผู้รับที่กำหนด</span>
                     </span>
                   </div>
                   <div className="border-t border-[var(--divider)] px-4 py-3">
@@ -464,7 +463,7 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
                       <Mail className="size-4" />
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block text-sm font-bold text-foreground">ส่งอีเมลถึงผู้รับที่กำหนด</span>
+                      <span className="block text-sm font-bold text-grey-700">ส่งอีเมลถึงผู้รับที่กำหนด</span>
                     </span>
                   </div>
                   <div className="border-t border-[var(--divider)] px-4 py-3">
@@ -478,57 +477,10 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
       </Panel>
 
       {/* ── 6. หมายเหตุ ─────────────────────────────────────────────────────── */}
-      <Panel title="หมายเหตุ" description="หมายเหตุภายใน · ไม่แสดงให้ลูกค้า">
-        <div className="px-6 py-5">
-          <p className="text-sm font-bold text-grey-400">ไม่มีหมายเหตุ</p>
-        </div>
-      </Panel>
-
-      {/* ── 7. ไทม์ไลน์ ──────────────────────────────────────────────────────── */}
-      <Panel>
-        <div className="px-6 py-5">
-          <div className="flex items-center justify-between">
-            <h2 className="text-base font-bold text-foreground">ไทม์ไลน์</h2>
-            <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-grey-600">
-              <History className="size-4" />
-              ดูทั้งหมด
-            </span>
-          </div>
-          <ol className="mt-5 flex flex-col">
-            {timeline.map((ev, i) => {
-              const Icon = TIMELINE_ICON[ev.icon];
-              const last = i === timeline.length - 1;
-              return (
-                <li key={ev.key} className="relative flex gap-3 pb-6 last:pb-0">
-                  {!last ? (
-                    <span className="absolute top-9 left-4 h-[calc(100%-2.5rem)] w-px bg-[var(--divider)]" />
-                  ) : null}
-                  <span
-                    className={cn(
-                      "relative z-10 flex size-8 shrink-0 items-center justify-center rounded-full",
-                      TONE_BG[ev.tone],
-                      TONE_TEXT[ev.tone],
-                    )}
-                  >
-                    <Icon className="size-4" />
-                  </span>
-                  <div className="min-w-0 flex-1 pt-1">
-                    <div className="flex items-start justify-between gap-3">
-                      <p className="text-sm font-semibold text-foreground">{ev.title}</p>
-                      <span className="shrink-0 text-xs tabular-nums text-grey-500">
-                        {ev.time}
-                      </span>
-                    </div>
-                    <p className="mt-0.5 text-xs text-grey-500">{ev.desc}</p>
-                  </div>
-                </li>
-              );
-            })}
-          </ol>
-        </div>
+      <Panel title="หมายเหตุ">
+        <div className="px-6 py-5" />
       </Panel>
 
     </div>
   );
 }
-

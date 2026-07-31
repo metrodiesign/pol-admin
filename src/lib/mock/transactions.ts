@@ -5,7 +5,7 @@ import type { PaymentSession } from "@/types/order-payment";
 export const PAYMENT_SESSIONS: PaymentSession[] = [
   {
     id: "ORD6900000001",
-    code: "ORD6900000001",
+    code: "VCP6900000001",
     recipientEmail: "supichaya.t@mail.com",
     source: { code: "CPK", label: "ชยพร โกศลกิจ" },
     channel: "card",
@@ -22,7 +22,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000002",
-    code: "ORD6900000002",
+    code: "VCP6900000002",
     recipientEmail: "kwankhao.n@mail.com",
     source: { code: "TCB", label: "เคพีดีโบรคเกอร์ไทย" },
     channel: "promptpay",
@@ -40,7 +40,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000003",
-    code: "ORD6900000003",
+    code: "VCP6900000003",
     recipientEmail: "nicharat.p@mail.com",
     source: { code: "IPM", label: "iPolicy Mobile" },
     channel: "installment",
@@ -58,7 +58,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000004",
-    code: "ORD6900000004",
+    code: "VCP6900000004",
     recipientEmail: "methawin.a@mail.com",
     source: { code: "SPP", label: "ศิรินกัส โพธิ์ไทร" },
     channel: "installment",
@@ -73,7 +73,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000005",
-    code: "ORD6900000005",
+    code: "VCP6900000005",
     recipientEmail: "thitaporn.k@mail.com",
     source: { code: "CPK", label: "ชยพร โกศลกิจ" },
     channel: "card",
@@ -89,7 +89,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000006",
-    code: "ORD6900000006",
+    code: "VCP6900000006",
     recipientEmail: "thitaporn.k@mail.com",
     source: { code: "CPK", label: "ชยพร โกศลกิจ" },
     channel: "card",
@@ -107,7 +107,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000007",
-    code: "ORD6900000007",
+    code: "VCP6900000007",
     recipientEmail: "patsakorn.a@mail.com",
     source: { code: "PYS", label: "ปาณิสรา ทองอุดม" },
     channel: "card",
@@ -123,7 +123,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000008",
-    code: "ORD6900000008",
+    code: "VCP6900000008",
     recipientEmail: "arpatsara.p@mail.com",
     source: { code: "IPM", label: "iPolicy Mobile" },
     channel: "card",
@@ -138,7 +138,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000009",
-    code: "ORD6900000009",
+    code: "VCP6900000009",
     recipientEmail: "ritthirong.p@mail.com",
     source: { code: "WRY", label: "วรัญชลี ภูริพัฒน์" },
     channel: "card",
@@ -154,7 +154,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000010",
-    code: "ORD6900000010",
+    code: "VCP6900000010",
     recipientEmail: "thitaporn.k@mail.com",
     source: { code: "ATS", label: "อรรถวิทย์ ทวีลาภ" },
     channel: "promptpay",
@@ -171,7 +171,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000011",
-    code: "ORD6900000011",
+    code: "VCP6900000011",
     recipientEmail: "pariyachat.d@mail.com",
     source: { code: "ATS", label: "อรรถวิทย์ ทวีลาภ" },
     channel: "promptpay",
@@ -187,7 +187,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000012",
-    code: "ORD6900000012",
+    code: "VCP6900000012",
     recipientEmail: "thitaporn.k@mail.com",
     source: { code: "RNP", label: "Renewal Portal" },
     channel: "promptpay",
@@ -205,7 +205,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000013",
-    code: "ORD6900000013",
+    code: "VCP6900000013",
     recipientEmail: "pariyachat.d@mail.com",
     source: { code: "KKC", label: "สาขาขอนแก่น" },
     channel: "promptpay",
@@ -220,7 +220,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000014",
-    code: "ORD6900000014",
+    code: "VCP6900000014",
     recipientEmail: "methawin.a@mail.com",
     source: { code: "TCB", label: "เคพีดีโบรคเกอร์ไทย" },
     channel: "promptpay",
@@ -235,7 +235,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000015",
-    code: "ORD6900000015",
+    code: "VCP6900000015",
     recipientEmail: "supichaya.t@mail.com",
     source: { code: "IPM", label: "iPolicy Mobile" },
     channel: "installment",
@@ -253,7 +253,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000016",
-    code: "ORD6900000016",
+    code: "VCP6900000016",
     recipientEmail: "patsakorn.a@mail.com",
     source: { code: "SPP", label: "ศิรินกัส โพธิ์ไทร" },
     channel: "card",
@@ -270,7 +270,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000017",
-    code: "ORD6900000017",
+    code: "VCP6900000017",
     recipientEmail: "nicharat.p@mail.com",
     source: { code: "PYS", label: "ปาณิสรา ทองอุดม" },
     channel: "promptpay",
@@ -286,7 +286,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000018",
-    code: "ORD6900000018",
+    code: "VCP6900000018",
     recipientEmail: "ritthirong.p@mail.com",
     source: { code: "WRY", label: "วรัญชลี ภูริพัฒน์" },
     channel: "installment",
@@ -301,7 +301,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000019",
-    code: "ORD6900000019",
+    code: "VCP6900000019",
     recipientEmail: "thitaporn.k@mail.com",
     source: { code: "ATS", label: "อรรถวิทย์ ทวีลาภ" },
     channel: "card",
@@ -319,7 +319,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000020",
-    code: "ORD6900000020",
+    code: "VCP6900000020",
     recipientEmail: "kwankhao.n@mail.com",
     source: { code: "RNP", label: "Renewal Portal" },
     channel: "promptpay",
@@ -336,7 +336,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000021",
-    code: "ORD6900000021",
+    code: "VCP6900000021",
     recipientEmail: "pariyachat.d@mail.com",
     source: { code: "KKC", label: "สาขาขอนแก่น" },
     channel: "installment",
@@ -352,7 +352,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000022",
-    code: "ORD6900000022",
+    code: "VCP6900000022",
     recipientEmail: "methawin.a@mail.com",
     source: { code: "NWT", label: "ณวัฒน์ ธีรกุลชัย" },
     channel: "card",
@@ -367,7 +367,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000023",
-    code: "ORD6900000023",
+    code: "VCP6900000023",
     recipientEmail: "supichaya.t@mail.com",
     source: { code: "BKK", label: "สาขากรุงเทพ" },
     channel: "promptpay",
@@ -385,7 +385,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000024",
-    code: "ORD6900000024",
+    code: "VCP6900000024",
     recipientEmail: "patsakorn.a@mail.com",
     source: { code: "CMI", label: "สาขาเชียงใหม่" },
     channel: "installment",
@@ -402,7 +402,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000025",
-    code: "ORD6900000025",
+    code: "VCP6900000025",
     recipientEmail: "nicharat.p@mail.com",
     source: { code: "CPK", label: "ชยพร โกศลกิจ" },
     channel: "card",
@@ -418,7 +418,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000026",
-    code: "ORD6900000026",
+    code: "VCP6900000026",
     recipientEmail: "ritthirong.p@mail.com",
     source: { code: "TCB", label: "เคพีดีโบรคเกอร์ไทย" },
     channel: "promptpay",
@@ -433,7 +433,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000027",
-    code: "ORD6900000027",
+    code: "VCP6900000027",
     recipientEmail: "thitaporn.k@mail.com",
     source: { code: "IPM", label: "iPolicy Mobile" },
     channel: "installment",
@@ -451,7 +451,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000028",
-    code: "ORD6900000028",
+    code: "VCP6900000028",
     recipientEmail: "kwankhao.n@mail.com",
     source: { code: "SPP", label: "ศิรินกัส โพธิ์ไทร" },
     channel: "card",
@@ -468,7 +468,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000029",
-    code: "ORD6900000029",
+    code: "VCP6900000029",
     recipientEmail: "pariyachat.d@mail.com",
     source: { code: "PYS", label: "ปาณิสรา ทองอุดม" },
     channel: "promptpay",
@@ -484,7 +484,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000030",
-    code: "ORD6900000030",
+    code: "VCP6900000030",
     recipientEmail: "methawin.a@mail.com",
     source: { code: "WRY", label: "วรัญชลี ภูริพัฒน์" },
     channel: "installment",
@@ -499,7 +499,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000031",
-    code: "ORD6900000031",
+    code: "VCP6900000031",
     recipientEmail: "supichaya.t@mail.com",
     source: { code: "ATS", label: "อรรถวิทย์ ทวีลาภ" },
     channel: "card",
@@ -517,7 +517,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000032",
-    code: "ORD6900000032",
+    code: "VCP6900000032",
     recipientEmail: "patsakorn.a@mail.com",
     source: { code: "RNP", label: "Renewal Portal" },
     channel: "promptpay",
@@ -534,7 +534,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000033",
-    code: "ORD6900000033",
+    code: "VCP6900000033",
     recipientEmail: "nicharat.p@mail.com",
     source: { code: "KKC", label: "สาขาขอนแก่น" },
     channel: "installment",
@@ -550,7 +550,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000034",
-    code: "ORD6900000034",
+    code: "VCP6900000034",
     recipientEmail: "ritthirong.p@mail.com",
     source: { code: "NWT", label: "ณวัฒน์ ธีรกุลชัย" },
     channel: "card",
@@ -565,7 +565,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000035",
-    code: "ORD6900000035",
+    code: "VCP6900000035",
     recipientEmail: "thitaporn.k@mail.com",
     source: { code: "BKK", label: "สาขากรุงเทพ" },
     channel: "promptpay",
@@ -583,7 +583,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000036",
-    code: "ORD6900000036",
+    code: "VCP6900000036",
     recipientEmail: "kwankhao.n@mail.com",
     source: { code: "CMI", label: "สาขาเชียงใหม่" },
     channel: "installment",
@@ -600,7 +600,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000037",
-    code: "ORD6900000037",
+    code: "VCP6900000037",
     recipientEmail: "pariyachat.d@mail.com",
     source: { code: "CPK", label: "ชยพร โกศลกิจ" },
     channel: "card",
@@ -616,7 +616,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000038",
-    code: "ORD6900000038",
+    code: "VCP6900000038",
     recipientEmail: "methawin.a@mail.com",
     source: { code: "TCB", label: "เคพีดีโบรคเกอร์ไทย" },
     channel: "promptpay",
@@ -631,7 +631,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000039",
-    code: "ORD6900000039",
+    code: "VCP6900000039",
     recipientEmail: "supichaya.t@mail.com",
     source: { code: "IPM", label: "iPolicy Mobile" },
     channel: "installment",
@@ -649,7 +649,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000040",
-    code: "ORD6900000040",
+    code: "VCP6900000040",
     recipientEmail: "patsakorn.a@mail.com",
     source: { code: "SPP", label: "ศิรินกัส โพธิ์ไทร" },
     channel: "card",
@@ -666,7 +666,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000041",
-    code: "ORD6900000041",
+    code: "VCP6900000041",
     recipientEmail: "nicharat.p@mail.com",
     source: { code: "PYS", label: "ปาณิสรา ทองอุดม" },
     channel: "promptpay",
@@ -682,7 +682,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000042",
-    code: "ORD6900000042",
+    code: "VCP6900000042",
     recipientEmail: "ritthirong.p@mail.com",
     source: { code: "WRY", label: "วรัญชลี ภูริพัฒน์" },
     channel: "installment",
@@ -697,7 +697,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000043",
-    code: "ORD6900000043",
+    code: "VCP6900000043",
     recipientEmail: "thitaporn.k@mail.com",
     source: { code: "ATS", label: "อรรถวิทย์ ทวีลาภ" },
     channel: "card",
@@ -715,7 +715,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000044",
-    code: "ORD6900000044",
+    code: "VCP6900000044",
     recipientEmail: "kwankhao.n@mail.com",
     source: { code: "RNP", label: "Renewal Portal" },
     channel: "promptpay",
@@ -732,7 +732,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000045",
-    code: "ORD6900000045",
+    code: "VCP6900000045",
     recipientEmail: "pariyachat.d@mail.com",
     source: { code: "KKC", label: "สาขาขอนแก่น" },
     channel: "installment",
@@ -748,7 +748,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000046",
-    code: "ORD6900000046",
+    code: "VCP6900000046",
     recipientEmail: "methawin.a@mail.com",
     source: { code: "NWT", label: "ณวัฒน์ ธีรกุลชัย" },
     channel: "card",
@@ -763,7 +763,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000047",
-    code: "ORD6900000047",
+    code: "VCP6900000047",
     recipientEmail: "supichaya.t@mail.com",
     source: { code: "BKK", label: "สาขากรุงเทพ" },
     channel: "promptpay",
@@ -781,7 +781,7 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
   },
   {
     id: "ORD6900000048",
-    code: "ORD6900000048",
+    code: "VCP6900000048",
     recipientEmail: "patsakorn.a@mail.com",
     source: { code: "CMI", label: "สาขาเชียงใหม่" },
     channel: "installment",

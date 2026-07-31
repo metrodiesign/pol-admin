@@ -40,7 +40,7 @@ export function OrderListView() {
     () =>
       buildOrderColumns({
         onSelect: setDetailTx,
-        onRead: (t) => router.push(`/order/read?id=${t.session?.code ?? t.id}`),
+        onRead: (t) => router.push(`/order/read?id=${t.id}`),
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
@@ -69,7 +69,7 @@ export function OrderListView() {
       if (f.search) {
         const q = f.search.toLowerCase();
         if (
-          !(t.session?.code ?? t.id).toLowerCase().includes(q) &&
+          !(t.id).toLowerCase().includes(q) &&
           !(t.session?.source.label ?? "").toLowerCase().includes(q) &&
           !(t.session?.recipientEmail ?? "").toLowerCase().includes(q)
         )
@@ -157,7 +157,7 @@ export function OrderListView() {
       order={detailTx}
       open={detailTx !== null}
       onOpenChange={(open) => { if (!open) setDetailTx(null); }}
-      onRead={(t) => router.push(`/order/read?id=${t.session?.code ?? t.id}`)}
+      onRead={(t) => router.push(`/order/read?id=${t.id}`)}
     />
     </>
   );
