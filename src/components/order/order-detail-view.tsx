@@ -384,11 +384,11 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
                 className="h-20 w-20 shrink-0 object-contain"
               />
               <span className="flex min-w-0 flex-1 flex-col gap-1">
-                <span className="text-sm font-bold text-foreground">
+                <span className="text-sm font-bold text-secondary">
                   {channel?.label ?? sessionChannel ?? "—"}
                 </span>
                 {channel?.caption ? (
-                  <span className="text-xs leading-relaxed text-grey-500">{channel.caption}</span>
+                  <span className="text-xs leading-relaxed text-foreground">{channel.caption}</span>
                 ) : null}
               </span>
             </div>
