@@ -68,7 +68,7 @@ export function buildTransactionColumns({
   },
   {
     accessorKey: "code",
-    header: "รหัสธุรกรรม",
+    header: "หมายเลขธุรกรรม",
     enableSorting: true,
     meta: { headClassName: "w-[220px]", cellClassName: "w-[220px]" },
     cell: ({ row }) => {

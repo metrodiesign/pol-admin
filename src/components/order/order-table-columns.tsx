@@ -71,7 +71,7 @@ export function buildOrderColumns({
   },
   {
     id: "code",
-    header: "รหัสคำสั่งซื้อ",
+    header: "หมายเลขคำสั่งซื้อ",
     enableSorting: true,
     meta: { headClassName: "w-[220px]", cellClassName: "w-[220px]" },
     accessorFn: (t) => t.id,
@@ -91,7 +91,7 @@ export function buildOrderColumns({
   },
   {
     id: "source",
-    header: "ผู้เอาประกันภัย",
+    header: "ข้อมูลลูกค้า",
     enableSorting: false,
     cell: ({ row }) => {
       const t = row.original;
