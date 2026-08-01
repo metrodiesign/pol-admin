@@ -14,7 +14,7 @@ export function CheckoutCustomerCard({ customer, onChange }: CheckoutCustomerCar
   const set = (patch: Partial<CustomerInfo>) => onChange({ ...customer, ...patch });
 
   return (
-    <CheckoutCard title="ข้อมูลลูกค้า" description="ใช้สำหรับการแจ้งเตือนและออกใบเสร็จ">
+    <CheckoutCard title="ข้อมูลลูกค้า">
       <div className="grid grid-cols-1 gap-x-5 gap-y-5 mmd:grid-cols-2">
         <div className="flex flex-col gap-1.5">
           <FieldLabel htmlFor="cust-name" required>
