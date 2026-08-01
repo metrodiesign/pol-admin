@@ -87,7 +87,7 @@ export function buildTransactionColumns({
   },
   {
     id: "source",
-    header: "ผู้เอาประกันภัย",
+    header: "ชื่อลูกค้า",
     enableSorting: false,
     cell: ({ row }) => {
       const t = row.original;
