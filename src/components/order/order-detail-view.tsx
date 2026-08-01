@@ -66,7 +66,7 @@ const CHANNEL_DISPLAY: Record<string, { img: string; label: string; caption: str
   promptpay: {
     img: "/payment/promptpay-qr-v2.png",
     label: "พร้อมเพย์",
-    caption: "สแกน QR จ่ายผ่านแอปธนาคาร",
+    caption: "สแกนจากแอปธนาคารใดก็ได้",
   },
   installment: {
     img: "/payment/installment-v2.png",
