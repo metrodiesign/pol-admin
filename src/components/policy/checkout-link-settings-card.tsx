@@ -70,7 +70,7 @@ function Pills<T extends string>({
   );
 }
 
-const labelCls = "mb-2 block text-sm font-semibold text-foreground";
+const labelCls = "mb-2 block text-sm font-semibold text-grey-700";
 
 export function CheckoutLinkSettingsCard(props: CheckoutLinkSettingsCardProps) {
   return (
