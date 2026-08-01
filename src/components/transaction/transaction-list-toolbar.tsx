@@ -40,6 +40,10 @@ const ROWS_OPTIONS: Option[] = [
   { value: "100", label: "100" },
 ];
 
+const APPLICATION_OPTIONS: Option[] = [
+  { value: "vcentralpay", label: "V Central Pay" },
+];
+
 export function TransactionListToolbar({
   search,
   onSearchChange,
@@ -51,6 +55,8 @@ export function TransactionListToolbar({
   onRowsPerPageChange,
 }: TransactionListToolbarProps) {
   const [dateRange, setDateRange] = useState<DateRange | null>(null);
+  // ponytail: UI-only local state, application ยังไม่มี field จริงใน PaymentSession/pol-core
+  const [application, setApplication] = useState("");
 
   return (
     <div className="grid grid-cols-1 gap-x-4 gap-y-3 p-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -61,6 +67,15 @@ export function TransactionListToolbar({
         value={search}
         onChange={onSearchChange}
         startAdornment={<Search className="size-5 text-grey-500" />}
+      />
+
+      <SelectField
+        label="แอปพลิเคชัน"
+        value={application}
+        onChange={setApplication}
+        options={APPLICATION_OPTIONS}
+        placeholder="ทั้งหมด"
+        clearable
       />
 
       <SelectField

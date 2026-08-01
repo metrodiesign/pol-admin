@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { formatMoney } from "@/types/money";
-import { CHANNEL_LABEL, CHANNEL_DOT, customerPhone, orderLikeStatus } from "@/lib/transaction";
+import { CHANNEL_LABEL, CHANNEL_DOT, PSP_LABEL, customerPhone, orderLikeStatus } from "@/lib/transaction";
 import { TransactionListStatusBadge } from "@/components/transaction/transaction-list-status-badge";
 import { Eye, Pencil, Copy, Trash2 } from "lucide-react";
 
@@ -86,8 +86,16 @@ export function buildTransactionColumns({
     },
   },
   {
+    id: "application",
+    header: "แอปพลิเคชัน",
+    enableSorting: false,
+    meta: { headClassName: "w-[160px]", cellClassName: "w-[160px]" },
+    // ponytail: mock static — ยังไม่มี field แอปพลิเคชันจริงใน PaymentSession/pol-core
+    cell: () => <span className="text-sm text-foreground">V Central Pay</span>,
+  },
+  {
     id: "source",
-    header: "ชื่อลูกค้า",
+    header: "ข้อมูลลูกค้า",
     enableSorting: false,
     cell: ({ row }) => {
       const t = row.original;
@@ -114,6 +122,15 @@ export function buildTransactionColumns({
         </span>
       );
     },
+  },
+  {
+    accessorKey: "psp",
+    header: "ผู้ให้บริการ",
+    enableSorting: false,
+    meta: { headClassName: "w-[160px]", cellClassName: "w-[160px]" },
+    cell: ({ row }) => (
+      <span className="text-sm text-foreground">{PSP_LABEL[row.original.psp]}</span>
+    ),
   },
   {
     id: "amount",
