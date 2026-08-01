@@ -357,15 +357,15 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
             </table>
           </div>
 
-          <div className={cn("mt-4 flex flex-col gap-3 rounded-2xl bg-info/8 px-5 py-4", !compact && "mmd:flex-row mmd:items-center mmd:justify-between")}>
+          <div className={cn("mt-4 flex flex-col-reverse gap-3 rounded-2xl bg-info/8 px-5 py-4", !compact && "mmd:flex-row mmd:items-center mmd:justify-between")}>
             <p className="flex items-center gap-2 text-sm text-grey-600">
               <Info className="size-4 shrink-0 text-info" />
               ลูกค้าจะเห็นรายการย่อยทั้งหมดในหน้าชำระเงิน และจ่ายครั้งเดียว
             </p>
             <div className="text-right">
               <p className="text-sm text-grey-500">ยอดที่ลูกค้าต้องชำระ</p>
-              <p className="text-2xl font-bold tabular-nums text-primary">
-                {formatMoney(t.amount)}
+              <p className="text-2xl font-bold tabular-nums text-secondary">
+                {formatMoney(t.amount, false)}
               </p>
             </div>
           </div>
@@ -375,7 +375,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
       {/* ── 4. ช่องทางการชำระเงิน (Channel) ────────────────────────────────── */}
       <Panel title="ช่องทางการชำระเงิน">
         <div className="px-6 pt-5 pb-6">
-          <div className="max-w-xs rounded-xl border-2 border-primary bg-primary/4 p-4">
+          <div className="max-w-xs rounded-xl border-2 border-secondary bg-secondary/4 p-4">
             <div className="flex items-center gap-2.5">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -404,7 +404,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
               <span className="mb-2 block text-sm font-semibold text-grey-700">
                 ระยะเวลาก่อนลิงก์หมดอายุ
               </span>
-              <span className="inline-flex h-9 items-center rounded-full border border-primary bg-primary/8 px-4 text-sm font-semibold text-primary">
+              <span className="inline-flex h-9 items-center rounded-full border border-secondary bg-secondary/8 px-4 text-sm font-semibold text-secondary">
                 72 ชม.
               </span>
             </div>
@@ -413,7 +413,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
               <span className="mb-2 block text-sm font-semibold text-grey-700">
                 การแจ้งเตือนลูกค้า
               </span>
-              <span className="inline-flex h-9 items-center rounded-full border border-primary bg-primary/8 px-4 text-sm font-semibold text-primary">
+              <span className="inline-flex h-9 items-center rounded-full border border-secondary bg-secondary/8 px-4 text-sm font-semibold text-secondary">
                 ส่งหาลูกค้า
               </span>
 
