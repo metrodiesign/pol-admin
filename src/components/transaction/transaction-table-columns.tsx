@@ -200,7 +200,7 @@ export function buildTransactionColumns({
               <Button
                 variant="ghost"
                 size="icon-lg"
-                className="size-10 cursor-pointer text-error hover:bg-error/8 hover:text-error focus-visible:bg-error/8 focus-visible:text-error"
+                className="size-10 cursor-pointer bg-error/8 text-error hover:bg-error hover:text-white focus-visible:bg-error focus-visible:text-white"
                 aria-label="ลบ"
               >
                 <Trash2 className="size-5" />

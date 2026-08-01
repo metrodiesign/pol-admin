@@ -100,7 +100,7 @@ export function CheckoutItemsCard({ items, total, onUpdate, onRemove }: Checkout
                     onClick={() => onRemove(it.uid)}
                     disabled={!canRemove}
                     aria-label={`ลบรายการ ${it.policyNo}`}
-                    className="size-10 cursor-pointer text-error hover:bg-error/8 hover:text-error"
+                    className="size-10 cursor-pointer bg-error/8 text-error hover:bg-error hover:text-white"
                   >
                     <Trash2 className="size-5" aria-hidden />
                   </Button>
