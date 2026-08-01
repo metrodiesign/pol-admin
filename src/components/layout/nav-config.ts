@@ -64,26 +64,6 @@ export const navConfig: NavGroup[] = [
     ],
   },
 
-  // ── ผู้ใช้งาน & สิทธิ์ ─────────────────────────────────────────────────────
-  {
-    subheader: "ผู้ใช้งาน & สิทธิ์",
-    items: [
-      {
-        title: "ผู้ใช้งาน",
-        path: "/user/list",
-        icon: "user",
-        match: "/user",
-        exclude: ["/user/role"],
-      },
-      {
-        title: "บทบาทและสิทธิ์",
-        path: "/user/role/list",
-        icon: "lock",
-        match: "/user/role",
-      },
-    ],
-  },
-
   // ── ตัวแทน/นายหน้า ──────────────────────────────────────────────────────────
   {
     subheader: "ตัวแทน/นายหน้า",
@@ -100,6 +80,26 @@ export const navConfig: NavGroup[] = [
         path: "/producer/role/list",
         icon: "lock",
         match: "/producer/role",
+      },
+    ],
+  },
+
+  // ── ผู้ใช้งาน & สิทธิ์ ─────────────────────────────────────────────────────
+  {
+    subheader: "ผู้ใช้งาน & สิทธิ์",
+    items: [
+      {
+        title: "ผู้ใช้งาน",
+        path: "/user/list",
+        icon: "user",
+        match: "/user",
+        exclude: ["/user/role"],
+      },
+      {
+        title: "บทบาทและสิทธิ์",
+        path: "/user/role/list",
+        icon: "lock",
+        match: "/user/role",
       },
     ],
   },
