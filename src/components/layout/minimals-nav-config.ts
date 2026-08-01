@@ -20,7 +20,7 @@ export const minimalsNavConfig: NavGroup[] = [
         title: "กรมธรรม์",
         path: "/policy/list",
         icon: "invoice",
-        match: "/policy",
+        match: ["/policy", "/checkout"],
       },
       {
         title: "คำสั่งซื้อ",

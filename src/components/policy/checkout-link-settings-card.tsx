@@ -58,7 +58,7 @@ function Pills<T extends string>({
             className={
               "h-9 rounded-full border px-4 text-sm font-semibold transition-colors " +
               (active
-                ? "border-primary bg-primary/8 text-primary"
+                ? "border-secondary bg-secondary/8 text-secondary"
                 : "border-[var(--divider)] text-grey-700 hover:bg-grey-100")
             }
           >
@@ -70,7 +70,7 @@ function Pills<T extends string>({
   );
 }
 
-const labelCls = "mb-2 block text-sm font-semibold text-foreground";
+const labelCls = "mb-2 block text-sm font-semibold text-grey-700";
 
 export function CheckoutLinkSettingsCard(props: CheckoutLinkSettingsCardProps) {
   return (

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import {
   Public_Sans,
   Barlow,
@@ -83,7 +84,11 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: SETTINGS_INIT_SCRIPT }} />
+        <Script
+          id="settings-init"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: SETTINGS_INIT_SCRIPT }}
+        />
       </head>
       <body className="min-h-full">
         <SettingsProvider>{children}</SettingsProvider>

@@ -305,7 +305,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
 
       {/* ── 3. รายการกรมธรรม์ (Items) ───────────────────────────── */}
       <Panel title="รายการกรมธรรม์">
-        <div className="px-6 pt-5 pb-6">
+        <div className="px-6 pb-6">
           <div className="-mx-6 overflow-x-auto">
             <table className="w-full min-w-[880px] border-collapse">
               <thead>

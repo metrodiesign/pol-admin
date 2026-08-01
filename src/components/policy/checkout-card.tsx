@@ -8,6 +8,7 @@ interface CheckoutCardProps {
   /** ปุ่ม/องค์ประกอบมุมขวาบนของหัวการ์ด (เช่น "เพิ่มรายการ") */
   action?: React.ReactNode;
   className?: string;
+  contentClassName?: string;
   children: React.ReactNode;
 }
 
@@ -17,6 +18,7 @@ export function CheckoutCard({
   description,
   action,
   className,
+  contentClassName,
   children,
 }: CheckoutCardProps) {
   return (
@@ -26,14 +28,14 @@ export function CheckoutCard({
     >
       <header className="flex items-start justify-between gap-4 border-b border-[var(--divider)] px-6 py-5">
         <div className="min-w-0">
-          <h2 className="text-base font-bold text-foreground">{title}</h2>
+          <h2 className="text-base font-bold text-primary">{title}</h2>
           {description ? (
             <p className="mt-0.5 text-xs text-grey-500">{description}</p>
           ) : null}
         </div>
         {action ? <div className="shrink-0">{action}</div> : null}
       </header>
-      <div className="px-6 py-5">{children}</div>
+      <div className={cn("px-6 pt-5 pb-6", contentClassName)}>{children}</div>
     </section>
   );
 }
@@ -51,7 +53,7 @@ export function FieldLabel({
   return (
     <label
       htmlFor={htmlFor}
-      className="text-sm font-semibold text-foreground select-none"
+      className="text-sm font-semibold text-grey-700 select-none"
     >
       {children}
       {required ? <span className="ml-0.5 text-error">*</span> : null}

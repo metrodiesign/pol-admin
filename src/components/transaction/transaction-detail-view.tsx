@@ -320,7 +320,7 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
 
       {/* ── 3. รายการกรมธรรม์ที่จะรับชำระ (Items) ───────────────────────────── */}
       <Panel title="รายการกรมธรรม์ที่จะรับชำระ">
-        <div className="px-6 pt-5 pb-6">
+        <div className="px-6 pb-6">
           <div className="-mx-6 overflow-x-auto">
             <table className="w-full min-w-[880px] border-collapse">
               <thead>

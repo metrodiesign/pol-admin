@@ -47,7 +47,7 @@ export function CheckoutFooterBar({
           disabled={!canIssue}
           className="inline-flex h-11 items-center justify-center rounded-control bg-primary px-5 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:bg-grey-300 disabled:text-grey-500 disabled:hover:bg-grey-300"
         >
-          ยืนยันคำสั่งซื้อกรมธรรม์
+          ยืนยันคำสั่งซื้อ
         </button>
       </div>
     </div>

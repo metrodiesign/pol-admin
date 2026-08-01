@@ -10,13 +10,13 @@ interface CheckoutNoteCardProps {
 
 export function CheckoutNoteCard({ value, onChange }: CheckoutNoteCardProps) {
   return (
-    <CheckoutCard title="หมายเหตุ" description="หมายเหตุภายใน · ไม่แสดงให้ลูกค้า">
+    <CheckoutCard title="หมายเหตุ" description="สำหรับใช้งานภายในทีมเท่านั้น ลูกค้าจะไม่เห็นข้อความนี้">
       <Textarea
         rows={7}
         className="min-h-40"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        placeholder="หมายเหตุภายใน (ไม่แสดงให้ลูกค้า)"
+        placeholder="พิมพ์หมายเหตุสำหรับทีมภายใน"
       />
     </CheckoutCard>
   );

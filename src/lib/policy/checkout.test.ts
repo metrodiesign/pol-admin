@@ -1,7 +1,8 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import type { Policy } from "@/types/policy";
 import {
-  parseIdsParam,
+  createCheckoutSession,
+  readCheckoutSession,
   pickPoliciesByIds,
   buildLineItem,
   buildCustomerInfo,
@@ -32,13 +33,26 @@ const item = (overrides: Partial<CheckoutLineItem> = {}): CheckoutLineItem => ({
   ...overrides,
 });
 
-describe("parseIdsParam", () => {
-  it("undefined = ว่าง", () => {
-    expect(parseIdsParam(undefined)).toEqual([]);
+function fakeLocalStorage() {
+  const store = new Map<string, string>();
+  return {
+    getItem: (k: string) => store.get(k) ?? null,
+    setItem: (k: string, v: string) => void store.set(k, v),
+  };
+}
+
+describe("createCheckoutSession / readCheckoutSession", () => {
+  beforeEach(() => {
+    vi.stubGlobal("localStorage", fakeLocalStorage());
   });
 
-  it("แตกตาม comma + trim + ตัดว่าง", () => {
-    expect(parseIdsParam("POL-1, POL-2 ,,POL-3,")).toEqual(["POL-1", "POL-2", "POL-3"]);
+  it("สร้าง session แล้วอ่านกลับได้ ids เดิม", () => {
+    const sessionId = createCheckoutSession(["POL-1", "POL-2"]);
+    expect(readCheckoutSession(sessionId)).toEqual(["POL-1", "POL-2"]);
+  });
+
+  it("session id ที่ไม่มีจริง = null", () => {
+    expect(readCheckoutSession("no-such-id")).toBeNull();
   });
 });
 
