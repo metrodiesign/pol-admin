@@ -10,12 +10,14 @@ export interface NavItem {
   /** When true, the item is considered active on its path AND any sub-paths. */
   deepMatch?: boolean;
   /**
-   * Base path used for active detection instead of `path`. The item is active on
-   * `match` and any of its sub-paths — use when the link target is a child route
-   * (e.g. path `/user/list`) but the menu should stay active across the whole
-   * section (`match: "/user"` → active on /user/list, /user/new, /user/edit).
+   * Base path (or paths) used for active detection instead of `path`. The item is
+   * active on `match` and any of its sub-paths — use when the link target is a
+   * child route (e.g. path `/user/list`) but the menu should stay active across
+   * the whole section (`match: "/user"` → active on /user/list, /user/new,
+   * /user/edit). Pass an array when a second, unrelated route also belongs to
+   * this section (e.g. a standalone checkout window opened from policy).
    */
-  match?: string;
+  match?: string | string[];
   /**
    * Sub-paths to carve OUT of this item's deep/match range so a sibling that
    * owns them stays the sole active item. Without it a broad `match` (e.g.
