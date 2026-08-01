@@ -27,7 +27,7 @@ export function PremiumCartItem({ policy, onRemove }: PremiumCartItemProps) {
         size="icon-lg"
         onClick={() => onRemove(policy.id)}
         aria-label={`นำ ${policy.id} ออกจากตะกร้า`}
-        className="size-10 shrink-0 cursor-pointer text-error hover:bg-error/8 hover:text-error"
+        className="size-10 shrink-0 cursor-pointer bg-error/8 text-error hover:bg-error hover:text-white"
       >
         <Trash2 className="size-5" />
       </Button>
