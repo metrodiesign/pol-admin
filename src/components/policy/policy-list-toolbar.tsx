@@ -1,58 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { Search, CalendarDays } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Search } from "lucide-react";
 import { TextField } from "@/components/form/text-field";
 import { SelectField } from "@/components/form/select-field";
+import { DatePickerField } from "@/components/form/date-picker-field";
 
 interface Option {
   value: string;
   label: string;
-}
-
-/** date filter แบบ /minimals/invoice/list — text + placeholder + ปุ่ม calendar (label บน). */
-function DateInput({
-  label,
-  value,
-  onChange,
-}: {
-  label: string;
-  value: string;
-  onChange: (v: string) => void;
-}) {
-  const [focused, setFocused] = useState(false);
-  return (
-    <div className="flex w-full flex-col gap-1.5">
-      <span className="select-none text-sm font-medium text-grey-800">{label}</span>
-      <div
-        className={cn(
-          "flex h-12 items-center rounded-control border bg-transparent pl-3.5 pr-1.5 transition-colors",
-          focused
-            ? "border-primary ring-1 ring-inset ring-primary"
-            : "border-[var(--divider)]",
-        )}
-      >
-        <input
-          type="text"
-          aria-label={label}
-          placeholder="YYYY-MM-DD"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
-          className="min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-grey-500"
-        />
-        <button
-          type="button"
-          aria-label="เลือกวันที่"
-          className="grid size-10 shrink-0 place-items-center rounded-full text-grey-600 transition-colors hover:bg-[var(--action-hover)]"
-        >
-          <CalendarDays className="size-5" />
-        </button>
-      </div>
-    </div>
-  );
 }
 
 interface PolicyListToolbarProps {
@@ -63,16 +18,22 @@ interface PolicyListToolbarProps {
   categoryOptions: Option[];
   customerName: string;
   onCustomerNameChange: (v: string) => void;
-  startDate: string;
-  onStartDateChange: (v: string) => void;
-  endDate: string;
-  onEndDateChange: (v: string) => void;
+  startDate: Date | null;
+  onStartDateChange: (v: Date) => void;
+  endDate: Date | null;
+  onEndDateChange: (v: Date) => void;
   status: string;
   onStatusChange: (v: string) => void;
   statusOptions: Option[];
 }
 
 const ALL = "__all__";
+
+function sixMonthsAgo(): Date {
+  const d = new Date();
+  d.setMonth(d.getMonth() - 6);
+  return d;
+}
 
 /** ตัวกรอง 6 ช่อง grid 3 คอลัมน์ ตามแบบหน้าค้นหากรมธรรม์ (label บนทุกช่อง). */
 export function PolicyListToolbar({
@@ -91,8 +52,9 @@ export function PolicyListToolbar({
   onStatusChange,
   statusOptions,
 }: PolicyListToolbarProps) {
-  const categorySelectOptions = [{ value: ALL, label: "ทั้งหมด" }, ...categoryOptions];
   const statusSelectOptions = [{ value: ALL, label: "ทั้งหมด" }, ...statusOptions];
+  const earliest = sixMonthsAgo();
+  const endMinDate = startDate && startDate > earliest ? startDate : earliest;
 
   return (
     <div className="grid grid-cols-1 gap-x-5 gap-y-4 px-5 py-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -104,14 +66,6 @@ export function PolicyListToolbar({
         startAdornment={<Search className="size-5 text-grey-500" />}
       />
 
-      <SelectField
-        label="ประเภทประกันภัย"
-        placeholder="มอเตอร์ / ไม่ใช่มอเตอร์"
-        value={category || ALL}
-        onChange={(v) => onCategoryChange(v === ALL ? "" : v)}
-        options={categorySelectOptions}
-      />
-
       <TextField
         label="ชื่อ-นามสกุล"
         placeholder="เช่น ใจดี"
@@ -119,23 +73,33 @@ export function PolicyListToolbar({
         onChange={onCustomerNameChange}
       />
 
-      <DateInput
+      <SelectField
+        label="ประเภทประกันภัย"
+        value={category}
+        onChange={onCategoryChange}
+        options={categoryOptions}
+      />
+
+      <DatePickerField
         label="วันที่เริ่มต้นความคุ้มครอง"
         value={startDate}
         onChange={onStartDateChange}
+        minDate={earliest}
       />
 
-      <DateInput
+      <DatePickerField
         label="วันที่สิ้นสุดความคุ้มครอง"
         value={endDate}
         onChange={onEndDateChange}
+        minDate={endMinDate}
       />
 
       <SelectField
         label="สถานะการชำระเงิน"
         value={status === "all" ? ALL : status}
-        onChange={(v) => onStatusChange(v === ALL ? "all" : v)}
+        onChange={(v) => onStatusChange(v === ALL || v === "" ? "all" : v)}
         options={statusSelectOptions}
+        clearable
       />
     </div>
   );

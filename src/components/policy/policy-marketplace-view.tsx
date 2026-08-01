@@ -18,20 +18,35 @@ interface CheckoutState {
   policies: Policy[];
 }
 
+/** Date -> YYYY-MM-DD ตาม local time (เลี่ยง toISOString ที่เลื่อนวันข้าม timezone). */
+function toIsoDate(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
 export function PolicyMarketplaceView() {
   const [dense, setDense] = useState(false);
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("motor");
   const [customerName, setCustomerName] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
   const [status, setStatus] = useState<PolicyStatus | "all">("all");
   const [checkout, setCheckout] = useState<CheckoutState | null>(null);
 
   const router = useRouter();
 
   const globalFilter = useMemo(
-    () => ({ search, category, customerName, startDate, endDate, status }),
+    () => ({
+      search,
+      category,
+      customerName,
+      startDate: startDate ? toIsoDate(startDate) : "",
+      endDate: endDate ? toIsoDate(endDate) : "",
+      status,
+    }),
     [search, category, customerName, startDate, endDate, status],
   );
 
@@ -79,6 +94,7 @@ export function PolicyMarketplaceView() {
           startDate={startDate}
           onStartDateChange={(v) => {
             setStartDate(v);
+            if (endDate && endDate < v) setEndDate(null);
             resetToFirstPage();
           }}
           endDate={endDate}

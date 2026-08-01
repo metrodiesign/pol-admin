@@ -70,13 +70,10 @@ export const CATEGORY_OPTIONS: { value: string; label: string }[] = [
   { value: "non-motor", label: "Non-Motor" },
 ];
 
-/** ตัวเลือกสถานะการชำระเงิน (map จาก PolicyStatus) — เรียงตามลำดับงาน. */
+/** ตัวเลือกสถานะการชำระเงินใน filter — เฉพาะรอชำระ/สำเร็จเท่านั้น. */
 export const PAYMENT_STATUS_OPTIONS: { value: PolicyStatus; label: string }[] = [
-  { value: "awaiting", label: "ยังไม่ชำระ" },
-  { value: "due_soon", label: "ใกล้ครบกำหนด" },
-  { value: "active", label: "ชำระแล้ว" },
-  { value: "lapsed", label: "ขาดอายุ" },
-  { value: "cancelled", label: "ยกเลิก" },
+  { value: "awaiting", label: "รอชำระ" },
+  { value: "active", label: "สำเร็จ" },
 ];
 
 const STATUS_ORDER: PolicyStatus[] = [
