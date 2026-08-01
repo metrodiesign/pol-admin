@@ -2,7 +2,7 @@ import { PageHeader } from "@/components/shared/page-header";
 import { PolicyCheckoutSessionView } from "@/components/policy/policy-checkout-session-view";
 
 export const metadata = {
-  title: "ชำระเบี้ย | POL Admin",
+  title: "ยืนยันคำสั่งซื้อ | POL Admin",
 };
 
 export default async function CheckoutSessionPage({
@@ -15,8 +15,8 @@ export default async function CheckoutSessionPage({
   return (
     <>
       <PageHeader
-        title="ชำระเบี้ย"
-        breadcrumbs={[{ label: "กรมธรรม์", href: "/policy/list" }, { label: "ชำระเบี้ย" }]}
+        title="ยืนยันคำสั่งซื้อ"
+        breadcrumbs={[{ label: "กรมธรรม์", href: "/policy/list" }, { label: "ยืนยันคำสั่งซื้อ" }]}
       />
       <PolicyCheckoutSessionView sessionId={sessionId} />
     </>
