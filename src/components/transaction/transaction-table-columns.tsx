@@ -79,7 +79,7 @@ export function buildTransactionColumns({
             {t.code}
           </span>
           <span className="font-semibold text-primary">
-            {t.subItems > 1 ? `${t.subItems} รายการย่อย` : "1 รายการ"}
+            {t.subItems > 1 ? `${t.subItems} รายการ` : "1 รายการ"}
           </span>
         </div>
       );

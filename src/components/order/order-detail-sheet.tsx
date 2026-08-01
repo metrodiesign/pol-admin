@@ -1,9 +1,8 @@
 "use client";
 
 import SimpleBar from "simplebar-react";
-import { ExternalLink, X } from "lucide-react";
+import { X } from "lucide-react";
 import type { OrderRow } from "@/lib/order";
-import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetClose,
@@ -23,7 +22,6 @@ export function OrderDetailSheet({
   order,
   open,
   onOpenChange,
-  onRead,
 }: OrderDetailSheetProps) {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -45,23 +43,9 @@ export function OrderDetailSheet({
             </div>
           </div>
 
-          <div className="flex shrink-0 items-center gap-0.5">
-            {onRead && order && (
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                aria-label="ดูรายละเอียดเต็ม"
-                onClick={() => onRead(order)}
-              >
-                <ExternalLink className="size-4" />
-              </Button>
-            )}
-            <SheetClose
-              render={
-                <Button variant="ghost" size="icon-sm" aria-label="ปิด" />
-              }
-            >
-              <X className="size-4" />
+          <div className="flex shrink-0 items-center gap-1">
+            <SheetClose className="flex size-9 items-center justify-center rounded-full text-grey-700 transition-colors hover:bg-[var(--action-hover)]">
+              <X className="size-5" />
             </SheetClose>
           </div>
         </div>
