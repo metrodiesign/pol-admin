@@ -51,7 +51,7 @@ so that ฉันโฟกัสกลุ่มที่ต้องรับช
 - 3.2 WHEN ผู้ใช้เลือกตัวกรองประเภทประกันภัย (Motor/Non-Motor) THE SYSTEM SHALL กรองตารางให้เหลือเฉพาะกรมธรรม์หมวดนั้น (motor = ประกันรถยนต์, non-motor = ที่เหลือ) และรีเซ็ตหน้าเป็นหน้าแรก (amended 2026-06-17: เดิมกรอง product.type ตรงตัว)
 - 3.3 WHEN ผู้ใช้กรอกวันที่เริ่มต้น และ/หรือ วันที่สิ้นสุด (รูปแบบ YYYY-MM-DD) THE SYSTEM SHALL กรองตารางให้เหลือเฉพาะกรมธรรม์ที่ effectiveDate อยู่ในช่วง และรีเซ็ตหน้าเป็นหน้าแรก (amended 2026-06-17: เดิม "ตัวกรองที่มา")
 - 3.4 THE SYSTEM SHALL นำ search, ประเภทประกันภัย, ชื่อผู้เอาประกัน, ช่วงวันที่ และสถานะการชำระเงิน มา apply ร่วมกันแบบ AND
-- 3.5 WHERE date input ไม่ใช่ YYYY-MM-DD เต็ม THE SYSTEM SHALL ไม่ใช้ค่านั้นกรอง (free-text แบบ /dashboard/invoice/list)
+- 3.5 WHERE date input ไม่ใช่ YYYY-MM-DD เต็ม THE SYSTEM SHALL ไม่ใช้ค่านั้นกรอง (free-text แบบ /minimals/invoice/list)
 - 3.6 WHEN ผู้ใช้พิมพ์ชื่อ-นามสกุลผู้เอาประกัน THE SYSTEM SHALL กรองตารางให้เหลือเฉพาะแถวที่ชื่อลูกค้าตรงกับคำค้น (substring, case-insensitive) และรีเซ็ตหน้าเป็นหน้าแรก
 - 3.7 WHEN ผู้ใช้เลือกสถานะการชำระเงิน THE SYSTEM SHALL กรองตารางให้เหลือเฉพาะกรมธรรม์สถานะนั้น และรีเซ็ตหน้าเป็นหน้าแรก
 - 3.8 WHILE ยังไม่มีการเปลี่ยนตัวกรอง THE SYSTEM SHALL ตั้งค่าเริ่มต้นสถานะการชำระเงินเป็น "ทั้งหมด" (all) (amended 2026-06-17: เดิม default = ยังไม่ชำระ)

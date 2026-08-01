@@ -125,7 +125,7 @@
 - [x] B3. Auth provider + guard — `auth-provider.tsx` (`getMe` on mount + `useAuth`), `auth-guard.tsx`
      (loading/anon/authed), wrap ใน `minimals-layout.tsx` (`MinimalsShell`).
      Evidence: B3 เขียว
-       - build: `npm run build` ผ่าน; 6 protected layout (dashboard/main/policy/producer/transaction/user) route ผ่าน MinimalsLayout (grep ยืนยัน); /login /logout ไม่ผ่าน
+       - build: `npm run build` ผ่าน; 6 protected layout (minimals/main/policy/producer/transaction/user) route ผ่าน MinimalsLayout (grep ยืนยัน); /login /logout ไม่ผ่าน
        - typecheck/lint: `npx tsc --noEmit` 0 error (ไฟล์ใหม่), `npm run lint` clean
        - viewports: n/a (logic) — guard placeholder reuse `role=status` markup เดิม; live no-flash ค้าง B6
        - deviations: `useAuth` co-locate ใน auth-provider (pattern settings-provider) แทนไฟล์ hook แยก
@@ -143,8 +143,8 @@
        - deviations: pre-existing tsc error ใน `src/lib/policy/checkout.test.ts` (มีตั้งแต่ T1, branch นี้ไม่แตะ — `git diff develop...HEAD` ว่าง) ไม่แก้ (surgical)
 - [x] B6. Live E2E — proxy + guard + login round-trip + CSRF (ทดสอบผ่าน Next proxy จริงกับ contract mock; ภายหลัง backend จริง :5100 ขึ้น).
      Evidence: B6 เขียว
-       - curl ผ่าน proxy :5200->mock :5100: /admin/me no-session 401; /admin/auth/login 302 +Set-Cookie(adm_session HttpOnly, adm_csrf readable) +Location /dashboard; /admin/me w/session 200 AdminMe; logout no-CSRF 403; logout w/CSRF 204
-       - browser (Chrome, context สะอาด): เปิด /main anon -> guard getMe 401 -> login() -> mock -> จบ /dashboard authed (ไม่ค้าง spinner); document.cookie=adm_csrf เท่านั้น (adm_session httpOnly ซ่อน); account-drawer โชว์ admin@vcentral.test + "Super Admin"; กด Logout -> adminFetch auto-CSRF -> mock 204 -> /login
+       - curl ผ่าน proxy :5200->mock :5100: /admin/me no-session 401; /admin/auth/login 302 +Set-Cookie(adm_session HttpOnly, adm_csrf readable) +Location /minimals; /admin/me w/session 200 AdminMe; logout no-CSRF 403; logout w/CSRF 204
+       - browser (Chrome, context สะอาด): เปิด /main anon -> guard getMe 401 -> login() -> mock -> จบ /minimals authed (ไม่ค้าง spinner); document.cookie=adm_csrf เท่านั้น (adm_session httpOnly ซ่อน); account-drawer โชว์ admin@vcentral.test + "Super Admin"; กด Logout -> adminFetch auto-CSRF -> mock 204 -> /login
        - real backend :5100: Google OAuth round-trip สำเร็จหลัง register redirect_uri; authorize URL ถูก (client_id+redirect_uri+PKCE)
        - viewports: ค้าง — ยังไม่ manual 375/768/1440 (UI reuse layout เดิม)
        - deviations: ใช้ contract mock เพราะ real login ต้อง Google human-auth + provisioned admin (automate ไม่ได้)

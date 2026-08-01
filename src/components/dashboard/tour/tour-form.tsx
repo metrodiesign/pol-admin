@@ -415,18 +415,18 @@ export function TourForm({ mode, tour }: TourFormProps) {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    router.push("/dashboard/tour/list");
+    router.push("/minimals/tour/list");
   }
 
   const breadcrumbs = isEdit
     ? [
-        { name: "Dashboard", href: "/dashboard" },
-        { name: "Tour", href: "/dashboard/tour/list" },
+        { name: "Dashboard", href: "/minimals" },
+        { name: "Tour", href: "/minimals/tour/list" },
         { name: tour?.title ?? "Edit" },
       ]
     : [
-        { name: "Dashboard", href: "/dashboard" },
-        { name: "Tour", href: "/dashboard/tour/list" },
+        { name: "Dashboard", href: "/minimals" },
+        { name: "Tour", href: "/minimals/tour/list" },
         { name: "Create" },
       ];
 

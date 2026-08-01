@@ -13,7 +13,7 @@ layer แล้ว rewrite ค่าที่ผูกเส้นทาง.
 1. Route layer — `src/app/user/` (App Router pages/layouts)
    - `layout.tsx` — group shell: wrap `MinimalsLayout` (sidebar/topbar). REQUIRED:
      ของเดิม list/new/edit ไม่มี shell ของตัวเอง แต่ inherit จาก parent
-     `app/dashboard/layout.tsx`; โมดูลใหม่ไม่มี parent นั้น ต้องมี shell ของกลุ่มเอง
+     `app/minimals/layout.tsx`; โมดูลใหม่ไม่มี parent นั้น ต้องมี shell ของกลุ่มเอง
      ไม่งั้น render นอก shell (ไม่มี sidebar). [amended 2026-06-17 — พบตอน browser verify]
    - `list/page.tsx`
    - `new/layout.tsx`, `new/page.tsx`
@@ -39,11 +39,11 @@ layer แล้ว rewrite ค่าที่ผูกเส้นทาง.
      (`lib/breadcrumbs.ts`) + search-dialog; คงไว้ให้สอดคล้อง (แทรกหลัง `Main`)
 
 ขอบเขตการแก้ค่าใน "ไฟล์ที่ copy มา" แคบมาก:
-- pages: rewrite `/dashboard/user*` -> `/user*`, rewrite breadcrumb root, แก้
+- pages: rewrite `/minimals/user*` -> `/user*`, rewrite breadcrumb root, แก้
   import view จาก `@/components/dashboard/user/*` -> `@/components/user/*`, ปรับ
   metadata title เป็นรูปแบบ POL
 - components: แก้จุดเดียว — `user-table-columns.tsx` ลิงก์ edit
-  (`/dashboard/user/${u.id}/edit` -> `/user/${u.id}/edit`); อีก 5 ไฟล์ copy verbatim
+  (`/minimals/user/${u.id}/edit` -> `/user/${u.id}/edit`); อีก 5 ไฟล์ copy verbatim
 
 ## Sequence Diagrams
 
@@ -109,12 +109,12 @@ NavGroup ใหม่ที่แทรก (หลัง `Main`, ก่อน `D
 
 | ตำแหน่ง (ไฟล์ที่ copy) | old | new |
 |---|---|---|
-| list breadcrumb root | `Dashboard` -> `/dashboard` | `ผู้ใช้งาน & สิทธิ์` -> `/user/list` |
-| list breadcrumb User | `User` -> `/dashboard/user` | (ตัดออก / รวมเป็น root) |
-| list action Add user | `/dashboard/user/new` | `/user/new` |
-| new breadcrumb User | `/dashboard/user/list` | `/user/list` |
-| edit backHref + breadcrumb | `/dashboard/user/list` | `/user/list` |
-| table-columns edit Link | `/dashboard/user/${u.id}/edit` | `/user/${u.id}/edit` |
+| list breadcrumb root | `Dashboard` -> `/minimals` | `ผู้ใช้งาน & สิทธิ์` -> `/user/list` |
+| list breadcrumb User | `User` -> `/minimals/user` | (ตัดออก / รวมเป็น root) |
+| list action Add user | `/minimals/user/new` | `/user/new` |
+| new breadcrumb User | `/minimals/user/list` | `/user/list` |
+| edit backHref + breadcrumb | `/minimals/user/list` | `/user/list` |
+| table-columns edit Link | `/minimals/user/${u.id}/edit` | `/user/${u.id}/edit` |
 | page imports | `@/components/dashboard/user/*` | `@/components/user/*` |
 
 Breadcrumb ใหม่ (REQ-3.4) — list page เป็นตัวอย่าง:
@@ -146,7 +146,7 @@ new/edit: prepend root เดียวกัน + ตามด้วย label �
 ## Error Handling Strategy
 
 โมดูล frontend/mock — error path น้อย:
-- IF หลัง copy ยังเหลือ `/dashboard/user` หรือ import `@/components/dashboard/user`
+- IF หลัง copy ยังเหลือ `/minimals/user` หรือ import `@/components/dashboard/user`
   ในไฟล์ใต้ `src/app/user` หรือ `src/components/user` (REQ-3.5) THEN ถือว่าไม่ผ่าน —
   ตรวจด้วย `grep -rn "dashboard/user" src/app/user src/components/user` ต้องได้ 0
   บรรทัด (เป็น acceptance check ใน tasks).
@@ -182,12 +182,12 @@ new/edit: prepend root เดียวกัน + ตามด้วย label �
 | Component layer `src/components/user/*` (6 ไฟล์) | REQ-2.1, 2.2, 2.3 |
 | pages import `@/components/user/*` เท่านั้น | REQ-2.3, 2.4 |
 | shared primitives ใช้ร่วม (ไม่ copy) | REQ-2.5 |
-| path mapping table (rewrite `/dashboard/user`->`/user`) | REQ-3.1, 3.2, 3.3 |
+| path mapping table (rewrite `/minimals/user`->`/user`) | REQ-3.1, 3.2, 3.3 |
 | breadcrumb root `ผู้ใช้งาน & สิทธิ์` | REQ-3.4 |
 | grep coupling = 0 check | REQ-3.5 |
 | NavGroup `UserManagement` แทรกหลัง Main | REQ-4.1, 4.2 |
 | item เดียว title/path/icon, ไม่มี children | REQ-4.3, 4.4, 4.5 |
 | `deepMatch: true` | REQ-4.6 |
-| ไม่แก้ dashboard/user, components/dashboard/user, Demo>User | REQ-5.1, 5.2, 5.3 |
+| ไม่แก้ minimals/user, components/dashboard/user, Demo>User | REQ-5.1, 5.2, 5.3 |
 | route ทั้งคู่ coexist | REQ-5.4 |
 | type-check/build ผ่าน (gate-task.sh) | REQ-5.5 |

@@ -69,7 +69,7 @@ export const userColumns: ColumnDef<User>[] = [
           </Avatar>
           <div className="min-w-0">
             <Link
-              href={`/dashboard/user/${u.id}/edit`}
+              href={`/minimals/user/${u.id}/edit`}
               className="block truncate text-sm font-normal leading-[22px] text-foreground hover:underline"
             >
               {u.name}

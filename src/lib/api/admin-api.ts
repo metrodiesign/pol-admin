@@ -23,7 +23,7 @@ const MUTATION_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"]);
 
 // returnTo ที่ส่งให้ backend — ต้องเป็น subset ของ AdminSession:ReturnUrlAllowlist ฝั่ง backend.
 // landing = /main; backend ต้องเพิ่ม /main ใน allowlist (ไม่งั้น reject -> falls back /). ดู coordination item.
-const RETURN_TO_ALLOWLIST: readonly string[] = ["/", "/dashboard", "/main"];
+const RETURN_TO_ALLOWLIST: readonly string[] = ["/", "/minimals", "/main"];
 const DEFAULT_RETURN_TO = "/main";
 
 // --- pure helpers (node-testable, ไม่แตะ window/document/fetch) ---

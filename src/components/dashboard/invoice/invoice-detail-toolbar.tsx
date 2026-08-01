@@ -35,7 +35,7 @@ export function InvoiceDetailToolbar({ status }: InvoiceDetailToolbarProps) {
       {/* Icon button row */}
       <div className="flex items-center gap-1">
         <Link
-          href={`/dashboard/invoice/edit`}
+          href={`/minimals/invoice/edit`}
           className="rounded-full p-2 text-grey-500 hover:bg-grey-100 transition-colors"
           aria-label="Edit"
         >

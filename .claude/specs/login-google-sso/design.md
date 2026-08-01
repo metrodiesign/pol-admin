@@ -346,7 +346,7 @@ admin-fe-integration.md` (+ `admin-google-sso.md`, generated 2026-06-24 จา�
 - cookie (dev http): session `adm_session` (httpOnly), CSRF `adm_csrf` (JS อ่านได้). prod = `__Host-adm_session`
   + Secure อัตโนมัติ. CSRF double-submit: header `X-CSRF-Token` == cookie `adm_csrf`, เฉพาะ POST/PUT/PATCH/DELETE.
 - same-origin บังคับ -> Next proxy rewrite `/admin/:path*` -> `ADMIN_API_ORIGIN` (dev เท่านั้น; prod reverse proxy).
-- returnTo allowlist = `/`, `/dashboard`, `/tenants`. **`/main` ไม่อยู่ใน allowlist** -> coordination item.
+- returnTo allowlist = `/`, `/minimals`, `/tenants`. **`/main` ไม่อยู่ใน allowlist** -> coordination item.
 
 **Architecture (BFF):**
 - `src/lib/api/admin-api.ts` — pure helper (`readCookieFrom`, `isMutation`, `buildLoginUrl`,
@@ -355,8 +355,8 @@ admin-fe-integration.md` (+ `admin-google-sso.md`, generated 2026-06-24 จา�
 - `src/components/auth/auth-provider.tsx` — `<AuthProvider>` เรียก `getMe()` ตอน mount; `useAuth()` (co-locate
   ตาม pattern settings-provider). `auth-guard.tsx` — loading -> spinner, anon -> `login()`, authed -> children.
 - wrap `<AuthProvider><AuthGuard>` **ภายใน `minimals-layout.tsx`** (`MinimalsShell` = body เดิม) — คุมทุก
-  protected group (dashboard/main/policy/producer/transaction/user); `/login` `/logout` ไม่ผ่าน -> public.
-- `login-view.tsx` — ปุ่มเดียว `login("/dashboard")` (ตัด GIS/next-script/ResizeObserver/dual-card/toast).
+  protected group (minimals/main/policy/producer/transaction/user); `/login` `/logout` ไม่ผ่าน -> public.
+- `login-view.tsx` — ปุ่มเดียว `login("/minimals")` (ตัด GIS/next-script/ResizeObserver/dual-card/toast).
 - `logout/page.tsx` — `logout().finally(-> /login)`. `account-drawer.tsx` — ปุ่ม Logout -> `/logout`;
   header แสดง `me.email` + tier badge (name/avatar คง mock เพราะ backend ไม่ส่ง).
 - `app/page.tsx` (root "/") — `redirect("/main")`. "/" ไม่มี surface เอง; ครอบการเข้า / ตรง ๆ + กรณี

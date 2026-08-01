@@ -161,7 +161,7 @@ audience หรือทดสอบการเข้าสู่ระบบ�
   เป็น singleton ต่อ client_id — กลยุทธ์ที่เหลือ (re-init ต่อการกด vs render 2 ปุ่มแยก context ต่อ client_id)
   = ตัดสินใน design (มีผลต่อ UX: rendered button vs custom)
 - **hosted-domain (hd) (REQ-3.8):** จะเปิดใช้จริงไหม และ allowed domain ของแต่ละ audience คืออะไร
-- **Reuse:** ตรวจ Minimals auth scaffolding ใน `src/app/dashboard/*` ว่ามี sign-in view ที่ใช้ซ้ำได้หรือไม่
+- **Reuse:** ตรวจ Minimals auth scaffolding ใน `src/app/minimals/*` ว่ามี sign-in view ที่ใช้ซ้ำได้หรือไม่
   ก่อนสร้างใหม่ (ทำตอน design)
 
 ### Analyze findings log (anchor: uncommitted; baseline HEAD 55a0cfc · /spec-analyze 2026-06-23)

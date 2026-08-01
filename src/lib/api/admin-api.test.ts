@@ -49,7 +49,7 @@ describe("isMutation", () => {
 
 describe("buildLoginUrl", () => {
   it("encode returnTo ที่อยู่ใน allowlist", () => {
-    expect(buildLoginUrl("/dashboard")).toBe("/api/v1/admins/auth/google/login?returnTo=%2Fdashboard");
+    expect(buildLoginUrl("/minimals")).toBe("/api/v1/admins/auth/google/login?returnTo=%2Fminimals");
   });
   it("allow '/'", () => {
     expect(buildLoginUrl("/")).toBe("/api/v1/admins/auth/google/login?returnTo=%2F");

@@ -86,7 +86,7 @@ export function TourCard({ tour, onDelete }: TourCardProps) {
 
         {/* Title */}
         <Link
-          href={`/dashboard/tour/details?id=${tour.id}`}
+          href={`/minimals/tour/details?id=${tour.id}`}
           className="mt-1.5 block truncate text-base font-semibold text-grey-800 hover:underline"
           title={tour.title}
         >
@@ -120,7 +120,7 @@ export function TourCard({ tour, onDelete }: TourCardProps) {
           <DropdownMenuContent align="end" side="bottom" className="w-36">
             <DropdownMenuItem>
               <Link
-                href={`/dashboard/tour/details?id=${tour.id}`}
+                href={`/minimals/tour/details?id=${tour.id}`}
                 className="flex w-full items-center gap-2"
               >
                 <Eye className="size-4" />
@@ -129,7 +129,7 @@ export function TourCard({ tour, onDelete }: TourCardProps) {
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Link
-                href={`/dashboard/tour/edit?id=${tour.id}`}
+                href={`/minimals/tour/edit?id=${tour.id}`}
                 className="flex w-full items-center gap-2"
               >
                 <Pencil className="size-4" />

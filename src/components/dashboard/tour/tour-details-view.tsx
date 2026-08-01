@@ -42,7 +42,7 @@ export function TourDetailsView({ tour }: TourDetailsViewProps) {
       {/* Action bar */}
       <div className="mb-5 flex items-center justify-between">
         <Link
-          href="/dashboard/tour/list"
+          href="/minimals/tour/list"
           className="inline-flex items-center gap-1 text-sm font-semibold text-grey-700 hover:text-grey-900 transition-colors"
         >
           <ArrowLeft className="size-4" />
@@ -50,7 +50,7 @@ export function TourDetailsView({ tour }: TourDetailsViewProps) {
         </Link>
         <div className="flex items-center gap-2">
           <Link
-            href={`/dashboard/tour/edit?id=${tour.id}`}
+            href={`/minimals/tour/edit?id=${tour.id}`}
             className="flex size-8 items-center justify-center rounded-full text-grey-500 hover:bg-grey-100 transition-colors"
             aria-label="Edit tour"
           >

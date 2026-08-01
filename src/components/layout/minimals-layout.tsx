@@ -15,7 +15,7 @@ import { AuthProvider } from "@/components/auth/auth-provider";
 import { AuthGuard } from "@/components/auth/auth-guard";
 
 /**
- * Shell for the /dashboard (minimals clone) route group.
+ * Shell for the /minimals (minimals clone) route group.
  *
  *  - Uses MinimalsTopbar (transparent, grey icons).
  *  - Passes minimalsNavConfig to SidebarNav via the optional `groups` prop.
@@ -41,7 +41,7 @@ function MinimalsShell({ children }: { children: React.ReactNode }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   // Pages whose live minimals layout uses a fluid (no max-width) container.
   const fullBleed =
-    pathname === "/dashboard/blank" || pathname === "/dashboard/kanban";
+    pathname === "/minimals/blank" || pathname === "/minimals/kanban";
 
   // Nav layout/color are driven by the settings drawer (persisted via provider).
   const isHorizontal = settings.navLayout === "horizontal";

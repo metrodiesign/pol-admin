@@ -50,7 +50,7 @@ function MoreMenu({ jobId }: { jobId: string }) {
           role="menu"
         >
           <Link
-            href={`/dashboard/job/${jobId}`}
+            href={`/minimals/job/${jobId}`}
             className="flex items-center gap-2 px-3 py-1.5 text-sm text-grey-800 hover:bg-grey-100"
             role="menuitem"
             onClick={() => setOpen(false)}
@@ -58,7 +58,7 @@ function MoreMenu({ jobId }: { jobId: string }) {
             <Eye className="size-4" /> View
           </Link>
           <Link
-            href={`/dashboard/job/edit`}
+            href={`/minimals/job/edit`}
             className="flex items-center gap-2 px-3 py-1.5 text-sm text-grey-800 hover:bg-grey-100"
             role="menuitem"
             onClick={() => setOpen(false)}
@@ -107,7 +107,7 @@ export function JobCard({ job }: JobCardProps) {
 
         {/* title + posted */}
         <Link
-          href={`/dashboard/job/${job.id}`}
+          href={`/minimals/job/${job.id}`}
           className="mb-0.5 block text-sm font-bold leading-snug text-grey-800 hover:underline"
         >
           {job.title}

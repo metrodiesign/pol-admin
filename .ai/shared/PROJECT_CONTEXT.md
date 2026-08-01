@@ -72,7 +72,7 @@ One-line pitch: ที่เดียวให้พนักงานภาย�
 - **ยังไม่มี backend จริง** — ทั้งหมดใช้ typed mock data (`src/lib/mock/*`); ไม่มี data fetching/auth จริง
   ในชั้นนี้ (ดู Current State)
 - **Minimals template demo pages ไม่นับเป็นฟีเจอร์ของผลิตภัณฑ์** — หน้า analytics/ecommerce/banking/
-  booking/calendar/chat/mail/kanban/tour/post/job/product/order ฯลฯ ใต้ `src/app/dashboard/*`
+  booking/calendar/chat/mail/kanban/tour/post/job/product/order ฯลฯ ใต้ `src/app/minimals/*`
   คือ scaffolding ที่สืบทอดมาจาก admin template ไม่ใช่ขอบเขตของ POL admin
 
 ## Current State (ground truth)
@@ -80,7 +80,7 @@ One-line pitch: ที่เดียวให้พนักงานภาย�
 - **Payment surface สร้างครบเป็น component library + types + mock** — `src/components/payment/*`
   (16 โมดูล), `src/types/*` (transaction, psp, originator, role, permission, webhook, api-client,
   audit, policy, invoice), `src/lib/mock/*` (originators/psp/transactions/webhooks/invoices/audit/roles/...)
-- **ยังไม่ wire เข้า Next.js route** — `src/app/dashboard/*` ปัจจุบันยังเป็นหน้า demo ของ Minimals
+- **ยังไม่ wire เข้า Next.js route** — `src/app/minimals/*` ปัจจุบันยังเป็นหน้า demo ของ Minimals
   template; `nav-config.ts` อ้าง route ของ payment (`/transactions`, `/psp`, ...) ไว้แล้วแต่ยังไม่มี
   `page.tsx` จริง. **การ integrate routing คืองานถัดไป.**
 - ผลิตภัณฑ์เป็น **frontend ล้วน, client-side**, ภาษาไทยทั้ง UI; stack/idiom ดู

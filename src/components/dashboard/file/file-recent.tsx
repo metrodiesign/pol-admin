@@ -38,7 +38,7 @@ export function FileRecent() {
           </button>
         </div>
         <Link
-          href="/dashboard/file-manager"
+          href="/minimals/file-manager"
           className="-mr-3 inline-flex items-center gap-1 rounded-control px-3 py-1.5 text-sm font-semibold text-grey-800 transition-colors hover:bg-[var(--action-hover)]"
         >
           View all
