@@ -34,7 +34,7 @@ export function CheckoutItemsCard({ items, total, onUpdate, onRemove }: Checkout
       <div className="-mx-6 overflow-x-auto">
         <table className="w-full min-w-[860px] border-collapse">
           <thead>
-            <tr className="border-b border-[var(--divider)] bg-grey-200 text-left">
+            <tr className="bg-grey-200 text-left">
               <th className={`${th} pl-6`}>ลำดับ</th>
               <th className={th}>หมายเลขกรมธรรม์ / รับแจ้ง / สลักหลัง</th>
               <th className={th}>ชื่อ-นามสกุล</th>
@@ -49,7 +49,7 @@ export function CheckoutItemsCard({ items, total, onUpdate, onRemove }: Checkout
           </thead>
           <tbody>
             {items.map((it, idx) => (
-              <tr key={it.uid} className="border-b border-[var(--divider)] last:border-b-0">
+              <tr key={it.uid} className="border-b border-dashed border-[var(--divider)] last:border-b-0">
                 <td className={`${td} pl-6 text-grey-500`}>{idx + 1}</td>
                 <td className={`${td} whitespace-nowrap`}>
                   <span className="block font-bold text-primary underline underline-offset-2">
@@ -110,7 +110,7 @@ export function CheckoutItemsCard({ items, total, onUpdate, onRemove }: Checkout
         </table>
       </div>
 
-      <div className="mt-5 flex items-center justify-between gap-4 rounded-xl bg-info/8 px-5 py-4">
+      <div className="mt-5 flex items-center justify-between gap-4 rounded-2xl bg-info/8 px-5 py-4">
         <div className="flex items-start gap-2.5">
           <Info className="mt-0.5 size-4.5 shrink-0 text-info" aria-hidden />
           <p className="text-xs leading-relaxed text-grey-600">
@@ -119,7 +119,7 @@ export function CheckoutItemsCard({ items, total, onUpdate, onRemove }: Checkout
         </div>
         <div className="shrink-0 text-right">
           <p className="text-xs text-grey-500">ยอดที่ลูกค้าต้องชำระ</p>
-          <p className="text-2xl font-bold tabular-nums text-primary">{formatTHB(total, 2)}</p>
+          <p className="text-2xl font-bold tabular-nums text-secondary">{formatTHB(total, 2)}</p>
         </div>
       </div>
     </CheckoutCard>
