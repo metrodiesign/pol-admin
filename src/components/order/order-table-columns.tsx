@@ -83,7 +83,7 @@ export function buildOrderColumns({
             {t.id}
           </span>
           <span className="font-semibold text-primary">
-            {(t.session?.subItems ?? 1) > 1 ? `${t.session?.subItems} รายการย่อย` : "1 รายการ"}
+            {(t.session?.subItems ?? 1) > 1 ? `${t.session?.subItems} รายการ` : "1 รายการ"}
           </span>
         </div>
       );

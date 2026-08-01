@@ -140,15 +140,15 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
   return (
     <div className="flex flex-col gap-6 pb-4">
       {/* ── 1. สถานะลิงก์และชำระเงิน + ไทม์ไลน์ (2 คอลัมน์) ─────────────────── */}
-      <div className="grid grid-cols-1 gap-6 mmd:grid-cols-2">
+      <div className={cn("grid grid-cols-1 gap-6", !compact && "mmd:grid-cols-2")}>
       <Panel title="สถานะลิงก์และชำระเงิน">
-        <div className="px-6 py-5">
+        <div className="px-6 pt-5 pb-6">
           <div className="flex flex-wrap items-center gap-3">
             <p className="text-sm font-bold text-foreground">สถานะ</p>
             <OrderStatusBadge status={t.status} />
           </div>
 
-          <div className={cn("mt-6 grid grid-cols-1 gap-x-8 gap-y-8", !compact && "mmd:grid-cols-2")}>
+          <div className="mt-6 grid grid-cols-1 gap-x-8 gap-y-8 mmd:grid-cols-2">
             <div className="flex h-full flex-col items-center justify-center rounded-2xl bg-grey-100 px-6 py-7">
               <QRCode value={link.url} size={220} />
             </div>
@@ -178,13 +178,10 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
                 </button>
               </div>
 
-              <div className={cn("mt-4 grid gap-2.5", compact ? "grid-cols-1" : "grid-cols-2")}>
+              <div className="mt-4 grid grid-cols-2 gap-2.5">
                 <button
                   type="button"
-                  className={cn(
-                    "inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-control bg-success px-3 text-sm font-bold text-white transition-colors hover:bg-success-dark",
-                    !compact && "col-span-2",
-                  )}
+                  className="col-span-2 inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-control bg-success px-3 text-sm font-bold text-white transition-colors hover:bg-success-dark"
                 >
                   <ExternalLink className="size-4 shrink-0" />
                   เปิดลิงก์
@@ -254,7 +251,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
 
       {/* ── 2. ข้อมูลคำสั่งซื้อ (Advanced) ─────────────────────── */}
       <Panel title="ข้อมูลคำสั่งซื้อ">
-        <div className="px-6 py-5">
+        <div className="px-6 pt-5 pb-6">
           <div className={cn("grid grid-cols-1 gap-x-4 gap-y-4", !compact && "sm:grid-cols-2")}>
             <div>
               <p className={fieldLabel}>หมายเลขคำสั่งซื้อ</p>
@@ -288,7 +285,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
 
       {/* ── 2. ข้อมูลลูกค้า (Customer) ──────────────────────────────────────── */}
       <Panel title="ข้อมูลลูกค้า">
-        <div className="px-6 py-5">
+        <div className="px-6 pt-5 pb-6">
           <div className={cn("grid grid-cols-1 gap-x-5 gap-y-5", !compact && "mmd:grid-cols-2")}>
             <div className="flex flex-col gap-1.5">
               <p className={fieldLabel}>ชื่อ-นามสกุล</p>
@@ -308,12 +305,12 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
 
       {/* ── 3. รายการกรมธรรม์ (Items) ───────────────────────────── */}
       <Panel title="รายการกรมธรรม์">
-        <div className="px-6 py-5">
+        <div className="px-6 pt-5 pb-6">
           <div className="-mx-6 overflow-x-auto">
             <table className="w-full min-w-[880px] border-collapse">
               <thead>
                 <tr className="bg-grey-200 text-sm font-semibold text-grey-600 dark:bg-grey-900">
-                  <th className="whitespace-nowrap py-4 pr-4 pl-6 text-left">ลำดับ</th>
+                  <th className="whitespace-nowrap py-4 pr-4 pl-4 text-center">ลำดับ</th>
                   <th className="whitespace-nowrap px-4 py-4 text-left">
                     หมายเลขกรมธรรม์ / รับแจ้ง / สลักหลัง
                   </th>
@@ -323,7 +320,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
                   <th className="whitespace-nowrap px-4 py-4 text-right">ส่วนลด</th>
                   <th className="whitespace-nowrap px-4 py-4 text-right">%จากเบี้ยสุทธิ</th>
                   <th className="whitespace-nowrap px-4 py-4 text-right">ยอดชำระ</th>
-                  <th className="whitespace-nowrap py-4 pr-6 pl-4 text-left">
+                  <th className="whitespace-nowrap py-4 pr-4 pl-4 text-left">
                     ข้อมูลอ้างอิง
                   </th>
                 </tr>
@@ -334,41 +331,41 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
                     key={it.seq}
                     className="border-b border-dashed border-[var(--divider)] align-top text-sm"
                   >
-                    <td className="py-4 pr-3 pl-6 text-grey-600">{it.seq}</td>
-                    <td className="px-3 py-4">
+                    <td className="py-4 pr-4 pl-4 text-center text-grey-600">{it.seq}</td>
+                    <td className="px-4 py-4">
                       <p className="font-semibold text-primary">{it.docNo}</p>
                       <p className="mt-0.5 text-xs text-grey-500">{it.docType}</p>
                     </td>
-                    <td className="px-3 py-4 text-foreground">{it.insuredName}</td>
-                    <td className="px-3 py-4 text-right tabular-nums text-foreground">
+                    <td className="max-w-[160px] truncate px-4 py-4 text-foreground">{it.insuredName}</td>
+                    <td className="px-4 py-4 text-right tabular-nums text-foreground">
                       {formatAmount(it.netPremium, 2)}
                     </td>
-                    <td className="px-3 py-4 text-right tabular-nums text-foreground">
+                    <td className="px-4 py-4 text-right tabular-nums text-foreground">
                       {formatAmount(it.grossPremium, 2)}
                     </td>
-                    <td className="px-3 py-4 text-right tabular-nums text-grey-600">
+                    <td className="px-4 py-4 text-right tabular-nums text-grey-600">
                       {it.discount}
                     </td>
-                    <td className="px-3 py-4 text-right tabular-nums text-grey-500">0.00%</td>
-                    <td className="px-3 py-4 text-right font-semibold tabular-nums text-foreground">
+                    <td className="px-4 py-4 text-right tabular-nums text-grey-500">0.00%</td>
+                    <td className="px-4 py-4 text-right font-semibold tabular-nums text-foreground">
                       {formatAmount(it.grossPremium, 2)}
                     </td>
-                    <td className="py-4 pr-6 pl-3 text-grey-600">{it.ref}</td>
+                    <td className="px-4 py-4 text-grey-600">{it.ref}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
 
-          <div className={cn("mt-4 flex flex-col gap-3 rounded-2xl bg-info/8 px-5 py-4", !compact && "mmd:flex-row mmd:items-center mmd:justify-between")}>
+          <div className={cn("mt-4 flex flex-col-reverse gap-3 rounded-2xl bg-info/8 px-5 py-4", !compact && "mmd:flex-row mmd:items-center mmd:justify-between")}>
             <p className="flex items-center gap-2 text-sm text-grey-600">
               <Info className="size-4 shrink-0 text-info" />
               ลูกค้าจะเห็นรายการย่อยทั้งหมดในหน้าชำระเงิน และจ่ายครั้งเดียว
             </p>
             <div className="text-right">
               <p className="text-sm text-grey-500">ยอดที่ลูกค้าต้องชำระ</p>
-              <p className="text-2xl font-bold tabular-nums text-primary">
-                {formatMoney(t.amount)}
+              <p className="text-2xl font-bold tabular-nums text-secondary">
+                {formatMoney(t.amount, false)}
               </p>
             </div>
           </div>
@@ -377,8 +374,8 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
 
       {/* ── 4. ช่องทางการชำระเงิน (Channel) ────────────────────────────────── */}
       <Panel title="ช่องทางการชำระเงิน">
-        <div className="px-6 py-5">
-          <div className="max-w-xs rounded-xl border-2 border-primary bg-primary/4 p-4">
+        <div className="px-6 pt-5 pb-6">
+          <div className="max-w-xs rounded-xl border-2 border-secondary bg-secondary/4 p-4">
             <div className="flex items-center gap-2.5">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -387,11 +384,11 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
                 className="h-20 w-20 shrink-0 object-contain"
               />
               <span className="flex min-w-0 flex-1 flex-col gap-1">
-                <span className="text-sm font-bold text-foreground">
+                <span className="text-sm font-bold text-secondary">
                   {channel?.label ?? sessionChannel ?? "—"}
                 </span>
                 {channel?.caption ? (
-                  <span className="text-xs leading-relaxed text-grey-500">{channel.caption}</span>
+                  <span className="text-xs leading-relaxed text-foreground">{channel.caption}</span>
                 ) : null}
               </span>
             </div>
@@ -399,15 +396,15 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
         </div>
       </Panel>
 
-      {/* ── 5. ตั้งค่าลิงก์ และการแจ้งเตือน ────────────────────────────────── */}
-      <Panel title="ตั้งค่าลิงก์ และการแจ้งเตือน">
-        <div className="px-6 py-5">
+      {/* ── 5. ตั้งค่าลิงก์และการแจ้งเตือน ────────────────────────────────── */}
+      <Panel title="ตั้งค่าลิงก์และการแจ้งเตือน">
+        <div className="px-6 pt-5 pb-6">
           <div className="flex flex-col gap-6">
             <div>
               <span className="mb-2 block text-sm font-semibold text-grey-700">
                 ระยะเวลาก่อนลิงก์หมดอายุ
               </span>
-              <span className="inline-flex h-9 items-center rounded-full border border-primary bg-primary/8 px-4 text-sm font-semibold text-primary">
+              <span className="inline-flex h-9 items-center rounded-full border border-secondary bg-secondary/8 px-4 text-sm font-semibold text-secondary">
                 72 ชม.
               </span>
             </div>
@@ -416,7 +413,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
               <span className="mb-2 block text-sm font-semibold text-grey-700">
                 การแจ้งเตือนลูกค้า
               </span>
-              <span className="inline-flex h-9 items-center rounded-full border border-primary bg-primary/8 px-4 text-sm font-semibold text-primary">
+              <span className="inline-flex h-9 items-center rounded-full border border-secondary bg-secondary/8 px-4 text-sm font-semibold text-secondary">
                 ส่งหาลูกค้า
               </span>
 
@@ -475,7 +472,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
 
       {/* ── 6. หมายเหตุ ─────────────────────────────────────────────────────── */}
       <Panel title="หมายเหตุ">
-        <div className="px-6 py-5" />
+        <div className="px-6 pt-5 pb-6" />
       </Panel>
 
     </div>
