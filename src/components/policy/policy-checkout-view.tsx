@@ -22,7 +22,6 @@ import { CheckoutCustomerCard } from "./checkout-customer-card";
 import { CheckoutItemsCard } from "./checkout-items-card";
 import { CheckoutChannelCard } from "./checkout-channel-card";
 import { CheckoutLinkSettingsCard } from "./checkout-link-settings-card";
-import { CheckoutAdvancedCard, EMPTY_ADVANCED, type AdvancedInfo } from "./checkout-advanced-card";
 import { CheckoutNoteCard } from "./checkout-note-card";
 import { CheckoutFooterBar } from "./checkout-footer-bar";
 
@@ -51,7 +50,7 @@ export function PolicyCheckoutView({ ids }: PolicyCheckoutViewProps) {
   const [customPhone, setCustomPhone] = useState("");
   const [customEmailOn, setCustomEmailOn] = useState(false);
   const [customEmail, setCustomEmail] = useState("");
-  const [advanced, setAdvanced] = useState<AdvancedInfo>(EMPTY_ADVANCED);
+  const [note, setNote] = useState("");
   const [issuedLink, setIssuedLink] = useState<string | null>(null);
 
   const total = lineItemsTotal(items);
@@ -108,8 +107,6 @@ export function PolicyCheckoutView({ ids }: PolicyCheckoutViewProps) {
 
   return (
     <div className="flex flex-col gap-6">
-      <CheckoutAdvancedCard value={advanced} onChange={setAdvanced} />
-
       <CheckoutCustomerCard customer={customer} onChange={setCustomer} />
 
       <CheckoutItemsCard
@@ -150,10 +147,7 @@ export function PolicyCheckoutView({ ids }: PolicyCheckoutViewProps) {
         onCustomEmailValue={setCustomEmail}
       />
 
-      <CheckoutNoteCard
-        value={advanced.note}
-        onChange={(note) => setAdvanced({ ...advanced, note })}
-      />
+      <CheckoutNoteCard value={note} onChange={setNote} />
 
       <CheckoutFooterBar
         count={items.length}
