@@ -36,9 +36,9 @@ function isActive(pathname: string, path: string): boolean {
   if (!isRealPath(path)) return false;
   const c = cleanPath(path);
   if (pathname === c) return true;
-  // The dashboard root ("/dashboard" = App) is a prefix of every page, so it
+  // The dashboard root ("/minimals" = App) is a prefix of every page, so it
   // must match exactly only — never via the deep subpath rule below.
-  if (c === "/dashboard") return false;
+  if (c === "/minimals") return false;
   return pathname.startsWith(`${c}/`);
 }
 

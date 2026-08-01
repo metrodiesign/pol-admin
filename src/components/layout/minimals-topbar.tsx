@@ -15,7 +15,7 @@ interface MinimalsTopbarProps {
 }
 
 /**
- * Topbar for the /dashboard (minimals clone) shell.
+ * Topbar for the /minimals (minimals clone) shell.
  *
  * - Always-on blurred backdrop (bg-default @ 80% + 6px backdrop-blur); sticky top.
  *   Content scrolls under it and is blurred/tinted — no JS, no scroll listener.

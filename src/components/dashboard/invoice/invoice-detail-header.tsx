@@ -30,8 +30,8 @@ export function InvoiceDetailHeader({ invoiceNumber, initialStatus }: InvoiceDet
       <nav aria-label="breadcrumb" className="mt-1">
         <ol className="flex flex-wrap items-center text-sm text-grey-600">
           {[
-            { label: "Dashboard", href: "/dashboard" },
-            { label: "Invoice", href: "/dashboard/invoice/list" },
+            { label: "Dashboard", href: "/minimals" },
+            { label: "Invoice", href: "/minimals/invoice/list" },
             { label: invoiceNumber },
           ].map((crumb, i, arr) => (
             <li key={i} className="flex items-center">

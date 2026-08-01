@@ -15,7 +15,7 @@
 - **ไม่สร้าง** `role/layout.tsx` — parent `src/app/user/layout.tsx` wrap `MinimalsLayout` ให้ทุก child
   ใต้ `/user` รวม `/user/role` อยู่แล้ว. สร้างซ้ำ = MinimalsLayout ซ้อนกัน (sidebar/topbar 2 ชั้น). [critique C1]
 - `src/app/user/role/list/page.tsx` — Server Component: `metadata` + render `<RolesView />`.
-  list อยู่ใต้ `list/` (ไม่ใช่ root `role/page.tsx`) เพื่อ align โครงเดียวกับ `/user/list`, `/dashboard/job/list`
+  list อยู่ใต้ `list/` (ไม่ใช่ root `role/page.tsx`) เพื่อ align โครงเดียวกับ `/user/list`, `/minimals/job/list`
   — `/user/role` เป็น container เปล่า (ไม่มี page) เหมือน `/user`. heading/breadcrumb/ปุ่มเพิ่ม render
   ผ่าน `CustomBreadcrumbs` ภายใน `RolesView` (client) — subtitle REQ-3.2 + ปุ่ม `+ เพิ่มบทบาทใหม่`
   (REQ-6.1 onClick navigate ไป create) เป็นของ client. [critique C2]

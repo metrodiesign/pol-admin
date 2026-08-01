@@ -57,7 +57,7 @@ export function ProductTableRow({
           </div>
           <div className="min-w-0">
             <Link
-              href={`/dashboard/product/details`}
+              href={`/minimals/product/details`}
               className="block truncate text-sm font-semibold text-foreground hover:underline"
             >
               {product.name}

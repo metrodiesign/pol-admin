@@ -146,9 +146,9 @@ audience หรือทดสอบการเข้าสู่ระบบ�
 
 ## Edge Cases & Open Questions
 
-- **Landing route ต่อ audience (REQ-4):** repo มี `/main`, `/user`, `/policy` แต่ไม่มี surface ฝั่ง
-  producer โดยเฉพาะ. ต้องล็อกใน design.md ว่า admin -> ? และ producer -> ? (candidate: admin -> `/main`;
-  producer -> `/main` ชั่วคราว หรือ redirect ออกนอก repo). REQ-4.1 ผูกกับ mapping function ไม่ใช่ค่าตายตัว
+- **Landing route ต่อ audience (REQ-4):** repo มี `/dashboard`, `/user`, `/policy` แต่ไม่มี surface ฝั่ง
+  producer โดยเฉพาะ. ต้องล็อกใน design.md ว่า admin -> ? และ producer -> ? (candidate: admin -> `/dashboard`;
+  producer -> `/dashboard` ชั่วคราว หรือ redirect ออกนอก repo). REQ-4.1 ผูกกับ mapping function ไม่ใช่ค่าตายตัว
   **(F8=a: defer to design — ยืนยันแล้ว.)**
 - **Session storage (REQ-3.6):** เก็บ mock session ที่ไหน — `localStorage`/`sessionStorage` (mock ง่าย,
   ฝั่ง client ล้วน) vs httpOnly cookie (ต้องมี route handler, กันด้วย middleware ได้). ตัดสินใน design
@@ -161,7 +161,7 @@ audience หรือทดสอบการเข้าสู่ระบบ�
   เป็น singleton ต่อ client_id — กลยุทธ์ที่เหลือ (re-init ต่อการกด vs render 2 ปุ่มแยก context ต่อ client_id)
   = ตัดสินใน design (มีผลต่อ UX: rendered button vs custom)
 - **hosted-domain (hd) (REQ-3.8):** จะเปิดใช้จริงไหม และ allowed domain ของแต่ละ audience คืออะไร
-- **Reuse:** ตรวจ Minimals auth scaffolding ใน `src/app/dashboard/*` ว่ามี sign-in view ที่ใช้ซ้ำได้หรือไม่
+- **Reuse:** ตรวจ Minimals auth scaffolding ใน `src/app/minimals/*` ว่ามี sign-in view ที่ใช้ซ้ำได้หรือไม่
   ก่อนสร้างใหม่ (ทำตอน design)
 
 ### Analyze findings log (anchor: uncommitted; baseline HEAD 55a0cfc · /spec-analyze 2026-06-23)

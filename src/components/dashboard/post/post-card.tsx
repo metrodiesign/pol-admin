@@ -44,7 +44,7 @@ export function PostCard({ post }: PostCardProps) {
 
         {/* Title */}
         <Link
-          href="/dashboard/post/details"
+          href="/minimals/post/details"
           className="mb-2 line-clamp-2 text-sm font-semibold leading-[1.5] text-grey-800 transition-colors hover:underline"
         >
           {post.title}

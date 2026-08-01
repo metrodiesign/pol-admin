@@ -31,7 +31,7 @@ export function OrderDetailsHeader({
       <div>
         <div className="flex items-center gap-2">
           <Link
-            href="/dashboard/order/list"
+            href="/minimals/order/list"
             className="flex size-8 items-center justify-center rounded-full text-foreground transition-colors hover:bg-[var(--action-hover)]"
             aria-label="Back to order list"
           >

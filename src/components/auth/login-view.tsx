@@ -6,9 +6,9 @@ import { Button } from "@/components/ui/button";
 import { login, microsoftLogin } from "@/lib/api/admin-api";
 import { producerLogin, producerMicrosoftLogin } from "@/lib/api/producer-api";
 
-// landing หลัง login = /main (admin landing จริง). backend ต้องมี /main ใน AdminSession:ReturnUrlAllowlist
+// landing หลัง login = /dashboard (admin landing จริง). backend ต้องมี /dashboard ใน AdminSession:ReturnUrlAllowlist
 // (ไม่งั้น reject -> falls back /). ดู coordination item ใน spec.
-const RETURN_TO = "/main";
+const RETURN_TO = "/dashboard";
 
 // โลโก้ Google สี (เลียนแบบปุ่ม GIS official ของเวอร์ชันเก่า)
 function GoogleIcon() {

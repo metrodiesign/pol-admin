@@ -77,7 +77,7 @@ src/
                        #   webhook, api-client, audit, policy, invoice, ...
 ```
 
-> (*) = product surface จริง. `components/dashboard/*` + route ใน `app/dashboard/*` ส่วนใหญ่ยังเป็น
+> (*) = product surface จริง. `components/dashboard/*` + route ใน `app/minimals/*` ส่วนใหญ่ยังเป็น
 > demo ของ Minimals template (de-navved); payment domain ยังไม่ wire เข้า route — ดู PROJECT_CONTEXT
 > "Current State". layout data flow: `lib/mock/*` -> hook -> page container spread เป็น props -> child render.
 

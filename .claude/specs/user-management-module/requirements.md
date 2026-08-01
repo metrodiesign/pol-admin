@@ -5,7 +5,7 @@
 ## Overview
 
 POL ต้องมีโมดูล "ผู้ใช้งาน & สิทธิ์" ของตัวเองที่แยกขาดจากหน้า Demo ของ Minimals
-template โดยสิ้นเชิง โมดูลนี้สร้างขึ้นโดยคัดลอกหน้า `src/app/dashboard/user`
+template โดยสิ้นเชิง โมดูลนี้สร้างขึ้นโดยคัดลอกหน้า `src/app/minimals/user`
 (เฉพาะ list / new / edit) มาไว้ที่เส้นทางใหม่ `src/app/user` พร้อม view components
 ชุดใหม่ภายใต้ namespace ของตัวเอง เพื่อให้ POL ปรับแต่งได้อิสระโดยไม่กระทบ และไม่ถูก
 กระทบจาก หน้า Demo เดิม สอดคล้องกับทิศทางผลิตภัณฑ์ที่ค่อย ๆ ถอด Demo ของ Minimals
@@ -20,7 +20,7 @@ template โดยสิ้นเชิง โมดูลนี้สร้า�
 ## REQ-1: โมดูล route ใหม่ที่แยกขาด (`src/app/user`)
 
 **User Story:** As a POL developer, I want หน้า user อยู่ที่ `/user/*` แยกจาก
-`/dashboard/user/*`, so that ปรับแต่งโมดูลจริงของ POL ได้โดยไม่ชนกับหน้า Demo.
+`/minimals/user/*`, so that ปรับแต่งโมดูลจริงของ POL ได้โดยไม่ชนกับหน้า Demo.
 
 **Acceptance Criteria (EARS):**
 - 1.1 THE SYSTEM SHALL ให้บริการหน้า list ที่เส้นทาง `/user/list`
@@ -55,15 +55,15 @@ template โดยสิ้นเชิง โมดูลนี้สร้า�
 `/user`, so that นำทางอยู่ในโมดูลใหม่ ไม่หลุดกลับไปหน้า Demo.
 
 **Acceptance Criteria (EARS):**
-- 3.1 THE SYSTEM SHALL แทนทุก path ที่ขึ้นต้นด้วย `/dashboard/user` ในไฟล์ที่
+- 3.1 THE SYSTEM SHALL แทนทุก path ที่ขึ้นต้นด้วย `/minimals/user` ในไฟล์ที่
   คัดลอกมา ด้วย `/user`
-- 3.2 WHERE breadcrumb เดิมมี label `"User"` href `/dashboard/user/list` THE
+- 3.2 WHERE breadcrumb เดิมมี label `"User"` href `/minimals/user/list` THE
   SYSTEM SHALL เปลี่ยน href เป็น `/user/list` (label จะปรับใน 3.4)
 - 3.3 THE SYSTEM SHALL ปรับลิงก์ edit ใน `user-table-columns` จาก
-  `/dashboard/user/${u.id}/edit` เป็น `/user/${u.id}/edit`
+  `/minimals/user/${u.id}/edit` เป็น `/user/${u.id}/edit`
 - 3.4 THE SYSTEM SHALL ตั้ง breadcrumb หลักของโมดูลให้สื่อถึง POL: root label
-  `"ผู้ใช้งาน & สิทธิ์"` href `/user/list` (แทน `"Dashboard" -> /dashboard`)
-- 3.5 IF หน้าที่คัดลอกมายังหลงเหลือ path `/dashboard/user` หรือ import จาก
+  `"ผู้ใช้งาน & สิทธิ์"` href `/user/list` (แทน `"Dashboard" -> /minimals`)
+- 3.5 IF หน้าที่คัดลอกมายังหลงเหลือ path `/minimals/user` หรือ import จาก
   `@/components/dashboard/user` THEN THE SYSTEM SHALL ถือว่าไม่ผ่าน (ต้องเป็น 0)
 
 ## REQ-4: เมนูนำทางใหม่ใต้ `UserManagement`
@@ -88,17 +88,17 @@ so that เข้าถึงหน้าจัดการผู้ใช้ไ
 ไม่เกิด regression จากการเพิ่มโมดูลใหม่.
 
 **Acceptance Criteria (EARS):**
-- 5.1 THE SYSTEM SHALL ไม่แก้ไขไฟล์ใด ๆ ภายใต้ `src/app/dashboard/user`
+- 5.1 THE SYSTEM SHALL ไม่แก้ไขไฟล์ใด ๆ ภายใต้ `src/app/minimals/user`
 - 5.2 THE SYSTEM SHALL ไม่แก้ไขไฟล์ใด ๆ ภายใต้ `src/components/dashboard/user`
 - 5.3 THE SYSTEM SHALL คงรายการ Demo > User เดิมใน nav-config ไว้ไม่เปลี่ยนแปลง
-- 5.4 THE SYSTEM SHALL ทำให้ทั้ง `/dashboard/user/list` และ `/user/list`
+- 5.4 THE SYSTEM SHALL ทำให้ทั้ง `/minimals/user/list` และ `/user/list`
   เข้าถึงได้พร้อมกัน
 - 5.5 THE SYSTEM SHALL ผ่าน build/type-check โดยไม่มี error หลังเพิ่มโมดูล
 
 ## Edge Cases & Open Questions
 
-- Route edit ต้นฉบับเป็น `/dashboard/user/edit` (ไม่มี id param) แต่
-  `user-table-columns` ลิงก์ไป `/dashboard/user/${u.id}/edit` (มี id) — เป็น
+- Route edit ต้นฉบับเป็น `/minimals/user/edit` (ไม่มี id param) แต่
+  `user-table-columns` ลิงก์ไป `/minimals/user/${u.id}/edit` (มี id) — เป็น
   ความไม่ตรงกันที่มีอยู่เดิม โมดูลใหม่จะ mirror พฤติกรรมเดิม (สร้างแค่ `/user/edit`
   และลิงก์ `/user/${u.id}/edit` ชี้ route ที่ยังไม่มี id) — NOT แก้ scope นี้.
   เปิดประเด็นไว้: จะ normalize เป็น route เดียวหรือไม่ ตัดสินตอน design.

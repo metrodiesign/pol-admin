@@ -81,7 +81,7 @@
 - guard = **client-side** (ตรงกับ contract): `auth-provider.tsx` (getMe on mount, `useAuth`) +
   `auth-guard.tsx` (loading/anon->login/authed) wrap ใน `minimals-layout.tsx` -> คุมทุก protected group;
   `/login` `/logout` `/login-error` ไม่ผ่าน MinimalsLayout = public โดยโครงสร้าง.
-- `returnTo` ต้องอยู่ใน backend allowlist (`AdminSession:ReturnUrlAllowlist`); `app/page.tsx` redirect `/`->`/main`
+- `returnTo` ต้องอยู่ใน backend allowlist (`AdminSession:ReturnUrlAllowlist`); `app/page.tsx` redirect `/`->`/dashboard`
   ทำให้ landing robust แม้ backend fall back มา `/`. backend deny -> redirect `/login-error?reason=<label>` (FE หน้านี้ map ข้อความ).
 - **E2E recipe**: real backend ต้อง Google human-auth + provisioned admin -> validate ครบไม่ได้ด้วย automation.
   ใช้ **contract-mock backend** (no-dep node http บน :5100 พูดตาม contract) + cookie-jar curl ผ่าน proxy +

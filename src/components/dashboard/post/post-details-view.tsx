@@ -194,7 +194,7 @@ export function PostDetailsView() {
       {/* Top action toolbar */}
       <div className="flex items-center justify-between mb-6">
         <Link
-          href="/dashboard/post/list"
+          href="/minimals/post/list"
           className="flex items-center gap-1.5 text-sm font-semibold text-grey-800 hover:text-grey-600 transition-colors"
         >
           <ArrowLeft className="size-4" />
@@ -211,7 +211,7 @@ export function PostDetailsView() {
             Go live
           </a>
           <Link
-            href="/dashboard/post/edit"
+            href="/minimals/post/edit"
             className="flex items-center gap-1.5 rounded-[8px] border border-grey-300 px-3 h-9 text-sm font-semibold text-grey-800 hover:bg-grey-100 transition-colors"
           >
             <Pencil className="size-4" />

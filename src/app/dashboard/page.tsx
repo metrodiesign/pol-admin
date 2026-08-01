@@ -1,6 +1,6 @@
 import { WelcomeBanner } from "@/components/dashboard/welcome-banner";
 import { FeaturedCarousel } from "@/components/dashboard/featured-carousel";
-import { SummaryWidgets } from "@/components/dashboard/summary-widget";
+import { PaymentSummaryWidgets } from "@/components/dashboard/payment-summary-widget";
 import { CurrentDownload } from "@/components/dashboard/current-download";
 import { AreaInstalled } from "@/components/dashboard/area-installed";
 import { NewInvoices } from "@/components/dashboard/new-invoices";
@@ -9,7 +9,7 @@ import { TopCountries } from "@/components/dashboard/top-countries";
 import { TopAuthors } from "@/components/dashboard/top-authors";
 import { WidgetCircularGroup } from "@/components/dashboard/widget-circular";
 
-export default function DashboardPage() {
+export default function MainPage() {
   return (
     <div>
       <div className="grid grid-cols-1 gap-6 mmd:grid-cols-12">
@@ -22,7 +22,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Row 2 — summary KPIs */}
-        <SummaryWidgets />
+        <PaymentSummaryWidgets />
 
         {/* Row 3 — charts */}
         <div className="mmd:col-span-4">

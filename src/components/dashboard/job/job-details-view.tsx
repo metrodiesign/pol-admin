@@ -196,7 +196,7 @@ export function JobDetailsView({ job }: JobDetailsViewProps) {
       {/* Action bar */}
       <div className="mb-5 flex items-center justify-between gap-3">
         <Link
-          href="/dashboard/job/list"
+          href="/minimals/job/list"
           className="flex items-center gap-0.5 rounded-control px-2 py-1.5 text-sm font-bold text-grey-800 transition-colors hover:bg-grey-100"
         >
           <ChevronLeft className="size-5" />
@@ -204,7 +204,7 @@ export function JobDetailsView({ job }: JobDetailsViewProps) {
         </Link>
         <div className="flex items-center gap-2">
           <Link
-            href="/dashboard/job/edit"
+            href="/minimals/job/edit"
             aria-label="Edit job"
             className="flex size-9 items-center justify-center rounded-full transition-colors hover:bg-grey-100"
           >

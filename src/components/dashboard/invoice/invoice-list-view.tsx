@@ -285,7 +285,7 @@ export function InvoiceListView() {
                           {row.customer}
                         </p>
                         <Link
-                          href="/dashboard/invoice/details"
+                          href="/minimals/invoice/details"
                           className="text-xs text-grey-500 hover:underline"
                         >
                           {row.invoiceNumber}

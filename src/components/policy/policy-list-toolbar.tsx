@@ -11,7 +11,7 @@ interface Option {
   label: string;
 }
 
-/** date filter แบบ /dashboard/invoice/list — text + placeholder + ปุ่ม calendar (label บน). */
+/** date filter แบบ /minimals/invoice/list — text + placeholder + ปุ่ม calendar (label บน). */
 function DateInput({
   label,
   value,

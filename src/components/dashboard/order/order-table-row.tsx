@@ -62,7 +62,7 @@ export function OrderTableRow({
         {/* Order # */}
         <TableCell className={cn("px-4 text-sm font-normal", py)}>
           <Link
-            href={`/dashboard/order/details`}
+            href={`/minimals/order/details`}
             className="text-foreground underline decoration-foreground/40 hover:decoration-foreground"
           >
             {order.orderNumber}
