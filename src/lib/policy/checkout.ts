@@ -90,7 +90,7 @@ export const PAYMENT_CHANNEL_OPTIONS: {
   caption: string;
 }[] = [
   { value: "credit_card", label: "บัตรเครดิต / เดบิต", caption: "Visa, Mastercard, JCB, UnionPay" },
-  { value: "promptpay", label: "PromptPay QR", caption: "สแกนจากแอปธนาคารใดก็ได้" },
+  { value: "promptpay", label: "PromptPay QR", caption: "สแกน QR จ่ายผ่านแอปธนาคาร" },
   { value: "installment", label: "ผ่อนชำระ", caption: "KBank, KTC, BBL, BAY" },
 ];
 
