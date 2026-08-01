@@ -310,7 +310,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
             <table className="w-full min-w-[880px] border-collapse">
               <thead>
                 <tr className="bg-grey-200 text-sm font-semibold text-grey-600 dark:bg-grey-900">
-                  <th className="whitespace-nowrap py-4 pr-4 pl-6 text-left">ลำดับ</th>
+                  <th className="whitespace-nowrap py-4 pr-4 pl-4 text-center">ลำดับ</th>
                   <th className="whitespace-nowrap px-4 py-4 text-left">
                     หมายเลขกรมธรรม์ / รับแจ้ง / สลักหลัง
                   </th>
@@ -320,7 +320,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
                   <th className="whitespace-nowrap px-4 py-4 text-right">ส่วนลด</th>
                   <th className="whitespace-nowrap px-4 py-4 text-right">%จากเบี้ยสุทธิ</th>
                   <th className="whitespace-nowrap px-4 py-4 text-right">ยอดชำระ</th>
-                  <th className="whitespace-nowrap py-4 pr-6 pl-4 text-left">
+                  <th className="whitespace-nowrap py-4 pr-4 pl-4 text-left">
                     ข้อมูลอ้างอิง
                   </th>
                 </tr>
@@ -331,26 +331,26 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
                     key={it.seq}
                     className="border-b border-dashed border-[var(--divider)] align-top text-sm"
                   >
-                    <td className="py-4 pr-3 pl-6 text-grey-600">{it.seq}</td>
-                    <td className="px-3 py-4">
+                    <td className="py-4 pr-4 pl-4 text-center text-grey-600">{it.seq}</td>
+                    <td className="px-4 py-4">
                       <p className="font-semibold text-primary">{it.docNo}</p>
                       <p className="mt-0.5 text-xs text-grey-500">{it.docType}</p>
                     </td>
-                    <td className="px-3 py-4 text-foreground">{it.insuredName}</td>
-                    <td className="px-3 py-4 text-right tabular-nums text-foreground">
+                    <td className="max-w-[160px] truncate px-4 py-4 text-foreground">{it.insuredName}</td>
+                    <td className="px-4 py-4 text-right tabular-nums text-foreground">
                       {formatAmount(it.netPremium, 2)}
                     </td>
-                    <td className="px-3 py-4 text-right tabular-nums text-foreground">
+                    <td className="px-4 py-4 text-right tabular-nums text-foreground">
                       {formatAmount(it.grossPremium, 2)}
                     </td>
-                    <td className="px-3 py-4 text-right tabular-nums text-grey-600">
+                    <td className="px-4 py-4 text-right tabular-nums text-grey-600">
                       {it.discount}
                     </td>
-                    <td className="px-3 py-4 text-right tabular-nums text-grey-500">0.00%</td>
-                    <td className="px-3 py-4 text-right font-semibold tabular-nums text-foreground">
+                    <td className="px-4 py-4 text-right tabular-nums text-grey-500">0.00%</td>
+                    <td className="px-4 py-4 text-right font-semibold tabular-nums text-foreground">
                       {formatAmount(it.grossPremium, 2)}
                     </td>
-                    <td className="py-4 pr-6 pl-3 text-grey-600">{it.ref}</td>
+                    <td className="px-4 py-4 text-grey-600">{it.ref}</td>
                   </tr>
                 ))}
               </tbody>
