@@ -33,7 +33,7 @@ export function CheckoutCard({
         </div>
         {action ? <div className="shrink-0">{action}</div> : null}
       </header>
-      <div className="px-6 py-5">{children}</div>
+      <div className="px-6 pt-5 pb-6">{children}</div>
     </section>
   );
 }
