@@ -27,7 +27,7 @@ import { CheckoutNoteCard } from "./checkout-note-card";
 import { CheckoutFooterBar } from "./checkout-footer-bar";
 
 interface PolicyCheckoutViewProps {
-  /** policy ids ที่ผ่าน parseIdsParam มาแล้วจากหน้า route. */
+  /** policy ids ที่ resolve จาก checkout session แล้ว. */
   ids: string[];
 }
 

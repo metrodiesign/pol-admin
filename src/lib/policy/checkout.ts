@@ -3,18 +3,26 @@
 
 import type { Policy } from "@/types/policy";
 
-// ── rehydrate ตะกร้าจาก query param ────────────────────────────────────────
+// ── rehydrate ตะกร้าจาก checkout session (localStorage) ─────────────────────
 
-/**
- * แตก query param `ids` เป็น array — รองรับ "POL-1,POL-2", trim, ตัดค่าว่าง.
- * undefined/ว่าง -> [].
- */
-export function parseIdsParam(raw: string | undefined): string[] {
-  if (!raw) return [];
-  return raw
-    .split(",")
-    .map((s) => s.trim())
-    .filter((s) => s.length > 0);
+const CHECKOUT_SESSION_PREFIX = "pol-admin:checkout-session:";
+
+/** สร้าง checkout session ใหม่ — เก็บ policy ids ลง localStorage, คืน session id. */
+export function createCheckoutSession(ids: readonly string[]): string {
+  const sessionId = crypto.randomUUID();
+  localStorage.setItem(CHECKOUT_SESSION_PREFIX + sessionId, JSON.stringify(ids));
+  return sessionId;
+}
+
+/** อ่าน policy ids จาก session id — ไม่พบ/parse ไม่ได้ = null. */
+export function readCheckoutSession(sessionId: string): string[] | null {
+  const raw = localStorage.getItem(CHECKOUT_SESSION_PREFIX + sessionId);
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw) as string[];
+  } catch {
+    return null;
+  }
 }
 
 /**

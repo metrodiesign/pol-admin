@@ -1,9 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
 import type { Policy, PolicyStatus } from "@/types/policy";
 import { CATEGORY_OPTIONS, PAYMENT_STATUS_OPTIONS } from "@/lib/policy/policy";
+import { createCheckoutSession } from "@/lib/policy/checkout";
 import {
   usePolicyTableWithCart,
   ROWS_PER_PAGE_OPTIONS,
@@ -36,8 +36,6 @@ export function PolicyMarketplaceView() {
   const [status, setStatus] = useState<PolicyStatus | "all">("all");
   const [checkout, setCheckout] = useState<CheckoutState | null>(null);
 
-  const router = useRouter();
-
   const globalFilter = useMemo(
     () => ({
       search,
@@ -64,8 +62,8 @@ export function PolicyMarketplaceView() {
   }
 
   function goToCheckout(policies: Policy[]) {
-    const ids = policies.map((p) => p.id).join(",");
-    router.push(`/policy/checkout?ids=${encodeURIComponent(ids)}`);
+    const sessionId = createCheckoutSession(policies.map((p) => p.id));
+    window.open(`/checkout/${sessionId}`, "_blank", "noopener,noreferrer");
   }
 
   return (

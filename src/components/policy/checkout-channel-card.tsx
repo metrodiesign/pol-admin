@@ -35,7 +35,7 @@ export function CheckoutChannelCard({ value, onChange }: CheckoutChannelCardProp
         {PAYMENT_CHANNEL_OPTIONS.map((opt) => (
           <label
             key={opt.value}
-            className="flex cursor-pointer items-center gap-2.5 rounded-xl border border-[var(--divider)] p-3.5 transition-colors hover:bg-grey-100 has-data-checked:border-primary has-data-checked:bg-primary/4"
+            className="group flex cursor-pointer items-center gap-2.5 rounded-xl border border-[var(--divider)] p-3.5 transition-colors hover:bg-grey-100 has-data-checked:border-secondary has-data-checked:bg-secondary/4"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -44,7 +44,9 @@ export function CheckoutChannelCard({ value, onChange }: CheckoutChannelCardProp
               className="h-20 w-20 shrink-0 object-contain"
             />
             <span className="flex min-w-0 flex-1 flex-col gap-1">
-              <span className="text-sm font-bold text-foreground">{opt.label}</span>
+              <span className="text-sm font-bold text-foreground group-has-data-checked:text-secondary">
+                {opt.label}
+              </span>
               <span className="text-xs leading-relaxed text-grey-500">{opt.caption}</span>
             </span>
             <RadioGroupItem value={opt.value} className="sr-only" />

@@ -1,17 +1,16 @@
 import { PageHeader } from "@/components/shared/page-header";
-import { parseIdsParam } from "@/lib/policy/checkout";
-import { PolicyCheckoutView } from "@/components/policy/policy-checkout-view";
+import { PolicyCheckoutSessionView } from "@/components/policy/policy-checkout-session-view";
 
 export const metadata = {
   title: "ชำระเบี้ย | POL Admin",
 };
 
-export default async function PolicyCheckoutPage({
-  searchParams,
+export default async function CheckoutSessionPage({
+  params,
 }: {
-  searchParams: Promise<{ ids?: string }>;
+  params: Promise<{ sessionId: string }>;
 }) {
-  const { ids } = await searchParams;
+  const { sessionId } = await params;
 
   return (
     <>
@@ -19,7 +18,7 @@ export default async function PolicyCheckoutPage({
         title="ชำระเบี้ย"
         breadcrumbs={[{ label: "กรมธรรม์", href: "/policy/list" }, { label: "ชำระเบี้ย" }]}
       />
-      <PolicyCheckoutView ids={parseIdsParam(ids)} />
+      <PolicyCheckoutSessionView sessionId={sessionId} />
     </>
   );
 }
