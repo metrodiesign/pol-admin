@@ -3,7 +3,6 @@
 import SimpleBar from "simplebar-react";
 import { ExternalLink, X } from "lucide-react";
 import type { OrderRow } from "@/lib/order";
-import { formatMoney } from "@/types/money";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -11,7 +10,6 @@ import {
   SheetContent,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { OrderStatusBadge } from "./order-status-badge";
 import { OrderDetailView } from "./order-detail-view";
 
 interface OrderDetailSheetProps {
@@ -37,21 +35,14 @@ export function OrderDetailSheet({
         {/* Header */}
         <div className="flex items-start justify-between gap-2 border-b border-[var(--divider)] px-4 py-3">
           <div className="min-w-0">
-            <div className="flex flex-wrap items-center gap-2">
-              <SheetTitle className="font-mono text-sm font-semibold text-foreground">
-                {order?.id ?? "—"}
-              </SheetTitle>
-              {order && (
-                <OrderStatusBadge status={order.status} />
-              )}
+            <SheetTitle className="text-base font-bold text-foreground">
+              รายละเอียดคำสั่งซื้อ
+            </SheetTitle>
+            <div className="mt-0.5 flex flex-wrap items-center gap-2">
+              <span className="text-xs font-semibold text-grey-600">
+                คำสั่งซื้อ <span className="font-mono">• {order?.id ?? "—"}</span>
+              </span>
             </div>
-            {order && (
-              <p className="mt-0.5 text-xs text-grey-500">
-                {order.session?.recipientEmail ?? "—"}
-                {" · "}
-                {formatMoney(order.amount)}
-              </p>
-            )}
           </div>
 
           <div className="flex shrink-0 items-center gap-0.5">

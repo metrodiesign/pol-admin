@@ -142,13 +142,13 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
       {/* ── 1. สถานะลิงก์และชำระเงิน + ไทม์ไลน์ (2 คอลัมน์) ─────────────────── */}
       <div className={cn("grid grid-cols-1 gap-6", !compact && "mmd:grid-cols-2")}>
       <Panel title="สถานะลิงก์และชำระเงิน">
-        <div className="px-6 py-5">
+        <div className="px-6 pt-5 pb-6">
           <div className="flex flex-wrap items-center gap-3">
             <p className="text-sm font-bold text-foreground">สถานะ</p>
             <OrderStatusBadge status={t.status} />
           </div>
 
-          <div className={cn("mt-6 grid grid-cols-1 gap-x-8 gap-y-8", !compact && "mmd:grid-cols-2")}>
+          <div className="mt-6 grid grid-cols-1 gap-x-8 gap-y-8 mmd:grid-cols-2">
             <div className="flex h-full flex-col items-center justify-center rounded-2xl bg-grey-100 px-6 py-7">
               <QRCode value={link.url} size={220} />
             </div>
@@ -178,13 +178,10 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
                 </button>
               </div>
 
-              <div className={cn("mt-4 grid gap-2.5", compact ? "grid-cols-1" : "grid-cols-2")}>
+              <div className="mt-4 grid grid-cols-2 gap-2.5">
                 <button
                   type="button"
-                  className={cn(
-                    "inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-control bg-success px-3 text-sm font-bold text-white transition-colors hover:bg-success-dark",
-                    !compact && "col-span-2",
-                  )}
+                  className="col-span-2 inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-control bg-success px-3 text-sm font-bold text-white transition-colors hover:bg-success-dark"
                 >
                   <ExternalLink className="size-4 shrink-0" />
                   เปิดลิงก์
@@ -254,7 +251,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
 
       {/* ── 2. ข้อมูลคำสั่งซื้อ (Advanced) ─────────────────────── */}
       <Panel title="ข้อมูลคำสั่งซื้อ">
-        <div className="px-6 py-5">
+        <div className="px-6 pt-5 pb-6">
           <div className={cn("grid grid-cols-1 gap-x-4 gap-y-4", !compact && "sm:grid-cols-2")}>
             <div>
               <p className={fieldLabel}>หมายเลขคำสั่งซื้อ</p>
@@ -288,7 +285,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
 
       {/* ── 2. ข้อมูลลูกค้า (Customer) ──────────────────────────────────────── */}
       <Panel title="ข้อมูลลูกค้า">
-        <div className="px-6 py-5">
+        <div className="px-6 pt-5 pb-6">
           <div className={cn("grid grid-cols-1 gap-x-5 gap-y-5", !compact && "mmd:grid-cols-2")}>
             <div className="flex flex-col gap-1.5">
               <p className={fieldLabel}>ชื่อ-นามสกุล</p>
@@ -308,7 +305,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
 
       {/* ── 3. รายการกรมธรรม์ (Items) ───────────────────────────── */}
       <Panel title="รายการกรมธรรม์">
-        <div className="px-6 py-5">
+        <div className="px-6 pt-5 pb-6">
           <div className="-mx-6 overflow-x-auto">
             <table className="w-full min-w-[880px] border-collapse">
               <thead>
@@ -377,7 +374,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
 
       {/* ── 4. ช่องทางการชำระเงิน (Channel) ────────────────────────────────── */}
       <Panel title="ช่องทางการชำระเงิน">
-        <div className="px-6 py-5">
+        <div className="px-6 pt-5 pb-6">
           <div className="max-w-xs rounded-xl border-2 border-primary bg-primary/4 p-4">
             <div className="flex items-center gap-2.5">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -399,9 +396,9 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
         </div>
       </Panel>
 
-      {/* ── 5. ตั้งค่าลิงก์ และการแจ้งเตือน ────────────────────────────────── */}
-      <Panel title="ตั้งค่าลิงก์ และการแจ้งเตือน">
-        <div className="px-6 py-5">
+      {/* ── 5. ตั้งค่าลิงก์และการแจ้งเตือน ────────────────────────────────── */}
+      <Panel title="ตั้งค่าลิงก์และการแจ้งเตือน">
+        <div className="px-6 pt-5 pb-6">
           <div className="flex flex-col gap-6">
             <div>
               <span className="mb-2 block text-sm font-semibold text-grey-700">
@@ -475,7 +472,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
 
       {/* ── 6. หมายเหตุ ─────────────────────────────────────────────────────── */}
       <Panel title="หมายเหตุ">
-        <div className="px-6 py-5" />
+        <div className="px-6 pt-5 pb-6" />
       </Panel>
 
     </div>
