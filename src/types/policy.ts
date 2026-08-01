@@ -9,8 +9,8 @@ export type PolicyStatus =
 
 export type PremiumFrequency = "monthly" | "quarterly" | "yearly";
 
-/** ประเภทประกันภัย (ภาคสมัครใจ VMI / ภาคบังคับ CMI). */
-export type InsuranceKind = "VMI" | "CMI";
+/** ประเภทประกันภัย — Motor: ภาคสมัครใจ (VMI) / ภาคบังคับ (CMI); Non-Motor: อัคคีภัย (FIRE) / เบ็ดเตล็ด (MISC). */
+export type InsuranceKind = "VMI" | "CMI" | "FIRE" | "MISC";
 
 /** ประเภทเลขอ้างอิง (เลขกรมธรรม์ / เลขรับแจ้ง). */
 export type ReferenceType = "policy" | "claim";
@@ -36,7 +36,7 @@ export interface Policy {
   product: { type: string; plan?: string };
   /** ที่มา: รหัสช่องทาง (เช่น KKC) + ชื่อช่องทาง/สาขา */
   source: { code: string; channel: string };
-  /** ประเภทประกันภัย ภาคสมัครใจ/ภาคบังคับ */
+  /** ประเภทประกันภัย */
   insuranceKind: InsuranceKind;
   /** ประเภทเลขอ้างอิง */
   referenceType: ReferenceType;

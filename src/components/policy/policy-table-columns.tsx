@@ -15,6 +15,8 @@ import { PolicyRowActions } from "./policy-row-actions";
 const INSURANCE_KIND_LABEL: Record<Policy["insuranceKind"], string> = {
   VMI: "ภาคสมัครใจ (VMI)",
   CMI: "ภาคบังคับ (CMI)",
+  FIRE: "อัคคีภัย (FIRE)",
+  MISC: "เบ็ดเตล็ด (MISC)",
 };
 
 const REFERENCE_TYPE_LABEL: Record<Policy["referenceType"], string> = {
