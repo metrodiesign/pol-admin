@@ -24,7 +24,7 @@ export function CheckoutItemsCard({ items, total, onUpdate, onRemove }: Checkout
   const [draft, setDraft] = useState("");
 
   return (
-    <CheckoutCard title="รายการกรมธรรม์" contentClassName="px-6 pb-6">
+    <CheckoutCard title="รายการกรมธรรม์" contentClassName="px-6 pt-0 pb-6">
       <div className="-mx-6 overflow-x-auto">
         <table className="w-full min-w-[880px] border-collapse">
           <thead>
