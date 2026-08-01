@@ -51,7 +51,7 @@ export function FieldLabel({
   return (
     <label
       htmlFor={htmlFor}
-      className="text-sm font-semibold text-foreground select-none"
+      className="text-sm font-semibold text-grey-700 select-none"
     >
       {children}
       {required ? <span className="ml-0.5 text-error">*</span> : null}
