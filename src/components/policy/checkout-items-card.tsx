@@ -18,9 +18,6 @@ interface CheckoutItemsCardProps {
   onRemove: (uid: string) => void;
 }
 
-const th = "h-14 px-4 font-semibold text-grey-600 whitespace-nowrap";
-const td = "px-4 py-3 text-sm text-foreground align-middle";
-
 export function CheckoutItemsCard({ items, total, onUpdate, onRemove }: CheckoutItemsCardProps) {
   const canRemove = items.length > 1;
   const [focusedUid, setFocusedUid] = useState<string | null>(null);
@@ -32,37 +29,44 @@ export function CheckoutItemsCard({ items, total, onUpdate, onRemove }: Checkout
       description={`${items.length} รายการ · 1 ลิงก์ชำระครั้งเดียว`}
     >
       <div className="-mx-6 overflow-x-auto">
-        <table className="w-full min-w-[860px] border-collapse">
+        <table className="w-full min-w-[880px] border-collapse">
           <thead>
-            <tr className="bg-grey-200 text-left">
-              <th className={th}>ลำดับ</th>
-              <th className={th}>หมายเลขกรมธรรม์ / รับแจ้ง / สลักหลัง</th>
-              <th className={th}>ชื่อ-นามสกุล</th>
-              <th className={`${th} text-right`}>เบี้ยสุทธิ</th>
-              <th className={`${th} text-right`}>เบี้ยรวม</th>
-              <th className={`${th} text-right`}>ส่วนลด</th>
-              <th className={`${th} text-right`}>%จากเบี้ยสุทธิ</th>
-              <th className={`${th} text-right`}>ยอดชำระ</th>
-              <th className={th}>ข้อมูลอ้างอิง</th>
-              <th className={th} aria-label="ลบ" />
+            <tr className="bg-grey-200 text-sm font-semibold text-grey-600 dark:bg-grey-900">
+              <th className="whitespace-nowrap py-4 pr-4 pl-4 text-center">ลำดับ</th>
+              <th className="whitespace-nowrap px-4 py-4 text-left">
+                หมายเลขกรมธรรม์ / รับแจ้ง / สลักหลัง
+              </th>
+              <th className="whitespace-nowrap px-4 py-4 text-left">ชื่อ-นามสกุล</th>
+              <th className="whitespace-nowrap px-4 py-4 text-right">เบี้ยสุทธิ</th>
+              <th className="whitespace-nowrap px-4 py-4 text-right">เบี้ยรวม</th>
+              <th className="whitespace-nowrap px-4 py-4 text-right">ส่วนลด</th>
+              <th className="whitespace-nowrap px-4 py-4 text-right">%จากเบี้ยสุทธิ</th>
+              <th className="whitespace-nowrap px-4 py-4 text-right">ยอดชำระ</th>
+              <th className="whitespace-nowrap py-4 pr-4 pl-4 text-left">ข้อมูลอ้างอิง</th>
+              <th className="whitespace-nowrap px-4 py-4" aria-label="ลบ" />
             </tr>
           </thead>
           <tbody>
             {items.map((it, idx) => (
-              <tr key={it.uid} className="border-b border-dashed border-[var(--divider)] last:border-b-0">
-                <td className={`${td} text-grey-500`}>{idx + 1}</td>
-                <td className={`${td} whitespace-nowrap`}>
-                  <span className="block font-bold text-primary underline underline-offset-2">
-                    {it.policyNo}
-                  </span>
-                  <span className="mt-0.5 block text-xs text-grey-500">
+              <tr
+                key={it.uid}
+                className="border-b border-dashed border-[var(--divider)] align-top text-sm"
+              >
+                <td className="py-4 pr-4 pl-4 text-center text-grey-600">{idx + 1}</td>
+                <td className="px-4 py-4">
+                  <p className="font-semibold text-primary">{it.policyNo}</p>
+                  <p className="mt-0.5 text-xs text-grey-500">
                     {it.referenceType === "claim" ? "เลขรับแจ้ง" : "เลขกรมธรรม์"}
-                  </span>
+                  </p>
                 </td>
-                <td className={`${td} whitespace-nowrap`}>{it.payerName}</td>
-                <td className={`${td} text-right tabular-nums`}>{formatAmount(it.netPremium, 2)}</td>
-                <td className={`${td} text-right tabular-nums`}>{formatAmount(it.grossPremium, 2)}</td>
-                <td className={`${td} text-right`}>
+                <td className="max-w-[160px] truncate px-4 py-4 text-foreground">{it.payerName}</td>
+                <td className="px-4 py-4 text-right tabular-nums text-foreground">
+                  {formatAmount(it.netPremium, 2)}
+                </td>
+                <td className="px-4 py-4 text-right tabular-nums text-foreground">
+                  {formatAmount(it.grossPremium, 2)}
+                </td>
+                <td className="px-4 py-4 text-right">
                   <input
                     type="text"
                     inputMode="decimal"
@@ -85,14 +89,14 @@ export function CheckoutItemsCard({ items, total, onUpdate, onRemove }: Checkout
                     className="h-9 w-28 rounded-control border border-[var(--divider)] bg-transparent px-2.5 text-right text-sm tabular-nums text-foreground outline-none focus:border-primary focus:ring-1 focus:ring-inset focus:ring-primary"
                   />
                 </td>
-                <td className={`${td} text-right tabular-nums text-grey-600`}>
+                <td className="px-4 py-4 text-right tabular-nums text-grey-500">
                   {lineItemDiscountPct(it).toFixed(2)}%
                 </td>
-                <td className={`${td} text-right tabular-nums`}>
+                <td className="px-4 py-4 text-right font-semibold tabular-nums text-foreground">
                   {formatAmount(lineItemAmountDue(it), 2)}
                 </td>
-                <td className={`${td} whitespace-nowrap text-grey-600`}>{it.reference}</td>
-                <td className={td}>
+                <td className="px-4 py-4 text-grey-600">{it.reference}</td>
+                <td className="px-4 py-4">
                   <Button
                     variant="ghost"
                     size="icon-lg"
