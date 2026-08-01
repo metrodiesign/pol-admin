@@ -43,7 +43,7 @@ export function PremiumCheckoutDialog({
       <DialogContent className="theme-minimals sm:max-w-md" showCloseButton={false}>
         <DialogHeader>
           <DialogTitle className="text-lg font-bold text-foreground">
-            รายการคำสั่งซื้อ
+            รายการกรมธรรม์
           </DialogTitle>
           <DialogDescription>
             ตรวจสอบรายการ {count} กรมธรรม์ ก่อนดำเนินการรับชำระเบี้ย
@@ -96,7 +96,7 @@ export function PremiumCheckoutDialog({
             onClick={handleConfirm}
             className="h-11 min-w-[100px] px-5 bg-primary font-bold text-primary-foreground hover:bg-primary/90"
           >
-            ยืนยันคำสั่งซื้อ
+            ยืนยัน
           </Button>
         </DialogFooter>
       </DialogContent>

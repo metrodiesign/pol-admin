@@ -1,9 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import type { Policy, PolicyStatus } from "@/types/policy";
 import { CATEGORY_OPTIONS, PAYMENT_STATUS_OPTIONS } from "@/lib/policy/policy";
-import { createCheckoutSession } from "@/lib/policy/checkout";
+import { POLICIES } from "@/lib/mock/policies";
+import { createCheckoutSession, pickPoliciesByIds, readCheckoutSession } from "@/lib/policy/checkout";
 import {
   usePolicyTableWithCart,
   ROWS_PER_PAGE_OPTIONS,
@@ -27,6 +29,7 @@ function toIsoDate(d: Date): string {
 }
 
 export function PolicyMarketplaceView() {
+  const router = useRouter();
   const [dense, setDense] = useState(false);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("motor");
@@ -53,6 +56,16 @@ export function PolicyMarketplaceView() {
     onBuyNow: (policy) => setCheckout({ policies: [policy] }),
   });
 
+  // กลับมาแก้ไขตะกร้าจากหน้า checkout (?resumeSession=xxx) — rehydrate จาก session เดิม
+  useEffect(() => {
+    const sessionId = new URLSearchParams(window.location.search).get("resumeSession");
+    if (!sessionId) return;
+    const ids = readCheckoutSession(sessionId);
+    if (ids) cart.replace(pickPoliciesByIds(POLICIES, ids));
+    router.replace("/policy/list");
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- one-time read ตอน mount เท่านั้น
+  }, []);
+
   function resetToFirstPage() {
     table.setPageIndex(0);
   }
@@ -63,7 +76,7 @@ export function PolicyMarketplaceView() {
 
   function goToCheckout(policies: Policy[]) {
     const sessionId = createCheckoutSession(policies.map((p) => p.id));
-    window.open(`/checkout/${sessionId}`, "_blank", "noopener,noreferrer");
+    router.push(`/checkout/${sessionId}`);
   }
 
   return (

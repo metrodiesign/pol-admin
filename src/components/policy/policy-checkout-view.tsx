@@ -2,6 +2,7 @@
 
 import { useMemo, useReducer, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { CheckCircle2, LinkIcon, ShoppingCart } from "lucide-react";
 import { POLICIES } from "@/lib/mock/policies";
 import {
@@ -18,6 +19,7 @@ import {
 } from "@/lib/policy/checkout";
 import { checkoutItemsReducer } from "@/lib/policy/checkout-items-reducer";
 import { Button } from "@/components/ui/button";
+import { ConfirmDialog } from "./confirm-dialog";
 import { CheckoutCustomerCard } from "./checkout-customer-card";
 import { CheckoutItemsCard } from "./checkout-items-card";
 import { CheckoutChannelCard } from "./checkout-channel-card";
@@ -28,10 +30,14 @@ import { CheckoutFooterBar } from "./checkout-footer-bar";
 interface PolicyCheckoutViewProps {
   /** policy ids ที่ resolve จาก checkout session แล้ว. */
   ids: string[];
+  /** session id — ใช้กลับไปแก้ไขรายการที่หน้ารายการ (?resumeSession=). */
+  sessionId: string;
 }
 
-export function PolicyCheckoutView({ ids }: PolicyCheckoutViewProps) {
+export function PolicyCheckoutView({ ids, sessionId }: PolicyCheckoutViewProps) {
+  const router = useRouter();
   const policies = useMemo(() => pickPoliciesByIds(POLICIES, ids), [ids]);
+  const backHref = `/policy/list?resumeSession=${sessionId}`;
 
   const [items, dispatch] = useReducer(
     checkoutItemsReducer,
@@ -52,6 +58,7 @@ export function PolicyCheckoutView({ ids }: PolicyCheckoutViewProps) {
   const [customEmail, setCustomEmail] = useState("");
   const [note, setNote] = useState("");
   const [issuedLink, setIssuedLink] = useState<string | null>(null);
+  const [confirmAction, setConfirmAction] = useState<"cancel" | "issue" | null>(null);
 
   const total = lineItemsTotal(items);
   const ready = canIssue({ customer, items });
@@ -153,10 +160,29 @@ export function PolicyCheckoutView({ ids }: PolicyCheckoutViewProps) {
         count={items.length}
         total={total}
         canIssue={ready}
-        onCancel={() => {
-          window.location.href = "/policy/list";
+        onCancel={() => setConfirmAction("cancel")}
+        onIssue={() => setConfirmAction("issue")}
+      />
+
+      <ConfirmDialog
+        open={confirmAction === "cancel"}
+        title="ยกเลิกรายการนี้?"
+        description="ระบบจะพากลับไปหน้ารายการกรมธรรม์ ข้อมูลที่กรอกในหน้านี้จะไม่ถูกบันทึก"
+        confirmLabel="ยกเลิกรายการ"
+        onConfirm={() => router.push(backHref)}
+        onClose={() => setConfirmAction(null)}
+      />
+
+      <ConfirmDialog
+        open={confirmAction === "issue"}
+        title="ยืนยันคำสั่งซื้อ?"
+        description={`ระบบจะสร้างคำสั่งซื้อและส่งลิงก์ชำระเงิน ${items.length} รายการ ยอดรวม ${total.toLocaleString("th-TH", { minimumFractionDigits: 2 })} บาท`}
+        confirmLabel="ยืนยันคำสั่งซื้อ"
+        onConfirm={() => {
+          setConfirmAction(null);
+          handleIssue();
         }}
-        onIssue={handleIssue}
+        onClose={() => setConfirmAction(null)}
       />
     </div>
   );

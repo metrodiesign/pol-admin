@@ -32,6 +32,7 @@ export interface PremiumCart {
   toggle(policy: Policy): void;
   remove(id: string): void;
   clear(): void;
+  replace(items: Policy[]): void;
 }
 
 interface UsePolicyTableWithCartParams {
@@ -63,6 +64,7 @@ export function usePolicyTableWithCart({
       ),
     remove: (id) => dispatch({ type: "remove", id }),
     clear: () => dispatch({ type: "clear" }),
+    replace: (newItems) => dispatch({ type: "replace", items: newItems }),
   };
 
   const table = useDataTable<Policy>({
