@@ -17,10 +17,7 @@ import { Pencil, Trash2, EllipsisVertical } from "lucide-react";
 
 const statusStyles: Record<UserStatus, string> = {
   active: "bg-success/16 text-success-dark",
-  pending: "bg-warning/16 text-warning-dark",
   banned: "bg-error/16 text-error-dark",
-  rejected: "bg-grey-500/16 text-grey-600",
-  disabled: "bg-grey-500/16 text-grey-600",
 };
 
 function getInitials(name: string): string {

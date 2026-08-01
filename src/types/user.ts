@@ -1,7 +1,8 @@
-export type UserStatus = "active" | "pending" | "banned" | "rejected" | "disabled";
+export type UserStatus = "active" | "banned";
 
 export interface User {
   id: string;
+  createdAt: string;
   name: string;
   email: string;
   avatarUrl: string;
