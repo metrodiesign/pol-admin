@@ -13,13 +13,16 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Eye, Pencil, Trash2 } from "lucide-react";
+import { formatThaiDate } from "@/lib/date-range";
 
-const statusStyles: Record<UserStatus, string> = {
+export const statusStyles: Record<UserStatus, string> = {
   active: "bg-success/16 text-success-dark",
-  pending: "bg-warning/16 text-warning-dark",
   banned: "bg-error/16 text-error-dark",
-  rejected: "bg-grey-500/16 text-grey-600",
-  disabled: "bg-grey-500/16 text-grey-600",
+};
+
+export const statusLabel: Record<UserStatus, string> = {
+  active: "ใช้งาน",
+  banned: "ระงับ",
 };
 
 function getInitials(name: string): string {
@@ -38,6 +41,7 @@ export const userColumns: ColumnDef<User>[] = [
     meta: { headClassName: "w-12 pl-1 pr-0 py-2", cellClassName: "w-12 pl-1 pr-0" },
     header: ({ table }) => (
       <Checkbox
+        className="justify-end"
         checked={table.getIsAllRowsSelected()}
         indeterminate={
           table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
@@ -48,11 +52,28 @@ export const userColumns: ColumnDef<User>[] = [
     ),
     cell: ({ row }) => (
       <Checkbox
+        className="justify-end"
         checked={row.getIsSelected()}
         onChange={(c) => row.toggleSelected(c)}
         aria-label={`เลือก ${row.original.name}`}
       />
     ),
+  },
+  {
+    id: "createdAt",
+    header: "วันที่ทำรายการ",
+    enableSorting: true,
+    meta: { headClassName: "w-[180px]", cellClassName: "w-[180px]" },
+    accessorFn: (u) => u.createdAt,
+    cell: ({ row }) => {
+      const d = new Date(row.original.createdAt);
+      const time = d.toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit" });
+      return (
+        <span className="text-sm text-grey-600">
+          {formatThaiDate(d)} {time}
+        </span>
+      );
+    },
   },
   {
     accessorKey: "name",
@@ -67,12 +88,9 @@ export const userColumns: ColumnDef<User>[] = [
             <AvatarFallback>{getInitials(u.name)}</AvatarFallback>
           </Avatar>
           <div className="min-w-0">
-            <Link
-              href="/user/read"
-              className="block truncate text-sm font-normal leading-[22px] text-foreground hover:underline"
-            >
+            <span className="block truncate text-sm font-semibold leading-[22px] text-foreground">
               {u.name}
-            </Link>
+            </span>
             <span className="block truncate text-sm leading-[22px] text-grey-500">
               {u.email}
             </span>
@@ -85,13 +103,14 @@ export const userColumns: ColumnDef<User>[] = [
     accessorKey: "phoneNumber",
     header: "เบอร์โทรศัพท์",
     enableSorting: false,
+    meta: { headClassName: "w-[160px]", cellClassName: "w-[160px]" },
     cell: ({ getValue }) => (
       <span className="text-sm text-foreground">{getValue<string>()}</span>
     ),
   },
   {
     accessorKey: "company",
-    header: "บริษัท",
+    header: "สำนักงาน",
     enableSorting: false,
     cell: ({ getValue }) => (
       <span className="text-sm text-foreground">{getValue<string>()}</span>
@@ -109,11 +128,12 @@ export const userColumns: ColumnDef<User>[] = [
     accessorKey: "status",
     header: "สถานะ",
     enableSorting: false,
+    meta: { headClassName: "w-[140px]", cellClassName: "w-[140px]" },
     cell: ({ row }) => (
       <span
-        className={`inline-flex h-6 items-center rounded-md px-1.5 text-xs font-bold capitalize ${statusStyles[row.original.status]}`}
+        className={`inline-flex h-6 items-center rounded-md px-1.5 text-xs font-bold ${statusStyles[row.original.status]}`}
       >
-        {row.original.status}
+        {statusLabel[row.original.status]}
       </span>
     ),
   },
@@ -133,12 +153,12 @@ export const userColumns: ColumnDef<User>[] = [
                 variant="ghost"
                 size="icon-lg"
                 className="size-10 cursor-pointer bg-grey-600/8 text-grey-700 hover:bg-grey-800 hover:text-white focus-visible:bg-grey-800 focus-visible:text-white"
-                aria-label={`ดู ${row.original.name}`}
+                aria-label={`ดูรายละเอียด ${row.original.name}`}
               >
                 <Eye className="size-5" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>ดู</TooltipContent>
+            <TooltipContent>ดูรายละเอียด</TooltipContent>
           </Tooltip>
           <Tooltip>
             <TooltipTrigger render={<span className="inline-flex" />}>
@@ -160,7 +180,7 @@ export const userColumns: ColumnDef<User>[] = [
               <Button
                 variant="ghost"
                 size="icon-lg"
-                className="size-10 cursor-pointer text-error hover:bg-error/8 hover:text-error"
+                className="size-10 cursor-pointer bg-error/8 text-error hover:bg-error hover:text-white"
                 aria-label={`ลบ ${row.original.name}`}
               >
                 <Trash2 className="size-5" />

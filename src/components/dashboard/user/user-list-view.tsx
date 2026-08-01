@@ -18,9 +18,7 @@ import { userColumns } from "./user-table-columns";
 const STATUS_TABS: Array<{ label: string; value: UserStatus | "all" }> = [
   { label: "All", value: "all" },
   { label: "Active", value: "active" },
-  { label: "Pending", value: "pending" },
   { label: "Banned", value: "banned" },
-  { label: "Rejected", value: "rejected" },
 ];
 
 function getStatusCount(users: User[], status: UserStatus | "all"): number {

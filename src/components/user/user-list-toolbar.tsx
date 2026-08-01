@@ -1,13 +1,22 @@
 "use client";
 
-import { Search, SlidersHorizontal } from "lucide-react";
+import { Search } from "lucide-react";
 import { USER_ROLES } from "@/lib/mock/users";
 import { TextField } from "@/components/form/text-field";
 import { SelectField } from "@/components/form/select-field";
+import { statusLabel } from "./user-table-columns";
 
-const ROLE_OPTIONS = [
-  { value: "__all__", label: "ทุกบทบาท" },
-  ...USER_ROLES.map((r) => ({ value: r, label: r })),
+const ROLE_OPTIONS = USER_ROLES.map((r) => ({ value: r, label: r }));
+
+const STATUS_OPTIONS = Object.entries(statusLabel).map(([value, label]) => ({
+  value,
+  label,
+}));
+
+const ROWS_OPTIONS = [
+  { value: "25", label: "25" },
+  { value: "50", label: "50" },
+  { value: "100", label: "100" },
 ];
 
 interface UserListToolbarProps {
@@ -15,6 +24,10 @@ interface UserListToolbarProps {
   onSearchChange: (value: string) => void;
   role: string;
   onRoleChange: (value: string) => void;
+  status: string;
+  onStatusChange: (value: string) => void;
+  rowsPerPage: number;
+  onRowsPerPageChange: (n: number) => void;
 }
 
 export function UserListToolbar({
@@ -22,48 +35,45 @@ export function UserListToolbar({
   onSearchChange,
   role,
   onRoleChange,
+  status,
+  onStatusChange,
+  rowsPerPage,
+  onRowsPerPageChange,
 }: UserListToolbarProps) {
   return (
-    <div className="flex flex-col gap-3 py-5 pr-2 pl-5 sm:flex-row sm:items-stretch sm:gap-2">
-      <SelectField
-        label="บทบาท"
-        className="w-full sm:w-[200px]"
-        value={role || "__all__"}
-        onChange={(v) => onRoleChange(v === "__all__" ? "" : v)}
-        options={ROLE_OPTIONS}
-      />
-
+    <div className="grid grid-cols-1 gap-x-4 gap-y-3 p-5 sm:grid-cols-2 lg:grid-cols-3">
       <TextField
         label="ค้นหา"
-        className="flex-1"
-        placeholder="ค้นหา..."
+        placeholder="ค้นหาชื่อหรืออีเมล..."
         value={search}
         onChange={onSearchChange}
         startAdornment={<Search className="size-5 text-grey-500" />}
-        endAdornment={
-          <button
-            type="button"
-            className="flex size-9 shrink-0 items-center justify-center rounded-control text-grey-700 transition-colors hover:bg-[var(--action-hover)] sm:hidden"
-            aria-label="ตัวกรอง"
-          >
-            <SlidersHorizontal className="size-5" />
-          </button>
-        }
       />
 
-      {/* Spacer label mirrors the fields so the button centers on the input box, not the full field */}
-      <div className="hidden flex-col gap-1.5 sm:flex">
-        <span aria-hidden className="select-none text-sm font-medium">&nbsp;</span>
-        <div className="flex flex-1 items-center">
-          <button
-            type="button"
-            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-control border border-[var(--divider)] text-grey-700 transition-colors hover:bg-[var(--action-hover)]"
-            aria-label="ตัวกรอง"
-          >
-            <SlidersHorizontal className="size-4" />
-          </button>
-        </div>
-      </div>
+      <SelectField
+        label="บทบาท"
+        value={role}
+        onChange={onRoleChange}
+        options={ROLE_OPTIONS}
+        placeholder="ทุกบทบาท"
+        clearable
+      />
+
+      <SelectField
+        label="สถานะ"
+        value={status}
+        onChange={onStatusChange}
+        options={STATUS_OPTIONS}
+        placeholder="ทั้งหมด"
+        clearable
+      />
+
+      <SelectField
+        label="จำนวนต่อหน้า"
+        value={String(rowsPerPage)}
+        onChange={(v) => onRowsPerPageChange(Number(v))}
+        options={ROWS_OPTIONS}
+      />
     </div>
   );
 }
