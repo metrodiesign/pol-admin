@@ -18,8 +18,8 @@ interface CheckoutItemsCardProps {
   onRemove: (uid: string) => void;
 }
 
-const th = "h-14 px-3 font-semibold text-grey-600 whitespace-nowrap";
-const td = "px-3 py-3 text-sm text-foreground align-middle";
+const th = "h-14 px-4 font-semibold text-grey-600 whitespace-nowrap";
+const td = "px-4 py-3 text-sm text-foreground align-middle";
 
 export function CheckoutItemsCard({ items, total, onUpdate, onRemove }: CheckoutItemsCardProps) {
   const canRemove = items.length > 1;
@@ -35,7 +35,7 @@ export function CheckoutItemsCard({ items, total, onUpdate, onRemove }: Checkout
         <table className="w-full min-w-[860px] border-collapse">
           <thead>
             <tr className="bg-grey-200 text-left">
-              <th className={`${th} pl-6`}>ลำดับ</th>
+              <th className={th}>ลำดับ</th>
               <th className={th}>หมายเลขกรมธรรม์ / รับแจ้ง / สลักหลัง</th>
               <th className={th}>ชื่อ-นามสกุล</th>
               <th className={`${th} text-right`}>เบี้ยสุทธิ</th>
@@ -44,13 +44,13 @@ export function CheckoutItemsCard({ items, total, onUpdate, onRemove }: Checkout
               <th className={`${th} text-right`}>%จากเบี้ยสุทธิ</th>
               <th className={`${th} text-right`}>ยอดชำระ</th>
               <th className={th}>ข้อมูลอ้างอิง</th>
-              <th className={`${th} pr-6`} aria-label="ลบ" />
+              <th className={th} aria-label="ลบ" />
             </tr>
           </thead>
           <tbody>
             {items.map((it, idx) => (
               <tr key={it.uid} className="border-b border-dashed border-[var(--divider)] last:border-b-0">
-                <td className={`${td} pl-6 text-grey-500`}>{idx + 1}</td>
+                <td className={`${td} text-grey-500`}>{idx + 1}</td>
                 <td className={`${td} whitespace-nowrap`}>
                   <span className="block font-bold text-primary underline underline-offset-2">
                     {it.policyNo}
@@ -92,7 +92,7 @@ export function CheckoutItemsCard({ items, total, onUpdate, onRemove }: Checkout
                   {formatAmount(lineItemAmountDue(it), 2)}
                 </td>
                 <td className={`${td} whitespace-nowrap text-grey-600`}>{it.reference}</td>
-                <td className={`${td} pr-6`}>
+                <td className={td}>
                   <Button
                     variant="ghost"
                     size="icon-lg"
