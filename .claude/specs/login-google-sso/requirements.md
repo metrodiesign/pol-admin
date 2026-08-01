@@ -146,9 +146,9 @@ audience หรือทดสอบการเข้าสู่ระบบ�
 
 ## Edge Cases & Open Questions
 
-- **Landing route ต่อ audience (REQ-4):** repo มี `/main`, `/user`, `/policy` แต่ไม่มี surface ฝั่ง
-  producer โดยเฉพาะ. ต้องล็อกใน design.md ว่า admin -> ? และ producer -> ? (candidate: admin -> `/main`;
-  producer -> `/main` ชั่วคราว หรือ redirect ออกนอก repo). REQ-4.1 ผูกกับ mapping function ไม่ใช่ค่าตายตัว
+- **Landing route ต่อ audience (REQ-4):** repo มี `/dashboard`, `/user`, `/policy` แต่ไม่มี surface ฝั่ง
+  producer โดยเฉพาะ. ต้องล็อกใน design.md ว่า admin -> ? และ producer -> ? (candidate: admin -> `/dashboard`;
+  producer -> `/dashboard` ชั่วคราว หรือ redirect ออกนอก repo). REQ-4.1 ผูกกับ mapping function ไม่ใช่ค่าตายตัว
   **(F8=a: defer to design — ยืนยันแล้ว.)**
 - **Session storage (REQ-3.6):** เก็บ mock session ที่ไหน — `localStorage`/`sessionStorage` (mock ง่าย,
   ฝั่ง client ล้วน) vs httpOnly cookie (ต้องมี route handler, กันด้วย middleware ได้). ตัดสินใน design

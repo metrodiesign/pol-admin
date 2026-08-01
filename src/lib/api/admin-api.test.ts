@@ -54,11 +54,11 @@ describe("buildLoginUrl", () => {
   it("allow '/'", () => {
     expect(buildLoginUrl("/")).toBe("/api/v1/admins/auth/google/login?returnTo=%2F");
   });
-  it("allow /main", () => {
-    expect(buildLoginUrl("/main")).toBe("/api/v1/admins/auth/google/login?returnTo=%2Fmain");
+  it("allow /dashboard", () => {
+    expect(buildLoginUrl("/dashboard")).toBe("/api/v1/admins/auth/google/login?returnTo=%2Fdashboard");
   });
-  it("clamp path นอก allowlist -> /main (default)", () => {
-    expect(buildLoginUrl("/transaction")).toBe("/api/v1/admins/auth/google/login?returnTo=%2Fmain");
+  it("clamp path นอก allowlist -> /dashboard (default)", () => {
+    expect(buildLoginUrl("/transaction")).toBe("/api/v1/admins/auth/google/login?returnTo=%2Fdashboard");
   });
 });
 

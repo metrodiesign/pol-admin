@@ -22,7 +22,7 @@ Tailwind v4 / @base-ui / vitest (node env). Frontend-only, mock data, ไม่�
   - `isSessionValid(session, nowSec)` -> เช็คหมดอายุ (REQ-4.4, 4.5)
 - `auth-config.ts` — อ่าน env + ค่าคงที่:
   - `getClientId(audience)` <- `NEXT_PUBLIC_GOOGLE_CLIENT_ID_ADMIN` / `_PRODUCER` (REQ-6.1); คืน `null` ถ้าไม่ตั้ง (REQ-2.5)
-  - `LANDING_BY_AUDIENCE: Record<Audience,string>` = `{ admin: "/main", producer: "/main" }`
+  - `LANDING_BY_AUDIENCE: Record<Audience,string>` = `{ admin: "/dashboard", producer: "/dashboard" }`
   - `ALLOWED_HOSTED_DOMAINS: Record<Audience,string[]>` (default `{}` = ปิด hd check) (REQ-3.8)
 
 **ชั้น storage adapter** (`src/lib/auth/session-storage.ts`, client-only, thin, ไม่ unit-test ใน node):
@@ -66,8 +66,8 @@ sequenceDiagram
     V->>L: verifyAndBuildSession(token, {audience:"admin", expectedClientId:ADMIN, nowSec})
     L-->>V: { ok:true, session:{audience,name,picture,exp} }
     V->>S: writeSession(session)
-    V->>L: chooseLanding("admin") -> "/main"
-    V-->>U: toast สำเร็จ + router.replace("/main")
+    V->>L: chooseLanding("admin") -> "/dashboard"
+    V-->>U: toast สำเร็จ + router.replace("/dashboard")
 ```
 
 ### Error / reject path (REQ-3.x, REQ-5)
@@ -176,7 +176,7 @@ export function isSessionValid(session: MockSession, nowSec: number): boolean;  
 ```ts
 export function getClientId(audience: Audience): string | null;   // env, null = ไม่ตั้ง (REQ-2.5,6.1)
 export function audienceForClientId(clientId: string): Audience | null;  // reverse: aud -> audience (2-card, REQ-3.4)
-export const LANDING_BY_AUDIENCE: Record<Audience, string>;        // { admin:"/main", producer:"/main" }
+export const LANDING_BY_AUDIENCE: Record<Audience, string>;        // { admin:"/dashboard", producer:"/dashboard" }
 export const ALLOWED_HOSTED_DOMAINS: Record<Audience, string[]>;   // default ว่าง = ปิด hd check
 ```
 
@@ -217,7 +217,7 @@ for (const a of ["admin", "producer"]) {
 | Session storage | **localStorage** (`pol.mock_session`), field น้อยสุด | scope = mock UI, ไม่มี backend/middleware; client-only พอ. **Ceiling:** prod = httpOnly cookie set โดย backend + middleware guard |
 | Redirect-if-logged-in | client-side ใน `login-view` (useEffect) | localStorage อ่านได้เฉพาะ client; server page อ่านไม่ได้ (REQ-4.4) |
 | Sign-out | route **`/logout`** (clear -> `/login`) | laziest ที่ผ่าน REQ-8 โดยไม่แตะ Minimals topbar shell. **Ceiling:** ภายหลัง wire เข้า account menu ของ topbar |
-| Landing per aud | const map, ทั้งคู่ -> `/main` | repo ไม่มี surface producer; map เปลี่ยนที่เดียวเมื่อมี (REQ-4.1, F8) |
+| Landing per aud | const map, ทั้งคู่ -> `/dashboard` | repo ไม่มี surface producer; map เปลี่ยนที่เดียวเมื่อมี (REQ-4.1, F8) |
 | Dependency | **ไม่เพิ่ม** (ไม่ใช้ next-auth/lucia) | stack discipline; GIS + pure fn พอสำหรับ scope mock |
 | Reuse | Button `@/components/ui/button`, toast pattern จาก `use-role-toast.ts`, token จาก `globals.css` (`bg-primary`/`text-error`/`shadow-card`), `cn()` | ตาม mandate reuse ไม่ reinvent |
 
@@ -259,7 +259,7 @@ vitest **node env** -> ทดสอบเฉพาะ pure logic (co-located `*.
 - claim หลักขาด (`aud`/`exp`/`email_verified`) -> `missing_claims` (REQ-3.2, M1)
 - hd: ไม่มี allow list -> ผ่าน; มี allow list & hd ตรง -> ผ่าน; ไม่ตรง -> `hd_blocked` (REQ-3.8)
 - `verifyAndBuildSession`: malformed token -> `malformed` (REQ-3.3)
-- `chooseLanding("admin")` -> `/main`; `chooseLanding("producer")` -> `/main` (REQ-4.1, 4.2, 4.3)
+- `chooseLanding("admin")` -> `/dashboard`; `chooseLanding("producer")` -> `/dashboard` (REQ-4.1, 4.2, 4.3)
 - `isSessionValid`: ยังไม่หมดอายุ -> true; หมดอายุ -> false (REQ-4.4, 4.5)
 
 Manual verify (REQ ที่เป็น UI): `/login` ไม่มี shell (1.1, 1.2), 2 ปุ่ม + label (1.3, 1.4), loading/error ของ
@@ -346,7 +346,7 @@ admin-fe-integration.md` (+ `admin-google-sso.md`, generated 2026-06-24 จา�
 - cookie (dev http): session `adm_session` (httpOnly), CSRF `adm_csrf` (JS อ่านได้). prod = `__Host-adm_session`
   + Secure อัตโนมัติ. CSRF double-submit: header `X-CSRF-Token` == cookie `adm_csrf`, เฉพาะ POST/PUT/PATCH/DELETE.
 - same-origin บังคับ -> Next proxy rewrite `/admin/:path*` -> `ADMIN_API_ORIGIN` (dev เท่านั้น; prod reverse proxy).
-- returnTo allowlist = `/`, `/minimals`, `/tenants`. **`/main` ไม่อยู่ใน allowlist** -> coordination item.
+- returnTo allowlist = `/`, `/minimals`, `/tenants`. **`/dashboard` ไม่อยู่ใน allowlist** -> coordination item.
 
 **Architecture (BFF):**
 - `src/lib/api/admin-api.ts` — pure helper (`readCookieFrom`, `isMutation`, `buildLoginUrl`,
@@ -355,12 +355,12 @@ admin-fe-integration.md` (+ `admin-google-sso.md`, generated 2026-06-24 จา�
 - `src/components/auth/auth-provider.tsx` — `<AuthProvider>` เรียก `getMe()` ตอน mount; `useAuth()` (co-locate
   ตาม pattern settings-provider). `auth-guard.tsx` — loading -> spinner, anon -> `login()`, authed -> children.
 - wrap `<AuthProvider><AuthGuard>` **ภายใน `minimals-layout.tsx`** (`MinimalsShell` = body เดิม) — คุมทุก
-  protected group (minimals/main/policy/producer/transaction/user); `/login` `/logout` ไม่ผ่าน -> public.
+  protected group (minimals/dashboard/policy/producer/transaction/user); `/login` `/logout` ไม่ผ่าน -> public.
 - `login-view.tsx` — ปุ่มเดียว `login("/minimals")` (ตัด GIS/next-script/ResizeObserver/dual-card/toast).
 - `logout/page.tsx` — `logout().finally(-> /login)`. `account-drawer.tsx` — ปุ่ม Logout -> `/logout`;
   header แสดง `me.email` + tier badge (name/avatar คง mock เพราะ backend ไม่ส่ง).
-- `app/page.tsx` (root "/") — `redirect("/main")`. "/" ไม่มี surface เอง; ครอบการเข้า / ตรง ๆ + กรณี
-  backend fall back มา "/" หลัง callback (เมื่อ returnTo ไม่ allowlist) -> ยังลง /main ผ่าน guard. (พบตอน live E2E: "/" 404.)
+- `app/page.tsx` (root "/") — `redirect("/dashboard")`. "/" ไม่มี surface เอง; ครอบการเข้า / ตรง ๆ + กรณี
+  backend fall back มา "/" หลัง callback (เมื่อ returnTo ไม่ allowlist) -> ยังลง /dashboard ผ่าน guard. (พบตอน live E2E: "/" 404.)
 - `app/login-error/page.tsx` (public, shell-free) — backend เด้งมาเมื่อ login callback ไม่ผ่าน
   (`AdminAuthOptions.ErrorPath="/login-error"`) พร้อม `?reason=<label>`. label: `not-provisioned`,
   `suspended`, `access-denied`, `missing-subject`, `resolve-failed`, `session-write-failed` (+ OIDC failure).
@@ -373,8 +373,8 @@ FE เป็นแค่ proxy + redirect + cookie carrier. client-side decode/v
 
 **Tests:** `admin-api.test.ts` (node) ครอบ pure helper. UI/proxy/login round-trip = manual ที่ :5200 + backend :5100.
 
-**Coordination items (backend):** (1) **[FE switched to /main 2026-06-24]** landing = `/main` (RETURN_TO +
-FE allowlist). backend เพิ่ม `/main` ใน `AdminSession:ReturnUrlAllowlist` = nice-to-have (ลง /main ตรง ๆ);
-ถ้าไม่เพิ่ม backend fall back `/` -> root page redirect -> /main อยู่ดี (double-bounce แต่ใช้งานได้);
+**Coordination items (backend):** (1) **[FE switched to /dashboard 2026-06-24]** landing = `/dashboard` (RETURN_TO +
+FE allowlist). backend เพิ่ม `/dashboard` ใน `AdminSession:ReturnUrlAllowlist` = nice-to-have (ลง /dashboard ตรง ๆ);
+ถ้าไม่เพิ่ม backend fall back `/` -> root page redirect -> /dashboard อยู่ดี (double-bounce แต่ใช้งานได้);
 (2) `/admin/me` เพิ่ม name/picture ถ้าต้องการแสดงใน account-drawer; (3) domain endpoints
 (transaction/policy/producer/user) ยังไม่มี -> คง mock.

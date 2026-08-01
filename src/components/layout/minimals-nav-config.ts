@@ -9,7 +9,7 @@ export const minimalsNavConfig: NavGroup[] = [
   // ── Main ────────────────────────────────────────────────────────────────
   {
     subheader: "Main",
-    items: [{ title: "แดชบอร์ด", path: "/main", icon: "dashboard" }],
+    items: [{ title: "แดชบอร์ด", path: "/dashboard", icon: "dashboard" }],
   },
 
   // ── กรมธรรม์ ──────────────────────────────────────────────────────────────
