@@ -248,16 +248,28 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
       </Panel>
       </div>
 
-      {/* ── 2. ใบแจ้งหนี้และเลขที่อ้างอิง (Advanced) ─────────────────────── */}
-      <Panel title="ใบแจ้งหนี้และเลขที่อ้างอิง">
+      {/* ── 2. ข้อมูลธุรกรรม (Advanced) ─────────────────────── */}
+      <Panel title="ข้อมูลธุรกรรม">
         <div className="px-6 pt-5 pb-6">
           <div className={cn("grid grid-cols-1 gap-x-4 gap-y-4", !compact && "sm:grid-cols-2")}>
             <div>
-              <p className={fieldLabel}>Invoice No</p>
+              <p className={fieldLabel}>รหัสธุรกรรม</p>
               <p className="text-sm font-bold text-foreground">{t.code || <span className="text-grey-400">—</span>}</p>
             </div>
             <div>
-              <p className={fieldLabel}>PSP</p>
+              <p className={fieldLabel}>รหัสคำสั่งซื้อ</p>
+              {/* ponytail: mock — PaymentSession ยังไม่มี field รหัสคำสั่งซื้อจริงใน pol-core */}
+              <p className="text-sm font-bold text-foreground">{t.code.replace(/^VCP/, "ORD") || <span className="text-grey-400">—</span>}</p>
+            </div>
+          </div>
+          <div className={cn("mt-4 grid grid-cols-1 gap-x-4 gap-y-4", !compact && "sm:grid-cols-2")}>
+            <div>
+              <p className={fieldLabel}>แอปพลิเคชัน</p>
+              {/* ponytail: mock — PaymentSession ยังไม่มี field แอปพลิเคชันจริงใน pol-core */}
+              <p className="text-sm font-bold text-foreground">V Central Pay</p>
+            </div>
+            <div>
+              <p className={fieldLabel}>ผู้ให้บริการ</p>
               <p className="text-sm font-bold text-foreground">{t.psp.toUpperCase() || <span className="text-grey-400">—</span>}</p>
             </div>
           </div>
