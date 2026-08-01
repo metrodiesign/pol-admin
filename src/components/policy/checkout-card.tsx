@@ -8,7 +8,6 @@ interface CheckoutCardProps {
   /** ปุ่ม/องค์ประกอบมุมขวาบนของหัวการ์ด (เช่น "เพิ่มรายการ") */
   action?: React.ReactNode;
   className?: string;
-  contentClassName?: string;
   children: React.ReactNode;
 }
 
@@ -18,7 +17,6 @@ export function CheckoutCard({
   description,
   action,
   className,
-  contentClassName,
   children,
 }: CheckoutCardProps) {
   return (
@@ -35,7 +33,7 @@ export function CheckoutCard({
         </div>
         {action ? <div className="shrink-0">{action}</div> : null}
       </header>
-      <div className={cn("px-6 pt-5 pb-6", contentClassName)}>{children}</div>
+      <div className="px-6 pt-5 pb-6">{children}</div>
     </section>
   );
 }
