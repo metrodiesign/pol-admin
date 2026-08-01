@@ -4,6 +4,8 @@ export type PersonType = "Individual" | "Juristic";
 
 export interface MerchantUser {
   id: string;
+  /** ISO 8601 — วันที่สมัคร/สร้างบัญชี */
+  createdAt: string;
   firstName: string;
   lastName: string;
   /** server-computed `"{firstName} {lastName}"` (REQ-4.8) — ไม่ใช่ค่าที่ฟอร์มส่ง */

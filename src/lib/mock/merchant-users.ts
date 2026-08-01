@@ -7,6 +7,7 @@ function mkUser(u: Omit<MerchantUser, "displayName">): MerchantUser {
 export const MERCHANT_USERS: MerchantUser[] = [
   mkUser({
     id: "prod-0001",
+    createdAt: "2026-01-15T09:00:00+07:00",
     firstName: "สมชาย",
     lastName: "ใจดี",
     personType: "Individual",
@@ -22,6 +23,7 @@ export const MERCHANT_USERS: MerchantUser[] = [
   }),
   mkUser({
     id: "prod-0002",
+    createdAt: "2026-02-03T09:00:00+07:00",
     firstName: "บริษัท กรุงไทยโบรกเกอร์",
     lastName: "จำกัด",
     personType: "Juristic",
@@ -37,6 +39,7 @@ export const MERCHANT_USERS: MerchantUser[] = [
   }),
   mkUser({
     id: "prod-0003",
+    createdAt: "2026-02-20T09:00:00+07:00",
     firstName: "วิภาดา",
     lastName: "ศรีสุข",
     personType: "Individual",
@@ -52,6 +55,7 @@ export const MERCHANT_USERS: MerchantUser[] = [
   }),
   mkUser({
     id: "prod-0004",
+    createdAt: "2026-03-11T09:00:00+07:00",
     firstName: "ธนกร",
     lastName: "พงษ์ไพบูลย์",
     personType: "Individual",
@@ -67,6 +71,7 @@ export const MERCHANT_USERS: MerchantUser[] = [
   }),
   mkUser({
     id: "prod-0005",
+    createdAt: "2026-04-02T09:00:00+07:00",
     firstName: "บริษัท เอเชียประกันภัยโบรกเกอร์",
     lastName: "จำกัด (มหาชน)",
     personType: "Juristic",
@@ -82,6 +87,7 @@ export const MERCHANT_USERS: MerchantUser[] = [
   }),
   mkUser({
     id: "prod-0006",
+    createdAt: "2026-04-28T09:00:00+07:00",
     firstName: "ปรีชา",
     lastName: "มั่นคง",
     personType: "Individual",
@@ -97,6 +103,7 @@ export const MERCHANT_USERS: MerchantUser[] = [
   }),
   mkUser({
     id: "prod-0007",
+    createdAt: "2026-05-14T09:00:00+07:00",
     firstName: "อรุณี",
     lastName: "แสงทอง",
     personType: "Individual",
@@ -112,6 +119,7 @@ export const MERCHANT_USERS: MerchantUser[] = [
   }),
   mkUser({
     id: "prod-0008",
+    createdAt: "2026-06-09T09:00:00+07:00",
     firstName: "บริษัท สยามอินชัวรันส์",
     lastName: "โบรกเกอร์ จำกัด",
     personType: "Juristic",
@@ -127,6 +135,7 @@ export const MERCHANT_USERS: MerchantUser[] = [
   }),
   mkUser({
     id: "prod-0009",
+    createdAt: "2026-07-01T09:00:00+07:00",
     firstName: "กิตติพงศ์",
     lastName: "วัฒนชัย",
     personType: "Individual",
@@ -142,6 +151,7 @@ export const MERCHANT_USERS: MerchantUser[] = [
   }),
   mkUser({
     id: "prod-0010",
+    createdAt: "2026-07-22T09:00:00+07:00",
     firstName: "นภัสสร",
     lastName: "เจริญพร",
     personType: "Individual",

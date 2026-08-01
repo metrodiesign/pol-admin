@@ -7,23 +7,34 @@ import {
   getSortedRowModel,
   getPaginationRowModel,
 } from "@tanstack/react-table";
-import type { MerchantUser } from "@/types/merchant-user";
+import type { MerchantUser, MerchantUserStatus } from "@/types/merchant-user";
 import { MERCHANT_USERS } from "@/lib/mock/merchant-users";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";
+import { ProducerListTabs } from "./producer-list-tabs";
 import { ProducerListToolbar } from "./producer-list-toolbar";
-import { producerColumns } from "./producer-table-columns";
+import { producerColumns, statusLabel } from "./producer-table-columns";
+
+type TabValue = MerchantUserStatus | "all";
+
+const STATUS_ORDER: MerchantUserStatus[] = [
+  "Active",
+  "PendingApproval",
+  "Rejected",
+  "Suspended",
+];
 
 export function ProducerListView() {
   const [search, setSearch] = useState("");
   const [personType, setPersonType] = useState("");
+  const [statusTab, setStatusTab] = useState<TabValue>("all");
   const [dense, setDense] = useState(false);
 
   // Filter via the table (data = full PRODUCERS) so row selection stays GLOBAL —
   // selecting rows then switching filter keeps them selected (mirrors user list).
   const globalFilter = useMemo(
-    () => ({ personType, search }),
-    [personType, search],
+    () => ({ personType, search, status: statusTab }),
+    [personType, search, statusTab],
   );
 
   const table = useDataTable<MerchantUser>({
@@ -35,8 +46,9 @@ export function ProducerListView() {
     autoResetPageIndex: false,
     state: { globalFilter },
     globalFilterFn: (row, _columnId, value) => {
-      const f = value as { personType: string; search: string };
+      const f = value as { personType: string; search: string; status: TabValue };
       const p = row.original;
+      if (!(f.status === "all" || p.status === f.status)) return false;
       if (f.personType && p.personType !== f.personType) return false;
       if (f.search) {
         const q = f.search.toLowerCase();
@@ -51,17 +63,39 @@ export function ProducerListView() {
     getPaginationRowModel: getPaginationRowModel(),
     initialState: {
       sorting: [{ id: "name", desc: false }],
-      pagination: { pageIndex: 0, pageSize: 5 },
+      pagination: { pageIndex: 0, pageSize: 25 },
     },
   });
 
   const filteredCount = table.getFilteredRowModel().rows.length;
+
+  const count = (status: TabValue) =>
+    status === "all"
+      ? MERCHANT_USERS.length
+      : MERCHANT_USERS.filter((p) => p.status === status).length;
+
+  const tabs = [
+    { label: "ทั้งหมด", value: "all" as TabValue, count: count("all") },
+    ...STATUS_ORDER.map((s) => ({
+      label: statusLabel[s],
+      value: s as TabValue,
+      count: count(s),
+    })),
+  ];
 
   return (
     <div
       className="overflow-hidden rounded-2xl bg-card"
       style={{ boxShadow: "var(--shadow-card)" }}
     >
+      <ProducerListTabs
+        tabs={tabs}
+        active={statusTab}
+        onChange={(v) => {
+          setStatusTab(v);
+          table.setPageIndex(0);
+        }}
+      />
       <ProducerListToolbar
         search={search}
         onSearchChange={(v) => {
@@ -73,13 +107,23 @@ export function ProducerListView() {
           setPersonType(v);
           table.setPageIndex(0);
         }}
+        status={statusTab === "all" ? "" : statusTab}
+        onStatusChange={(v) => {
+          setStatusTab((v || "all") as TabValue);
+          table.setPageIndex(0);
+        }}
+        rowsPerPage={table.getState().pagination.pageSize}
+        onRowsPerPageChange={(n) => {
+          table.setPageSize(n);
+          table.setPageIndex(0);
+        }}
       />
       <DataTable
         table={table}
         total={filteredCount}
         dense={dense}
         onDenseChange={setDense}
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={[25, 50, 100]}
         searchQuery={search}
         showSelectionAction={false}
       />

@@ -17,6 +17,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Eye, Pencil, Trash2 } from "lucide-react";
+import { formatThaiDate } from "@/lib/date-range";
 
 const statusStyles: Record<MerchantUserStatus, string> = {
   Active: "bg-success/16 text-success-dark",
@@ -25,7 +26,7 @@ const statusStyles: Record<MerchantUserStatus, string> = {
   Suspended: "bg-error/16 text-error-dark",
 };
 
-const statusLabel: Record<MerchantUserStatus, string> = {
+export const statusLabel: Record<MerchantUserStatus, string> = {
   Active: "ใช้งาน",
   PendingApproval: "รอตรวจสอบ",
   Rejected: "ปฏิเสธ",
@@ -48,6 +49,7 @@ export const producerColumns: ColumnDef<MerchantUser>[] = [
     meta: { headClassName: "w-12 pl-1 pr-0 py-2", cellClassName: "w-12 pl-1 pr-0" },
     header: ({ table }) => (
       <Checkbox
+        className="justify-end"
         checked={table.getIsAllRowsSelected()}
         indeterminate={
           table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
@@ -58,6 +60,7 @@ export const producerColumns: ColumnDef<MerchantUser>[] = [
     ),
     cell: ({ row }) => (
       <Checkbox
+        className="justify-end"
         checked={row.getIsSelected()}
         onChange={(c) => row.toggleSelected(c)}
         aria-label={`เลือก ${row.original.firstName}`}
@@ -65,9 +68,25 @@ export const producerColumns: ColumnDef<MerchantUser>[] = [
     ),
   },
   {
+    id: "createdAt",
+    header: "วันที่ทำรายการ",
+    enableSorting: true,
+    meta: { headClassName: "w-[180px]", cellClassName: "w-[180px]" },
+    accessorFn: (p) => p.createdAt,
+    cell: ({ row }) => {
+      const d = new Date(row.original.createdAt);
+      const time = d.toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit" });
+      return (
+        <span className="text-sm text-grey-600">
+          {formatThaiDate(d)} {time}
+        </span>
+      );
+    },
+  },
+  {
     id: "name",
     accessorFn: (p) => `${p.firstName} ${p.lastName}`,
-    header: "ชื่อ",
+    header: "ชื่อ-นามสกุล",
     enableSorting: true,
     cell: ({ row }) => {
       const p = row.original;
@@ -79,12 +98,9 @@ export const producerColumns: ColumnDef<MerchantUser>[] = [
             <AvatarFallback>{getInitials(name)}</AvatarFallback>
           </Avatar>
           <div className="min-w-0">
-            <Link
-              href="/producer/read"
-              className="block truncate text-sm font-normal leading-[22px] text-foreground hover:underline"
-            >
+            <span className="block truncate text-sm font-semibold leading-[22px] text-foreground">
               {name}
-            </Link>
+            </span>
             <span className="block truncate text-sm leading-[22px] text-grey-500">
               {p.email}
             </span>
@@ -94,9 +110,19 @@ export const producerColumns: ColumnDef<MerchantUser>[] = [
     },
   },
   {
+    accessorKey: "phone",
+    header: "โทรศัพท์",
+    enableSorting: false,
+    meta: { headClassName: "w-[160px]", cellClassName: "w-[160px]" },
+    cell: ({ getValue }) => (
+      <span className="text-sm text-foreground">{getValue<string | null>() ?? "-"}</span>
+    ),
+  },
+  {
     accessorKey: "producerCode",
     header: "รหัสตัวแทน",
     enableSorting: false,
+    meta: { headClassName: "w-[140px]", cellClassName: "w-[140px]" },
     cell: ({ getValue }) => (
       <span className="text-sm text-foreground">{getValue<string | null>() ?? "-"}</span>
     ),
@@ -105,6 +131,7 @@ export const producerColumns: ColumnDef<MerchantUser>[] = [
     accessorKey: "personType",
     header: "ประเภท",
     enableSorting: false,
+    meta: { headClassName: "w-[140px]", cellClassName: "w-[140px]" },
     cell: ({ row }) => {
       const pt = row.original.personType;
       return (
@@ -115,17 +142,10 @@ export const producerColumns: ColumnDef<MerchantUser>[] = [
     },
   },
   {
-    accessorKey: "phone",
-    header: "โทรศัพท์",
-    enableSorting: false,
-    cell: ({ getValue }) => (
-      <span className="text-sm text-foreground">{getValue<string | null>() ?? "-"}</span>
-    ),
-  },
-  {
     accessorKey: "licenseNumber",
     header: "เลขที่ใบอนุญาต",
     enableSorting: false,
+    meta: { headClassName: "w-[160px]", cellClassName: "w-[160px]" },
     cell: ({ getValue }) => (
       <span className="text-sm text-foreground">{getValue<string | null>() ?? "-"}</span>
     ),
@@ -134,6 +154,7 @@ export const producerColumns: ColumnDef<MerchantUser>[] = [
     accessorKey: "status",
     header: "สถานะ",
     enableSorting: false,
+    meta: { headClassName: "w-[140px]", cellClassName: "w-[140px]" },
     cell: ({ row }) => (
       <span
         className={`inline-flex h-6 items-center rounded-md px-1.5 text-xs font-bold ${statusStyles[row.original.status]}`}
@@ -158,12 +179,12 @@ export const producerColumns: ColumnDef<MerchantUser>[] = [
                 variant="ghost"
                 size="icon-lg"
                 className="size-10 cursor-pointer bg-grey-600/8 text-grey-700 hover:bg-grey-800 hover:text-white focus-visible:bg-grey-800 focus-visible:text-white"
-                aria-label={`ดู ${row.original.firstName}`}
+                aria-label={`ดูรายละเอียด ${row.original.firstName}`}
               >
                 <Eye className="size-5" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>ดู</TooltipContent>
+            <TooltipContent>ดูรายละเอียด</TooltipContent>
           </Tooltip>
           <Tooltip>
             <TooltipTrigger render={<span className="inline-flex" />}>
@@ -185,7 +206,7 @@ export const producerColumns: ColumnDef<MerchantUser>[] = [
               <Button
                 variant="ghost"
                 size="icon-lg"
-                className="size-10 cursor-pointer text-error hover:bg-error/8 hover:text-error"
+                className="size-10 cursor-pointer bg-error/8 text-error hover:bg-error hover:text-white"
                 aria-label={`ลบ ${row.original.firstName}`}
               >
                 <Trash2 className="size-5" />
