@@ -140,7 +140,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
   return (
     <div className="flex flex-col gap-6 pb-4">
       {/* ── 1. สถานะลิงก์และชำระเงิน + ไทม์ไลน์ (2 คอลัมน์) ─────────────────── */}
-      <div className="grid grid-cols-1 gap-6 mmd:grid-cols-2">
+      <div className={cn("grid grid-cols-1 gap-6", !compact && "mmd:grid-cols-2")}>
       <Panel title="สถานะลิงก์และชำระเงิน">
         <div className="px-6 py-5">
           <div className="flex flex-wrap items-center gap-3">

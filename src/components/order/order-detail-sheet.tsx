@@ -32,7 +32,7 @@ export function OrderDetailSheet({
       <SheetContent
         side="right"
         showCloseButton={false}
-        className="flex w-full flex-col gap-0 overflow-hidden p-0 sm:max-w-2xl"
+        className="flex w-full flex-col gap-0 overflow-hidden p-0 data-[side=right]:sm:max-w-3xl"
       >
         {/* Header */}
         <div className="flex items-start justify-between gap-2 border-b border-[var(--divider)] px-4 py-3">
@@ -77,7 +77,9 @@ export function OrderDetailSheet({
 
         {/* Scrollable content */}
         <SimpleBar className="min-h-0 flex-1">
-          <OrderDetailView id={order?.id} compact />
+          <div className="px-4 py-4 sm:px-6">
+            <OrderDetailView id={order?.id} compact />
+          </div>
         </SimpleBar>
       </SheetContent>
     </Sheet>
