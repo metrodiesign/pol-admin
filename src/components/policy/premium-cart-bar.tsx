@@ -93,10 +93,10 @@ export function PremiumCartBar({
             type="button"
             onClick={onProceed}
             disabled={count === 0}
-            aria-label="ดำเนินการชำระเบี้ย"
+            aria-label="ตะกร้าสินค้า"
             className="inline-flex h-11 w-full shrink-0 items-center justify-center rounded-control bg-primary px-5 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:bg-grey-300 disabled:text-grey-500 disabled:hover:bg-grey-300 mmd:w-auto"
           >
-            ดำเนินการชำระเบี้ย
+            ตะกร้าสินค้า
           </button>
         </div>
       </div>

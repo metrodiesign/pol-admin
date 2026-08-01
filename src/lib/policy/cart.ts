@@ -5,9 +5,10 @@ import type { Policy } from "@/types/policy";
 export type CartAction =
   | { type: "add"; policy: Policy }
   | { type: "remove"; id: string }
-  | { type: "clear" };
+  | { type: "clear" }
+  | { type: "replace"; items: Policy[] };
 
-/** add/remove/clear — กันซ้ำตาม id (ทุกสถานะเพิ่มได้ — REQ-4.6, 4.7). */
+/** add/remove/clear/replace — กันซ้ำตาม id (ทุกสถานะเพิ่มได้ — REQ-4.6, 4.7). */
 export function cartReducer(items: Policy[], action: CartAction): Policy[] {
   switch (action.type) {
     case "add":
@@ -17,6 +18,8 @@ export function cartReducer(items: Policy[], action: CartAction): Policy[] {
       return items.filter((i) => i.id !== action.id);
     case "clear":
       return [];
+    case "replace":
+      return action.items;
     default:
       return items;
   }

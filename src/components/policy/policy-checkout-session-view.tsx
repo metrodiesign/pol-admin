@@ -19,5 +19,5 @@ export function PolicyCheckoutSessionView({ sessionId }: PolicyCheckoutSessionVi
   }, [sessionId]);
 
   if (ids === null) return null;
-  return <PolicyCheckoutView ids={ids} />;
+  return <PolicyCheckoutView ids={ids} sessionId={sessionId} />;
 }
