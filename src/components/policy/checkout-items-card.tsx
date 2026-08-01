@@ -111,15 +111,13 @@ export function CheckoutItemsCard({ items, total, onUpdate, onRemove }: Checkout
         </table>
       </div>
 
-      <div className="mt-5 flex items-center justify-between gap-4 rounded-2xl bg-info/8 px-5 py-4">
-        <div className="flex items-start gap-2.5">
-          <Info className="mt-0.5 size-4.5 shrink-0 text-info" aria-hidden />
-          <p className="text-xs leading-relaxed text-grey-600">
-            ลูกค้าจะเห็นรายการย่อยทั้งหมดในหน้าชำระเงิน และจ่ายครั้งเดียว
-          </p>
-        </div>
-        <div className="shrink-0 text-right">
-          <p className="text-xs text-grey-500">ยอดที่ลูกค้าต้องชำระ</p>
+      <div className="mt-4 flex flex-col-reverse gap-3 rounded-2xl bg-info/8 px-5 py-4 mmd:flex-row mmd:items-center mmd:justify-between">
+        <p className="flex items-center gap-2 text-sm text-grey-600">
+          <Info className="size-4 shrink-0 text-info" />
+          ลูกค้าจะเห็นรายการย่อยทั้งหมดในหน้าชำระเงิน และจ่ายครั้งเดียว
+        </p>
+        <div className="text-right">
+          <p className="text-sm text-grey-500">ยอดที่ลูกค้าต้องชำระ</p>
           <p className="text-2xl font-bold tabular-nums text-secondary">{formatTHB(total, 2)}</p>
         </div>
       </div>
