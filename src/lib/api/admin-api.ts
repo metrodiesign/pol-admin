@@ -7,7 +7,7 @@ import type {
   RoleColor,
   RoleFormInput,
   RoleStatus,
-} from "@/types/role";
+} from "@/types/admin/role";
 
 // Admin BFF client — FE ไม่ถือ token; session อยู่ใน httpOnly cookie ที่ backend จัดการ.
 // contract: pol-core/docs/reference/admin-fe-integration.md

@@ -12,7 +12,7 @@ import {
   readCookieFrom,
   updateRole,
 } from "./admin-api";
-import type { RoleFormInput } from "@/types/role";
+import type { RoleFormInput } from "@/types/admin/role";
 
 describe("readCookieFrom", () => {
   it("อ่านค่า cookie ตามชื่อ", () => {

@@ -11,39 +11,26 @@ import type { User, UserStatus } from "@/types/admin/user";
 import { USERS } from "@/lib/mock/admin/users";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";
-import { UserListTabs } from "./user-list-tabs";
-import { UserListToolbar } from "./user-list-toolbar";
-import { userColumns } from "./user-table-columns";
+import { UserListTabs } from "./list-tabs";
+import { UserListToolbar } from "./list-toolbar";
+import { userColumns, statusLabel } from "./table-columns";
 
-const STATUS_TABS: Array<{ label: string; value: UserStatus | "all" }> = [
-  { label: "All", value: "all" },
-  { label: "Active", value: "active" },
-  { label: "Banned", value: "banned" },
-];
+type TabValue = UserStatus | "all";
 
-function getStatusCount(users: User[], status: UserStatus | "all"): number {
-  if (status === "all") return users.length;
-  return users.filter((u) => u.status === status).length;
-}
+const STATUS_ORDER: UserStatus[] = ["active", "banned"];
 
 export function UserListView() {
-  const [tab, setTab] = useState<UserStatus | "all">("all");
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState("");
+  const [statusTab, setStatusTab] = useState<TabValue>("all");
   const [dense, setDense] = useState(false);
 
-  const tabCounts = useMemo(
-    () =>
-      STATUS_TABS.map((t) => ({ ...t, count: getStatusCount(USERS, t.value) })),
-    [],
-  );
-
   // Filter via the table (data = full USERS) so row selection stays GLOBAL —
-  // selecting users then switching tab/filter keeps them selected, matching the
+  // selecting users then switching filter keeps them selected, matching the
   // source. Pre-filtering `data` would drop selected rows out of the model.
   const globalFilter = useMemo(
-    () => ({ tab, role: roleFilter, search }),
-    [tab, roleFilter, search],
+    () => ({ role: roleFilter, search, status: statusTab }),
+    [roleFilter, search, statusTab],
   );
 
   const table = useDataTable<User>({
@@ -55,9 +42,9 @@ export function UserListView() {
     autoResetPageIndex: false,
     state: { globalFilter },
     globalFilterFn: (row, _columnId, value) => {
-      const f = value as { tab: UserStatus | "all"; role: string; search: string };
+      const f = value as { role: string; search: string; status: TabValue };
       const u = row.original;
-      if (f.tab !== "all" && u.status !== f.tab) return false;
+      if (!(f.status === "all" || u.status === f.status)) return false;
       if (f.role && !u.roles.includes(f.role)) return false;
       if (f.search) {
         const q = f.search.toLowerCase();
@@ -75,11 +62,25 @@ export function UserListView() {
     getPaginationRowModel: getPaginationRowModel(),
     initialState: {
       sorting: [{ id: "name", desc: false }],
-      pagination: { pageIndex: 0, pageSize: 5 },
+      pagination: { pageIndex: 0, pageSize: 25 },
     },
   });
 
   const filteredCount = table.getFilteredRowModel().rows.length;
+
+  const count = (status: TabValue) =>
+    status === "all"
+      ? USERS.length
+      : USERS.filter((u) => u.status === status).length;
+
+  const tabs = [
+    { label: "ทั้งหมด", value: "all" as TabValue, count: count("all") },
+    ...STATUS_ORDER.map((s) => ({
+      label: statusLabel[s],
+      value: s as TabValue,
+      count: count(s),
+    })),
+  ];
 
   return (
     <div
@@ -87,10 +88,10 @@ export function UserListView() {
       style={{ boxShadow: "var(--shadow-card)" }}
     >
       <UserListTabs
-        tabs={tabCounts}
-        active={tab}
-        onChange={(value) => {
-          setTab(value);
+        tabs={tabs}
+        active={statusTab}
+        onChange={(v) => {
+          setStatusTab(v);
           table.setPageIndex(0);
         }}
       />
@@ -105,13 +106,23 @@ export function UserListView() {
           setRoleFilter(v);
           table.setPageIndex(0);
         }}
+        status={statusTab === "all" ? "" : statusTab}
+        onStatusChange={(v) => {
+          setStatusTab((v || "all") as TabValue);
+          table.setPageIndex(0);
+        }}
+        rowsPerPage={table.getState().pagination.pageSize}
+        onRowsPerPageChange={(n) => {
+          table.setPageSize(n);
+          table.setPageIndex(0);
+        }}
       />
       <DataTable
         table={table}
         total={filteredCount}
         dense={dense}
         onDenseChange={setDense}
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={[25, 50, 100]}
         searchQuery={search}
         showSelectionAction={false}
       />

@@ -64,8 +64,8 @@ const MINIMALS_DEMO_FILES = [
   "tour",
   "user-profile",
   "topbar",
-  "role",
-  "users",
+  "admin/role",
+  "admin/users",
   "merchant/role",
 ];
 
