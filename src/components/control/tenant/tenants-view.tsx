@@ -10,7 +10,7 @@ import {
 } from "@tanstack/react-table";
 import { ShieldAlert } from "lucide-react";
 import type { Merchant } from "@/types/merchant";
-import { MERCHANTS } from "@/lib/mock/merchants";
+import { MERCHANTS } from "@/lib/mock/merchant";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";
 import { ControlListToolbar } from "@/components/control/shared/control-list-toolbar";

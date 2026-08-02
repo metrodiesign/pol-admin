@@ -2,7 +2,7 @@
 
 import type { ApprovalRequest } from "@/types/approval";
 import { ACTION_LABEL } from "@/lib/control/approval";
-import { MERCHANT_LABEL } from "@/lib/mock/merchants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchant";
 import { formatDateTime } from "@/lib/control/format";
 import { formatTHB } from "@/lib/utils";
 import {

@@ -1,4 +1,4 @@
-import type { RoleColor } from "@/types/merchant/user/role";
+import type { RoleColor } from "@/types/merchant/role";
 import { cn } from "@/lib/utils";
 
 /**

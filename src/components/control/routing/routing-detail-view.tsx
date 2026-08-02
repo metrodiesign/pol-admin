@@ -6,7 +6,7 @@ import { CHANNEL_LABEL, PSP_LABEL, enabledTone } from "@/lib/control/routing";
 import { useControlStore } from "@/lib/control/store";
 import { routingStore, toggleRule } from "@/lib/control/routing-store";
 import { showControlToast } from "@/components/control/shared/control-toast";
-import { MERCHANT_LABEL } from "@/lib/mock/merchants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchant";
 import { formatTHB } from "@/lib/utils";
 import { ReadField } from "@/components/control/shared/read-field";
 import { ControlStatusBadge } from "@/components/control/shared/control-status-badge";

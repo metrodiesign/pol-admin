@@ -3,7 +3,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowUp, ArrowDown, ArrowRight } from "lucide-react";
 import type { RoutingRule } from "@/types/routing-rule";
-import { MERCHANT_LABEL } from "@/lib/mock/merchants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchant";
 import { CHANNEL_LABEL, PSP_LABEL, enabledTone } from "@/lib/control/routing";
 import { formatTHB } from "@/lib/utils";
 import { ControlStatusBadge } from "@/components/control/shared/control-status-badge";

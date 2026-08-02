@@ -4,7 +4,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { ChevronRight, ShieldCheck } from "lucide-react";
 import type { PspConnection } from "@/types/psp-connection";
 import type { MerchantCode } from "@/types/merchant";
-import { MERCHANT_LABEL } from "@/lib/mock/merchants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchant";
 import {
   PROVIDER_LABEL,
   HEALTH_LABEL,

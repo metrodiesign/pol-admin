@@ -11,7 +11,7 @@ import {
   scopeLabel,
   maskSecret,
 } from "@/lib/control/api-client";
-import { MERCHANT_LABEL } from "@/lib/mock/merchants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchant";
 import { formatDateTime } from "@/lib/control/format";
 import { ReadField } from "@/components/control/shared/read-field";
 import { ControlStatusBadge } from "@/components/control/shared/control-status-badge";

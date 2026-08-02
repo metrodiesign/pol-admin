@@ -6,7 +6,7 @@ import { DonutChart, DonutLegend } from "@/components/charts/donut-chart";
 import { StackedBarChart } from "@/components/charts/stacked-bar-chart";
 import { CATEGORICAL } from "@/components/charts/chart-colors";
 import { PAYMENT_SESSIONS } from "@/lib/mock/transactions";
-import { MERCHANT_LABEL } from "@/lib/mock/merchants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchant";
 import {
   pspSplit,
   channelSplit,

@@ -15,7 +15,7 @@ import { useControlStore } from "@/lib/control/store";
 import { webhookStore, replayEvent } from "@/lib/control/webhook-store";
 import { showControlToast } from "@/components/control/shared/control-toast";
 import { PSP_LABEL, DELIVERY_LABEL } from "@/lib/control/webhook";
-import { MERCHANT_LABEL } from "@/lib/mock/merchants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchant";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";
 import { ControlListToolbar } from "@/components/control/shared/control-list-toolbar";

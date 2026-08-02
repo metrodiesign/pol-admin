@@ -8,8 +8,8 @@ import {
   getSortedRowModel,
   getPaginationRowModel,
 } from "@tanstack/react-table";
-import type { Role } from "@/types/merchant/user/role";
-import { PERMISSION_CATALOG, ROLES, RESOURCE_GROUPS } from "@/lib/mock/merchant/user/role";
+import type { Role } from "@/types/merchant/role";
+import { PERMISSION_CATALOG, ROLES, RESOURCE_GROUPS } from "@/lib/mock/merchant/role";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";
 import { RolesToolbar } from "./toolbar";
@@ -32,30 +32,30 @@ export function RolesView() {
   const { toasts, show, dismiss } = useRoleToast();
   const router = useRouter();
 
-  // toast เมื่อกลับจากหน้าแก้ไขแยก (/merchant/user/role/edit -> /merchant/user/role/list?toast=...) (REQ-13.1)
+  // toast เมื่อกลับจากหน้าแก้ไขแยก (/merchant/role/edit -> /merchant/role/list?toast=...) (REQ-13.1)
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const t = params.get("toast");
     if (t) {
       show(t);
-      window.history.replaceState({}, "", "/merchant/user/role/list");
+      window.history.replaceState({}, "", "/merchant/role/list");
     }
   }, [show]);
 
   // create / duplicate / edit = หน้าแยกทั้งหมด
   function goDuplicate(role: Role) {
     setDetailRole(null);
-    router.push(`/merchant/user/role/create?from=${encodeURIComponent(role.code)}`);
+    router.push(`/merchant/role/create?from=${encodeURIComponent(role.code)}`);
   }
 
   function goRead(role: Role) {
     setDetailRole(null);
-    router.push(`/merchant/user/role/read?code=${encodeURIComponent(role.code)}`);
+    router.push(`/merchant/role/read?code=${encodeURIComponent(role.code)}`);
   }
 
   function goEdit(role: Role) {
     setDetailRole(null);
-    router.push(`/merchant/user/role/edit?code=${encodeURIComponent(role.code)}`);
+    router.push(`/merchant/role/edit?code=${encodeURIComponent(role.code)}`);
   }
 
   // seed คงที่: ตาราง render จาก ROLES เสมอ — UI-shell ไม่ mutate (REQ-10).

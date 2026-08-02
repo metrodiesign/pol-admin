@@ -1,4 +1,4 @@
-import type { RoleStatus } from "@/types/merchant/user/role";
+import type { RoleStatus } from "@/types/merchant/role";
 import { cn } from "@/lib/utils";
 
 /** ป้ายสถานะการใช้งานบทบาท. */

@@ -3,7 +3,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { ChevronRight, Loader2, RotateCw, ShieldAlert, ShieldCheck } from "lucide-react";
 import type { WebhookEvent } from "@/types/webhook-event";
-import { MERCHANT_LABEL } from "@/lib/mock/merchants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchant";
 import {
   PSP_LABEL,
   DELIVERY_LABEL,

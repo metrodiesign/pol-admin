@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Check, Copy, Pencil } from "lucide-react";
-import type { Permission, ResourceGroup, Role } from "@/types/merchant/user/role";
+import type { Permission, ResourceGroup, Role } from "@/types/merchant/role";
 import {
   grantedCount,
   groupGranted,
@@ -26,7 +26,7 @@ interface RoleReadViewProps {
   groups: ResourceGroup[];
 }
 
-/** หน้าดูรายละเอียดบทบาทแบบเต็มหน้า (route แยก /merchant/user/role/read). read-only. */
+/** หน้าดูรายละเอียดบทบาทแบบเต็มหน้า (route แยก /merchant/role/read). read-only. */
 export function RoleReadView({
   role,
   catalog,
@@ -50,16 +50,16 @@ export function RoleReadView({
     <>
       <EditPageHeader
         title="ดูบทบาท"
-        backHref="/merchant/user/role/list"
+        backHref="/merchant/role/list"
         breadcrumbs={[
           { label: "Console" },
-          { label: "บทบาทและสิทธิ์", href: "/merchant/user/role/list" },
+          { label: "บทบาทและสิทธิ์", href: "/merchant/role/list" },
           { label: role.name },
         ]}
         actions={
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
             <Link
-              href="/merchant/user/role/list"
+              href="/merchant/role/list"
               className="inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-sm font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]"
             >
               ยกเลิก
@@ -73,7 +73,7 @@ export function RoleReadView({
               สำเนา
             </button>
             <Link
-              href={`/merchant/user/role/edit?code=${encodeURIComponent(role.code)}`}
+              href={`/merchant/role/edit?code=${encodeURIComponent(role.code)}`}
               className="inline-flex h-11 min-w-[140px] items-center justify-center gap-1.5 rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
             >
               <Pencil className="size-4" />
@@ -158,7 +158,7 @@ export function RoleReadView({
         confirmLabel="ยืนยัน"
         onConfirm={() => {
           setDuplicateOpen(false);
-          router.push(`/merchant/user/role/create?from=${encodeURIComponent(role.code)}`);
+          router.push(`/merchant/role/create?from=${encodeURIComponent(role.code)}`);
         }}
         onClose={() => setDuplicateOpen(false)}
       />

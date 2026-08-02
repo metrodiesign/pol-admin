@@ -13,7 +13,7 @@ import {
   pspById,
 } from "@/lib/control/psp";
 import type { MerchantCode } from "@/types/merchant";
-import { MERCHANT_LABEL } from "@/lib/mock/merchants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchant";
 import { formatDateTime } from "@/lib/control/format";
 
 function isMerchantCode(v: string | null): v is MerchantCode {

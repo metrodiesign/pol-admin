@@ -1,6 +1,6 @@
 "use client";
 
-import type { Permission, ResourceGroup } from "@/types/merchant/user/role";
+import type { Permission, ResourceGroup } from "@/types/merchant/role";
 import { groupedCatalog } from "@/lib/merchant/role/permissions";
 import { Checkbox } from "@/components/ui/checkbox";
 

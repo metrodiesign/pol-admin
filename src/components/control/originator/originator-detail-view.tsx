@@ -4,7 +4,7 @@ import { KeyRound, Radio } from "lucide-react";
 import type { Originator } from "@/types/originator";
 import { ORIGINATORS } from "@/lib/mock/originators";
 import { TYPE_LABEL, STATUS_LABEL, statusTone } from "@/lib/control/originator";
-import { MERCHANT_LABEL } from "@/lib/mock/merchants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchant";
 import { ReadField } from "@/components/control/shared/read-field";
 import { ControlStatusBadge } from "@/components/control/shared/control-status-badge";
 import { StatusSpine } from "@/components/control/shared/status-spine";

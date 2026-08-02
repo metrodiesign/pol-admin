@@ -11,7 +11,7 @@ import {
 import type { ApiClient } from "@/types/api-client";
 import { useControlStore } from "@/lib/control/store";
 import { apiClientsStore } from "@/lib/control/api-clients-store";
-import { MERCHANT_LABEL } from "@/lib/mock/merchants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchant";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";
 import { ControlListToolbar } from "@/components/control/shared/control-list-toolbar";

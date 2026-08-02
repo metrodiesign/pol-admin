@@ -2,7 +2,7 @@
 
 import { Building2, CreditCard } from "lucide-react";
 import type { MerchantCode } from "@/types/merchant";
-import { merchantByCode } from "@/lib/mock/merchants";
+import { merchantByCode } from "@/lib/mock/merchant";
 import { ReadField } from "@/components/control/shared/read-field";
 import { StatusSpine } from "@/components/control/shared/status-spine";
 import { Badge } from "@/components/ui/badge";

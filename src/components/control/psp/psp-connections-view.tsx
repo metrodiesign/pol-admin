@@ -11,7 +11,7 @@ import {
 import type { PspConnection } from "@/types/psp-connection";
 import { PSP_CONNECTIONS } from "@/lib/mock/psp-connections";
 import { PROVIDER_LABEL } from "@/lib/control/psp";
-import { MERCHANT_LABEL } from "@/lib/mock/merchants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchant";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";
 import { ControlListToolbar } from "@/components/control/shared/control-list-toolbar";

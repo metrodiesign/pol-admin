@@ -3,7 +3,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { Loader2 } from "lucide-react";
 import type { ApprovalRequest } from "@/types/approval";
-import { MERCHANT_LABEL } from "@/lib/mock/merchants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchant";
 import {
   ACTION_LABEL,
   STATUS_LABEL,

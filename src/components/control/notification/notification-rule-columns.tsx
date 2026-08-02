@@ -2,7 +2,7 @@
 
 import type { ColumnDef } from "@tanstack/react-table";
 import type { NotificationRule } from "@/types/notification";
-import { MERCHANT_LABEL } from "@/lib/mock/merchants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchant";
 import { CHANNEL_LABEL, eventLabel } from "@/lib/control/notification";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";

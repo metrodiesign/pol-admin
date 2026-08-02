@@ -1,5 +1,5 @@
-import { ROLES } from "@/lib/mock/merchant/user/role";
-import { RoleCreateView } from "@/components/merchant/user/role/create-view";
+import { ROLES } from "@/lib/mock/merchant/role";
+import { RoleCreateView } from "@/components/merchant/role/create-view";
 
 export default async function RoleCreatePage({
   searchParams,

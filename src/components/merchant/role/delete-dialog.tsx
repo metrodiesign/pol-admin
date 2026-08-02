@@ -1,6 +1,6 @@
 "use client";
 
-import type { Role } from "@/types/merchant/user/role";
+import type { Role } from "@/types/merchant/role";
 import {
   Dialog,
   DialogClose,

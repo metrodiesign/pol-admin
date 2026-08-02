@@ -1,4 +1,4 @@
-import type { Permission, ResourceGroup, Role } from "@/types/merchant/user/role";
+import type { Permission, ResourceGroup, Role } from "@/types/merchant/role";
 
 /**
  * Typed mock — single source ของ seed สำหรับโมดูล Role (frontend-only, read-only).

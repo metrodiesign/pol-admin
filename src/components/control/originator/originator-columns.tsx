@@ -3,7 +3,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { ChevronRight } from "lucide-react";
 import type { Originator } from "@/types/originator";
-import { MERCHANT_LABEL } from "@/lib/mock/merchants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchant";
 import { TYPE_LABEL, STATUS_LABEL, statusTone } from "@/lib/control/originator";
 import { StatusSpine } from "@/components/control/shared/status-spine";
 import { ControlStatusBadge } from "@/components/control/shared/control-status-badge";

@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import type { Role, RoleStatus, RoleFormInput } from "@/types/merchant/user/role";
-import { PERMISSION_CATALOG, ROLES, RESOURCE_GROUPS } from "@/lib/mock/merchant/user/role";
-import { makeCodeFromName, makeCopyCode, validateRoleForm } from "@/lib/merchant/role/permissions";
+import type { Role, RoleStatus, RoleFormInput } from "@/types/merchant/role";
+import { PERMISSION_CATALOG, ROLES, RESOURCE_GROUPS } from "@/lib/mock/merchant/role";
+import { validateRoleForm } from "@/lib/merchant/role/permissions";
 import { cn } from "@/lib/utils";
-import { PageHeader } from "@/components/shared/page-header";
+import { EditPageHeader } from "@/components/shared/edit-page-header";
 import { ConfirmDialog } from "@/components/policy/confirm-dialog";
 import { TextField } from "@/components/form/text-field";
 import { SelectField } from "@/components/form/select-field";
@@ -22,76 +22,55 @@ const cardStyle = {
 const cancelClass =
   "inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-sm font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]";
 
-interface RoleCreateViewProps {
-  /** บทบาทต้นทางสำหรับโหมดทำสำเนา (prefill); ไม่มี = สร้างใหม่ */
-  source?: Role | null;
+interface RoleEditViewProps {
+  role: Role;
 }
 
-/**
- * หน้าสร้างบทบาทแบบเต็มหน้า (route แยก /merchant/user/role/create).
- * source ว่าง = สร้างใหม่; มี source = ทำสำเนา (prefill code/name/perms). code แก้ไขได้. UI-shell.
- */
-export function RoleCreateView({ source }: RoleCreateViewProps) {
+/** หน้าแก้ไขบทบาทแบบเต็มหน้า (route แยก /merchant/role/edit). code read-only (REQ-7.3). UI-shell. */
+export function RoleEditView({ role }: RoleEditViewProps) {
   const router = useRouter();
-  const existingCodes = ROLES.map((r) => r.code);
-  const isDuplicate = Boolean(source);
-
-  const [input, setInput] = useState<RoleFormInput>(() =>
-    source
-      ? {
-          code: makeCopyCode(source.code, existingCodes),
-          name: `${source.name} (สำเนา)`,
-          description: source.description,
-          color: source.color,
-          status: source.status,
-          permissions: [...source.permissions],
-        }
-      : {
-          code: "",
-          name: "",
-          description: "",
-          color: "blue",
-          status: "active",
-          permissions: [],
-        },
-  );
+  const [input, setInput] = useState<RoleFormInput>(() => ({
+    code: role.code,
+    name: role.name,
+    description: role.description,
+    color: role.color,
+    status: role.status,
+    permissions: [...role.permissions],
+  }));
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [confirmAction, setConfirmAction] = useState<"cancel" | "save" | null>(null);
+
+  const existingCodes = ROLES.map((r) => r.code);
 
   function patch(p: Partial<RoleFormInput>) {
     setInput((prev) => ({ ...prev, ...p }));
   }
 
   function handleSaveClick() {
-    const code = isDuplicate ? input.code : makeCodeFromName(input.name, existingCodes);
-    const found = validateRoleForm({ ...input, code }, existingCodes, "create");
+    const found = validateRoleForm(input, existingCodes, "edit");
     if (Object.keys(found).length > 0) {
       setErrors(found);
       return;
     }
-    setInput((prev) => ({ ...prev, code }));
     setConfirmAction("save");
   }
 
   function handleSaveConfirm() {
     setConfirmAction(null);
-    // UI-shell: ไม่ mutate รายการจริง — กลับหน้า list พร้อม toast (REQ-10.2 / 13.1)
-    const verb = isDuplicate ? "ทำสำเนาบทบาท" : "สร้างบทบาท";
-    router.push(
-      `/merchant/user/role/list?toast=${encodeURIComponent(`${verb} “${input.name}” สำเร็จ`)}`,
-    );
+    // UI-shell: ไม่ mutate รายการจริง — กลับหน้า list พร้อม toast (REQ-7.2 / 10.2 / 13.1)
+    const toast = `แก้ไขบทบาท “${input.name}” สำเร็จ`;
+    router.push(`/merchant/role/list?toast=${encodeURIComponent(toast)}`);
   }
-
-  const title = isDuplicate ? "ทำสำเนาบทบาท" : "สร้างบทบาทใหม่";
 
   return (
     <>
-      <PageHeader
-        title={title}
+      <EditPageHeader
+        title="แก้ไขบทบาท"
+        backHref="/merchant/role/list"
         breadcrumbs={[
           { label: "Console" },
-          { label: "บทบาทและสิทธิ์", href: "/merchant/user/role/list" },
-          { label: title },
+          { label: "บทบาทและสิทธิ์", href: "/merchant/role/list" },
+          { label: role.name },
         ]}
         actions={
           <div className="flex items-center gap-2">
@@ -122,7 +101,6 @@ export function RoleCreateView({ source }: RoleCreateViewProps) {
             value={input.name}
             onChange={(v) => patch({ name: v })}
             error={errors.name}
-            placeholder="เช่น ผู้ดูแลการเงิน"
           />
           <TextField
             label="คำอธิบาย"
@@ -131,7 +109,6 @@ export function RoleCreateView({ source }: RoleCreateViewProps) {
             rows={3}
             value={input.description}
             onChange={(v) => patch({ description: v })}
-            placeholder="อธิบายขอบเขตของบทบาทนี้"
           />
           <SelectField
             label="สถานะ"
@@ -182,20 +159,16 @@ export function RoleCreateView({ source }: RoleCreateViewProps) {
       <ConfirmDialog
         open={confirmAction === "cancel"}
         title="ต้องการออกจากหน้านี้?"
-        description="ข้อมูลที่กรอกในหน้านี้จะไม่ถูกบันทึก"
+        description="ข้อมูลที่แก้ไขในหน้านี้จะไม่ถูกบันทึก"
         confirmLabel="ออกจากหน้านี้"
-        onConfirm={() => router.push("/merchant/user/role/list")}
+        onConfirm={() => router.push("/merchant/role/list")}
         onClose={() => setConfirmAction(null)}
       />
 
       <ConfirmDialog
         open={confirmAction === "save"}
         title="ยืนยันการบันทึก?"
-        description={
-          isDuplicate
-            ? "ระบบจะสร้างบทบาทใหม่ตามข้อมูลที่กรอกในหน้านี้"
-            : "ระบบจะบันทึกบทบาทใหม่ตามข้อมูลที่กรอกในหน้านี้"
-        }
+        description="ระบบจะบันทึกบทบาทตามที่แก้ไขในหน้านี้"
         confirmLabel="ยืนยัน"
         onConfirm={handleSaveConfirm}
         onClose={() => setConfirmAction(null)}

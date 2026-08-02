@@ -2,7 +2,7 @@
 
 import type { ColumnDef } from "@tanstack/react-table";
 import { Copy, Eye, Pencil, Trash2, Users } from "lucide-react";
-import type { Permission, Role } from "@/types/merchant/user/role";
+import type { Permission, Role } from "@/types/merchant/role";
 import { grantedCount, isRoleDeletable } from "@/lib/merchant/role/permissions";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";

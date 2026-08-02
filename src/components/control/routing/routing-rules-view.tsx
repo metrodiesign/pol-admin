@@ -8,7 +8,7 @@ import {
 } from "@tanstack/react-table";
 import { ShieldAlert } from "lucide-react";
 import type { RoutingRule } from "@/types/routing-rule";
-import { MERCHANT_LABEL } from "@/lib/mock/merchants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchant";
 import { useControlStore } from "@/lib/control/store";
 import { routingStore, toggleRule, moveRule } from "@/lib/control/routing-store";
 import { showControlToast } from "@/components/control/shared/control-toast";

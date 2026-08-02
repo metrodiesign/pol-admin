@@ -6,7 +6,7 @@ import { useControlStore } from "@/lib/control/store";
 import { webhookStore, replayEvent } from "@/lib/control/webhook-store";
 import { showControlToast } from "@/components/control/shared/control-toast";
 import { PSP_LABEL, DELIVERY_LABEL, deliveryTone } from "@/lib/control/webhook";
-import { MERCHANT_LABEL } from "@/lib/mock/merchants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchant";
 import { formatDateTime } from "@/lib/control/format";
 import { ReadField } from "@/components/control/shared/read-field";
 import { ControlStatusBadge } from "@/components/control/shared/control-status-badge";

@@ -3,7 +3,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { ChevronRight } from "lucide-react";
 import type { AuditEntry } from "@/types/audit";
-import { MERCHANT_LABEL } from "@/lib/mock/merchants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchant";
 import { RESULT_LABEL, resultTone, actionLabel } from "@/lib/control/audit";
 import { formatDateTime } from "@/lib/control/format";
 import { StatusSpine } from "@/components/control/shared/status-spine";

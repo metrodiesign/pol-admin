@@ -2,7 +2,7 @@
 
 import SimpleBar from "simplebar-react";
 import { Check, Copy, Pencil, Trash2, X } from "lucide-react";
-import type { Permission, ResourceGroup, Role } from "@/types/merchant/user/role";
+import type { Permission, ResourceGroup, Role } from "@/types/merchant/role";
 import {
   grantedCount,
   groupGranted,

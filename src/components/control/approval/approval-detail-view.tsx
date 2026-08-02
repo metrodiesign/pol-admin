@@ -16,7 +16,7 @@ import {
   rejectRequest,
 } from "@/lib/control/approvals-store";
 import { showControlToast } from "@/components/control/shared/control-toast";
-import { MERCHANT_LABEL } from "@/lib/mock/merchants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchant";
 import { formatDateTime } from "@/lib/control/format";
 import { formatTHB } from "@/lib/utils";
 import { ReadField } from "@/components/control/shared/read-field";

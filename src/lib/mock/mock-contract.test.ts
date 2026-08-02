@@ -3,7 +3,7 @@ import { readFileSync } from "fs";
 import { join } from "path";
 import { PAYMENT_SESSIONS } from "./transactions";
 import { ORDERS } from "./orders";
-import { MERCHANTS } from "./merchants";
+import { MERCHANTS } from "./merchant";
 import { MERCHANT_USERS } from "./merchant/users";
 import { PSP_CONNECTIONS } from "./psp-connections";
 import type { MerchantCode } from "@/types/merchant";
@@ -19,7 +19,7 @@ const PAYMENT_SESSION_STATUS_VALUES = ["Created", "Redirected", "Paid", "Failed"
 // รายชื่อไฟล์คือ replacement จริงหลัง implement (tenant->merchant, producer->merchant-user,
 // settlement->reconciliation, transaction->order-payment — ตามที่ REQ-9.6 เองระบุไว้).
 const FORBIDDEN_WORD_ALLOWLIST = [
-  "src/lib/mock/merchants.ts",
+  "src/lib/mock/merchant/index.ts",
   "src/lib/mock/merchant/users.ts",
   "src/lib/mock/psp-connections.ts",
   "src/lib/mock/reconciliation.ts",
@@ -36,7 +36,7 @@ const FORBIDDEN_WORD_ALLOWLIST = [
   "src/lib/mock/originators.ts",
   "src/lib/mock/notifications.ts",
   "src/lib/mock/policies.ts",
-  "src/types/merchant.ts",
+  "src/types/merchant/index.ts",
   "src/types/merchant/user.ts",
   "src/types/psp-connection.ts",
   "src/types/reconciliation.ts",
@@ -66,7 +66,7 @@ const MINIMALS_DEMO_FILES = [
   "topbar",
   "role",
   "users",
-  "merchant/user/role",
+  "merchant/role",
 ];
 
 describe("Money (REQ-9.1, 9.2)", () => {

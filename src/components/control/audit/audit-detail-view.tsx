@@ -3,7 +3,7 @@
 import { Lock, FileClock, GitCompareArrows } from "lucide-react";
 import { AUDIT_LOG } from "@/lib/mock/audit-log";
 import { RESULT_LABEL, resultTone, actionLabel } from "@/lib/control/audit";
-import { MERCHANT_LABEL } from "@/lib/mock/merchants";
+import { MERCHANT_LABEL } from "@/lib/mock/merchant";
 import { formatDateTime } from "@/lib/control/format";
 import { ReadField } from "@/components/control/shared/read-field";
 import { ControlStatusBadge } from "@/components/control/shared/control-status-badge";
