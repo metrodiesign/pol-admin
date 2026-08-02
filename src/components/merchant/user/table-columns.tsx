@@ -2,7 +2,11 @@
 
 import Link from "next/link";
 import type { ColumnDef } from "@tanstack/react-table";
-import type { User, UserStatus } from "@/types/user";
+import {
+  PERSON_TYPE_LABEL,
+  type MerchantUser,
+  type MerchantUserStatus,
+} from "@/types/merchant/user";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
@@ -15,14 +19,18 @@ import {
 import { Eye, Pencil, Trash2 } from "lucide-react";
 import { formatThaiDate } from "@/lib/date-range";
 
-export const statusStyles: Record<UserStatus, string> = {
-  active: "bg-success/16 text-success-dark",
-  banned: "bg-error/16 text-error-dark",
+const statusStyles: Record<MerchantUserStatus, string> = {
+  Active: "bg-success/16 text-success-dark",
+  PendingApproval: "bg-warning/16 text-warning-dark",
+  Rejected: "bg-grey-500/16 text-grey-600",
+  Suspended: "bg-error/16 text-error-dark",
 };
 
-export const statusLabel: Record<UserStatus, string> = {
-  active: "ใช้งาน",
-  banned: "ระงับ",
+export const statusLabel: Record<MerchantUserStatus, string> = {
+  Active: "ใช้งาน",
+  PendingApproval: "รอตรวจสอบ",
+  Rejected: "ปฏิเสธ",
+  Suspended: "ระงับ",
 };
 
 function getInitials(name: string): string {
@@ -34,7 +42,7 @@ function getInitials(name: string): string {
     .slice(0, 2);
 }
 
-export const userColumns: ColumnDef<User>[] = [
+export const merchantUserColumns: ColumnDef<MerchantUser>[] = [
   {
     id: "select",
     enableSorting: false,
@@ -55,7 +63,7 @@ export const userColumns: ColumnDef<User>[] = [
         className="justify-end"
         checked={row.getIsSelected()}
         onChange={(c) => row.toggleSelected(c)}
-        aria-label={`เลือก ${row.original.name}`}
+        aria-label={`เลือก ${row.original.firstName}`}
       />
     ),
   },
@@ -64,7 +72,7 @@ export const userColumns: ColumnDef<User>[] = [
     header: "วันที่ทำรายการ",
     enableSorting: true,
     meta: { headClassName: "w-[180px]", cellClassName: "w-[180px]" },
-    accessorFn: (u) => u.createdAt,
+    accessorFn: (p) => p.createdAt,
     cell: ({ row }) => {
       const d = new Date(row.original.createdAt);
       const time = d.toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit" });
@@ -76,23 +84,25 @@ export const userColumns: ColumnDef<User>[] = [
     },
   },
   {
-    accessorKey: "name",
+    id: "name",
+    accessorFn: (p) => `${p.firstName} ${p.lastName}`,
     header: "ชื่อ-นามสกุล",
     enableSorting: true,
     cell: ({ row }) => {
-      const u = row.original;
+      const p = row.original;
+      const name = `${p.firstName} ${p.lastName}`;
       return (
         <div className="flex items-center gap-4">
-          {/* avatarUrl ยังไม่มี HTTP endpoint serve รูปจริง (REQ-4.9) — placeholder initials เสมอ เหมือน merchant-user/list */}
+          {/* photoObjectKey ไม่มี HTTP endpoint serve รูปจริง (REQ-4.9) — placeholder initials เสมอ */}
           <Avatar className="size-12">
-            <AvatarFallback>{getInitials(u.name)}</AvatarFallback>
+            <AvatarFallback>{getInitials(name)}</AvatarFallback>
           </Avatar>
           <div className="min-w-0">
             <span className="block truncate text-sm font-semibold leading-[22px] text-foreground">
-              {u.name}
+              {name}
             </span>
             <span className="block truncate text-sm leading-[22px] text-grey-500">
-              {u.email}
+              {p.email}
             </span>
           </div>
         </div>
@@ -100,37 +110,44 @@ export const userColumns: ColumnDef<User>[] = [
     },
   },
   {
-    accessorKey: "phoneNumber",
-    header: "เบอร์โทรศัพท์",
+    accessorKey: "phone",
+    header: "โทรศัพท์",
     enableSorting: false,
     meta: { headClassName: "w-[160px]", cellClassName: "w-[160px]" },
     cell: ({ getValue }) => (
-      <span className="text-sm text-foreground">{getValue<string>()}</span>
+      <span className="text-sm text-foreground">{getValue<string | null>() ?? "-"}</span>
     ),
   },
   {
-    accessorKey: "company",
-    header: "สำนักงาน",
+    accessorKey: "producerCode",
+    header: "รหัสตัวแทน",
     enableSorting: false,
+    meta: { headClassName: "w-[140px]", cellClassName: "w-[140px]" },
     cell: ({ getValue }) => (
-      <span className="text-sm text-foreground">{getValue<string>()}</span>
+      <span className="text-sm text-foreground">{getValue<string | null>() ?? "-"}</span>
     ),
   },
   {
-    accessorKey: "roles",
-    header: "บทบาท",
+    accessorKey: "personType",
+    header: "ประเภท",
     enableSorting: false,
+    meta: { headClassName: "w-[140px]", cellClassName: "w-[140px]" },
+    cell: ({ row }) => {
+      const pt = row.original.personType;
+      return (
+        <span className="text-sm text-foreground">
+          {pt ? PERSON_TYPE_LABEL[pt] : "-"}
+        </span>
+      );
+    },
+  },
+  {
+    accessorKey: "licenseNumber",
+    header: "เลขที่ใบอนุญาต",
+    enableSorting: false,
+    meta: { headClassName: "w-[160px]", cellClassName: "w-[160px]" },
     cell: ({ getValue }) => (
-      <div className="flex flex-wrap gap-1">
-        {getValue<string[]>().map((r) => (
-          <span
-            key={r}
-            className="inline-flex h-6 items-center rounded-md bg-grey-600/8 px-1.5 text-xs font-bold text-grey-700"
-          >
-            {r}
-          </span>
-        ))}
-      </div>
+      <span className="text-sm text-foreground">{getValue<string | null>() ?? "-"}</span>
     ),
   },
   {
@@ -140,7 +157,7 @@ export const userColumns: ColumnDef<User>[] = [
     meta: { headClassName: "w-[140px]", cellClassName: "w-[140px]" },
     cell: ({ row }) => (
       <span
-        className={`inline-flex h-6 items-center rounded-md px-1.5 text-xs font-bold ${statusStyles[row.original.status]}`}
+        className={`inline-flex items-center rounded-full px-4 py-1 text-sm font-semibold ${statusStyles[row.original.status]}`}
       >
         {statusLabel[row.original.status]}
       </span>
@@ -157,12 +174,12 @@ export const userColumns: ColumnDef<User>[] = [
           <Tooltip>
             <TooltipTrigger render={<span className="inline-flex" />}>
               <Button
-                render={<Link href="/user/read" />}
+                render={<Link href="/merchant/user/read" />}
                 nativeButton={false}
                 variant="ghost"
                 size="icon-lg"
                 className="size-10 cursor-pointer bg-grey-600/8 text-grey-700 hover:bg-grey-800 hover:text-white focus-visible:bg-grey-800 focus-visible:text-white"
-                aria-label={`ดูรายละเอียด ${row.original.name}`}
+                aria-label={`ดูรายละเอียด ${row.original.firstName}`}
               >
                 <Eye className="size-5" />
               </Button>
@@ -172,12 +189,12 @@ export const userColumns: ColumnDef<User>[] = [
           <Tooltip>
             <TooltipTrigger render={<span className="inline-flex" />}>
               <Button
-                render={<Link href="/user/edit" />}
+                render={<Link href="/merchant/user/edit" />}
                 nativeButton={false}
                 variant="ghost"
                 size="icon-lg"
                 className="size-10 cursor-pointer bg-grey-600/8 text-grey-700 hover:bg-grey-800 hover:text-white focus-visible:bg-grey-800 focus-visible:text-white"
-                aria-label={`แก้ไข ${row.original.name}`}
+                aria-label={`แก้ไข ${row.original.firstName}`}
               >
                 <Pencil className="size-5" />
               </Button>
@@ -190,7 +207,7 @@ export const userColumns: ColumnDef<User>[] = [
                 variant="ghost"
                 size="icon-lg"
                 className="size-10 cursor-pointer bg-error/8 text-error hover:bg-error hover:text-white"
-                aria-label={`ลบ ${row.original.name}`}
+                aria-label={`ลบ ${row.original.firstName}`}
               >
                 <Trash2 className="size-5" />
               </Button>
