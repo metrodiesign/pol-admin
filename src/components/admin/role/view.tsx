@@ -10,7 +10,7 @@ import {
   getPaginationRowModel,
 } from "@tanstack/react-table";
 import type { Role } from "@/types/admin/role";
-import { getRoles, deleteRole as deleteRoleApi } from "@/lib/api/admin-api";
+import { getRoles, deleteRole as deleteRoleApi } from "@/lib/api/admin/role";
 import { useRoleCatalog } from "@/hooks/use-role-catalog";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";

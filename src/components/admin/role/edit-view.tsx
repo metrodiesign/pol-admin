@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { Role, RoleStatus, RoleFormInput } from "@/types/admin/role";
-import { getRole, updateRole } from "@/lib/api/admin-api";
+import { getRole, updateRole } from "@/lib/api/admin/role";
 import { useRoleCatalog } from "@/hooks/use-role-catalog";
 import { validateRoleForm } from "@/lib/admin/role/permissions";
 import { cn } from "@/lib/utils";

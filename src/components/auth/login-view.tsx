@@ -3,7 +3,7 @@
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
-import { login, microsoftLogin } from "@/lib/api/admin-api";
+import { login, microsoftLogin } from "@/lib/api/admin/auth";
 import { merchantUserLogin, merchantUserMicrosoftLogin } from "@/lib/api/merchant/user";
 
 // landing หลัง login = /dashboard (admin landing จริง). backend ต้องมี /dashboard ใน AdminSession:ReturnUrlAllowlist

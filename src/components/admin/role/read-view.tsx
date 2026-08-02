@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Check, Copy, Pencil } from "lucide-react";
 import type { Role } from "@/types/admin/role";
-import { getRole } from "@/lib/api/admin-api";
+import { getRole } from "@/lib/api/admin/role";
 import { useRoleCatalog } from "@/hooks/use-role-catalog";
 import {
   grantedCount,
