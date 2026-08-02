@@ -10,10 +10,7 @@ import { EditPageHeader } from "@/components/shared/edit-page-header";
 import { OrgUnitFormStatus } from "./form-status";
 import { OrgUnitStatusBadge } from "./status-badge";
 
-const cardStyle = {
-  boxShadow:
-    "rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px",
-};
+const fieldLabel = "mb-1.5 block text-xs font-semibold text-grey-700";
 
 interface OrgUnitReadViewProps {
   config: OrgUnitConfig;
@@ -87,19 +84,16 @@ export function OrgUnitReadView({ config, id }: OrgUnitReadViewProps) {
 
   return (
     <>
-      {header}
-
-      <div className="overflow-hidden rounded-card bg-card" style={cardStyle}>
-        {/* Header: ชื่อ + สถานะ + รหัส + ปุ่ม */}
-        <div className="flex flex-col gap-4 border-b border-[var(--divider)] p-6 sm:flex-row sm:items-start sm:justify-between">
-          <div className="flex min-w-0 flex-col gap-1.5">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-base font-bold text-foreground">{unit.name}</span>
-              <OrgUnitStatusBadge isActive={unit.isActive} />
-            </div>
-            <span className="font-mono text-xs text-grey-500">รหัส: {unit.code}</span>
-          </div>
-          <div className="flex shrink-0 items-center gap-2">
+      <EditPageHeader
+        title={`ดู${config.label}`}
+        backHref={listHref}
+        breadcrumbs={[
+          { label: "Console" },
+          { label: config.label, href: listHref },
+          { label: unit.name },
+        ]}
+        actions={
+          <div className="flex items-center gap-2">
             <Link
               href={listHref}
               className="inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-sm font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]"
@@ -114,32 +108,41 @@ export function OrgUnitReadView({ config, id }: OrgUnitReadViewProps) {
               แก้ไข
             </Link>
           </div>
-        </div>
+        }
+      />
 
-        {/* Body — field ทั้งหมดของ entity */}
-        <div className="flex flex-col gap-3 p-6 sm:max-w-md">
-          <div className="rounded-control border border-[var(--divider)] p-3">
-            <p className="text-xs text-grey-500">รหัส</p>
-            <p className="mt-1 font-mono text-sm text-foreground">{unit.code}</p>
-          </div>
-          <div className="rounded-control border border-[var(--divider)] p-3">
-            <p className="text-xs text-grey-500">ชื่อ{config.label}</p>
-            <p className="mt-1 text-sm font-medium text-foreground">{unit.name}</p>
-          </div>
-          <div className="rounded-control border border-[var(--divider)] p-3">
-            <p className="text-xs text-grey-500">สถานะ</p>
-            <p className="mt-1">
+      {/* Card ข้อมูล — โครงเดียวกับ card "ข้อมูลธุรกรรม" ของหน้า transaction read */}
+      <section
+        className="rounded-2xl bg-card"
+        style={{ boxShadow: "var(--shadow-card)" }}
+      >
+        <div className="px-6 py-5">
+          <p className="text-base font-bold text-primary">ข้อมูล{config.label}</p>
+        </div>
+        <div className="border-t border-[var(--divider)]" />
+        <div className="px-6 pt-5 pb-6">
+          <div className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
+            <div>
+              <p className={fieldLabel}>รหัส</p>
+              <p className="text-sm font-bold text-foreground">{unit.code}</p>
+            </div>
+            <div>
+              <p className={fieldLabel}>ชื่อ{config.label}</p>
+              <p className="text-sm font-bold text-foreground">{unit.name}</p>
+            </div>
+            <div>
+              <p className={fieldLabel}>สถานะ</p>
               <OrgUnitStatusBadge isActive={unit.isActive} />
-            </p>
+            </div>
           </div>
           {!unit.isActive && (
-            <p className="text-xs text-grey-500">
+            <p className="mt-4 text-xs text-grey-500">
               รายการที่ปิดใช้งานยังถูกอ้างอิงจากข้อมูลเดิมได้ แต่เลือกใช้ใหม่ไม่ได้ —
               เปิดใช้งานกลับได้จากหน้าแก้ไข
             </p>
           )}
         </div>
-      </div>
+      </section>
     </>
   );
 }
