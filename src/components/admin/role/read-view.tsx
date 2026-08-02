@@ -124,20 +124,20 @@ export function RoleReadView({ code }: RoleReadViewProps) {
           <div className="flex shrink-0 items-center gap-2">
             <Link
               href="/admin/role/list"
-              className="inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-sm font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]"
+              className="inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-sm font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]"
             >
               ยกเลิก
             </Link>
             <Link
               href={`/admin/role/create?from=${encodeURIComponent(role.code)}`}
-              className="inline-flex h-9 min-w-[100px] items-center justify-center gap-1.5 rounded-control border border-[var(--divider)] px-3 text-sm font-bold text-grey-800 transition-colors hover:bg-[var(--action-hover)]"
+              className="inline-flex h-11 min-w-[140px] items-center justify-center gap-1.5 rounded-control border border-[var(--divider)] px-3 text-sm font-bold text-grey-800 transition-colors hover:bg-[var(--action-hover)]"
             >
               <Copy className="size-4" />
               สำเนา
             </Link>
             <Link
               href={`/admin/role/edit?code=${encodeURIComponent(role.code)}`}
-              className="inline-flex h-9 min-w-[100px] items-center justify-center gap-1.5 rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
+              className="inline-flex h-11 min-w-[140px] items-center justify-center gap-1.5 rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
             >
               <Pencil className="size-4" />
               แก้ไข

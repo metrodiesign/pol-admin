@@ -128,14 +128,14 @@ function RoleDetailBody({
         <div className="grid grid-cols-2 gap-2">
           <Button
             variant="outline"
-            className="h-9"
+            className="h-11 min-w-[140px]"
             onClick={() => onDuplicate?.(role)}
           >
             <Copy className="size-4" />
             สำเนา
           </Button>
           <Button
-            className="h-9 bg-primary text-primary-foreground hover:bg-primary/90"
+            className="h-11 min-w-[140px] bg-primary text-primary-foreground hover:bg-primary/90"
             onClick={() => onEdit?.(role)}
           >
             <Pencil className="size-4" />
@@ -211,7 +211,11 @@ function RoleDetailBody({
       {/* Footer */}
       <div className="flex items-center justify-between gap-2 border-t border-[var(--divider)] p-4">
         {isRoleDeletable(role) ? (
-          <Button variant="destructive" onClick={() => onDelete?.(role)}>
+          <Button
+            variant="destructive"
+            className="h-11 min-w-[140px]"
+            onClick={() => onDelete?.(role)}
+          >
             <Trash2 className="size-4" />
             ลบบทบาท
           </Button>
@@ -219,7 +223,7 @@ function RoleDetailBody({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger render={<span className="inline-flex" />}>
-                <Button variant="destructive" disabled>
+                <Button variant="destructive" className="h-11 min-w-[140px]" disabled>
                   <Trash2 className="size-4" />
                   ลบบทบาท
                 </Button>
@@ -232,7 +236,7 @@ function RoleDetailBody({
           render={
             <button
               type="button"
-              className="inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-sm font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]"
+              className="inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-sm font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]"
             />
           }
         >
