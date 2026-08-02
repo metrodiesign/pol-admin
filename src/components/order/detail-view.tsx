@@ -21,18 +21,18 @@ import {
   MessageSquare,
 } from "lucide-react";
 import {
-  getTransactionById,
+  getOrderById,
   buildTimeline,
   policyItems,
   sourceDetail,
   customerPhone,
   payLink,
   type TimelineIcon,
-} from "@/lib/transaction";
+} from "@/lib/order";
 import { cn, formatAmount } from "@/lib/utils";
 import { formatMoney } from "@/types/money";
 import { Button } from "@/components/ui/button";
-import { TransactionStatusBadge } from "./transaction-status-badge";
+import { OrderStatusBadge } from "./status-badge";
 
 const TIMELINE_ICON: Record<TimelineIcon, LucideIcon> = {
   webhook: Webhook,
@@ -109,8 +109,8 @@ function Panel({
 
 const fieldLabel = "mb-1.5 block text-xs font-semibold text-grey-700";
 
-export function TransactionDetailView({ id, compact = false }: { id: string | undefined; compact?: boolean }) {
-  const t = getTransactionById(id);
+export function OrderDetailView({ id, compact = false }: { id: string | undefined; compact?: boolean }) {
+  const t = getOrderById(id);
 
   if (!t) {
     return (
@@ -120,7 +120,7 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
       >
         <p className="text-base font-bold text-foreground">ไม่พบรายการชำระเงิน</p>
         <Button
-          render={<Link href="/transaction/list" />}
+          render={<Link href="/order/list" />}
           nativeButton={false}
           className="mt-1 h-10 bg-primary px-5 font-bold text-primary-foreground hover:bg-primary/90"
         >
@@ -134,7 +134,8 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
   const src = sourceDetail(t);
   const timeline = buildTimeline(t);
   const link = payLink(t);
-  const channel = CHANNEL_DISPLAY[t.channel];
+  const sessionChannel = t.session?.channel;
+  const channel = sessionChannel ? CHANNEL_DISPLAY[sessionChannel] : undefined;
 
   return (
     <div className="flex flex-col gap-6 pb-4">
@@ -144,7 +145,7 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
         <div className="px-6 pt-5 pb-6">
           <div className="flex flex-wrap items-center gap-3">
             <p className="text-sm font-bold text-foreground">สถานะ</p>
-            <TransactionStatusBadge status={t.status} />
+            <OrderStatusBadge status={t.status} />
           </div>
 
           <div className="mt-6 grid grid-cols-1 gap-x-8 gap-y-8 mmd:grid-cols-2">
@@ -248,39 +249,23 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
       </Panel>
       </div>
 
-      {/* ── 2. ข้อมูลธุรกรรม (Advanced) ─────────────────────── */}
-      <Panel title="ข้อมูลธุรกรรม">
+      {/* ── 2. ข้อมูลคำสั่งซื้อ (Advanced) ─────────────────────── */}
+      <Panel title="ข้อมูลคำสั่งซื้อ">
         <div className="px-6 pt-5 pb-6">
-          <div className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
-            <div>
-              <p className={fieldLabel}>หมายเลขธุรกรรม</p>
-              <p className="text-sm font-bold text-foreground">{t.code || <span className="text-grey-400">—</span>}</p>
-            </div>
+          <div className={cn("grid grid-cols-1 gap-x-4 gap-y-4", !compact && "sm:grid-cols-2")}>
             <div>
               <p className={fieldLabel}>หมายเลขคำสั่งซื้อ</p>
-              {/* ponytail: mock — PaymentSession ยังไม่มี field รหัสคำสั่งซื้อจริงใน pol-core */}
-              <p className="text-sm font-bold text-foreground">{t.code.replace(/^VCP/, "ORD") || <span className="text-grey-400">—</span>}</p>
-            </div>
-          </div>
-          <div className="mt-4 grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
-            <div>
-              <p className={fieldLabel}>แอปพลิเคชัน</p>
-              {/* ponytail: mock — PaymentSession ยังไม่มี field แอปพลิเคชันจริงใน pol-core */}
-              <p className="text-sm font-bold text-foreground">V Central Pay</p>
-            </div>
-            <div>
-              <p className={fieldLabel}>ผู้ให้บริการ</p>
-              <p className="text-sm font-bold text-foreground">{t.psp.toUpperCase() || <span className="text-grey-400">—</span>}</p>
+              <p className="text-sm font-bold text-foreground">{t.id}</p>
             </div>
           </div>
           <div className="mt-4 grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
             <div>
               <p className={fieldLabel}>หมายเลขอ้างอิง 1</p>
-              <p className="text-sm font-bold text-foreground">{t.source.code || <span className="text-grey-400">—</span>}</p>
+              <p className="text-sm font-bold text-foreground">{t.session?.source.code || <span className="text-grey-400">—</span>}</p>
             </div>
             <div>
               <p className={fieldLabel}>หมายเลขอ้างอิง 2</p>
-              <p className="text-sm font-bold text-foreground">{t.source.label || <span className="text-grey-400">—</span>}</p>
+              <p className="text-sm font-bold text-foreground">{t.session?.source.label || <span className="text-grey-400">—</span>}</p>
             </div>
             <div>
               <p className={fieldLabel}>หมายเลขอ้างอิง 3</p>
@@ -304,11 +289,11 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
           <div className="grid grid-cols-1 gap-x-5 gap-y-5 sm:grid-cols-2">
             <div className="flex flex-col gap-1.5">
               <p className={fieldLabel}>ชื่อ-นามสกุล</p>
-              <p className="text-sm font-bold text-foreground">{t.source.label || <span className="text-grey-400">—</span>}</p>
+              <p className="text-sm font-bold text-foreground">{t.session?.source.label || <span className="text-grey-400">—</span>}</p>
             </div>
             <div className="flex flex-col gap-1.5">
               <p className={fieldLabel}>อีเมล</p>
-              <p className="text-sm font-bold text-foreground">{t.recipientEmail || <span className="text-grey-400">—</span>}</p>
+              <p className="text-sm font-bold text-foreground">{t.session?.recipientEmail || <span className="text-grey-400">—</span>}</p>
             </div>
             <div className="flex flex-col gap-1.5">
               <p className={fieldLabel}>เบอร์โทรศัพท์</p>
@@ -318,8 +303,8 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
         </div>
       </Panel>
 
-      {/* ── 3. รายการกรมธรรม์ที่จะรับชำระ (Items) ───────────────────────────── */}
-      <Panel title="รายการกรมธรรม์ที่จะรับชำระ">
+      {/* ── 3. รายการกรมธรรม์ (Items) ───────────────────────────── */}
+      <Panel title="รายการกรมธรรม์">
         <div className="px-6 pb-6">
           <div className="-mx-6 overflow-x-auto">
             <table className="w-full min-w-[880px] border-collapse">
@@ -395,12 +380,12 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={channel?.img ?? "/payment/credit-card-v2.png"}
-                alt={channel?.label ?? t.channel}
+                alt={channel?.label ?? sessionChannel ?? "—"}
                 className="h-20 w-20 shrink-0 object-contain"
               />
               <span className="flex min-w-0 flex-1 flex-col gap-1">
                 <span className="text-sm font-bold text-secondary">
-                  {channel?.label ?? t.channel}
+                  {channel?.label ?? sessionChannel ?? "—"}
                 </span>
                 {channel?.caption ? (
                   <span className="text-xs leading-relaxed text-foreground">{channel.caption}</span>
@@ -476,7 +461,7 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
                     </span>
                   </div>
                   <div className="border-t border-[var(--divider)] px-4 py-3">
-                    <p className="text-sm font-bold text-foreground">{t.recipientEmail ?? "—"}</p>
+                    <p className="text-sm font-bold text-foreground">{t.session?.recipientEmail ?? "—"}</p>
                   </div>
                 </div>
               </div>
@@ -493,3 +478,4 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
     </div>
   );
 }
+

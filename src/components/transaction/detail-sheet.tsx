@@ -9,7 +9,7 @@ import {
   SheetContent,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { TransactionDetailView } from "./transaction-detail-view";
+import { TransactionDetailView } from "./detail-view";
 
 interface TransactionDetailSheetProps {
   transaction: PaymentSession | null;

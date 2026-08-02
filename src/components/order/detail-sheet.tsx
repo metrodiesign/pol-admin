@@ -9,7 +9,7 @@ import {
   SheetContent,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { OrderDetailView } from "./order-detail-view";
+import { OrderDetailView } from "./detail-view";
 
 interface OrderDetailSheetProps {
   order: OrderRow | null;

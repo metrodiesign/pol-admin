@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { readCheckoutSession } from "@/lib/policy/checkout";
-import { PolicyCheckoutView } from "./policy-checkout-view";
+import { PolicyCheckoutView } from "./checkout-view";
 
 interface PolicyCheckoutSessionViewProps {
   sessionId: string;

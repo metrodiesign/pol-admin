@@ -13,7 +13,7 @@ import {
 import { cn } from "@/lib/utils";
 import { formatMoney } from "@/types/money";
 import { CHANNEL_LABEL, CHANNEL_DOT, customerPhone } from "@/lib/order";
-import { OrderStatusBadge } from "./order-status-badge";
+import { OrderStatusBadge } from "./status-badge";
 import { Eye, Pencil, Copy, Trash2 } from "lucide-react";
 
 interface BuildColumnsArgs {

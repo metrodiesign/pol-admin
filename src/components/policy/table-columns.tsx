@@ -10,7 +10,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { PolicyRowActions } from "./policy-row-actions";
+import { PolicyRowActions } from "./row-actions";
 
 const INSURANCE_KIND_LABEL: Record<Policy["insuranceKind"], string> = {
   VMI: "ภาคสมัครใจ (VMI)",

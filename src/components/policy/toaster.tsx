@@ -1,7 +1,7 @@
 "use client";
 
 import { Check, X } from "lucide-react";
-import type { PolicyToast } from "./use-policy-toast";
+import type { PolicyToast } from "./use-toast";
 
 interface PolicyToasterProps {
   toasts: PolicyToast[];

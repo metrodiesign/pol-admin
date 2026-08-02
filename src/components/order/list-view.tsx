@@ -12,10 +12,10 @@ import type { OrderStatus } from "@/types/order-payment";
 import { ORDER_ROWS, ORDER_STATUS_LABEL, type OrderRow } from "@/lib/order";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";
-import { OrderListTabs } from "./order-list-tabs";
-import { OrderListToolbar } from "./order-list-toolbar";
-import { OrderDetailSheet } from "./order-detail-sheet";
-import { buildOrderColumns } from "./order-table-columns";
+import { OrderListTabs } from "./list-tabs";
+import { OrderListToolbar } from "./list-toolbar";
+import { OrderDetailSheet } from "./detail-sheet";
+import { buildOrderColumns } from "./table-columns";
 import "@/types/table-meta";
 
 type TabValue = OrderStatus | "all";

@@ -14,10 +14,10 @@ import { PAYMENT_SESSIONS } from "@/lib/mock/transactions";
 import { orderLikeStatus, LIST_STATUS_LABEL } from "@/lib/transaction";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";
-import { TransactionListTabs } from "@/components/transaction/transaction-list-tabs";
-import { TransactionListToolbar } from "@/components/transaction/transaction-list-toolbar";
-import { TransactionDetailSheet } from "@/components/transaction/transaction-detail-sheet";
-import { buildTransactionColumns } from "@/components/transaction/transaction-table-columns";
+import { TransactionListTabs } from "@/components/transaction/list-tabs";
+import { TransactionListToolbar } from "@/components/transaction/list-toolbar";
+import { TransactionDetailSheet } from "@/components/transaction/detail-sheet";
+import { buildTransactionColumns } from "@/components/transaction/table-columns";
 import "@/types/table-meta";
 
 type TabValue = OrderStatus | "all";

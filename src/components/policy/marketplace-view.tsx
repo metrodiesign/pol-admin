@@ -11,7 +11,7 @@ import {
   ROWS_PER_PAGE_OPTIONS,
 } from "@/hooks/use-policy-table-with-cart";
 import { DataTable } from "@/components/table/data-table";
-import { PolicyListToolbar } from "./policy-list-toolbar";
+import { PolicyListToolbar } from "./list-toolbar";
 import { PremiumCartBar } from "./premium-cart-bar";
 import { PremiumCheckoutDialog } from "./premium-checkout-dialog";
 
