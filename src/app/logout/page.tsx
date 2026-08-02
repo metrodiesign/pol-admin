@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-import { logout } from "@/lib/api/admin-api";
+import { logout } from "@/lib/api/admin/auth";
 
 // sign-out: เรียก BFF logout (POST /admin/auth/logout + CSRF) แล้วเด้งกลับ /login.
 // .finally -> logout fail ก็ยังกลับ /login (guard จะเด้งไป SSO ต่อถ้า session ยังอยู่).

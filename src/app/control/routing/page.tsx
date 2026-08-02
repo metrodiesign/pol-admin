@@ -1,5 +1,5 @@
 import { PageHeader } from "@/components/shared/page-header";
-import { RoutingRulesView } from "@/components/control/routing/routing-rules-view";
+import { RoutingRulesView } from "@/components/control/routing/rules-view";
 
 export const metadata = {
   title: "กฎการกำหนดเส้นทาง | POL Admin",

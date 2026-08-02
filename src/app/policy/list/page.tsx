@@ -1,5 +1,5 @@
 import { PageHeader } from "@/components/shared/page-header";
-import { PolicyMarketplaceView } from "@/components/policy/policy-marketplace-view";
+import { PolicyMarketplaceView } from "@/components/policy/marketplace-view";
 
 export const metadata = {
   title: "กรมธรรม์ | POL Admin",

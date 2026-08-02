@@ -18,7 +18,7 @@ import {
 } from "@/lib/policy/policy";
 import { cartReducer } from "@/lib/policy/cart";
 import { useDataTable } from "@/hooks/use-data-table";
-import { policyColumns } from "@/components/policy/policy-table-columns";
+import { policyColumns } from "@/components/policy/table-columns";
 
 const ROWS_PER_PAGE_OPTIONS = [10, 25, 50];
 export { ROWS_PER_PAGE_OPTIONS };

@@ -1,5 +1,5 @@
 import { PageHeader } from "@/components/shared/page-header";
-import { PspConnectionsView } from "@/components/control/psp/psp-connections-view";
+import { PspConnectionsView } from "@/components/control/psp/connections-view";
 
 export const metadata = {
   title: "การเชื่อมต่อ PSP | POL Admin",

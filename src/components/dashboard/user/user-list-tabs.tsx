@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect, useCallback } from "react";
 import { ChevronRight } from "lucide-react";
-import type { UserStatus } from "@/types/user";
+import type { UserStatus } from "@/types/admin/user";
 import { cn } from "@/lib/utils";
 
 type TabValue = UserStatus | "all";

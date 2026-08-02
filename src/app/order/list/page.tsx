@@ -1,6 +1,6 @@
 import { PageHeader } from "@/components/shared/page-header";
-import { OrderListView } from "@/components/order/order-list-view";
-import { OrderCsvButton } from "@/components/order/order-csv-button";
+import { OrderListView } from "@/components/order/list-view";
+import { OrderCsvButton } from "@/components/order/csv-button";
 
 export const metadata = {
   title: "รายการคำสั่งซื้อ | POL Admin",

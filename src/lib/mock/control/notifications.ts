@@ -1,0 +1,143 @@
+import type {
+  NotificationRule,
+  NotificationLogEntry,
+} from "@/types/control/notification";
+
+// UI-only, ไม่มี endpoint รองรับ — pol-core ไม่มี notification-rule/log read
+// endpoint เลย ต้องมี endpoint นี้ก่อนถึงจะ align ได้ (REQ-7.2).
+// Deterministic seed — fake targets only. Webhook URLs and emails are placeholders.
+export const NOTIFICATION_RULES: NotificationRule[] = [
+  {
+    id: "NTF-RULE-001",
+    event: "payment.failed",
+    channel: "email",
+    target: "ops@vprivilege.co.th",
+    merchantId: "vprivilege",
+    enabled: true,
+  },
+  {
+    id: "NTF-RULE-002",
+    event: "webhook.delivery.failed",
+    channel: "webhook",
+    target: "https://hooks.vprivilege.co.th/alerts/webhook-failed",
+    merchantId: "vprivilege",
+    enabled: true,
+  },
+  {
+    id: "NTF-RULE-003",
+    event: "settlement.variance",
+    channel: "email",
+    target: "finance@vprivilege.co.th",
+    threshold: "> 50,000",
+    merchantId: "vprivilege",
+    enabled: false,
+  },
+  {
+    id: "NTF-RULE-004",
+    event: "payment.failed",
+    channel: "inapp",
+    target: "ทีมปฏิบัติการ vCommerce",
+    merchantId: "vcommerce",
+    enabled: true,
+  },
+  {
+    id: "NTF-RULE-005",
+    event: "refund.requested",
+    channel: "email",
+    target: "support@vcommerce.co.th",
+    threshold: "> 10,000",
+    merchantId: "vcommerce",
+    enabled: true,
+  },
+  {
+    id: "NTF-RULE-006",
+    event: "webhook.delivery.failed",
+    channel: "webhook",
+    target: "https://hooks.vsouvenir.co.th/alerts",
+    merchantId: "vsouvenir",
+    enabled: false,
+  },
+];
+
+export const NOTIFICATION_LOG: NotificationLogEntry[] = [
+  {
+    id: "NTF-LOG-001",
+    event: "payment.failed",
+    channel: "email",
+    target: "ops@vprivilege.co.th",
+    status: "sent",
+    sentAt: "2026-06-24T13:42:08",
+  },
+  {
+    id: "NTF-LOG-002",
+    event: "webhook.delivery.failed",
+    channel: "webhook",
+    target: "https://hooks.vprivilege.co.th/alerts/webhook-failed",
+    status: "failed",
+    sentAt: "2026-06-24T12:18:55",
+  },
+  {
+    id: "NTF-LOG-003",
+    event: "payment.failed",
+    channel: "inapp",
+    target: "ทีมปฏิบัติการ vCommerce",
+    status: "sent",
+    sentAt: "2026-06-24T11:09:31",
+  },
+  {
+    id: "NTF-LOG-004",
+    event: "settlement.variance",
+    channel: "email",
+    target: "finance@vprivilege.co.th",
+    status: "sent",
+    sentAt: "2026-06-24T09:55:12",
+  },
+  {
+    id: "NTF-LOG-005",
+    event: "refund.requested",
+    channel: "email",
+    target: "support@vcommerce.co.th",
+    status: "failed",
+    sentAt: "2026-06-23T18:33:47",
+  },
+  {
+    id: "NTF-LOG-006",
+    event: "webhook.delivery.failed",
+    channel: "webhook",
+    target: "https://hooks.vsouvenir.co.th/alerts",
+    status: "failed",
+    sentAt: "2026-06-23T16:20:04",
+  },
+  {
+    id: "NTF-LOG-007",
+    event: "payment.succeeded",
+    channel: "inapp",
+    target: "ทีมปฏิบัติการ vPrivilege",
+    status: "sent",
+    sentAt: "2026-06-23T14:47:29",
+  },
+  {
+    id: "NTF-LOG-008",
+    event: "payment.failed",
+    channel: "email",
+    target: "ops@vprivilege.co.th",
+    status: "sent",
+    sentAt: "2026-06-23T10:12:50",
+  },
+  {
+    id: "NTF-LOG-009",
+    event: "settlement.summary.generated",
+    channel: "email",
+    target: "finance@vprivilege.co.th",
+    status: "sent",
+    sentAt: "2026-06-22T20:05:18",
+  },
+  {
+    id: "NTF-LOG-010",
+    event: "webhook.delivery.failed",
+    channel: "webhook",
+    target: "https://hooks.vcommerce.co.th/alerts",
+    status: "failed",
+    sentAt: "2026-06-22T15:41:36",
+  },
+];

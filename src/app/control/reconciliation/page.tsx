@@ -1,5 +1,5 @@
 import { PageHeader } from "@/components/shared/page-header";
-import { ReconciliationView } from "@/components/control/reconciliation/reconciliation-view";
+import { ReconciliationView } from "@/components/control/reconciliation/view";
 
 export const metadata = {
   title: "การกระทบยอด | POL Admin",

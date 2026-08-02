@@ -12,17 +12,18 @@ export interface NavItem {
   /**
    * Base path (or paths) used for active detection instead of `path`. The item is
    * active on `match` and any of its sub-paths — use when the link target is a
-   * child route (e.g. path `/user/list`) but the menu should stay active across
-   * the whole section (`match: "/user"` → active on /user/list, /user/new,
-   * /user/edit). Pass an array when a second, unrelated route also belongs to
-   * this section (e.g. a standalone checkout window opened from policy).
+   * child route (e.g. path `/admin/user/list`) but the menu should stay active across
+   * the whole section (`match: "/admin/user"` → active on /admin/user/list,
+   * /admin/user/new, /admin/user/edit). Pass an array when a second, unrelated
+   * route also belongs to this section (e.g. a standalone checkout window opened
+   * from policy).
    */
   match?: string | string[];
   /**
    * Sub-paths to carve OUT of this item's deep/match range so a sibling that
-   * owns them stays the sole active item. Without it a broad `match` (e.g.
-   * "/user") would also light up on a sibling's route (`/user/role`). The item
-   * stays active on its own pages — only the listed prefixes are excluded.
+   * owns them stays the sole active item. Use when a broad `match` prefix would
+   * also light up on a sibling's route nested under it. The item stays active
+   * on its own pages — only the listed prefixes are excluded.
    */
   exclude?: string[];
 }
@@ -73,13 +74,12 @@ export const navConfig: NavGroup[] = [
         path: "/merchant/user/list",
         icon: "user",
         match: "/merchant/user",
-        exclude: ["/merchant/user/role"],
       },
       {
         title: "บทบาทและสิทธิ์",
-        path: "/merchant/user/role/list",
+        path: "/merchant/role/list",
         icon: "lock",
-        match: "/merchant/user/role",
+        match: "/merchant/role",
       },
     ],
   },
@@ -90,16 +90,15 @@ export const navConfig: NavGroup[] = [
     items: [
       {
         title: "ผู้ใช้งาน",
-        path: "/user/list",
+        path: "/admin/user/list",
         icon: "user",
-        match: "/user",
-        exclude: ["/user/role"],
+        match: "/admin/user",
       },
       {
         title: "บทบาทและสิทธิ์",
-        path: "/user/role/list",
+        path: "/admin/role/list",
         icon: "lock",
-        match: "/user/role",
+        match: "/admin/role",
       },
     ],
   },

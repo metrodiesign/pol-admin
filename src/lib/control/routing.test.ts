@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { evaluateRouting, enabledTone } from "./routing";
-import type { RoutingRule } from "@/types/routing-rule";
+import type { RoutingRule } from "@/types/control/routing-rule";
 
 const rules: RoutingRule[] = [
   {

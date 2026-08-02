@@ -7,8 +7,8 @@ import {
   getSortedRowModel,
   getPaginationRowModel,
 } from "@tanstack/react-table";
-import type { User, UserStatus } from "@/types/user";
-import { USERS } from "@/lib/mock/users";
+import type { User, UserStatus } from "@/types/admin/user";
+import { USERS } from "@/lib/mock/admin/users";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";
 import { UserListTabs } from "./user-list-tabs";

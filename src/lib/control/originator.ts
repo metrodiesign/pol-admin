@@ -1,4 +1,4 @@
-import type { OriginatorType, OriginatorStatus } from "@/types/originator";
+import type { OriginatorType, OriginatorStatus } from "@/types/control/originator";
 import type { Tone } from "@/lib/control/status";
 
 export const TYPE_LABEL: Record<OriginatorType, string> = {

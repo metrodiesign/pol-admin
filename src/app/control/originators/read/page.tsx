@@ -1,5 +1,5 @@
 import { EditPageHeader } from "@/components/shared/edit-page-header";
-import { OriginatorDetailView } from "@/components/control/originator/originator-detail-view";
+import { OriginatorDetailView } from "@/components/control/originator/detail-view";
 
 export const metadata = {
   title: "รายละเอียด Originator | POL Admin",

@@ -1,5 +1,5 @@
 import { EditPageHeader } from "@/components/shared/edit-page-header";
-import { PspDetailView } from "@/components/control/psp/psp-detail-view";
+import { PspDetailView } from "@/components/control/psp/detail-view";
 
 export const metadata = {
   title: "รายละเอียด PSP Connection | POL Admin",

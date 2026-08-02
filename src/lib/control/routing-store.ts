@@ -1,7 +1,7 @@
 "use client";
 
-import type { RoutingRule } from "@/types/routing-rule";
-import { ROUTING_RULES } from "@/lib/mock/routing-rules";
+import type { RoutingRule } from "@/types/control/routing-rule";
+import { ROUTING_RULES } from "@/lib/mock/control/routing-rules";
 import { createControlStore } from "./store";
 
 export const routingStore = createControlStore<RoutingRule>(ROUTING_RULES);

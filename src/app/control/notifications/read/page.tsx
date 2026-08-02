@@ -1,5 +1,5 @@
 import { EditPageHeader } from "@/components/shared/edit-page-header";
-import { NotificationLogDetailView } from "@/components/control/notification/notification-log-detail-view";
+import { NotificationLogDetailView } from "@/components/control/notification/log-detail-view";
 
 export const metadata = {
   title: "รายละเอียดการส่งแจ้งเตือน | POL Admin",

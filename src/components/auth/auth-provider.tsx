@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-import { getMe } from "@/lib/api/admin-api";
+import { getMe } from "@/lib/api/admin/auth";
 import type { AdminMe } from "@/types/auth";
 
 type AuthStatus = "loading" | "authed" | "anon";
