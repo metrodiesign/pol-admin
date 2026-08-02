@@ -80,6 +80,16 @@ export function makeCopyCode(srcCode: string, existingCodes: string[]): string {
   return `${base}${n}`;
 }
 
+/** รหัสบทบาทที่ derive จากชื่อ (สร้างใหม่ — ไม่มีช่องกรอกรหัสแยก): slug ชื่อ, ซ้ำต่อเลข */
+export function makeCodeFromName(name: string, existingCodes: string[]): string {
+  const taken = new Set(existingCodes);
+  const base = name.trim().toLowerCase().replace(/[^a-z0-9ก-๙]+/g, "_").replace(/^_+|_+$/g, "") || "role";
+  if (!taken.has(base)) return base;
+  let n = 2;
+  while (taken.has(`${base}${n}`)) n += 1;
+  return `${base}${n}`;
+}
+
 /**
  * Validate ฟอร์มบทบาท — คืน map `{ field: message }` (ว่าง = ผ่าน).
  * create/duplicate เช็ค code ว่าง + code ซ้ำ; edit ไม่เช็ค code (read-only identity, REQ-7.3).

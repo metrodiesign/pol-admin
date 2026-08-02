@@ -1,4 +1,8 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Check, Copy, Pencil } from "lucide-react";
 import type { Permission, ResourceGroup, Role } from "@/types/producer-role";
 import {
@@ -7,6 +11,7 @@ import {
   groupedCatalog,
 } from "@/lib/producer-role/role-permissions";
 import { EditPageHeader } from "@/components/shared/edit-page-header";
+import { ConfirmDialog } from "@/components/policy/confirm-dialog";
 import { RoleBadge } from "./role-badge";
 import { RoleStatusBadge } from "./role-status-badge";
 
@@ -27,6 +32,8 @@ export function RoleReadView({
   catalog,
   groups,
 }: RoleReadViewProps) {
+  const router = useRouter();
+  const [duplicateOpen, setDuplicateOpen] = useState(false);
   const granted = grantedCount(role.permissions, catalog);
   const total = catalog.length;
   const held = new Set(role.permissions);
@@ -49,42 +56,38 @@ export function RoleReadView({
           { label: "บทบาทและสิทธิ์", href: "/producer/role/list" },
           { label: role.name },
         ]}
-      />
-
-      <div className="overflow-hidden rounded-card bg-card" style={cardStyle}>
-        {/* Header: badge + รหัสบทบาท + สำเนา/แก้ไข */}
-        <div className="flex flex-col gap-4 border-b border-[var(--divider)] p-6 sm:flex-row sm:items-start sm:justify-between">
-          <div className="flex min-w-0 flex-col gap-1.5">
-            <div className="flex flex-wrap items-center gap-2">
-              <RoleBadge color={role.color} name={role.name} />
-              <RoleStatusBadge status={role.status} />
-            </div>
-            <span className="font-mono text-xs text-grey-500">
-              รหัสบทบาท: {role.code}
-            </span>
-          </div>
-          <div className="flex shrink-0 items-center gap-2">
+        actions={
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
             <Link
               href="/producer/role/list"
-              className="inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-sm font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]"
+              className="inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-sm font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]"
             >
               ยกเลิก
             </Link>
-            <Link
-              href={`/producer/role/create?from=${encodeURIComponent(role.code)}`}
-              className="inline-flex h-9 min-w-[100px] items-center justify-center gap-1.5 rounded-control border border-[var(--divider)] px-3 text-sm font-bold text-grey-800 transition-colors hover:bg-[var(--action-hover)]"
+            <button
+              type="button"
+              onClick={() => setDuplicateOpen(true)}
+              className="inline-flex h-11 min-w-[140px] items-center justify-center gap-1.5 rounded-control bg-warning px-3 text-sm font-bold text-white transition-colors hover:bg-warning/90"
             >
               <Copy className="size-4" />
               สำเนา
-            </Link>
+            </button>
             <Link
               href={`/producer/role/edit?code=${encodeURIComponent(role.code)}`}
-              className="inline-flex h-9 min-w-[100px] items-center justify-center gap-1.5 rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
+              className="inline-flex h-11 min-w-[140px] items-center justify-center gap-1.5 rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
             >
               <Pencil className="size-4" />
               แก้ไข
             </Link>
           </div>
+        }
+      />
+
+      <div className="overflow-hidden rounded-card bg-card" style={cardStyle}>
+        {/* Header: badge */}
+        <div className="flex flex-wrap items-center gap-2 border-b border-[var(--divider)] p-6">
+          <RoleBadge color={role.color} name={role.name} />
+          <RoleStatusBadge status={role.status} />
         </div>
 
         <div className="flex flex-col gap-4 py-6">
@@ -147,6 +150,18 @@ export function RoleReadView({
           </div>
         </div>
       </div>
+
+      <ConfirmDialog
+        open={duplicateOpen}
+        title="ยืนยันการทำสำเนา?"
+        description={`ระบบจะสร้างบทบาทใหม่โดยคัดลอกสิทธิ์จาก “${role.name}”`}
+        confirmLabel="ยืนยัน"
+        onConfirm={() => {
+          setDuplicateOpen(false);
+          router.push(`/producer/role/create?from=${encodeURIComponent(role.code)}`);
+        }}
+        onClose={() => setDuplicateOpen(false)}
+      />
     </>
   );
 }

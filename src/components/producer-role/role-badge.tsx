@@ -85,12 +85,11 @@ export function RoleBadge({ color, name, className }: RoleBadgeProps) {
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-sm font-bold whitespace-nowrap",
+        "inline-flex items-center whitespace-nowrap rounded-full px-4 py-1 text-sm font-semibold",
         style.chip,
         className,
       )}
     >
-      <span aria-hidden className={cn("size-1.5 shrink-0 rounded-full", style.dot)} />
       {name}
     </span>
   );

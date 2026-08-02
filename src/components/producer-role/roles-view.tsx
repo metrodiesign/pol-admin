@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Plus } from "lucide-react";
 import {
   getCoreRowModel,
   getFilteredRowModel,
@@ -13,7 +12,6 @@ import type { Role } from "@/types/producer-role";
 import { PERMISSION_CATALOG, ROLES, RESOURCE_GROUPS } from "@/lib/mock/producer-role";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";
-import { CustomBreadcrumbs } from "@/components/shared/custom-breadcrumbs";
 import { RolesToolbar } from "./roles-toolbar";
 import { buildRoleColumns } from "./roles-columns";
 import { RoleDetailSheet } from "./role-detail-sheet";
@@ -27,6 +25,7 @@ import { RoleToaster } from "./role-toaster";
  */
 export function RolesView() {
   const [search, setSearch] = useState("");
+  const [status, setStatus] = useState("");
   const [dense, setDense] = useState(false);
   const [detailRole, setDetailRole] = useState<Role | null>(null);
   const [deleteRole, setDeleteRole] = useState<Role | null>(null);
@@ -44,11 +43,6 @@ export function RolesView() {
   }, [show]);
 
   // create / duplicate / edit = หน้าแยกทั้งหมด
-  function goCreate() {
-    setDetailRole(null);
-    router.push("/producer/role/create");
-  }
-
   function goDuplicate(role: Role) {
     setDetailRole(null);
     router.push(`/producer/role/create?from=${encodeURIComponent(role.code)}`);
@@ -89,11 +83,13 @@ export function RolesView() {
     enableRowSelection: true,
     enableSortingRemoval: false,
     autoResetPageIndex: false,
-    state: { globalFilter: search },
+    state: { globalFilter: { search, status } },
     globalFilterFn: (row, _columnId, value) => {
-      const q = String(value).trim().toLowerCase();
-      if (!q) return true;
+      const f = value as { search: string; status: string };
       const r = row.original;
+      if (f.status && r.status !== f.status) return false;
+      const q = f.search.trim().toLowerCase();
+      if (!q) return true;
       return (
         r.name.toLowerCase().includes(q) ||
         r.code.toLowerCase().includes(q) ||
@@ -114,21 +110,6 @@ export function RolesView() {
 
   return (
     <>
-      <CustomBreadcrumbs
-        heading="บทบาทและสิทธิ์"
-        links={[{ name: "Console" }, { name: "บทบาทและสิทธิ์" }]}
-        action={
-          <button
-            type="button"
-            onClick={goCreate}
-            className="inline-flex h-9 items-center gap-1.5 rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            <Plus className="size-4" />
-            เพิ่มบทบาทใหม่
-          </button>
-        }
-      />
-
       <div
         className="overflow-hidden rounded-2xl bg-card"
         style={{ boxShadow: "var(--shadow-card)" }}
@@ -137,6 +118,11 @@ export function RolesView() {
           search={search}
           onSearchChange={(v) => {
             setSearch(v);
+            table.setPageIndex(0);
+          }}
+          status={status}
+          onStatusChange={(v) => {
+            setStatus(v);
             table.setPageIndex(0);
           }}
         />
