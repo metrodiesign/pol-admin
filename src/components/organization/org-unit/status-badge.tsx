@@ -2,9 +2,9 @@ import type { OrgUnitStatus } from "@/types/organization/org-unit";
 import { cn } from "@/lib/utils";
 
 /** ป้ายสถานะการใช้งาน org unit — สีไม่ใช่ตัวสื่อความหมายเดียว มีข้อความกำกับเสมอ. */
-const statusStyles: Record<OrgUnitStatus, { dot: string; chip: string; label: string }> = {
-  active: { dot: "bg-success", chip: "bg-success/16 text-success-dark", label: "ใช้งาน" },
-  inactive: { dot: "bg-grey-500", chip: "bg-grey-500/16 text-grey-600", label: "ปิดใช้งาน" },
+const statusStyles: Record<OrgUnitStatus, { chip: string; label: string }> = {
+  active: { chip: "bg-success/16 text-success-dark", label: "ใช้งาน" },
+  inactive: { chip: "bg-grey-500/16 text-grey-600", label: "ปิดใช้งาน" },
 };
 
 /** map isActive (backend) -> ค่าใช้ใน UI. */
@@ -22,12 +22,11 @@ export function OrgUnitStatusBadge({ isActive, className }: OrgUnitStatusBadgePr
   return (
     <span
       className={cn(
-        "inline-flex h-6 items-center gap-1.5 rounded-md px-1.5 text-xs font-bold whitespace-nowrap",
+        "inline-flex items-center whitespace-nowrap rounded-full px-4 py-1 text-sm font-semibold",
         style.chip,
         className,
       )}
     >
-      <span aria-hidden className={cn("size-1.5 shrink-0 rounded-full", style.dot)} />
       {style.label}
     </span>
   );
