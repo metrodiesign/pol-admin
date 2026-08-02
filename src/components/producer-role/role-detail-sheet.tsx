@@ -110,14 +110,8 @@ function RoleDetailBody({
             </div>
           </div>
           <SheetClose
-            render={
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                aria-label="ปิด"
-                className="shrink-0 text-grey-600"
-              />
-            }
+            aria-label="ปิด"
+            className="flex size-9 shrink-0 items-center justify-center rounded-full text-grey-700 transition-colors hover:bg-[var(--action-hover)]"
           >
             <X className="size-5" />
           </SheetClose>
