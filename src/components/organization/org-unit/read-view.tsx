@@ -102,13 +102,13 @@ export function OrgUnitReadView({ config, id }: OrgUnitReadViewProps) {
           <div className="flex shrink-0 items-center gap-2">
             <Link
               href={listHref}
-              className="inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-sm font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]"
+              className="inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-sm font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]"
             >
               กลับ
             </Link>
             <Link
               href={`${config.basePath}/edit?id=${encodeURIComponent(unit.id)}`}
-              className="inline-flex h-9 min-w-[100px] items-center justify-center gap-1.5 rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
+              className="inline-flex h-11 min-w-[140px] items-center justify-center gap-1.5 rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
             >
               <Pencil className="size-4" />
               แก้ไข

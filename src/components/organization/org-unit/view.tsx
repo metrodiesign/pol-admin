@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Plus } from "lucide-react";
 import {
   getCoreRowModel,
   getFilteredRowModel,
@@ -15,7 +14,6 @@ import { getOrgUnits, deactivateOrgUnit } from "@/lib/api/admin/org-unit";
 import { useDataTable } from "@/hooks/use-data-table";
 import { useToast } from "@/hooks/use-toast";
 import { DataTable } from "@/components/table/data-table";
-import { CustomBreadcrumbs } from "@/components/shared/custom-breadcrumbs";
 import { Toaster } from "@/components/shared/toaster";
 import { OrgUnitToolbar } from "./toolbar";
 import { buildOrgUnitColumns } from "./columns";
@@ -71,11 +69,6 @@ export function OrgUnitListView({ config }: OrgUnitListViewProps) {
       window.history.replaceState({}, "", `${config.basePath}/list`);
     }
   }, [show, config.basePath]);
-
-  function goCreate() {
-    setDetailUnit(null);
-    router.push(`${config.basePath}/create`);
-  }
 
   function goRead(unit: OrgUnit) {
     setDetailUnit(null);
@@ -133,21 +126,6 @@ export function OrgUnitListView({ config }: OrgUnitListViewProps) {
 
   return (
     <>
-      <CustomBreadcrumbs
-        heading={config.label}
-        links={[{ name: "Console" }, { name: config.label }]}
-        action={
-          <button
-            type="button"
-            onClick={goCreate}
-            className="inline-flex h-9 items-center gap-1.5 rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            <Plus className="size-4" />
-            เพิ่ม{config.label}
-          </button>
-        }
-      />
-
       <div
         className="overflow-hidden rounded-2xl bg-card"
         style={{ boxShadow: "var(--shadow-card)" }}

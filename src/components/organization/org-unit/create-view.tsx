@@ -106,7 +106,7 @@ export function OrgUnitCreateView({ config }: OrgUnitCreateViewProps) {
           <button
             type="button"
             onClick={handleCancel}
-            className="inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-sm font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]"
+            className="inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-sm font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]"
           >
             ยกเลิก
           </button>
@@ -114,7 +114,7 @@ export function OrgUnitCreateView({ config }: OrgUnitCreateViewProps) {
             type="button"
             onClick={handleSave}
             disabled={saving}
-            className="inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-60"
+            className="inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-60"
           >
             {saving ? "กำลังบันทึก…" : "บันทึก"}
           </button>

@@ -59,12 +59,12 @@ export function OrgUnitDetailSheet({
                 </SheetClose>
               </div>
               <div className="grid grid-cols-2 gap-2">
-                <Button variant="outline" className="h-9" onClick={() => onRead?.(unit)}>
+                <Button variant="outline" className="h-11 min-w-[140px]" onClick={() => onRead?.(unit)}>
                   <Eye className="size-4" />
                   ดูรายละเอียด
                 </Button>
                 <Button
-                  className="h-9 bg-primary text-primary-foreground hover:bg-primary/90"
+                  className="h-11 min-w-[140px] bg-primary text-primary-foreground hover:bg-primary/90"
                   onClick={() => onEdit?.(unit)}
                 >
                   <Pencil className="size-4" />
@@ -100,7 +100,11 @@ export function OrgUnitDetailSheet({
             {/* Footer — ปุ่มปิดใช้งานเฉพาะรายการที่ยัง active (REQ-2.11) */}
             <div className="flex items-center justify-between gap-2 border-t border-[var(--divider)] p-4">
               {unit.isActive ? (
-                <Button variant="destructive" onClick={() => onDeactivate?.(unit)}>
+                <Button
+                  variant="destructive"
+                  className="h-11 min-w-[140px]"
+                  onClick={() => onDeactivate?.(unit)}
+                >
                   <Ban className="size-4" />
                   ปิดใช้งาน
                 </Button>
@@ -111,7 +115,7 @@ export function OrgUnitDetailSheet({
                 render={
                   <button
                     type="button"
-                    className="inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-sm font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]"
+                    className="inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-sm font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]"
                   />
                 }
               >
