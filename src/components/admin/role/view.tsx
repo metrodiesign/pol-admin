@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Plus } from "lucide-react";
 import {
   getCoreRowModel,
   getFilteredRowModel,
@@ -14,7 +13,6 @@ import { getRoles, deleteRole as deleteRoleApi } from "@/lib/api/admin/role";
 import { useRoleCatalog } from "@/hooks/use-role-catalog";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";
-import { CustomBreadcrumbs } from "@/components/shared/custom-breadcrumbs";
 import { RolesToolbar } from "./toolbar";
 import { buildRoleColumns } from "./columns";
 import { RoleDetailSheet } from "./detail-sheet";
@@ -74,11 +72,6 @@ export function RolesView() {
   }, [show]);
 
   // create / duplicate / edit = หน้าแยกทั้งหมด
-  function goCreate() {
-    setDetailRole(null);
-    router.push("/admin/role/create");
-  }
-
   function goDuplicate(role: Role) {
     setDetailRole(null);
     router.push(`/admin/role/create?from=${encodeURIComponent(role.code)}`);
@@ -146,21 +139,6 @@ export function RolesView() {
 
   return (
     <>
-      <CustomBreadcrumbs
-        heading="บทบาทและสิทธิ์"
-        links={[{ name: "Console" }, { name: "บทบาทและสิทธิ์" }]}
-        action={
-          <button
-            type="button"
-            onClick={goCreate}
-            className="inline-flex h-9 items-center gap-1.5 rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            <Plus className="size-4" />
-            เพิ่มบทบาทใหม่
-          </button>
-        }
-      />
-
       <div
         className="overflow-hidden rounded-2xl bg-card"
         style={{ boxShadow: "var(--shadow-card)" }}

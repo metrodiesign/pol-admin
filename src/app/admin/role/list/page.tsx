@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { PageHeader } from "@/components/shared/page-header";
 import { RolesView } from "@/components/admin/role/view";
 
 export const metadata: Metadata = {
@@ -7,5 +8,14 @@ export const metadata: Metadata = {
 };
 
 export default function RolePage() {
-  return <RolesView />;
+  return (
+    <>
+      <PageHeader
+        title="บทบาทและสิทธิ์"
+        breadcrumbs={[{ label: "Console" }, { label: "บทบาทและสิทธิ์" }]}
+        action={{ label: "เพิ่มบทบาทใหม่", href: "/admin/role/create" }}
+      />
+      <RolesView />
+    </>
+  );
 }
