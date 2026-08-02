@@ -125,7 +125,7 @@ export function ProducerEditFormCard({
           {rows.map(([label, value]) => (
             <div key={label} className="flex flex-col gap-1">
               <dt className="text-sm font-medium text-grey-600">{label}</dt>
-              <dd className="text-sm text-foreground">{value || "-"}</dd>
+              <dd className="text-sm font-bold text-foreground">{value || "-"}</dd>
             </div>
           ))}
         </dl>

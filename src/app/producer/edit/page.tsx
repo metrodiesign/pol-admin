@@ -15,10 +15,7 @@ const FORM_ID = "producer-edit-form";
 
 export default function ProducerEditPage() {
   const router = useRouter();
-  const [suspended, setSuspended] = useState(false);
-  const [emailVerified, setEmailVerified] = useState(true);
-  // เริ่มที่ "รอตรวจสอบ" เพื่อให้ admin เห็นปุ่มอนุมัติ (UI shell — flip เป็น active ในเครื่อง)
-  const [status, setStatus] = useState<MerchantUserStatus>("PendingApproval");
+  const status: MerchantUserStatus = "PendingApproval";
   const [confirmAction, setConfirmAction] = useState<"cancel" | "save" | null>(null);
 
   return (
@@ -52,16 +49,7 @@ export default function ProducerEditPage() {
 
       <div className="grid grid-cols-1 gap-6 mmd:grid-cols-12">
         <div className="mmd:col-span-4">
-          <ProducerEditProfileCard
-            name="สมชาย ใจดี"
-            status={status}
-            suspended={suspended}
-            emailVerified={emailVerified}
-            onSuspendedChange={setSuspended}
-            onEmailVerifiedChange={setEmailVerified}
-            onDeleteProducer={() => {}}
-            onApprove={() => setStatus("Active")}
-          />
+          <ProducerEditProfileCard name="สมชาย ใจดี" status={status} />
         </div>
         <div className="mmd:col-span-8">
           <ProducerEditFormCard
