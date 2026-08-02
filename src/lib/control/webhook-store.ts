@@ -1,7 +1,7 @@
 "use client";
 
-import type { WebhookEvent } from "@/types/webhook-event";
-import { WEBHOOK_EVENTS } from "@/lib/mock/webhook-events";
+import type { WebhookEvent } from "@/types/control/webhook-event";
+import { WEBHOOK_EVENTS } from "@/lib/mock/control/webhook-events";
 import { createControlStore } from "./store";
 
 export const webhookStore = createControlStore<WebhookEvent>(WEBHOOK_EVENTS);

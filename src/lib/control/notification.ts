@@ -1,7 +1,7 @@
 import type {
   NotificationChannel,
   NotificationLogStatus,
-} from "@/types/notification";
+} from "@/types/control/notification";
 import type { Tone } from "@/lib/control/status";
 
 export const CHANNEL_LABEL: Record<NotificationChannel, string> = {

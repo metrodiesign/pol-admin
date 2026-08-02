@@ -2,7 +2,7 @@ import type {
   RoutingRule,
   RoutingChannel,
   RoutingPsp,
-} from "@/types/routing-rule";
+} from "@/types/control/routing-rule";
 import type { MerchantCode } from "@/types/merchant";
 import type { Tone } from "@/lib/control/status";
 

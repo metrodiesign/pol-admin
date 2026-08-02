@@ -2,7 +2,7 @@ import type {
   PspConnection,
   PspProvider,
   PspHealth,
-} from "@/types/psp-connection";
+} from "@/types/control/psp-connection";
 import type { Tone } from "@/lib/control/status";
 
 export const PROVIDER_LABEL: Record<PspProvider, string> = {

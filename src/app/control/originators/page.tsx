@@ -1,5 +1,5 @@
 import { PageHeader } from "@/components/shared/page-header";
-import { OriginatorsView } from "@/components/control/originator/originators-view";
+import { OriginatorsView } from "@/components/control/originator/view";
 
 export const metadata = {
   title: "ต้นทางคำสั่ง | POL Admin",

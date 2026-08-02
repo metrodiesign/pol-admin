@@ -1,5 +1,5 @@
 import { PageHeader } from "@/components/shared/page-header";
-import { AuditLogView } from "@/components/control/audit/audit-log-view";
+import { AuditLogView } from "@/components/control/audit/log-view";
 
 export const metadata = {
   title: "บันทึกการตรวจสอบ | POL Admin",

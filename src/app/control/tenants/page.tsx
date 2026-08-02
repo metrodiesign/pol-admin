@@ -1,5 +1,5 @@
 import { PageHeader } from "@/components/shared/page-header";
-import { TenantsView } from "@/components/control/tenant/tenants-view";
+import { TenantsView } from "@/components/control/tenant/view";
 
 export const metadata = {
   title: "ผู้เช่าและพื้นที่ทำงาน | POL Admin",

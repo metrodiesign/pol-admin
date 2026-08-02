@@ -1,5 +1,5 @@
 import { EditPageHeader } from "@/components/shared/edit-page-header";
-import { ApiClientDetailView } from "@/components/control/api-client/api-client-detail-view";
+import { ApiClientDetailView } from "@/components/control/api-client/detail-view";
 
 export const metadata = {
   title: "รายละเอียด API Client | POL Admin",

@@ -1,4 +1,4 @@
-import type { ApiClientStatus } from "@/types/api-client";
+import type { ApiClientStatus } from "@/types/control/api-client";
 import type { Tone } from "@/lib/control/status";
 
 export { maskSecret } from "@/lib/control/psp";

@@ -5,7 +5,7 @@ import { PAYMENT_SESSIONS } from "./transactions";
 import { ORDERS } from "./orders";
 import { MERCHANTS } from "./merchant";
 import { MERCHANT_USERS } from "./merchant/users";
-import { PSP_CONNECTIONS } from "./psp-connections";
+import { PSP_CONNECTIONS } from "./control/psp-connections";
 import type { MerchantCode } from "@/types/merchant";
 
 const MONEY_AMOUNT_RE = /^\d+\.\d{4}$/;
@@ -21,25 +21,25 @@ const PAYMENT_SESSION_STATUS_VALUES = ["Created", "Redirected", "Paid", "Failed"
 const FORBIDDEN_WORD_ALLOWLIST = [
   "src/lib/mock/merchant/index.ts",
   "src/lib/mock/merchant/users.ts",
-  "src/lib/mock/psp-connections.ts",
-  "src/lib/mock/reconciliation.ts",
+  "src/lib/mock/control/psp-connections.ts",
+  "src/lib/mock/control/reconciliation.ts",
   "src/lib/mock/transactions.ts",
   "src/lib/mock/orders.ts",
   "src/lib/mock/analytics.ts",
   "src/lib/mock/dashboard.ts",
   "src/lib/mock/main.ts",
-  "src/lib/mock/audit-log.ts",
-  "src/lib/mock/api-clients.ts",
-  "src/lib/mock/routing-rules.ts",
-  "src/lib/mock/webhook-events.ts",
-  "src/lib/mock/approvals.ts",
-  "src/lib/mock/originators.ts",
-  "src/lib/mock/notifications.ts",
+  "src/lib/mock/control/audit-log.ts",
+  "src/lib/mock/control/api-clients.ts",
+  "src/lib/mock/control/routing-rules.ts",
+  "src/lib/mock/control/webhook-events.ts",
+  "src/lib/mock/control/approvals.ts",
+  "src/lib/mock/control/originators.ts",
+  "src/lib/mock/control/notifications.ts",
   "src/lib/mock/policies.ts",
   "src/types/merchant/index.ts",
   "src/types/merchant/user.ts",
-  "src/types/psp-connection.ts",
-  "src/types/reconciliation.ts",
+  "src/types/control/psp-connection.ts",
+  "src/types/control/reconciliation.ts",
   "src/types/order-payment.ts",
 ];
 const FORBIDDEN_WORDS = ["completed", "refunded", "banned", "disabled", "vcentral", "tenant", "minorUnits"];
@@ -153,7 +153,7 @@ describe("Forbidden-word scan (REQ-9.6, 9.6a)", () => {
 describe("No plaintext secrets (REQ-9.7, 5.1)", () => {
   it("psp-connections.ts has no secretKey/webhookSecret/publicKey field", () => {
     const content = readFileSync(
-      join(process.cwd(), "src/lib/mock/psp-connections.ts"),
+      join(process.cwd(), "src/lib/mock/control/psp-connections.ts"),
       "utf-8",
     );
     expect(content).not.toMatch(/secretKey|webhookSecret|publicKey/i);
