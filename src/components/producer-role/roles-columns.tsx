@@ -74,11 +74,10 @@ export function buildRoleColumns({
           <button
             type="button"
             onClick={() => onSelect?.(role)}
-            className="flex flex-col items-start gap-1 rounded-control text-left outline-none focus-visible:ring-2 focus-visible:ring-grey-800"
+            className="inline-flex rounded-control text-left outline-none focus-visible:ring-2 focus-visible:ring-grey-800"
             aria-label={`ดูรายละเอียดบทบาท ${role.name}`}
           >
             <RoleBadge color={role.color} name={role.name} />
-            <span className="font-mono text-xs text-grey-500">{role.code}</span>
           </button>
         );
       },

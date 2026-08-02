@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { Role, RoleStatus, RoleFormInput } from "@/types/producer-role";
 import { PERMISSION_CATALOG, ROLES, RESOURCE_GROUPS } from "@/lib/mock/producer-role";
 import { validateRoleForm } from "@/lib/producer-role/role-permissions";
 import { cn } from "@/lib/utils";
 import { EditPageHeader } from "@/components/shared/edit-page-header";
+import { ConfirmDialog } from "@/components/policy/confirm-dialog";
 import { TextField } from "@/components/form/text-field";
 import { SelectField } from "@/components/form/select-field";
 import { RolePermissionMatrix } from "./role-permission-matrix";
@@ -20,7 +20,7 @@ const cardStyle = {
 };
 
 const cancelClass =
-  "inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-sm font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]";
+  "inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-sm font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]";
 
 interface RoleEditViewProps {
   role: Role;
@@ -38,6 +38,7 @@ export function RoleEditView({ role }: RoleEditViewProps) {
     permissions: [...role.permissions],
   }));
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [confirmAction, setConfirmAction] = useState<"cancel" | "save" | null>(null);
 
   const existingCodes = ROLES.map((r) => r.code);
 
@@ -45,12 +46,17 @@ export function RoleEditView({ role }: RoleEditViewProps) {
     setInput((prev) => ({ ...prev, ...p }));
   }
 
-  function handleSave() {
+  function handleSaveClick() {
     const found = validateRoleForm(input, existingCodes, "edit");
     if (Object.keys(found).length > 0) {
       setErrors(found);
       return;
     }
+    setConfirmAction("save");
+  }
+
+  function handleSaveConfirm() {
+    setConfirmAction(null);
     // UI-shell: ไม่ mutate รายการจริง — กลับหน้า list พร้อม toast (REQ-7.2 / 10.2 / 13.1)
     const toast = `แก้ไขบทบาท “${input.name}” สำเร็จ`;
     router.push(`/producer/role/list?toast=${encodeURIComponent(toast)}`);
@@ -66,39 +72,52 @@ export function RoleEditView({ role }: RoleEditViewProps) {
           { label: "บทบาทและสิทธิ์", href: "/producer/role/list" },
           { label: role.name },
         ]}
+        actions={
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setConfirmAction("cancel")}
+              className={cancelClass}
+            >
+              ยกเลิก
+            </button>
+            <button
+              type="button"
+              onClick={handleSaveClick}
+              className="inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
+            >
+              บันทึก
+            </button>
+          </div>
+        }
       />
 
       <div className="rounded-card bg-card p-6" style={cardStyle}>
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-6">
           <TextField
             label="ชื่อบทบาท"
+            className="sm:col-span-3"
             required
             value={input.name}
             onChange={(v) => patch({ name: v })}
             error={errors.name}
           />
           <TextField
-            label="รหัสบทบาท"
-            value={input.code}
-            disabled
-            helperText="รหัสบทบาทเป็น identity คงที่ แก้ไขไม่ได้หลังสร้าง"
-          />
-          <TextField
             label="คำอธิบาย"
-            className="sm:col-span-2"
+            className="sm:col-span-6"
             multiline
-            rows={2}
+            rows={3}
             value={input.description}
             onChange={(v) => patch({ description: v })}
           />
           <SelectField
             label="สถานะ"
-            className="sm:w-48"
+            className="sm:col-span-2"
             value={input.status}
             onChange={(v) => patch({ status: (v || "active") as RoleStatus })}
             options={STATUS_OPTIONS}
           />
-          <div className="flex flex-col gap-2 sm:col-span-2">
+          <div className="flex flex-col gap-2 sm:col-span-6">
             <span className="text-sm font-medium text-grey-800">สีป้ายกำกับ</span>
             <div className="flex items-center gap-3">
               {ROLE_COLOR_OPTIONS.map((o) => {
@@ -135,20 +154,25 @@ export function RoleEditView({ role }: RoleEditViewProps) {
             />
           </div>
         </div>
-
-        <div className="mt-6 flex items-center justify-end gap-3">
-          <Link href="/producer/role/list" className={cancelClass}>
-            ยกเลิก
-          </Link>
-          <button
-            type="button"
-            onClick={handleSave}
-            className="inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            บันทึก
-          </button>
-        </div>
       </div>
+
+      <ConfirmDialog
+        open={confirmAction === "cancel"}
+        title="ต้องการออกจากหน้านี้?"
+        description="ข้อมูลที่แก้ไขในหน้านี้จะไม่ถูกบันทึก"
+        confirmLabel="ออกจากหน้านี้"
+        onConfirm={() => router.push("/producer/role/list")}
+        onClose={() => setConfirmAction(null)}
+      />
+
+      <ConfirmDialog
+        open={confirmAction === "save"}
+        title="ยืนยันการบันทึก?"
+        description="ระบบจะบันทึกบทบาทตามที่แก้ไขในหน้านี้"
+        confirmLabel="ยืนยัน"
+        onConfirm={handleSaveConfirm}
+        onClose={() => setConfirmAction(null)}
+      />
     </>
   );
 }

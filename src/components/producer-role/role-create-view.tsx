@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { Role, RoleStatus, RoleFormInput } from "@/types/producer-role";
 import { PERMISSION_CATALOG, ROLES, RESOURCE_GROUPS } from "@/lib/mock/producer-role";
-import { makeCopyCode, validateRoleForm } from "@/lib/producer-role/role-permissions";
+import { makeCodeFromName, makeCopyCode, validateRoleForm } from "@/lib/producer-role/role-permissions";
 import { cn } from "@/lib/utils";
-import { EditPageHeader } from "@/components/shared/edit-page-header";
+import { PageHeader } from "@/components/shared/page-header";
+import { ConfirmDialog } from "@/components/policy/confirm-dialog";
 import { TextField } from "@/components/form/text-field";
 import { SelectField } from "@/components/form/select-field";
 import { RolePermissionMatrix } from "./role-permission-matrix";
@@ -20,7 +20,7 @@ const cardStyle = {
 };
 
 const cancelClass =
-  "inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-sm font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]";
+  "inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-sm font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]";
 
 interface RoleCreateViewProps {
   /** บทบาทต้นทางสำหรับโหมดทำสำเนา (prefill); ไม่มี = สร้างใหม่ */
@@ -56,17 +56,25 @@ export function RoleCreateView({ source }: RoleCreateViewProps) {
         },
   );
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [confirmAction, setConfirmAction] = useState<"cancel" | "save" | null>(null);
 
   function patch(p: Partial<RoleFormInput>) {
     setInput((prev) => ({ ...prev, ...p }));
   }
 
-  function handleSave() {
-    const found = validateRoleForm(input, existingCodes, "create");
+  function handleSaveClick() {
+    const code = isDuplicate ? input.code : makeCodeFromName(input.name, existingCodes);
+    const found = validateRoleForm({ ...input, code }, existingCodes, "create");
     if (Object.keys(found).length > 0) {
       setErrors(found);
       return;
     }
+    setInput((prev) => ({ ...prev, code }));
+    setConfirmAction("save");
+  }
+
+  function handleSaveConfirm() {
+    setConfirmAction(null);
     // UI-shell: ไม่ mutate รายการจริง — กลับหน้า list พร้อม toast (REQ-10.2 / 13.1)
     const verb = isDuplicate ? "ทำสำเนาบทบาท" : "สร้างบทบาท";
     router.push(
@@ -78,20 +86,38 @@ export function RoleCreateView({ source }: RoleCreateViewProps) {
 
   return (
     <>
-      <EditPageHeader
+      <PageHeader
         title={title}
-        backHref="/producer/role/list"
         breadcrumbs={[
           { label: "Console" },
           { label: "บทบาทและสิทธิ์", href: "/producer/role/list" },
           { label: title },
         ]}
+        actions={
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setConfirmAction("cancel")}
+              className={cancelClass}
+            >
+              ยกเลิก
+            </button>
+            <button
+              type="button"
+              onClick={handleSaveClick}
+              className="inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
+            >
+              บันทึก
+            </button>
+          </div>
+        }
       />
 
       <div className="rounded-card bg-card p-6" style={cardStyle}>
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-6">
           <TextField
             label="ชื่อบทบาท"
+            className="sm:col-span-3"
             required
             value={input.name}
             onChange={(v) => patch({ name: v })}
@@ -99,30 +125,22 @@ export function RoleCreateView({ source }: RoleCreateViewProps) {
             placeholder="เช่น ผู้ดูแลการเงิน"
           />
           <TextField
-            label="รหัสบทบาท"
-            required
-            value={input.code}
-            onChange={(v) => patch({ code: v })}
-            error={errors.code}
-            placeholder="เช่น finance_admin"
-          />
-          <TextField
             label="คำอธิบาย"
-            className="sm:col-span-2"
+            className="sm:col-span-6"
             multiline
-            rows={2}
+            rows={3}
             value={input.description}
             onChange={(v) => patch({ description: v })}
             placeholder="อธิบายขอบเขตของบทบาทนี้"
           />
           <SelectField
             label="สถานะ"
-            className="sm:w-48"
+            className="sm:col-span-2"
             value={input.status}
             onChange={(v) => patch({ status: (v || "active") as RoleStatus })}
             options={STATUS_OPTIONS}
           />
-          <div className="flex flex-col gap-2 sm:col-span-2">
+          <div className="flex flex-col gap-2 sm:col-span-6">
             <span className="text-sm font-medium text-grey-800">สีป้ายกำกับ</span>
             <div className="flex items-center gap-3">
               {ROLE_COLOR_OPTIONS.map((o) => {
@@ -159,20 +177,29 @@ export function RoleCreateView({ source }: RoleCreateViewProps) {
             />
           </div>
         </div>
-
-        <div className="mt-6 flex items-center justify-end gap-3">
-          <Link href="/producer/role/list" className={cancelClass}>
-            ยกเลิก
-          </Link>
-          <button
-            type="button"
-            onClick={handleSave}
-            className="inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            บันทึก
-          </button>
-        </div>
       </div>
+
+      <ConfirmDialog
+        open={confirmAction === "cancel"}
+        title="ต้องการออกจากหน้านี้?"
+        description="ข้อมูลที่กรอกในหน้านี้จะไม่ถูกบันทึก"
+        confirmLabel="ออกจากหน้านี้"
+        onConfirm={() => router.push("/producer/role/list")}
+        onClose={() => setConfirmAction(null)}
+      />
+
+      <ConfirmDialog
+        open={confirmAction === "save"}
+        title="ยืนยันการบันทึก?"
+        description={
+          isDuplicate
+            ? "ระบบจะสร้างบทบาทใหม่ตามข้อมูลที่กรอกในหน้านี้"
+            : "ระบบจะบันทึกบทบาทใหม่ตามข้อมูลที่กรอกในหน้านี้"
+        }
+        confirmLabel="ยืนยัน"
+        onConfirm={handleSaveConfirm}
+        onClose={() => setConfirmAction(null)}
+      />
     </>
   );
 }
