@@ -28,6 +28,7 @@ import { RoleToaster } from "./role-toaster";
  */
 export function RolesView() {
   const [search, setSearch] = useState("");
+  const [status, setStatus] = useState("");
   const [dense, setDense] = useState(false);
   const [detailRole, setDetailRole] = useState<Role | null>(null);
   const [deleteRole, setDeleteRole] = useState<Role | null>(null);
@@ -118,11 +119,13 @@ export function RolesView() {
     enableRowSelection: true,
     enableSortingRemoval: false,
     autoResetPageIndex: false,
-    state: { globalFilter: search },
+    state: { globalFilter: { search, status } },
     globalFilterFn: (row, _columnId, value) => {
-      const q = String(value).trim().toLowerCase();
-      if (!q) return true;
+      const f = value as { search: string; status: string };
       const r = row.original;
+      if (f.status && r.status !== f.status) return false;
+      const q = f.search.trim().toLowerCase();
+      if (!q) return true;
       return (
         r.name.toLowerCase().includes(q) ||
         r.code.toLowerCase().includes(q) ||
@@ -166,6 +169,11 @@ export function RolesView() {
           search={search}
           onSearchChange={(v) => {
             setSearch(v);
+            table.setPageIndex(0);
+          }}
+          status={status}
+          onStatusChange={(v) => {
+            setStatus(v);
             table.setPageIndex(0);
           }}
         />

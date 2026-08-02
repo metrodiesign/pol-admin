@@ -43,6 +43,7 @@ export function buildRoleColumns({
       meta: { headClassName: "w-12 pl-1 pr-0 py-2", cellClassName: "w-12 pl-1 pr-0" },
       header: ({ table }) => (
         <Checkbox
+          className="justify-end"
           checked={table.getIsAllRowsSelected()}
           indeterminate={
             table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
@@ -55,6 +56,7 @@ export function buildRoleColumns({
         // หยุด bubble ไม่ให้คลิก checkbox ไปเปิด drawer (onRowClick)
         <span className="inline-flex" onClick={(e) => e.stopPropagation()}>
           <Checkbox
+            className="justify-end"
             checked={row.getIsSelected()}
             onChange={(c) => row.toggleSelected(c)}
             aria-label={`เลือก ${row.original.name}`}
@@ -116,6 +118,7 @@ export function buildRoleColumns({
       accessorKey: "status",
       header: "สถานะ",
       enableSorting: false,
+      meta: { headClassName: "w-[140px]", cellClassName: "w-[140px]" },
       cell: ({ row }) => <RoleStatusBadge status={row.original.status} />,
     },
     {
@@ -144,7 +147,7 @@ export function buildRoleColumns({
                     <Eye className="size-5" />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent>ดู</TooltipContent>
+                <TooltipContent>ดูรายละเอียด</TooltipContent>
               </Tooltip>
               <Tooltip>
                 <TooltipTrigger render={<span className="inline-flex" />}>
