@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getPermissionCatalog, type PermissionCatalog } from "@/lib/api/admin-api";
+import { getPermissionCatalog, type PermissionCatalog } from "@/lib/api/admin/role";
 
 interface RoleCatalogState {
   catalog: PermissionCatalog | null;

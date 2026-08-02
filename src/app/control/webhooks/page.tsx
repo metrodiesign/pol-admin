@@ -1,5 +1,5 @@
 import { PageHeader } from "@/components/shared/page-header";
-import { WebhooksView } from "@/components/control/webhook/webhooks-view";
+import { WebhooksView } from "@/components/control/webhook/view";
 
 export const metadata = {
   title: "Webhooks และเหตุการณ์ | POL Admin",

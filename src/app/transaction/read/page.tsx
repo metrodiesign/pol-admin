@@ -1,5 +1,5 @@
 import { PageHeader } from "@/components/shared/page-header";
-import { TransactionDetailView } from "@/components/transaction/transaction-detail-view";
+import { TransactionDetailView } from "@/components/transaction/detail-view";
 
 export const metadata = {
   title: "รายละเอียดธุรกรรม | POL Admin",

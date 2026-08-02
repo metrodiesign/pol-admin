@@ -1,4 +1,4 @@
-import type { WebhookDeliveryStatus, WebhookPsp } from "@/types/webhook-event";
+import type { WebhookDeliveryStatus, WebhookPsp } from "@/types/control/webhook-event";
 import type { Tone } from "@/lib/control/status";
 
 export const PSP_LABEL: Record<WebhookPsp, string> = {

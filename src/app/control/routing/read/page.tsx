@@ -1,5 +1,5 @@
 import { EditPageHeader } from "@/components/shared/edit-page-header";
-import { RoutingDetailView } from "@/components/control/routing/routing-detail-view";
+import { RoutingDetailView } from "@/components/control/routing/detail-view";
 
 export const metadata = {
   title: "รายละเอียด Routing Rule | POL Admin",

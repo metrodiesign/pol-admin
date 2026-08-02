@@ -60,7 +60,7 @@
 ## Data layer (domain = mock; auth = real BFF)
 
 - **Domain data ยัง mock**: typed mock ใน `src/lib/mock/*` ที่ implement interface ใน `src/types/*`
-  (เช่น `export const POLICIES: Policy[]`). transaction/policy/merchant-user/user ยังไม่มี backend endpoint.
+  (เช่น `export const POLICIES: Policy[]`). transaction/policy/merchant-user/admin-user ยังไม่มี backend endpoint.
 - data flow: `lib/mock/*` -> hook (filter/sort/paginate ผ่าน TanStack) -> page container spread
   เป็น props -> child component render. ไม่มี global store (ไม่มี Redux/Zustand) — React hook + context.
 - **Auth = real backend แล้ว** (ดู section "Auth" ล่าง): `src/lib/api/admin-api.ts` คือ API client จริงตัวแรก;
@@ -96,12 +96,21 @@
   compact/fontSize/navLayout/navColor/fontFamily) จาก localStorage แล้ว apply ลง `<html>` (class/`data-*`/CSS var).
   เข้าถึงผ่าน `useSettings()`.
 - path alias **`@/*` -> `./src/*`** (`tsconfig.json`) — ใช้ absolute import เสมอ, เลี่ยง relative ข้ามโมดูล.
+- **โครงสร้างไฟล์ hierarchical**: folder = domain, file = entity, ตัด prefix ที่ซ้ำชื่อโฟลเดอร์
+  (เช่น `components/admin/role/view.tsx` ไม่ใช่ `components/role/roles-view.tsx`). โดเมนหลัก:
+  `admin/{user,role}` (URL `/admin/user`, `/admin/role`), `merchant/{user,role}` (URL `/merchant/user`,
+  `/merchant/role`), `control/*`, `order`, `transaction`, `policy`. root entity ของ domain ใช้ `index.ts`
+  (`types/merchant/index.ts`, `lib/mock/merchant/index.ts`). ยกเว้น `src/app/minimals/*` +
+  `components/dashboard/*` (Minimals demo — คงโครงเดิม). API client แยกตาม concern:
+  `lib/api/admin/{auth,role}.ts`, `lib/api/merchant/user.ts`.
+  หมายเหตุ: page URL `/admin/*` อยู่ร่วมกับ BFF rewrite `/admin/:path*` ได้ใน dev (afterFiles — page ชนะ);
+  prod ต้อง confirm ว่า reverse proxy ไม่ route `/admin/*` ทั้ง prefix ไป backend.
 
 ## Tooling
 
 - scripts: `dev` = `next dev -p 5200`, `start` = `next start -p 5200`, `build` = `next build`
   (Next 16 ใช้ Turbopack เป็น default), `lint` = `eslint`.
-- **test runner = vitest** (`vitest` ^4.1.9, config `vitest.config.ts`: alias `@`→`./src`, `environment: node`, include `src/**/*.test.ts`); script `test` = `vitest run`. gate `.ai/bin/gate-task.sh` auto-detect `"test"` → รัน `npm test` เป็น code-green ตอน mark `[x]`. tests co-located `src/**/*.test.ts` (auth, policy, merchant-user).
+- **test runner = vitest** (`vitest` ^4.1.9, config `vitest.config.ts`: alias `@`→`./src`, `environment: node`, include `src/**/*.test.ts`); script `test` = `vitest run`. gate `.ai/bin/gate-task.sh` auto-detect `"test"` → รัน `npm test` เป็น code-green ตอน mark `[x]`. tests co-located `src/**/*.test.ts` (`lib/api/admin/*`, `lib/api/merchant/*`, `lib/policy/*`, `lib/merchant/user/*`, `lib/control/*`).
 - typecheck: ใช้ `tsc --noEmit` หรือ `next build` (ยังไม่มี script `typecheck` แยก — เพิ่มได้เพื่อให้ gate auto-detect).
 
 ## Navigation (sidebar)
@@ -113,7 +122,7 @@
 
 ## Known mismatch (flag, ยังไม่แก้)
 
-- `merchant-user-role` (clone จาก `user/role`) ใช้ resource keys ของ admin domain
-  (`txn`/`merchant`/`finance`/`user`/`system`) — ยังไม่ใช่ resource ของ merchant user จริง.
+- merchant role (`components/merchant/role`, clone จาก admin `components/admin/role`) ใช้ resource keys
+  ของ admin domain (`txn`/`merchant`/`finance`/`user`/`system`) — ยังไม่ใช่ resource ของ merchant user จริง.
   copy โครง + mock เดิมไปก่อน, ปรับ resource model ให้ตรง merchant user domain แยก PR
   (spec: `merchant-user-management` REQ-8 note).

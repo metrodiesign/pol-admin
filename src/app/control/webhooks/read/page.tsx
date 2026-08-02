@@ -1,5 +1,5 @@
 import { EditPageHeader } from "@/components/shared/edit-page-header";
-import { WebhookDetailView } from "@/components/control/webhook/webhook-detail-view";
+import { WebhookDetailView } from "@/components/control/webhook/detail-view";
 
 export const metadata = {
   title: "รายละเอียด Webhook Event | POL Admin",

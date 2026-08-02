@@ -5,7 +5,7 @@ import type {
   Role,
   RoleFormInput,
   RoleFormMode,
-} from "@/types/merchant/user/role";
+} from "@/types/merchant/role";
 
 /**
  * Pure selectors สำหรับโมดูล Role — ไม่มี React, ไม่มี side-effect, test-ready.

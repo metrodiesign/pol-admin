@@ -1,5 +1,5 @@
 import { PageHeader } from "@/components/shared/page-header";
-import { NotificationsView } from "@/components/control/notification/notifications-view";
+import { NotificationsView } from "@/components/control/notification/view";
 
 export const metadata = {
   title: "การแจ้งเตือน | POL Admin",

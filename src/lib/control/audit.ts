@@ -1,4 +1,4 @@
-import type { AuditEntry, AuditResult } from "@/types/audit";
+import type { AuditEntry, AuditResult } from "@/types/control/audit";
 import type { Tone } from "@/lib/control/status";
 
 export const RESULT_LABEL: Record<AuditResult, string> = {

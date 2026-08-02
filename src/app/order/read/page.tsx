@@ -1,5 +1,5 @@
 import { PageHeader } from "@/components/shared/page-header";
-import { OrderDetailView } from "@/components/order/order-detail-view";
+import { OrderDetailView } from "@/components/order/detail-view";
 
 export const metadata = {
   title: "รายละเอียดคำสั่งซื้อ | POL Admin",

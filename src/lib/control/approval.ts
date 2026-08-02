@@ -2,7 +2,7 @@ import type {
   ApprovalRequest,
   ApprovalActionType,
   ApprovalStatus,
-} from "@/types/approval";
+} from "@/types/control/approval";
 import type { Tone } from "@/lib/control/status";
 
 export const ACTION_LABEL: Record<ApprovalActionType, string> = {

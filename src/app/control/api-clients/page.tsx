@@ -1,5 +1,5 @@
 import { PageHeader } from "@/components/shared/page-header";
-import { ApiClientsView } from "@/components/control/api-client/api-clients-view";
+import { ApiClientsView } from "@/components/control/api-client/view";
 
 export const metadata = {
   title: "ไคลเอนต์ API | POL Admin",

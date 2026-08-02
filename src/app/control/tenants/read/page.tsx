@@ -1,5 +1,5 @@
 import { EditPageHeader } from "@/components/shared/edit-page-header";
-import { TenantDetailView } from "@/components/control/tenant/tenant-detail-view";
+import { TenantDetailView } from "@/components/control/tenant/detail-view";
 
 export const metadata = {
   title: "รายละเอียด Merchant | POL Admin",

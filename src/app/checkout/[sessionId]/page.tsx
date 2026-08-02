@@ -1,5 +1,5 @@
 import { PageHeader } from "@/components/shared/page-header";
-import { PolicyCheckoutSessionView } from "@/components/policy/policy-checkout-session-view";
+import { PolicyCheckoutSessionView } from "@/components/policy/checkout-session-view";
 
 export const metadata = {
   title: "ยืนยันคำสั่งซื้อ | POL Admin",

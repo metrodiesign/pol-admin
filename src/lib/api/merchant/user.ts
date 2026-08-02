@@ -2,7 +2,7 @@ import type { MerchantUserFormData } from "@/types/merchant/user";
 
 // Merchant user BFF client — full-page navigate เริ่ม SSO; ไม่ถือ token (session = httpOnly cookie ฝั่ง backend).
 // contract: pol-core/docs/reference/producer-google-sso.md
-// login เป็น top-level navigation ตรงไป backend origin (เหตุผลเดียวกับ admin-api.ts: redirect_uri ต้องตรง host จริง).
+// login เป็น top-level navigation ตรงไป backend origin (เหตุผลเดียวกับ lib/api/admin/auth.ts: redirect_uri ต้องตรง host จริง).
 const API_ORIGIN = process.env.NEXT_PUBLIC_API_ORIGIN ?? "";
 const MERCHANT_USER_LOGIN_PATH = `${API_ORIGIN}/api/v1/merchants/auth/google/login`;
 const MERCHANT_USER_MICROSOFT_LOGIN_PATH = `${API_ORIGIN}/api/v1/merchants/auth/microsoft/login`;

@@ -1,5 +1,5 @@
 import { PageHeader } from "@/components/shared/page-header";
-import { ApprovalsView } from "@/components/control/approval/approvals-view";
+import { ApprovalsView } from "@/components/control/approval/view";
 
 export const metadata = {
   title: "การอนุมัติ | POL Admin",

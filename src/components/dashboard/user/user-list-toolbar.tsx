@@ -1,7 +1,7 @@
 "use client";
 
 import { Search, EllipsisVertical } from "lucide-react";
-import { USER_ROLES } from "@/lib/mock/users";
+import { USER_ROLES } from "@/lib/mock/admin/users";
 import { TextField } from "@/components/form/text-field";
 import { SelectField } from "@/components/form/select-field";
 import { Button } from "@/components/ui/button";

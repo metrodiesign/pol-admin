@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { canApprove, statusTone } from "./approval";
-import type { ApprovalRequest } from "@/types/approval";
+import type { ApprovalRequest } from "@/types/control/approval";
 
 function makeRequest(over: Partial<ApprovalRequest> = {}): ApprovalRequest {
   return {
