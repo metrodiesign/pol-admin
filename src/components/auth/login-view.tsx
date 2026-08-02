@@ -4,7 +4,7 @@ import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import { login, microsoftLogin } from "@/lib/api/admin-api";
-import { producerLogin, producerMicrosoftLogin } from "@/lib/api/producer-api";
+import { merchantUserLogin, merchantUserMicrosoftLogin } from "@/lib/api/merchant/user";
 
 // landing หลัง login = /dashboard (admin landing จริง). backend ต้องมี /dashboard ใน AdminSession:ReturnUrlAllowlist
 // (ไม่งั้น reject -> falls back /). ดู coordination item ใน spec.
@@ -125,7 +125,7 @@ export function LoginView() {
               type="button"
               size="lg"
               className={`mt-8 ${SSO_BUTTON_CLASS}`}
-              onClick={() => producerLogin()}
+              onClick={() => merchantUserLogin()}
             >
               <GoogleIcon />
               เข้าสู่ระบบด้วย Google
@@ -134,7 +134,7 @@ export function LoginView() {
               type="button"
               size="lg"
               className={`mt-3 ${SSO_BUTTON_CLASS}`}
-              onClick={() => producerMicrosoftLogin()}
+              onClick={() => merchantUserMicrosoftLogin()}
             >
               <MicrosoftIcon />
               เข้าสู่ระบบด้วย Microsoft

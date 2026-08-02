@@ -60,7 +60,7 @@
 ## Data layer (domain = mock; auth = real BFF)
 
 - **Domain data ยัง mock**: typed mock ใน `src/lib/mock/*` ที่ implement interface ใน `src/types/*`
-  (เช่น `export const POLICIES: Policy[]`). transaction/policy/producer/user ยังไม่มี backend endpoint.
+  (เช่น `export const POLICIES: Policy[]`). transaction/policy/merchant-user/user ยังไม่มี backend endpoint.
 - data flow: `lib/mock/*` -> hook (filter/sort/paginate ผ่าน TanStack) -> page container spread
   เป็น props -> child component render. ไม่มี global store (ไม่มี Redux/Zustand) — React hook + context.
 - **Auth = real backend แล้ว** (ดู section "Auth" ล่าง): `src/lib/api/admin-api.ts` คือ API client จริงตัวแรก;
@@ -101,7 +101,7 @@
 
 - scripts: `dev` = `next dev -p 5200`, `start` = `next start -p 5200`, `build` = `next build`
   (Next 16 ใช้ Turbopack เป็น default), `lint` = `eslint`.
-- **test runner = vitest** (`vitest` ^4.1.9, config `vitest.config.ts`: alias `@`→`./src`, `environment: node`, include `src/**/*.test.ts`); script `test` = `vitest run`. gate `.ai/bin/gate-task.sh` auto-detect `"test"` → รัน `npm test` เป็น code-green ตอน mark `[x]`. tests co-located `src/**/*.test.ts` (auth, policy, producer).
+- **test runner = vitest** (`vitest` ^4.1.9, config `vitest.config.ts`: alias `@`→`./src`, `environment: node`, include `src/**/*.test.ts`); script `test` = `vitest run`. gate `.ai/bin/gate-task.sh` auto-detect `"test"` → รัน `npm test` เป็น code-green ตอน mark `[x]`. tests co-located `src/**/*.test.ts` (auth, policy, merchant-user).
 - typecheck: ใช้ `tsc --noEmit` หรือ `next build` (ยังไม่มี script `typecheck` แยก — เพิ่มได้เพื่อให้ gate auto-detect).
 
 ## Navigation (sidebar)
@@ -113,7 +113,7 @@
 
 ## Known mismatch (flag, ยังไม่แก้)
 
-- `producer-role` (clone จาก `user/role`) ใช้ resource keys ของ admin domain
-  (`txn`/`merchant`/`finance`/`user`/`system`) — ยังไม่ใช่ resource ของ producer จริง.
-  copy โครง + mock เดิมไปก่อน, ปรับ resource model ให้ตรง producer domain แยก PR
-  (spec: `producer-management` REQ-8 note).
+- `merchant-user-role` (clone จาก `user/role`) ใช้ resource keys ของ admin domain
+  (`txn`/`merchant`/`finance`/`user`/`system`) — ยังไม่ใช่ resource ของ merchant user จริง.
+  copy โครง + mock เดิมไปก่อน, ปรับ resource model ให้ตรง merchant user domain แยก PR
+  (spec: `merchant-user-management` REQ-8 note).

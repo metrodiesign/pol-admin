@@ -70,16 +70,16 @@ export const navConfig: NavGroup[] = [
     items: [
       {
         title: "ตัวแทน/นายหน้า",
-        path: "/producer/list",
+        path: "/merchant/user/list",
         icon: "user",
-        match: "/producer",
-        exclude: ["/producer/role"],
+        match: "/merchant/user",
+        exclude: ["/merchant/user/role"],
       },
       {
         title: "บทบาทและสิทธิ์",
-        path: "/producer/role/list",
+        path: "/merchant/user/role/list",
         icon: "lock",
-        match: "/producer/role",
+        match: "/merchant/user/role",
       },
     ],
   },

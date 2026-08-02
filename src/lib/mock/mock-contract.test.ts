@@ -4,7 +4,7 @@ import { join } from "path";
 import { PAYMENT_SESSIONS } from "./transactions";
 import { ORDERS } from "./orders";
 import { MERCHANTS } from "./merchants";
-import { MERCHANT_USERS } from "./merchant-users";
+import { MERCHANT_USERS } from "./merchant/users";
 import { PSP_CONNECTIONS } from "./psp-connections";
 import type { MerchantCode } from "@/types/merchant";
 
@@ -20,7 +20,7 @@ const PAYMENT_SESSION_STATUS_VALUES = ["Created", "Redirected", "Paid", "Failed"
 // settlement->reconciliation, transaction->order-payment — ตามที่ REQ-9.6 เองระบุไว้).
 const FORBIDDEN_WORD_ALLOWLIST = [
   "src/lib/mock/merchants.ts",
-  "src/lib/mock/merchant-users.ts",
+  "src/lib/mock/merchant/users.ts",
   "src/lib/mock/psp-connections.ts",
   "src/lib/mock/reconciliation.ts",
   "src/lib/mock/transactions.ts",
@@ -37,7 +37,7 @@ const FORBIDDEN_WORD_ALLOWLIST = [
   "src/lib/mock/notifications.ts",
   "src/lib/mock/policies.ts",
   "src/types/merchant.ts",
-  "src/types/merchant-user.ts",
+  "src/types/merchant/user.ts",
   "src/types/psp-connection.ts",
   "src/types/reconciliation.ts",
   "src/types/order-payment.ts",
@@ -66,7 +66,7 @@ const MINIMALS_DEMO_FILES = [
   "topbar",
   "role",
   "users",
-  "producer-role",
+  "merchant/user/role",
 ];
 
 describe("Money (REQ-9.1, 9.2)", () => {
