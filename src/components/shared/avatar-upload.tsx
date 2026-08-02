@@ -11,6 +11,7 @@ interface AvatarUploadProps {
   size?: number;
   onFileSelect?: (file: File) => void;
   error?: boolean;
+  hideHint?: boolean;
 }
 
 export function AvatarUpload({
@@ -19,6 +20,7 @@ export function AvatarUpload({
   size = 126,
   onFileSelect,
   error = false,
+  hideHint = false,
 }: AvatarUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
@@ -77,11 +79,13 @@ export function AvatarUpload({
         className="hidden"
         onChange={handleChange}
       />
-      <p className="mt-4 text-center text-xs leading-relaxed text-grey-500">
-        Allowed *.jpeg, *.jpg, *.png, *.gif
-        <br />
-        max size of 3 Mb
-      </p>
+      {!hideHint && (
+        <p className="mt-4 text-center text-xs leading-relaxed text-grey-500">
+          Allowed *.jpeg, *.jpg, *.png, *.gif
+          <br />
+          max size of 3 Mb
+        </p>
+      )}
     </div>
   );
 }

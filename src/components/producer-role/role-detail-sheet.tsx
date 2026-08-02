@@ -135,7 +135,7 @@ function RoleDetailBody({
             สำเนา
           </Button>
           <Button
-            className="h-9 bg-grey-800 text-white hover:bg-grey-900"
+            className="h-9 bg-primary text-primary-foreground hover:bg-primary/90"
             onClick={() => onEdit?.(role)}
           >
             <Pencil className="size-4" />

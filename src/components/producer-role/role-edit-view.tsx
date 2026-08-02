@@ -143,7 +143,7 @@ export function RoleEditView({ role }: RoleEditViewProps) {
           <button
             type="button"
             onClick={handleSave}
-            className="inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-grey-800 px-3 text-sm font-bold text-white transition-colors hover:bg-grey-900"
+            className="inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
           >
             บันทึก
           </button>

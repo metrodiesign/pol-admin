@@ -26,7 +26,7 @@ export function RoleFormStatus({
       {state !== "loading" && (
         <Link
           href="/user/role/list"
-          className="mt-3 inline-flex h-9 items-center justify-center rounded-control bg-grey-800 px-3 text-sm font-bold text-white transition-colors hover:bg-grey-900"
+          className="mt-3 inline-flex h-9 items-center justify-center rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
         >
           กลับไปหน้ารายการ
         </Link>

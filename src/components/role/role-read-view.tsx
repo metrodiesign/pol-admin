@@ -137,7 +137,7 @@ export function RoleReadView({ code }: RoleReadViewProps) {
             </Link>
             <Link
               href={`/user/role/edit?code=${encodeURIComponent(role.code)}`}
-              className="inline-flex h-9 min-w-[100px] items-center justify-center gap-1.5 rounded-control bg-grey-800 px-3 text-sm font-bold text-white transition-colors hover:bg-grey-900"
+              className="inline-flex h-9 min-w-[100px] items-center justify-center gap-1.5 rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
             >
               <Pencil className="size-4" />
               แก้ไข

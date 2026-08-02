@@ -45,7 +45,7 @@ export function UserListView() {
       const f = value as { role: string; search: string; status: TabValue };
       const u = row.original;
       if (!(f.status === "all" || u.status === f.status)) return false;
-      if (f.role && u.role !== f.role) return false;
+      if (f.role && !u.roles.includes(f.role)) return false;
       if (f.search) {
         const q = f.search.toLowerCase();
         if (

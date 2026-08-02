@@ -1,15 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import { PageHeader } from "@/components/shared/page-header";
 import { AvatarUpload } from "@/components/shared/avatar-upload";
-import { Fieldset, Field, Label, Description } from "@/components/shared/fieldset";
-import { Switch } from "@/components/ui/switch";
 import { UserEditFormCard } from "@/components/user/user-edit-form-card";
 
 export default function UserCreatePage() {
-  const [emailVerified, setEmailVerified] = useState(true);
-
   return (
     <>
       <PageHeader
@@ -30,40 +25,21 @@ export default function UserCreatePage() {
             }}
           >
             <AvatarUpload size={144} />
-
-            <Fieldset aria-label="ตั้งค่าบัญชี" className="mt-10">
-              <div className="space-y-5">
-                <Field className="flex-row items-start justify-between gap-4">
-                  <div>
-                    <Label className="text-sm font-semibold">ยืนยันอีเมลแล้ว</Label>
-                    <Description>
-                      หากปิดตัวเลือกนี้ ระบบจะส่งอีเมลยืนยันให้ผู้ใช้โดยอัตโนมัติ
-                    </Description>
-                  </div>
-                  <Switch
-                    checked={emailVerified}
-                    onCheckedChange={setEmailVerified}
-                    className="data-checked:bg-success"
-                  />
-                </Field>
-              </div>
-            </Fieldset>
           </div>
         </div>
 
         <div className="mmd:col-span-8">
           <UserEditFormCard
             initialData={{
-              fullName: "",
+              firstName: "",
+              lastName: "",
               email: "",
-              phoneNumber: "",
-              country: "",
-              stateRegion: "",
-              city: "",
-              address: "",
-              zipCode: "",
-              company: "",
-              role: "",
+              status: "active",
+              office: "",
+              department: "",
+              position: "",
+              level: "",
+              roles: [],
             }}
             submitLabel="เพิ่มผู้ใช้งาน"
             cancelHref="/user/list"

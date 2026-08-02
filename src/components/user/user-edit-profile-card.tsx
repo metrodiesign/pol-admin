@@ -1,23 +1,16 @@
 "use client";
 
 import { AvatarUpload } from "@/components/shared/avatar-upload";
-import { Fieldset, Field, Label, Description } from "@/components/shared/fieldset";
-import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 
 type UserStatus = "active" | "pending" | "banned" | "rejected";
 
 interface UserEditProfileCardProps {
-  avatarUrl: string;
+  avatarUrl?: string;
   name: string;
   status: UserStatus;
-  banned: boolean;
-  emailVerified: boolean;
-  onBannedChange: (value: boolean) => void;
-  onEmailVerifiedChange: (value: boolean) => void;
-  onDeleteUser: () => void;
   onAvatarChange?: (file: File) => void;
-  /** View-only: switches disabled, no delete button, avatar not editable. */
+  /** View-only: avatar not editable. */
   readOnly?: boolean;
 }
 
@@ -39,30 +32,10 @@ const statusConfig: Record<
   },
 };
 
-function BoolBadge({ value }: { value: boolean }) {
-  return (
-    <span
-      className={cn(
-        "inline-flex h-6 items-center rounded-md px-1.5 text-xs font-bold",
-        value
-          ? "bg-success/16 text-success-dark"
-          : "bg-grey-500/16 text-grey-600",
-      )}
-    >
-      {value ? "ใช่" : "ไม่"}
-    </span>
-  );
-}
-
 export function UserEditProfileCard({
   avatarUrl,
   name,
   status,
-  banned,
-  emailVerified,
-  onBannedChange,
-  onEmailVerifiedChange,
-  onDeleteUser,
   onAvatarChange,
   readOnly = false,
 }: UserEditProfileCardProps) {
@@ -78,7 +51,7 @@ export function UserEditProfileCard({
     >
       <span
         className={cn(
-          "absolute top-6 right-6 inline-flex h-6 items-center rounded-md px-1.5 text-xs font-bold",
+          "absolute top-6 right-6 inline-flex items-center rounded-full px-4 py-1 text-sm font-semibold",
           badge.bg,
           badge.text
         )}
@@ -92,58 +65,9 @@ export function UserEditProfileCard({
           alt={name}
           size={144}
           onFileSelect={onAvatarChange}
+          hideHint={readOnly}
         />
       </div>
-
-      <Fieldset aria-label="ตั้งค่าบัญชี" className="mt-10">
-        <div className="space-y-5">
-          <Field className="flex-row items-start justify-between gap-4">
-            <div>
-              <Label className="text-sm font-semibold">ระงับการใช้งาน</Label>
-              <Description>ปิดการใช้งานบัญชีนี้</Description>
-            </div>
-            {readOnly ? (
-              <BoolBadge value={banned} />
-            ) : (
-              <Switch
-                checked={banned}
-                onCheckedChange={onBannedChange}
-                className="data-checked:bg-success"
-              />
-            )}
-          </Field>
-
-          <Field className="flex-row items-start justify-between gap-4">
-            <div>
-              <Label className="text-sm font-semibold">ยืนยันอีเมลแล้ว</Label>
-              <Description>
-                หากปิดตัวเลือกนี้ ระบบจะส่งอีเมลยืนยันให้ผู้ใช้โดยอัตโนมัติ
-              </Description>
-            </div>
-            {readOnly ? (
-              <BoolBadge value={emailVerified} />
-            ) : (
-              <Switch
-                checked={emailVerified}
-                onCheckedChange={onEmailVerifiedChange}
-                className="data-checked:bg-success"
-              />
-            )}
-          </Field>
-        </div>
-      </Fieldset>
-
-      {!readOnly && (
-        <div className="mt-6 flex justify-center">
-          <button
-            type="button"
-            onClick={onDeleteUser}
-            className="rounded-control bg-error/16 px-3 py-1.5 text-sm font-bold text-error-dark transition-colors hover:bg-error/24"
-          >
-            ลบผู้ใช้งาน
-          </button>
-        </div>
-      )}
     </div>
   );
 }

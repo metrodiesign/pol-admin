@@ -122,7 +122,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
         <Button
           render={<Link href="/order/list" />}
           nativeButton={false}
-          className="mt-1 h-10 bg-grey-800 px-5 font-bold text-white hover:bg-grey-900"
+          className="mt-1 h-10 bg-primary px-5 font-bold text-primary-foreground hover:bg-primary/90"
         >
           กลับไปหน้ารายการ
         </Button>

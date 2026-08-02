@@ -8,6 +8,6 @@ export interface User {
   avatarUrl: string;
   phoneNumber: string;
   company: string;
-  role: string;
+  roles: string[];
   status: UserStatus;
 }

@@ -64,7 +64,7 @@ function PrimaryButton({ children }: { children: React.ReactNode }) {
   return (
     <button
       type="button"
-      className="rounded-lg bg-grey-800 px-3 py-1.5 text-xs font-bold text-white transition-colors hover:bg-grey-900"
+      className="rounded-lg bg-primary px-3 py-1.5 text-xs font-bold text-primary-foreground transition-colors hover:bg-primary/90"
     >
       {children}
     </button>
