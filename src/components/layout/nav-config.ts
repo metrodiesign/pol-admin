@@ -103,6 +103,37 @@ export const navConfig: NavGroup[] = [
     ],
   },
 
+  // ── โครงสร้างองค์กร (master data ผูกกับ admin user profile) ────────────────
+  {
+    subheader: "โครงสร้างองค์กร",
+    items: [
+      {
+        title: "สำนักงาน",
+        path: "/organization/office/list",
+        icon: "building",
+        match: "/organization/office",
+      },
+      {
+        title: "แผนก",
+        path: "/organization/division/list",
+        icon: "sitemap",
+        match: "/organization/division",
+      },
+      {
+        title: "ตำแหน่ง",
+        path: "/organization/position/list",
+        icon: "badge",
+        match: "/organization/position",
+      },
+      {
+        title: "ระดับ",
+        path: "/organization/level/list",
+        icon: "ranking",
+        match: "/organization/level",
+      },
+    ],
+  },
+
   // ── Control plane · การเชื่อมต่อ & orchestration ───────────────────────────
   {
     subheader: "Control plane · การเชื่อมต่อ",
