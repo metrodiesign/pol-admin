@@ -33,6 +33,11 @@ interface ProducerEditFormCardProps {
   readOnly?: boolean;
   /** When set, render a Cancel button linking back to this path. */
   cancelHref?: string;
+  /**
+   * Set on the <form> so an external submit button can target it via the HTML `form` attribute.
+   * When set, the built-in Cancel/Save row is skipped — the caller renders its own actions elsewhere.
+   */
+  formId?: string;
   /** create (registration) only: show + require the accept-terms checkbox. */
   showAcceptTerms?: boolean;
   /** Public registration only: tint interactive accents (submit button, radio)
@@ -66,6 +71,7 @@ export function ProducerEditFormCard({
   submitLabel = "บันทึก",
   readOnly = false,
   cancelHref,
+  formId,
   showAcceptTerms = false,
   brandAccent = false,
   photo,
@@ -119,7 +125,7 @@ export function ProducerEditFormCard({
           {rows.map(([label, value]) => (
             <div key={label} className="flex flex-col gap-1">
               <dt className="text-sm font-medium text-grey-600">{label}</dt>
-              <dd className="text-sm text-foreground">{value || "-"}</dd>
+              <dd className="text-sm font-bold text-foreground">{value || "-"}</dd>
             </div>
           ))}
         </dl>
@@ -137,7 +143,7 @@ export function ProducerEditFormCard({
 
   return (
     <div className="rounded-card bg-card p-6" style={cardStyle}>
-      <form onSubmit={handleSubmit} noValidate>
+      <form id={formId} onSubmit={handleSubmit} noValidate>
         <fieldset className="mb-5">
           <legend className="mb-2 text-sm font-medium text-grey-800">
             ประเภทบุคคล <span className="text-error">*</span>
@@ -306,23 +312,25 @@ export function ProducerEditFormCard({
           </div>
         )}
 
-        <div className="mt-6 flex items-center justify-end gap-3">
-          {cancelHref && (
-            <Link href={cancelHref} className={cancelClass}>
-              ยกเลิก
-            </Link>
-          )}
-          <button
-            type="submit"
-            className={
-              brandAccent
-                ? "inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
-                : "inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-grey-800 px-3 text-sm font-bold text-white transition-colors hover:bg-grey-900 dark:bg-white dark:text-grey-900 dark:hover:bg-grey-300"
-            }
-          >
-            {submitLabel}
-          </button>
-        </div>
+        {!formId && (
+          <div className="mt-6 flex items-center justify-end gap-3">
+            {cancelHref && (
+              <Link href={cancelHref} className={cancelClass}>
+                ยกเลิก
+              </Link>
+            )}
+            <button
+              type="submit"
+              className={
+                brandAccent
+                  ? "inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
+                  : "inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
+              }
+            >
+              {submitLabel}
+            </button>
+          </div>
+        )}
       </form>
     </div>
   );

@@ -27,12 +27,12 @@ export function PageHeader({ title, breadcrumbs, description, action, actions }:
   }));
 
   const actionNode = (action || actions) ? (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 shrink-0">
       {actions}
       {action && (
         <Link
           href={action.href}
-          className="inline-flex h-9 items-center gap-1.5 rounded-control bg-grey-800 px-3 text-sm font-bold text-white hover:bg-grey-900 transition-colors"
+          className="inline-flex h-11 min-w-[140px] items-center justify-center gap-1.5 rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground hover:bg-primary/90 transition-colors"
         >
           <Plus className="size-4" />
           {action.label}
@@ -42,11 +42,14 @@ export function PageHeader({ title, breadcrumbs, description, action, actions }:
   ) : undefined;
 
   return (
-    <CustomBreadcrumbs
-      heading={title}
-      links={links}
-      description={description}
-      action={actionNode}
-    />
+    <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+      <CustomBreadcrumbs
+        heading={title}
+        links={links}
+        description={description}
+        className="mb-0"
+      />
+      {actionNode}
+    </div>
   );
 }

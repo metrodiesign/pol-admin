@@ -12,7 +12,7 @@ export const USERS: User[] = [
     avatarUrl: `${AVATAR_BASE}/avatar-17.webp`,
     phoneNumber: "0810000001",
     company: "สำนักงานใหญ่",
-    role: "Content Creator",
+    roles: ["Content Creator", "UI Designer"],
     status: "banned",
   },
   {
@@ -23,7 +23,7 @@ export const USERS: User[] = [
     avatarUrl: `${AVATAR_BASE}/avatar-20.webp`,
     phoneNumber: "0890000002",
     company: "สาขาเชียงใหม่",
-    role: "IT Administrator",
+    roles: ["IT Administrator", "DevOps Engineer"],
     status: "active",
   },
   {
@@ -34,7 +34,7 @@ export const USERS: User[] = [
     avatarUrl: `${AVATAR_BASE}/avatar-15.webp`,
     phoneNumber: "0970000003",
     company: "สาขาขอนแก่น",
-    role: "Financial Planner",
+    roles: ["Financial Planner"],
     status: "banned",
   },
   {
@@ -45,7 +45,7 @@ export const USERS: User[] = [
     avatarUrl: `${AVATAR_BASE}/avatar-13.webp`,
     phoneNumber: "0620000004",
     company: "สาขาชลบุรี",
-    role: "HR Recruiter",
+    roles: ["HR Recruiter"],
     status: "active",
   },
   {
@@ -56,7 +56,7 @@ export const USERS: User[] = [
     avatarUrl: `${AVATAR_BASE}/avatar-9.webp`,
     phoneNumber: "0810000005",
     company: "สาขาภูเก็ต",
-    role: "Graphic Designer",
+    roles: ["Graphic Designer"],
     status: "banned",
   },
   {
@@ -67,7 +67,7 @@ export const USERS: User[] = [
     avatarUrl: `${AVATAR_BASE}/avatar-6.webp`,
     phoneNumber: "0930000006",
     company: "สาขานครราชสีมา",
-    role: "UX Designer",
+    roles: ["UX Designer"],
     status: "active",
   },
   {
@@ -78,7 +78,7 @@ export const USERS: User[] = [
     avatarUrl: `${AVATAR_BASE}/avatar-3.webp`,
     phoneNumber: "0640000007",
     company: "สาขาสงขลา",
-    role: "Project Manager",
+    roles: ["Project Manager", "Scrum Master"],
     status: "banned",
   },
   {
@@ -89,7 +89,7 @@ export const USERS: User[] = [
     avatarUrl: `${AVATAR_BASE}/avatar-4.webp`,
     phoneNumber: "0850000008",
     company: "สาขาอุดรธานี",
-    role: "Full Stack Developer",
+    roles: ["Full Stack Developer"],
     status: "active",
   },
   {
@@ -100,7 +100,7 @@ export const USERS: User[] = [
     avatarUrl: `${AVATAR_BASE}/avatar-25.webp`,
     phoneNumber: "0980000009",
     company: "สาขานนทบุรี",
-    role: "CEO",
+    roles: ["CEO", "Marketing Director"],
     status: "active",
   },
   {
@@ -111,7 +111,7 @@ export const USERS: User[] = [
     avatarUrl: `${AVATAR_BASE}/avatar-10.webp`,
     phoneNumber: "0610000010",
     company: "สาขาปทุมธานี",
-    role: "Marketing Director",
+    roles: ["Marketing Director"],
     status: "active",
   },
   {
@@ -122,7 +122,7 @@ export const USERS: User[] = [
     avatarUrl: `${AVATAR_BASE}/avatar-11.webp`,
     phoneNumber: "0870000011",
     company: "สาขาสมุทรปราการ",
-    role: "Data Analyst",
+    roles: ["Data Analyst"],
     status: "active",
   },
   {
@@ -133,7 +133,7 @@ export const USERS: User[] = [
     avatarUrl: `${AVATAR_BASE}/avatar-12.webp`,
     phoneNumber: "0920000012",
     company: "สาขาระยอง",
-    role: "Business Analyst",
+    roles: ["Business Analyst"],
     status: "active",
   },
   {
@@ -144,7 +144,7 @@ export const USERS: User[] = [
     avatarUrl: `${AVATAR_BASE}/avatar-14.webp`,
     phoneNumber: "0950000013",
     company: "สาขานครปฐม",
-    role: "DevOps Engineer",
+    roles: ["DevOps Engineer"],
     status: "active",
   },
   {
@@ -155,7 +155,7 @@ export const USERS: User[] = [
     avatarUrl: `${AVATAR_BASE}/avatar-16.webp`,
     phoneNumber: "0860000014",
     company: "สาขาสุราษฎร์ธานี",
-    role: "QA Engineer",
+    roles: ["QA Engineer"],
     status: "banned",
   },
   {
@@ -166,7 +166,7 @@ export const USERS: User[] = [
     avatarUrl: `${AVATAR_BASE}/avatar-18.webp`,
     phoneNumber: "0990000015",
     company: "สาขาเชียงราย",
-    role: "Software Architect",
+    roles: ["Software Architect"],
     status: "banned",
   },
   {
@@ -177,7 +177,7 @@ export const USERS: User[] = [
     avatarUrl: `${AVATAR_BASE}/avatar-19.webp`,
     phoneNumber: "0830000016",
     company: "สาขาพิษณุโลก",
-    role: "Product Manager",
+    roles: ["Product Manager"],
     status: "active",
   },
   {
@@ -188,7 +188,7 @@ export const USERS: User[] = [
     avatarUrl: `${AVATAR_BASE}/avatar-2.webp`,
     phoneNumber: "0910000017",
     company: "สาขาอุบลราชธานี",
-    role: "Team Lead",
+    roles: ["Team Lead"],
     status: "active",
   },
   {
@@ -199,7 +199,7 @@ export const USERS: User[] = [
     avatarUrl: `${AVATAR_BASE}/avatar-5.webp`,
     phoneNumber: "0840000018",
     company: "สาขานครสวรรค์",
-    role: "Scrum Master",
+    roles: ["Scrum Master"],
     status: "banned",
   },
   {
@@ -210,7 +210,7 @@ export const USERS: User[] = [
     avatarUrl: `${AVATAR_BASE}/avatar-7.webp`,
     phoneNumber: "0960000019",
     company: "สาขาลำปาง",
-    role: "UI Designer",
+    roles: ["UI Designer"],
     status: "active",
   },
   {
@@ -221,7 +221,7 @@ export const USERS: User[] = [
     avatarUrl: `${AVATAR_BASE}/avatar-8.webp`,
     phoneNumber: "0880000020",
     company: "สาขาตรัง",
-    role: "Backend Developer",
+    roles: ["Backend Developer"],
     status: "banned",
   },
 ];
@@ -248,3 +248,27 @@ export const USER_ROLES = [
   "UI Designer",
   "Backend Developer",
 ];
+
+export const USER_OFFICES = [
+  "สำนักงานใหญ่",
+  "สาขาเชียงใหม่",
+  "สาขาขอนแก่น",
+  "สาขาภูเก็ต",
+];
+
+export const USER_DEPARTMENTS = [
+  "ฝ่ายเทคโนโลยีสารสนเทศ",
+  "ฝ่ายการตลาด",
+  "ฝ่ายทรัพยากรบุคคล",
+  "ฝ่ายการเงิน",
+  "ฝ่ายปฏิบัติการ",
+];
+
+export const USER_POSITIONS = [
+  "พนักงาน",
+  "หัวหน้างาน",
+  "ผู้จัดการ",
+  "ผู้อำนวยการ",
+];
+
+export const USER_LEVELS = ["Junior", "Senior", "Lead", "Manager"];

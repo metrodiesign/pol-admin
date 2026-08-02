@@ -3,7 +3,7 @@
 import Link from "next/link";
 import type { ColumnDef } from "@tanstack/react-table";
 import type { User, UserStatus } from "@/types/user";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import {
@@ -83,8 +83,8 @@ export const userColumns: ColumnDef<User>[] = [
       const u = row.original;
       return (
         <div className="flex items-center gap-4">
+          {/* avatarUrl ยังไม่มี HTTP endpoint serve รูปจริง (REQ-4.9) — placeholder initials เสมอ เหมือน producer/list */}
           <Avatar className="size-12">
-            <AvatarImage src={u.avatarUrl} alt={u.name} />
             <AvatarFallback>{getInitials(u.name)}</AvatarFallback>
           </Avatar>
           <div className="min-w-0">
@@ -117,11 +117,20 @@ export const userColumns: ColumnDef<User>[] = [
     ),
   },
   {
-    accessorKey: "role",
+    accessorKey: "roles",
     header: "บทบาท",
     enableSorting: false,
     cell: ({ getValue }) => (
-      <span className="text-sm text-foreground">{getValue<string>()}</span>
+      <div className="flex flex-wrap gap-1">
+        {getValue<string[]>().map((r) => (
+          <span
+            key={r}
+            className="inline-flex h-6 items-center rounded-md bg-grey-600/8 px-1.5 text-xs font-bold text-grey-700"
+          >
+            {r}
+          </span>
+        ))}
+      </div>
     ),
   },
   {

@@ -121,7 +121,7 @@ export function RolesView() {
           <button
             type="button"
             onClick={goCreate}
-            className="inline-flex h-9 items-center gap-1.5 rounded-control bg-grey-800 px-3 text-sm font-bold text-white transition-colors hover:bg-grey-900"
+            className="inline-flex h-9 items-center gap-1.5 rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
           >
             <Plus className="size-4" />
             เพิ่มบทบาทใหม่
