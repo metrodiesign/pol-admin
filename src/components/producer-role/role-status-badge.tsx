@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 /** ป้ายสถานะการใช้งานบทบาท. */
 const statusStyles: Record<RoleStatus, { chip: string; label: string }> = {
   active: { chip: "bg-success/16 text-success-dark", label: "ใช้งาน" },
-  inactive: { chip: "bg-grey-500/16 text-grey-600", label: "ปิดใช้งาน" },
+  inactive: { chip: "bg-error/16 text-error-dark", label: "ปิดใช้งาน" },
 };
 
 interface RoleStatusBadgeProps {
