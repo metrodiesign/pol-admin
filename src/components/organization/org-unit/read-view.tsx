@@ -8,7 +8,6 @@ import type { OrgUnitConfig } from "@/lib/organization/org-unit/config";
 import { getOrgUnit } from "@/lib/api/admin/org-unit";
 import { EditPageHeader } from "@/components/shared/edit-page-header";
 import { OrgUnitFormStatus } from "./form-status";
-import { OrgUnitStatusBadge } from "./status-badge";
 
 const fieldLabel = "mb-1.5 block text-xs font-semibold text-grey-700";
 
@@ -132,7 +131,16 @@ export function OrgUnitReadView({ config, id }: OrgUnitReadViewProps) {
             </div>
             <div>
               <p className={fieldLabel}>สถานะ</p>
-              <OrgUnitStatusBadge isActive={unit.isActive} />
+              {/* pill แบบหน้า /admin/user/read — list/sheet ยังใช้ chip เล็กตาม convention ตาราง */}
+              <span
+                className={
+                  unit.isActive
+                    ? "inline-flex items-center rounded-full bg-success/16 px-4 py-1 text-sm font-semibold text-success-dark"
+                    : "inline-flex items-center rounded-full bg-grey-500/16 px-4 py-1 text-sm font-semibold text-grey-600"
+                }
+              >
+                {unit.isActive ? "ใช้งาน" : "ปิดใช้งาน"}
+              </span>
             </div>
           </div>
           {!unit.isActive && (
