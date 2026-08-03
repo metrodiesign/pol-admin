@@ -43,7 +43,7 @@ function VcpBadge({ vcp }: { vcp: VcpStatus }) {
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-md px-2 py-0.5 text-xs font-bold whitespace-nowrap",
+        "inline-flex items-center whitespace-nowrap rounded-full px-4 py-1 text-sm font-semibold",
         style.chip,
       )}
     >
