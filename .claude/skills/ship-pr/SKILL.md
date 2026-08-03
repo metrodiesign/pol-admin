@@ -13,9 +13,13 @@ Commit งานใน working tree ปัจจุบันแล้วเป�
 
 1. `git status --short` — ต้องมีของให้ commit; review รายการไฟล์ว่าตรงกับงานที่ทำจริง
    ไฟล์แปลกปลอม (`.env*`, secret, ไฟล์นอก scope งาน) ห้ามติดไป — unstage/แจ้ง user
-2. ถ้ายังไม่ได้รัน full gate ในบทสนทนานี้: รัน `dotnet build` + `dotnet test` ให้เขียวก่อน
-   (Integration ต้อง `source .env.integration` ใน Bash call เดียวกับ `dotnet test`)
-   ห้ามเปิด PR ข้าม failing test — ไม่มีข้อยกเว้น
+2. ถ้ายังไม่ได้รัน full gate ในบทสนทนานี้: รัน gate ให้เขียวก่อน ตาม stack จริงของ repo — เช็คจากไฟล์ที่มี
+   ก่อนเดา (`package.json` scripts / `*.csproj`,`*.sln` / `pyproject.toml`,`requirements.txt` /
+   `Cargo.toml` / `go.mod`) ไม่ชัดว่าคำสั่งไหนคือ gate จริง ให้ดู README / CLAUDE.md / CI config
+   (`.github/workflows/*.yml`) ก่อน ตัวอย่าง: repo Node/TS รัน `npm run lint && npx tsc --noEmit &&
+   npm run build && npm run test`; repo .NET รัน `dotnet build` + `dotnet test` (integration ต้อง
+   `source .env.integration` ใน Bash call เดียวกับ `dotnet test`)
+   ห้ามเปิด PR ข้าม failing lint/typecheck/build/test — ไม่มีข้อยกเว้น
 3. งานมาจาก spec (`.ai/specs/<feature>/`) → tasks.md ที่เกี่ยวต้อง flip `[x]` + `Evidence:` ครบแล้ว
    และรัน `scripts/spec-trace.sh <feature>` ผ่าน
 
