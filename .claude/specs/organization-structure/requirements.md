@@ -1,6 +1,6 @@
 # Requirements: โมดูลโครงสร้างองค์กร (organization-structure)
 
-> Status: approved 2026-08-02
+> Status: approved 2026-08-02; REQ-7 revised 2026-08-03 (แยกสถาปัตยกรรมเป็นอิสระต่อ module)
 
 ## Overview
 
@@ -110,18 +110,21 @@ requirements ทุกข้อจึงนิยามครั้งเดี�
 - 6.4 IF API ตอบ error THEN THE SYSTEM SHALL แสดงข้อความผิดพลาดและคงสถานะรายการเดิม
 - 6.5 THE SYSTEM SHALL ไม่ใช้คำว่า "ลบ" ในทุกจุดของ UI ที่หมายถึงการปิดใช้งาน (ปุ่ม/tooltip/dialog/toast)
 
-## REQ-7: การเชื่อมต่อ API และสถาปัตยกรรมร่วม
+## REQ-7: สถาปัตยกรรมอิสระต่อ module
 
-**User Story:** ในฐานะทีมพัฒนา เราต้องการ implementation ชุดเดียวที่ทั้ง 4 module ใช้ร่วมกัน
-เพื่อให้แก้บั๊กจุดเดียวมีผลทุก module
+**User Story:** ในฐานะทีมพัฒนา เราต้องการให้แต่ละ module โครงสร้างองค์กร (office/division/level/position)
+เป็นอิสระต่อกัน เพื่อรองรับการเพิ่ม field/logic เฉพาะตัวต่อ module ในอนาคตโดยไม่กระทบ module อื่น
 
 **Acceptance Criteria (EARS):**
 
 - 7.1 THE SYSTEM SHALL เรียก API ผ่าน `adminFetch` (ได้ CSRF header, `credentials:'include'`, 401 redirect ตามเดิม)
-- 7.2 THE SYSTEM SHALL มี API client, types, validation, view components ชุดเดียว (generic) ที่ parametrize ด้วย config ต่อ entity — per-entity มีเฉพาะ route files บาง ๆ กับค่า config
-- 7.3 THE SYSTEM SHALL เพิ่ม rewrite `/api/:path*` → `${adminApiOrigin}/api/:path*` ใน `next.config.ts` (endpoint อยู่ top-level ไม่เข้า rewrite `/admin/*` เดิม; prod reverse proxy ส่ง `/api/v1/*` ผ่านอยู่แล้ว — ยืนยันจาก user)
-- 7.4 THE SYSTEM SHALL มี unit test (vitest, co-located) ครอบ API client (path ต่อ segment, fetch-all, 404→null, PUT body ครบ `name`+`isActive`) และ validation ทุก branch
-- 7.5 THE SYSTEM SHALL ไม่มี dependency ใหม่
+- 7.2 THE SYSTEM SHALL มี type, config, validation, API client, view component (list/detail-sheet/read/create/edit) แยกไฟล์อิสระต่อ module ละชุด — ไม่ parametrize ด้วย config กลางอีกต่อไป
+- 7.3 THE SYSTEM SHALL คง UI component ที่เป็น generic ล้วน (ไม่ผูก type เฉพาะ entity — รับแค่ primitive/callback prop หรือใช้ structural typing) เป็น shared ต่อไปภายใต้ `components/organization/org-unit/`: `columns.tsx` (structural-typed ผ่าน generic `<T extends OrgUnitLike>`), `confirm-dialog.tsx`, `form-status.tsx`, `status-badge.tsx` (ย้าย `OrgUnitStatus` type เข้ามา define ในไฟล์เอง เลิก import จาก type module), `toolbar.tsx`
+- 7.4 THE SYSTEM SHALL เพิ่ม rewrite `/api/:path*` → `${adminApiOrigin}/api/:path*` ใน `next.config.ts` (endpoint อยู่ top-level ไม่เข้า rewrite `/admin/*` เดิม; prod reverse proxy ส่ง `/api/v1/*` ผ่านอยู่แล้ว — ยืนยันจาก user)
+- 7.5 THE SYSTEM SHALL มี unit test (vitest, co-located) ครอบ API client (path ต่อ segment, fetch-all, 404→null, PUT body ครบ `name`+`isActive`) และ validation ทุก branch แยกไฟล์ตาม module
+- 7.6 THE SYSTEM SHALL ไม่มี dependency ใหม่
+
+**Migration note:** REQ-7 นี้ replace REQ-7 เดิม (approved 2026-08-02: "implementation ชุดเดียวที่ 4 module ใช้ร่วมกัน parametrize ด้วย config") — เหตุผล: แต่ละ module จะมี field/logic เฉพาะตัวเพิ่มเร็ว ๆ นี้ ทำให้ config-driven pattern กลายเป็นอุปสรรคมากกว่าประโยชน์ของการแก้บั๊กจุดเดียว
 
 ## Edge Cases & Open Questions
 

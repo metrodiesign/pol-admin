@@ -1,10 +1,14 @@
 # Implementation Tasks: โมดูลโครงสร้างองค์กร (organization-structure)
 
-> Status: approved 2026-08-02
+> Status: approved 2026-08-02; ต่อ task 7-12 เพิ่ม 2026-08-03 (migrate ตาม REQ-7 revised — แยกอิสระต่อ module)
 
 > Each task is a cohesive, independently verifiable slice. Implement a whole task
 > in one pass (it may touch many files). Decompose into sub-steps yourself at
 > execution time — do NOT pre-split tasks here.
+
+> Task 1-6 คือ implementation เดิมภายใต้ REQ-7 เดิม (generic ชุดเดียว parametrize ด้วย config) —
+> ship แล้ว คงไว้เป็นบันทึกประวัติศาสตร์ ไม่แก้ย้อนหลัง. Task 7-12 คือ migration ไปสถาปัตยกรรม
+> อิสระต่อ module ตาม REQ-7 revised (ดู `requirements.md` + `design.md`)
 
 - [x] 1. โครงล่าง pure logic + API — types (`src/types/organization/org-unit.ts`), config
      (`src/lib/organization/org-unit/config.ts`), validation (`form.ts` + `form.test.ts`),
@@ -85,9 +89,80 @@
        - viewports: 375 OK (emulate, clientWidth=375 เป๊ะ, ไม่มี doc overflow) | 768 OK (clientWidth=768, ไม่ overflow) | 1440 OK (clientWidth=1440, ไม่ overflow)
        - deviations: test data test_e2e คงอยู่ในสถานะปิดใช้งานทั้ง 4 resource (backend ไม่มี hard delete); ทดสอบบน port 5300 (production build แยกจาก dev 5200)
 
+- [ ] 7. Migrate office module เป็นอิสระ (นำร่อง) — สร้าง `src/types/organization/office.ts`
+     (`Office`/`OfficeCreateInput`/`OfficeUpdateInput`), `src/lib/organization/office/config.ts`
+     (ค่าคงที่ `OFFICE_SEGMENT`/`OFFICE_BASE_PATH`/`OFFICE_LABEL`), `form.ts`+`form.test.ts` (ย้าย
+     business rule จาก `org-unit/form.ts` มาตรงตัว), `src/lib/api/admin/office.ts`+`office.test.ts`
+     (segment hardcode `"offices"` ไม่รับ parameter), `src/components/organization/office/{list-view,
+     detail-sheet,read-view,create-view,edit-view}.tsx` (ย้ายจาก `org-unit/{view,detail-sheet,
+     read-view,create-view,edit-view}.tsx` ตัดพารามิเตอร์ `config` ออก hardcode label/basePath/segment
+     ในไฟล์แทน — `detail-sheet.tsx` ใช้เนื้อหาที่เพิ่งแก้ใน PR #115 เป็นฐาน ไม่ใช่ของเก่าก่อน PR นั้น),
+     แก้ `src/components/organization/org-unit/columns.tsx` เป็น generic
+     `buildOrgUnitColumns<T extends OrgUnitLike>` (ตัด import type `OrgUnit`), แก้
+     `src/components/organization/org-unit/status-badge.tsx` ย้าย `OrgUnitStatus` type เข้ามา define
+     ในไฟล์เอง (ตัด import จาก type module), แก้ `src/app/organization/office/{list,read,create,edit}/
+     page.tsx` ให้เรียก view ใหม่ตรง ๆ ไม่ส่ง `config` — done = office ทำงานเหมือนเดิมทุกจุด
+     (regression zero) แต่ไม่มี import จาก `org-unit/config.ts`/`org-unit/form.ts`/
+     `lib/api/admin/org-unit.ts`/`types/organization/org-unit.ts` เหลืออยู่ในเส้นทางของ office เลย
+     Satisfies: REQ-7.2, 7.3, 7.5, 7.6. Depends on: 6 (ของเดิมต้อง ship แล้วก่อน migrate).
+     Verify: `grep -rn "org-unit/config\|org-unit/form\|api/admin/org-unit\|types/organization/org-unit"
+     src/app/organization/office src/components/organization/office` ต้องว่าง (ไม่มี match);
+     division/level/position (ยังไม่ migrate) ต้องยังใช้งานได้ปกติผ่าน `org-unit/{view,create-view,
+     edit-view,read-view,detail-sheet}.tsx` เดิม (generic type ของ `columns.tsx`/`status-badge.tsx`
+     ต้อง backward-compatible กับ `OrgUnit` type เดิมที่ยังมีอยู่); gate เขียวทั้ง repo
+     Evidence: ต้องมี
+       - grep: คำสั่งข้างบน -> ว่าง
+       - test: `npx vitest run` -> PASS ครบ (รวม test ใหม่ office.test.ts/form.test.ts)
+       - typecheck: `npx tsc --noEmit` -> no error (ยืนยัน division/level/position ยังคอมไพล์ผ่านด้วย
+         generic columns/status-badge ใหม่)
+       - manual/browser: `/organization/office/{list,read,create,edit}` ทำงานตรงเหมือนก่อน migrate
+         (list/search/filter/sort/detail-sheet/deactivate, create/409/dirty-cancel, edit/toggle-status,
+         read/notfound)
+
+- [ ] 8. Migrate division module เป็นอิสระ — clone pattern จาก task 7 เป๊ะ (mechanical): types,
+     `lib/organization/division/`, `lib/api/admin/division.ts`+test,
+     `components/organization/division/*`, แก้ 4 `page.tsx` ของ division ตัดพารามิเตอร์ `config`
+     Satisfies: REQ-7.2, 7.5, 7.6. Depends on: 7 (ต้องมี `OrgUnitLike`/generic columns พร้อมแล้ว).
+     Verify: grep pattern เดียวกับ task 7 scope `src/app/organization/division
+     src/components/organization/division` ต้องว่าง; office (migrate แล้ว) + level/position
+     (ยังไม่ migrate) ต้องยังทำงานปกติ; gate เขียว
+     Evidence: grep ว่าง + test PASS ครบ + typecheck no error + manual 4 หน้า division ทำงานตรงเดิม
+
+- [ ] 9. Migrate level module เป็นอิสระ — clone pattern จาก task 7 เป๊ะ (mechanical)
+     Satisfies: REQ-7.2, 7.5, 7.6. Depends on: 7.
+     Verify: grep scope `level` ต้องว่าง; office/division (migrate แล้ว) + position (ยังไม่) ปกติ; gate เขียว
+     Evidence: grep ว่าง + test PASS ครบ + typecheck no error + manual 4 หน้า level ทำงานตรงเดิม
+
+- [ ] 10. Migrate position module เป็นอิสระ (module สุดท้าย) — clone pattern จาก task 7 เป๊ะ (mechanical)
+     Satisfies: REQ-7.2, 7.5, 7.6. Depends on: 7.
+     Verify: grep scope `position` ต้องว่าง; office/division/level ปกติ; gate เขียว
+     Evidence: grep ว่าง + test PASS ครบ + typecheck no error + manual 4 หน้า position ทำงานตรงเดิม
+
+- [ ] 11. Cleanup shared เดิมที่เลิกใช้ — หลัง 4 module migrate ครบ ลบไฟล์เก่าที่ไม่มีใคร import แล้ว:
+     `src/lib/organization/org-unit/config.ts`, `src/lib/organization/org-unit/form.ts`+
+     `form.test.ts`, `src/lib/api/admin/org-unit.ts`+`org-unit.test.ts`,
+     `src/types/organization/org-unit.ts`, `src/components/organization/org-unit/{view,create-view,
+     edit-view,read-view,detail-sheet}.tsx` — เหลือเฉพาะ 5 ไฟล์ shared ตาม REQ-7.3
+     (`columns.tsx`, `confirm-dialog.tsx`, `form-status.tsx`, `status-badge.tsx`, `toolbar.tsx`)
+     ใต้ `components/organization/org-unit/`. done = ไม่มีไฟล์ orphan เหลือ
+     Satisfies: REQ-7.2 (ปิด scope ทั้งหมด). Depends on: 8, 9, 10.
+     Verify: `grep -rln "ORG_UNIT_CONFIGS\|OrgUnitConfig\|validateOrgUnitForm\|from \"@/lib/api/admin/org-unit\"\|from \"@/types/organization/org-unit\"" src`
+     ต้องว่าง (ไม่มี consumer เหลือ) ก่อนลบ; ลบแล้วรัน gate ต้องยังเขียว
+     Evidence: grep ก่อนลบว่าง + `git rm` รายการไฟล์ + gate (typecheck/lint/vitest/build) เขียวหลังลบ
+
+- [ ] 12. Verification รวม + gate สุดท้าย — done = พร้อมเปิด PR
+     Satisfies: REQ-1..7 (ยืนยันรวมหลัง migration). Depends on: 11. Verify: typecheck + lint +
+     vitest เขียวทั้ง repo; `npm run build` ผ่านครบ 16 route เดิม; manual E2E ทั้ง 4 module
+     (create/edit/read/deactivate) เหมือน task 6 เดิมแต่ยืนยันว่า behavior ไม่เปลี่ยนหลัง migrate;
+     `scripts/spec-trace.sh organization-structure` ผ่าน
+     Evidence: gate เขียวครบ + browser E2E ยืนยัน zero-regression ทั้ง 4 module + spec-trace ผ่าน
+
 ## Suggested execution batches
 
-Feature นี้ coupled สูง (ทุก task ใช้ types/config/client/components ร่วมกัน) —
-default: รันทั้งหมดใน session เดียว `/spec-implement all` (หรือ
-`scripts/pane-loop.sh organization-structure all-in-one`)
-ไม่แนะนำแยก pane ต่อ task — ไม่มี task ไหน independent จริง
+**Task 1-6 (เดิม):** coupled สูง รันใน session เดียว — ship แล้ว ไม่ต้องรันซ้ำ
+
+**Task 7-12 (migration ใหม่):** task 7 ต้องทำก่อน (ปลด `columns.tsx`/`status-badge.tsx` จาก type
+ผูก entity + วางฐาน pattern) จากนั้น task 8/9/10 (division/level/position) เป็น mechanical clone
+ที่ไม่พึ่งพากันเอง — แยกทำคนละ session/pane ได้ (`scripts/pane-loop.sh organization-structure
+7,8 9 10 11,12` หรือคล้ายกัน) แต่ต้องรอ task 7 เสร็จก่อนเริ่ม 8/9/10 พร้อมกัน; task 11 (cleanup)
+ต้องรอทั้ง 8/9/10 เสร็จครบก่อน (ลบไฟล์ที่ module ใดยังไม่ migrate ใช้อยู่จะพัง); task 12 ปิดท้าย
