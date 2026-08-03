@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetClose, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { OrgUnitStatusBadge } from "./status-badge";
 
+const fieldLabel = "mb-1.5 block text-xs font-semibold text-grey-700";
+
 interface OrgUnitDetailSheetProps {
   unit: OrgUnit | null;
   open: boolean;
@@ -29,32 +31,27 @@ export function OrgUnitDetailSheet({
 }: OrgUnitDetailSheetProps) {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="right" showCloseButton={false} className="w-full gap-0 p-0 sm:max-w-md">
+      <SheetContent
+        side="right"
+        showCloseButton={false}
+        className="w-full gap-0 p-0 data-[side=right]:sm:max-w-3xl"
+      >
         {unit && (
           <div className="flex h-full flex-col">
             {/* Header */}
             <div className="flex flex-col gap-4 border-b border-[var(--divider)] p-4">
               <div className="flex items-start justify-between gap-2">
-                <div className="flex min-w-0 flex-col gap-1.5">
-                  <SheetTitle className="sr-only">
-                    รายละเอียด{label} {unit.name}
+                <div className="min-w-0">
+                  <SheetTitle className="text-base font-bold text-foreground">
+                    รายละเอียด{label}
                   </SheetTitle>
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-base font-bold text-foreground">{unit.name}</span>
-                    <OrgUnitStatusBadge isActive={unit.isActive} />
+                  <div className="mt-0.5 flex flex-wrap items-center gap-2">
+                    <span className="text-xs font-semibold text-grey-600">
+                      {label} <span className="font-mono">• {unit.id}</span>
+                    </span>
                   </div>
-                  <span className="font-mono text-xs text-grey-500">รหัส: {unit.code}</span>
                 </div>
-                <SheetClose
-                  render={
-                    <Button
-                      variant="ghost"
-                      size="icon-sm"
-                      aria-label="ปิด"
-                      className="shrink-0 text-grey-600"
-                    />
-                  }
-                >
+                <SheetClose className="flex size-9 shrink-0 items-center justify-center rounded-full text-grey-700 transition-colors hover:bg-[var(--action-hover)]">
                   <X className="size-5" />
                 </SheetClose>
               </div>
@@ -73,28 +70,39 @@ export function OrgUnitDetailSheet({
               </div>
             </div>
 
-            {/* Body — field ทั้งหมดของ entity */}
-            <div className="flex min-h-0 flex-1 flex-col gap-3 p-4">
-              <div className="rounded-control border border-[var(--divider)] p-3">
-                <p className="text-xs text-grey-500">รหัส</p>
-                <p className="mt-1 font-mono text-sm text-foreground">{unit.code}</p>
-              </div>
-              <div className="rounded-control border border-[var(--divider)] p-3">
-                <p className="text-xs text-grey-500">ชื่อ{label}</p>
-                <p className="mt-1 text-sm font-medium text-foreground">{unit.name}</p>
-              </div>
-              <div className="rounded-control border border-[var(--divider)] p-3">
-                <p className="text-xs text-grey-500">สถานะ</p>
-                <p className="mt-1">
-                  <OrgUnitStatusBadge isActive={unit.isActive} />
-                </p>
-              </div>
-              {!unit.isActive && (
-                <p className="text-xs text-grey-500">
-                  รายการที่ปิดใช้งานยังถูกอ้างอิงจากข้อมูลเดิมได้ แต่เลือกใช้ใหม่ไม่ได้ —
-                  เปิดใช้งานกลับได้จากหน้าแก้ไข
-                </p>
-              )}
+            {/* Body — card เดียวกับโครง OrgUnitReadView (rounded-2xl bg-card + shadow-card) */}
+            <div className="min-h-0 flex-1 overflow-y-auto p-4">
+              <section
+                className="rounded-2xl bg-card"
+                style={{ boxShadow: "var(--shadow-card)" }}
+              >
+                <div className="px-6 py-5">
+                  <p className="text-base font-bold text-primary">ข้อมูล{label}</p>
+                </div>
+                <div className="border-t border-[var(--divider)]" />
+                <div className="px-6 pt-5 pb-6">
+                  <div className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
+                    <div>
+                      <p className={fieldLabel}>รหัส</p>
+                      <p className="text-sm font-bold text-foreground">{unit.code}</p>
+                    </div>
+                    <div>
+                      <p className={fieldLabel}>ชื่อ{label}</p>
+                      <p className="text-sm font-bold text-foreground">{unit.name}</p>
+                    </div>
+                    <div>
+                      <p className={fieldLabel}>สถานะ</p>
+                      <OrgUnitStatusBadge isActive={unit.isActive} />
+                    </div>
+                  </div>
+                  {!unit.isActive && (
+                    <p className="mt-4 text-xs text-grey-500">
+                      รายการที่ปิดใช้งานยังถูกอ้างอิงจากข้อมูลเดิมได้ แต่เลือกใช้ใหม่ไม่ได้ —
+                      เปิดใช้งานกลับได้จากหน้าแก้ไข
+                    </p>
+                  )}
+                </div>
+              </section>
             </div>
 
             {/* Footer — ปุ่มปิดใช้งานเฉพาะรายการที่ยัง active (REQ-2.11) */}
