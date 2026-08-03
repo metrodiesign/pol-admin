@@ -27,11 +27,6 @@ export const ORDER_STATUS_STYLE: Record<OrderStatus, string> = {
   Paid: "bg-success/16 text-success-dark",
   Cancelled: "bg-grey-500/16 text-grey-600",
 };
-// dot color before status label inside the pill
-export const ORDER_STATUS_DOT: Record<OrderStatus, string> = {
-  AwaitingPayment: "bg-warning", Paid: "bg-success", Cancelled: "bg-grey-500",
-};
-
 // 4-dot lifecycle stepper state. done = filled green, active = current (blue), rest empty.
 export function lifecycleStage(status: OrderStatus): { done: number; active: number; tone: "ok" | "error" | "muted" } {
   switch (status) {

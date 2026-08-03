@@ -14,11 +14,6 @@ export const PAYMENT_SESSION_STATUS_STYLE: Record<PaymentSessionStatus, string> 
   Failed: "bg-error/16 text-error-dark",
   Expired: "bg-grey-500/16 text-grey-600",
 };
-// dot color before status label inside the pill
-export const PAYMENT_SESSION_STATUS_DOT: Record<PaymentSessionStatus, string> = {
-  Created: "bg-warning", Redirected: "bg-info", Paid: "bg-success",
-  Failed: "bg-error", Expired: "bg-grey-500",
-};
 export const CHANNEL_LABEL: Record<PaymentChannel, string> = {
   card: "บัตรเครดิต/เดบิต", promptpay: "พร้อมเพย์", installment: "ผ่อนชำระ",
 };
@@ -52,10 +47,6 @@ export const LIST_STATUS_STYLE: Record<OrderStatus, string> = {
   Paid: "bg-success/16 text-success-dark",
   Cancelled: "bg-grey-500/16 text-grey-600",
 };
-export const LIST_STATUS_DOT: Record<OrderStatus, string> = {
-  AwaitingPayment: "bg-warning", Paid: "bg-success", Cancelled: "bg-grey-500",
-};
-
 // 4-dot lifecycle stepper state. done = filled green, active = current (blue), rest empty.
 // failed/expired use the tone to color the active/last dot.
 export function lifecycleStage(status: PaymentSessionStatus): { done: number; active: number; tone: "ok" | "error" | "muted" } {

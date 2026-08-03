@@ -140,7 +140,7 @@ export const userColumns: ColumnDef<User>[] = [
     meta: { headClassName: "w-[140px]", cellClassName: "w-[140px]" },
     cell: ({ row }) => (
       <span
-        className={`inline-flex h-6 items-center rounded-md px-1.5 text-xs font-bold ${statusStyles[row.original.status]}`}
+        className={`inline-flex items-center whitespace-nowrap rounded-full px-4 py-1 text-sm font-semibold ${statusStyles[row.original.status]}`}
       >
         {statusLabel[row.original.status]}
       </span>
