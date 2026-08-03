@@ -1,34 +1,32 @@
 "use client";
 
 import { Ban, Eye, Pencil, X } from "lucide-react";
-import type { OrgUnit } from "@/types/organization/org-unit";
+import type { Level } from "@/types/organization/level";
+import { LEVEL_LABEL } from "@/lib/organization/level/config";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetClose, SheetContent, SheetTitle } from "@/components/ui/sheet";
-import { OrgUnitStatusBadge } from "./status-badge";
+import { OrgUnitStatusBadge } from "@/components/organization/org-unit/status-badge";
 
 const fieldLabel = "mb-1.5 block text-xs font-semibold text-grey-700";
 
-interface OrgUnitDetailSheetProps {
-  unit: OrgUnit | null;
+interface LevelDetailSheetProps {
+  unit: Level | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  /** label ไทยของ entity (เช่น "สำนักงาน") */
-  label: string;
-  onRead?: (unit: OrgUnit) => void;
-  onEdit?: (unit: OrgUnit) => void;
-  onDeactivate?: (unit: OrgUnit) => void;
+  onRead?: (unit: Level) => void;
+  onEdit?: (unit: Level) => void;
+  onDeactivate?: (unit: Level) => void;
 }
 
-/** Drawer รายละเอียด org unit จาก row click — ข้อมูลมีแค่ 3 field แสดงตรง ๆ ไม่ต้อง scroll. */
-export function OrgUnitDetailSheet({
+/** Drawer รายละเอียด level จาก row click — ข้อมูลมีแค่ 3 field แสดงตรง ๆ ไม่ต้อง scroll. */
+export function LevelDetailSheet({
   unit,
   open,
   onOpenChange,
-  label,
   onRead,
   onEdit,
   onDeactivate,
-}: OrgUnitDetailSheetProps) {
+}: LevelDetailSheetProps) {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
@@ -43,11 +41,11 @@ export function OrgUnitDetailSheet({
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
                   <SheetTitle className="text-base font-bold text-foreground">
-                    รายละเอียด{label}
+                    รายละเอียด{LEVEL_LABEL}
                   </SheetTitle>
                   <div className="mt-0.5 flex flex-wrap items-center gap-2">
                     <span className="text-xs font-semibold text-grey-600">
-                      {label} <span className="font-mono">• {unit.id}</span>
+                      {LEVEL_LABEL} <span className="font-mono">• {unit.id}</span>
                     </span>
                   </div>
                 </div>
@@ -70,14 +68,14 @@ export function OrgUnitDetailSheet({
               </div>
             </div>
 
-            {/* Body — card เดียวกับโครง OrgUnitReadView (rounded-2xl bg-card + shadow-card) */}
+            {/* Body — card เดียวกับโครง LevelReadView (rounded-2xl bg-card + shadow-card) */}
             <div className="min-h-0 flex-1 overflow-y-auto p-4">
               <section
                 className="rounded-2xl bg-card"
                 style={{ boxShadow: "var(--shadow-card)" }}
               >
                 <div className="px-6 py-5">
-                  <p className="text-base font-bold text-primary">ข้อมูล{label}</p>
+                  <p className="text-base font-bold text-primary">ข้อมูล{LEVEL_LABEL}</p>
                 </div>
                 <div className="border-t border-[var(--divider)]" />
                 <div className="px-6 pt-5 pb-6">
@@ -87,7 +85,7 @@ export function OrgUnitDetailSheet({
                       <p className="text-sm font-bold text-foreground">{unit.code}</p>
                     </div>
                     <div>
-                      <p className={fieldLabel}>ชื่อ{label}</p>
+                      <p className={fieldLabel}>ชื่อ{LEVEL_LABEL}</p>
                       <p className="text-sm font-bold text-foreground">{unit.name}</p>
                     </div>
                     <div>

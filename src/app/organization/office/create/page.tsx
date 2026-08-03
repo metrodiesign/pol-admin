@@ -1,6 +1,5 @@
-import { OrgUnitCreateView } from "@/components/organization/org-unit/create-view";
-import { ORG_UNIT_CONFIGS } from "@/lib/organization/org-unit/config";
+import { OfficeCreateView } from "@/components/organization/office/create-view";
 
 export default function OfficeCreatePage() {
-  return <OrgUnitCreateView config={ORG_UNIT_CONFIGS.office} />;
+  return <OfficeCreateView />;
 }

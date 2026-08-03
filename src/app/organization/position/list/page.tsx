@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 
 import { PageHeader } from "@/components/shared/page-header";
-import { OrgUnitListView } from "@/components/organization/org-unit/view";
-import { ORG_UNIT_CONFIGS } from "@/lib/organization/org-unit/config";
+import { PositionListView } from "@/components/organization/position/list-view";
 
 export const metadata: Metadata = {
   title: "ตำแหน่ง | POL",
@@ -16,7 +15,7 @@ export default function PositionListPage() {
         breadcrumbs={[{ label: "Console" }, { label: "ตำแหน่ง" }]}
         action={{ label: "เพิ่มตำแหน่ง", href: "/organization/position/create" }}
       />
-      <OrgUnitListView config={ORG_UNIT_CONFIGS.position} />
+      <PositionListView />
     </>
   );
 }

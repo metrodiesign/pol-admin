@@ -2,27 +2,23 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import type { OrgUnitConfig } from "@/lib/organization/org-unit/config";
-import { validateOrgUnitForm } from "@/lib/organization/org-unit/form";
-import { createOrgUnit } from "@/lib/api/admin/org-unit";
+import { DIVISION_BASE_PATH, DIVISION_LABEL } from "@/lib/organization/division/config";
+import { validateDivisionForm } from "@/lib/organization/division/form";
+import { createDivision } from "@/lib/api/admin/division";
 import { EditPageHeader } from "@/components/shared/edit-page-header";
 import { TextField } from "@/components/form/text-field";
-import { OrgUnitConfirmDialog } from "./confirm-dialog";
+import { OrgUnitConfirmDialog } from "@/components/organization/org-unit/confirm-dialog";
 
 const cardStyle = {
   boxShadow:
     "rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px",
 };
 
-interface OrgUnitCreateViewProps {
-  config: OrgUnitConfig;
-}
-
 /**
- * หน้าสร้าง org unit แบบเต็มหน้า — field แค่ code + name (รายการใหม่เกิดเป็น active เสมอ).
+ * หน้าสร้าง division แบบเต็มหน้า — field แค่ code + name (รายการใหม่เกิดเป็น active เสมอ).
  * ไม่ preload list เช็ค code ซ้ำ — ให้ server ตอบ 409 (REQ-4.6)
  */
-export function OrgUnitCreateView({ config }: OrgUnitCreateViewProps) {
+export function DivisionCreateView() {
   const router = useRouter();
   const [code, setCode] = useState("");
   const [name, setName] = useState("");
@@ -30,19 +26,19 @@ export function OrgUnitCreateView({ config }: OrgUnitCreateViewProps) {
   const [saving, setSaving] = useState(false);
   const [confirmCancel, setConfirmCancel] = useState(false);
 
-  const listHref = `${config.basePath}/list`;
-  const title = `เพิ่ม${config.label}`;
+  const listHref = `${DIVISION_BASE_PATH}/list`;
+  const title = `เพิ่ม${DIVISION_LABEL}`;
   const dirty = code.trim() !== "" || name.trim() !== "";
 
   async function handleSave() {
     if (saving) return;
-    const found = validateOrgUnitForm({ code, name }, "create");
+    const found = validateDivisionForm({ code, name }, "create");
     if (Object.keys(found).length > 0) {
       setErrors(found);
       return;
     }
     setSaving(true);
-    const res = await createOrgUnit(config.segment, {
+    const res = await createDivision({
       code: code.trim(),
       name: name.trim(),
     });
@@ -56,7 +52,7 @@ export function OrgUnitCreateView({ config }: OrgUnitCreateViewProps) {
       return;
     }
     router.push(
-      `${listHref}?toast=${encodeURIComponent(`เพิ่ม${config.label} "${name.trim()}" สำเร็จ`)}`,
+      `${listHref}?toast=${encodeURIComponent(`เพิ่ม${DIVISION_LABEL} "${name.trim()}" สำเร็จ`)}`,
     );
   }
 
@@ -76,7 +72,7 @@ export function OrgUnitCreateView({ config }: OrgUnitCreateViewProps) {
         backHref={listHref}
         breadcrumbs={[
           { label: "Console" },
-          { label: config.label, href: listHref },
+          { label: DIVISION_LABEL, href: listHref },
           { label: title },
         ]}
       />
@@ -84,12 +80,12 @@ export function OrgUnitCreateView({ config }: OrgUnitCreateViewProps) {
       <div className="rounded-card bg-card p-6" style={cardStyle}>
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <TextField
-            label={`ชื่อ${config.label}`}
+            label={`ชื่อ${DIVISION_LABEL}`}
             required
             value={name}
             onChange={setName}
             error={errors.name}
-            placeholder="เช่น สำนักงานใหญ่"
+            placeholder="เช่น แผนกทดสอบ"
           />
           <TextField
             label="รหัส"
@@ -97,7 +93,7 @@ export function OrgUnitCreateView({ config }: OrgUnitCreateViewProps) {
             value={code}
             onChange={setCode}
             error={errors.code}
-            placeholder="เช่น hq (a-z, 0-9, _)"
+            placeholder="เช่น dv1 (a-z, 0-9, _)"
             helperText="ใช้ได้เฉพาะ a-z, 0-9 และ _ — แก้ไขไม่ได้หลังสร้าง"
           />
         </div>

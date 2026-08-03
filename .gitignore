@@ -19,3 +19,4 @@ tsconfig.tsbuildinfo
 
 # OS junk
 .DS_Store
+.pipeline/

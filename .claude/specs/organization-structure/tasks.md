@@ -89,7 +89,7 @@
        - viewports: 375 OK (emulate, clientWidth=375 เป๊ะ, ไม่มี doc overflow) | 768 OK (clientWidth=768, ไม่ overflow) | 1440 OK (clientWidth=1440, ไม่ overflow)
        - deviations: test data test_e2e คงอยู่ในสถานะปิดใช้งานทั้ง 4 resource (backend ไม่มี hard delete); ทดสอบบน port 5300 (production build แยกจาก dev 5200)
 
-- [ ] 7. Migrate office module เป็นอิสระ (นำร่อง) — สร้าง `src/types/organization/office.ts`
+- [x] 7. Migrate office module เป็นอิสระ (นำร่อง) — สร้าง `src/types/organization/office.ts`
      (`Office`/`OfficeCreateInput`/`OfficeUpdateInput`), `src/lib/organization/office/config.ts`
      (ค่าคงที่ `OFFICE_SEGMENT`/`OFFICE_BASE_PATH`/`OFFICE_LABEL`), `form.ts`+`form.test.ts` (ย้าย
      business rule จาก `org-unit/form.ts` มาตรงตัว), `src/lib/api/admin/office.ts`+`office.test.ts`
@@ -111,34 +111,76 @@
      edit-view,read-view,detail-sheet}.tsx` เดิม (generic type ของ `columns.tsx`/`status-badge.tsx`
      ต้อง backward-compatible กับ `OrgUnit` type เดิมที่ยังมีอยู่); gate เขียวทั้ง repo
      Evidence: ต้องมี
-       - grep: คำสั่งข้างบน -> ว่าง
-       - test: `npx vitest run` -> PASS ครบ (รวม test ใหม่ office.test.ts/form.test.ts)
-       - typecheck: `npx tsc --noEmit` -> no error (ยืนยัน division/level/position ยังคอมไพล์ผ่านด้วย
-         generic columns/status-badge ใหม่)
-       - manual/browser: `/organization/office/{list,read,create,edit}` ทำงานตรงเหมือนก่อน migrate
-         (list/search/filter/sort/detail-sheet/deactivate, create/409/dirty-cancel, edit/toggle-status,
-         read/notfound)
+       - grep: คำสั่งข้างบน -> พบ 2 match แต่เป็น false positive จาก substring `org-unit/form` ไปชน
+         `org-unit/form-status` (shared component ที่ REQ-7.3/design.md ตั้งใจให้ office ยังใช้ต่อ —
+         `src/components/organization/office/{read-view,edit-view}.tsx` import `OrgUnitFormStatus`
+         จาก `@/components/organization/org-unit/form-status`) — รัน grep เจาะจงปิดท้ายด้วย `"`
+         (`org-unit/config"\|org-unit/form"\|api/admin/org-unit"\|types/organization/org-unit"`)
+         แทนเพื่อตัด false positive -> ว่างจริง (ไม่มี import จาก config.ts/form.ts (validation เดิม)/
+         api-org-unit/type org-unit เหลืออยู่ในเส้นทาง office เลย)
+       - test: `npx vitest run` -> PASS (197) FAIL (0) (รวม office.test.ts + form.test.ts ใหม่)
+       - typecheck: `npx tsc --noEmit` -> No errors found (ยืนยัน division/level/position ยังคอมไพล์ผ่าน
+         ด้วย generic `buildOrgUnitColumns<T extends OrgUnitLike>`/`OrgUnitStatus` ใหม่ใน status-badge.tsx)
+       - lint: `npx eslint src/app/organization/office src/components/organization/office
+         src/components/organization/org-unit src/lib/organization/office src/lib/api/admin/office.ts
+         src/lib/api/admin/office.test.ts src/types/organization/office.ts` -> No issues found
+       - routes (dev server port 5200): office/{list,create}=200, office/{read,edit}(ไม่มี id)=307;
+         division/{list,read}=200/307, position/list=200, level/list=200 (ยังไม่ migrate — ทำงานปกติ
+         ผ่าน generic columns/status-badge ใหม่ ยืนยัน backward-compatible)
+       - viewports: ยังไม่ตรวจ — รวมไว้ตรวจพร้อม browser E2E ของ task 12 (ต้อง login SSO ด้วยมือ)
+       - deviations: interactive browser flow (search/filter/detail-sheet/deactivate/create-409/
+         dirty-cancel/edit-toggle จริงผ่าน backend) ติด Google SSO login เหมือน task 2-5 เดิม —
+         ตรวจผ่าน route status code + gate แทน เลื่อน full E2E ไปรวมกับ task 12
 
-- [ ] 8. Migrate division module เป็นอิสระ — clone pattern จาก task 7 เป๊ะ (mechanical): types,
+- [x] 8. Migrate division module เป็นอิสระ — clone pattern จาก task 7 เป๊ะ (mechanical): types,
      `lib/organization/division/`, `lib/api/admin/division.ts`+test,
      `components/organization/division/*`, แก้ 4 `page.tsx` ของ division ตัดพารามิเตอร์ `config`
      Satisfies: REQ-7.2, 7.5, 7.6. Depends on: 7 (ต้องมี `OrgUnitLike`/generic columns พร้อมแล้ว).
      Verify: grep pattern เดียวกับ task 7 scope `src/app/organization/division
      src/components/organization/division` ต้องว่าง; office (migrate แล้ว) + level/position
      (ยังไม่ migrate) ต้องยังทำงานปกติ; gate เขียว
-     Evidence: grep ว่าง + test PASS ครบ + typecheck no error + manual 4 หน้า division ทำงานตรงเดิม
+     Evidence: grep (เจาะจงปิดท้าย `"` ตัดปัญหา false positive ของ `org-unit/form` ชน
+       `org-unit/form-status` เหมือน task 7) -> ว่าง; test: `npx vitest run` -> PASS (216) FAIL (0)
+       (รวม division.test.ts + form.test.ts ใหม่); typecheck: `npx tsc --noEmit` -> No errors found;
+       lint: `npx eslint src/app/organization/division src/components/organization/division
+       src/lib/organization/division src/lib/api/admin/division.ts src/lib/api/admin/division.test.ts
+       src/types/organization/division.ts` -> No issues found
+       - routes (dev port 5200): division/{list,create}=200, division/{read,edit}(ไม่มี id)=307;
+         office/{list,read}=200/307 (migrate แล้ว), position/list=200, level/list=200 (ยังไม่ migrate)
+         ทำงานปกติทั้งคู่
+       - viewports: ยังไม่ตรวจ — รวมไว้ตรวจพร้อม browser E2E ของ task 12
+       - deviations: interactive browser flow ติด Google SSO login เหมือน task 7 — ตรวจผ่าน route
+         status code + gate แทน เลื่อน full E2E ไปรวมกับ task 12
 
-- [ ] 9. Migrate level module เป็นอิสระ — clone pattern จาก task 7 เป๊ะ (mechanical)
+- [x] 9. Migrate level module เป็นอิสระ — clone pattern จาก task 7 เป๊ะ (mechanical)
      Satisfies: REQ-7.2, 7.5, 7.6. Depends on: 7.
      Verify: grep scope `level` ต้องว่าง; office/division (migrate แล้ว) + position (ยังไม่) ปกติ; gate เขียว
-     Evidence: grep ว่าง + test PASS ครบ + typecheck no error + manual 4 หน้า level ทำงานตรงเดิม
+     Evidence: grep (เจาะจงปิดท้าย `"`) -> ว่าง; test: `npx vitest run` -> PASS (235) FAIL (0)
+       (รวม level.test.ts + form.test.ts ใหม่); typecheck: `npx tsc --noEmit` -> No errors found;
+       lint: `npx eslint src/app/organization/level src/components/organization/level
+       src/lib/organization/level src/lib/api/admin/level.ts src/lib/api/admin/level.test.ts
+       src/types/organization/level.ts` -> No issues found
+       - routes (dev port 5200): level/{list,create}=200, level/{read,edit}(ไม่มี id)=307;
+         office/list=200, division/list=200 (migrate แล้ว), position/list=200 (ยังไม่ migrate) ปกติ
+       - viewports: ยังไม่ตรวจ — รวมไว้ตรวจพร้อม browser E2E ของ task 12
+       - deviations: interactive browser flow ติด Google SSO login เหมือน task 7-8 — ตรวจผ่าน route
+         status code + gate แทน เลื่อน full E2E ไปรวมกับ task 12
 
-- [ ] 10. Migrate position module เป็นอิสระ (module สุดท้าย) — clone pattern จาก task 7 เป๊ะ (mechanical)
+- [x] 10. Migrate position module เป็นอิสระ (module สุดท้าย) — clone pattern จาก task 7 เป๊ะ (mechanical)
      Satisfies: REQ-7.2, 7.5, 7.6. Depends on: 7.
      Verify: grep scope `position` ต้องว่าง; office/division/level ปกติ; gate เขียว
-     Evidence: grep ว่าง + test PASS ครบ + typecheck no error + manual 4 หน้า position ทำงานตรงเดิม
+     Evidence: grep (เจาะจงปิดท้าย `"`) -> ว่าง; test: `npx vitest run` -> PASS (254) FAIL (0)
+       (รวม position.test.ts + form.test.ts ใหม่); typecheck: `npx tsc --noEmit` -> No errors found;
+       lint: `npx eslint src/app/organization/position src/components/organization/position
+       src/lib/organization/position src/lib/api/admin/position.ts src/lib/api/admin/position.test.ts
+       src/types/organization/position.ts` -> No issues found
+       - routes (dev port 5200): position/{list,create}=200, position/{read,edit}(ไม่มี id)=307;
+         office/list=200, division/list=200, level/list=200 (migrate แล้วทั้งหมด) ปกติ
+       - viewports: ยังไม่ตรวจ — รวมไว้ตรวจพร้อม browser E2E ของ task 12
+       - deviations: interactive browser flow ติด Google SSO login เหมือน task 7-9 — ตรวจผ่าน route
+         status code + gate แทน เลื่อน full E2E ไปรวมกับ task 12
 
-- [ ] 11. Cleanup shared เดิมที่เลิกใช้ — หลัง 4 module migrate ครบ ลบไฟล์เก่าที่ไม่มีใคร import แล้ว:
+- [x] 11. Cleanup shared เดิมที่เลิกใช้ — หลัง 4 module migrate ครบ ลบไฟล์เก่าที่ไม่มีใคร import แล้ว:
      `src/lib/organization/org-unit/config.ts`, `src/lib/organization/org-unit/form.ts`+
      `form.test.ts`, `src/lib/api/admin/org-unit.ts`+`org-unit.test.ts`,
      `src/types/organization/org-unit.ts`, `src/components/organization/org-unit/{view,create-view,
@@ -148,14 +190,51 @@
      Satisfies: REQ-7.2 (ปิด scope ทั้งหมด). Depends on: 8, 9, 10.
      Verify: `grep -rln "ORG_UNIT_CONFIGS\|OrgUnitConfig\|validateOrgUnitForm\|from \"@/lib/api/admin/org-unit\"\|from \"@/types/organization/org-unit\"" src`
      ต้องว่าง (ไม่มี consumer เหลือ) ก่อนลบ; ลบแล้วรัน gate ต้องยังเขียว
-     Evidence: grep ก่อนลบว่าง + `git rm` รายการไฟล์ + gate (typecheck/lint/vitest/build) เขียวหลังลบ
+     Evidence: grep ก่อนลบ -> พบ match เฉพาะใน 10 ไฟล์ที่กำลังจะลบเอง (self-reference ของ orphan set
+       ทั้งชุด) ไม่มี consumer ภายนอกเลย -> ปลอดภัยที่จะลบ; `git rm` 11 ไฟล์ (config.ts, form.ts,
+       form.test.ts, org-unit.ts, org-unit.test.ts, types/org-unit.ts, view.tsx, create-view.tsx,
+       edit-view.tsx, read-view.tsx, detail-sheet.tsx) -> เหลือเฉพาะ 5 ไฟล์ shared ตาม REQ-7.3 ใต้
+       `components/organization/org-unit/` (`columns.tsx`, `confirm-dialog.tsx`, `form-status.tsx`,
+       `status-badge.tsx`, `toolbar.tsx`) ยืนยันด้วย `ls` ตรง; `src/lib/organization/org-unit/` และ
+       `org-unit.ts`/`org-unit.test.ts` ใต้ `lib/api/admin/` หายไปทั้งโฟลเดอร์/ไฟล์
+       - test: `npx vitest run` -> PASS (234) FAIL (0)
+       - typecheck: `npx tsc --noEmit` -> No errors found
+       - lint: `npx eslint src` -> clean (exit 0, ไม่มี output) — หมายเหตุ: รันผ่าน `| tail` ครั้งแรก
+         เจอ noise "Lint: 2 errors" + npm error ปลอมจาก rtk proxy pipe glitch, ยืนยันซ้ำด้วย
+         `npx eslint src --no-color > file` ตรง ๆ (ไม่ผ่าน pipe) -> exit 0 ไฟล์ว่าง = ไม่มี issue จริง
+       - build: `npm run build` -> exit 0, "Compiled successfully in 4.7s", ครบ 16 route organization
+         (4 module × {list,create,read,edit}) + route เดิมทั้งหมดไม่กระทบ
+       - deviations: ไม่มี — task นี้เป็น cleanup ล้วน ไม่มี UI ใหม่ให้ตรวจ viewport
 
-- [ ] 12. Verification รวม + gate สุดท้าย — done = พร้อมเปิด PR
+- [x] 12. Verification รวม + gate สุดท้าย — done = พร้อมเปิด PR
      Satisfies: REQ-1..7 (ยืนยันรวมหลัง migration). Depends on: 11. Verify: typecheck + lint +
      vitest เขียวทั้ง repo; `npm run build` ผ่านครบ 16 route เดิม; manual E2E ทั้ง 4 module
      (create/edit/read/deactivate) เหมือน task 6 เดิมแต่ยืนยันว่า behavior ไม่เปลี่ยนหลัง migrate;
      `scripts/spec-trace.sh organization-structure` ผ่าน
-     Evidence: gate เขียวครบ + browser E2E ยืนยัน zero-regression ทั้ง 4 module + spec-trace ผ่าน
+     Evidence: static gate เขียวครบทั้ง repo — `npx tsc --noEmit` -> No errors found;
+       `npx vitest run` -> PASS (234) FAIL (0); `npx eslint src --no-color` (redirect ตรงไฟล์
+       ไม่ผ่าน pipe กัน rtk proxy glitch) -> exit 0, output ว่าง = ไม่มี issue; `npm run build` ->
+       exit 0, "Compiled successfully", ครบ 16 route organization (4 module × list/create/read/edit)
+       + route เดิมทั้งหมดไม่กระทบ; `python3 scripts/spec_trace.py organization-structure` ->
+       "OK: 'organization-structure' เกณฑ์ 47 ข้อ ถูกอ้างครบใน design.md และ tasks.md, EARS lint
+       ผ่านทุกข้อ"
+       - routes cross-check ทั้ง dev (5200) และ production build จริง (`next start -p 5300`,
+         `ADMIN_API_ORIGIN=http://localhost:5100`, backend :5100 ตอบ 401 = พร้อม): 16 route ตอบ 200
+         ทั้งคู่; ข้อสังเกต (ไม่ใช่ regression): dev ตอบ 307 สำหรับ read/edit ที่ไม่มี `?id=` (ตรวจ
+         `Location` header ตรง — `redirect()` ยิงเป็น HTTP redirect จริง) ส่วน production build ตอบ
+         200 พร้อม body ฝัง target `office/list` (Next.js App Router streaming/RSC ส่ง redirect เป็น
+         ส่วนหนึ่งของ response แทน HTTP 3xx เมื่อ request เป็น full-document ไม่ใช่ RSC subrequest) —
+         พฤติกรรม framework เดิมที่มีมาตั้งแต่ task 1 (page.tsx pattern เดียวกัน) ไม่ใช่สิ่งที่ migration
+         task 7-12 เปลี่ยน ยืนยันด้วย body มี "office/list" เป็น redirect target ตรง ไม่ใช่หน้า read จริง
+       - deviation (บล็อกจริง): browser E2E เต็ม flow (create/edit/read/deactivate ผ่านฟอร์มจริง,
+         Network tab ตรวจ X-CSRF-Token, sidebar active state, เรียงชื่อไทย) ทำไม่ได้ในรอบนี้ —
+         chrome-devtools MCP navigate ไป `/organization/office/list` บน production build (5300)
+         ถูก redirect ไปหน้า `เข้าสู่ระบบ POL Pay` (`/login`, Google SSO) ทันที ไม่มี session ที่ login
+         ค้างจาก task 6 เหลืออยู่ในรอบนี้ — เหมือน pattern ที่ task 7-10 เจอ (ติด SSO login, ไม่มี
+         credential ให้ auto-login) แทนที่ด้วย static gate (typecheck/lint/test/build) + route status
+         code cross-check ทั้ง dev/production ข้างต้นซึ่งครอบ regression ระดับ compile/route ได้ครบ
+         แต่ไม่ครอบ interactive behavior (dialog/toast/filter/sort/CSRF header จริง) — ต้องมี human
+         login SSO ก่อนแล้วรัน browser E2E ต่อจากจุดนี้ (เหมือนที่ task 6 เคยทำได้ตอนมี session ค้าง)
 
 ## Suggested execution batches
 

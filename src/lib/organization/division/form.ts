@@ -1,22 +1,22 @@
-// validation ฟอร์ม org unit — pure function คืน {field: message}, ว่าง = ผ่าน
+// validation ฟอร์ม division — pure function คืน {field: message}, ว่าง = ผ่าน
 // (pattern เดียวกับ validateRoleForm ใน src/lib/admin/role/permissions.ts)
 // เกณฑ์ตาม backend: code ^[a-z0-9_]+$ max 64, name max 200 (REQ-4.2)
 // ไม่เช็ค code ซ้ำฝั่ง client — ให้ server ตอบ 409 (REQ-4.6)
 
-export interface OrgUnitFormInput {
+export interface DivisionFormInput {
   code: string;
   name: string;
 }
 
-export type OrgUnitFormMode = "create" | "edit";
+export type DivisionFormMode = "create" | "edit";
 
 const CODE_PATTERN = /^[a-z0-9_]+$/;
 const CODE_MAX = 64;
 const NAME_MAX = 200;
 
-export function validateOrgUnitForm(
-  input: OrgUnitFormInput,
-  mode: OrgUnitFormMode,
+export function validateDivisionForm(
+  input: DivisionFormInput,
+  mode: DivisionFormMode,
 ): Record<string, string> {
   const errors: Record<string, string> = {};
 

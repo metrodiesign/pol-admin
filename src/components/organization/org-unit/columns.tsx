@@ -2,7 +2,6 @@
 
 import type { ColumnDef } from "@tanstack/react-table";
 import { Ban, Eye, Pencil } from "lucide-react";
-import type { OrgUnit } from "@/types/organization/org-unit";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,23 +12,31 @@ import {
 } from "@/components/ui/tooltip";
 import { OrgUnitStatusBadge } from "./status-badge";
 
-interface BuildColumnsArgs {
-  /** label ไทยของ entity (เช่น "สำนักงาน") ใช้ประกอบ aria-label */
-  label: string;
-  onSelect?: (unit: OrgUnit) => void;
-  onRead?: (unit: OrgUnit) => void;
-  onEdit?: (unit: OrgUnit) => void;
-  onDeactivate?: (unit: OrgUnit) => void;
+/** shape ขั้นต่ำที่คอลัมน์ต้องการ — structural typing (REQ-7.3), ไม่ import type เฉพาะ entity ใด */
+interface OrgUnitLike {
+  id: string;
+  code: string;
+  name: string;
+  isActive: boolean;
 }
 
-/** ColumnDef ของตาราง org unit — รูปแบบเดียวกับ role module (select checkbox + thead ผ่าน DataTable). */
-export function buildOrgUnitColumns({
+interface BuildColumnsArgs<T> {
+  /** label ไทยของ entity (เช่น "สำนักงาน") ใช้ประกอบ aria-label */
+  label: string;
+  onSelect?: (unit: T) => void;
+  onRead?: (unit: T) => void;
+  onEdit?: (unit: T) => void;
+  onDeactivate?: (unit: T) => void;
+}
+
+/** ColumnDef ของตาราง org unit — shared ทุก module ผ่าน generic (REQ-7.3), รูปแบบเดียวกับ role module. */
+export function buildOrgUnitColumns<T extends OrgUnitLike>({
   label,
   onSelect,
   onRead,
   onEdit,
   onDeactivate,
-}: BuildColumnsArgs): ColumnDef<OrgUnit>[] {
+}: BuildColumnsArgs<T>): ColumnDef<T>[] {
   return [
     {
       id: "select",

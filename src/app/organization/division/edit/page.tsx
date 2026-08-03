@@ -1,7 +1,6 @@
 import { redirect } from "next/navigation";
 
-import { OrgUnitEditView } from "@/components/organization/org-unit/edit-view";
-import { ORG_UNIT_CONFIGS } from "@/lib/organization/org-unit/config";
+import { DivisionEditView } from "@/components/organization/division/edit-view";
 
 export default async function DivisionEditPage({
   searchParams,
@@ -10,5 +9,5 @@ export default async function DivisionEditPage({
 }) {
   const { id } = await searchParams;
   if (!id) redirect("/organization/division/list");
-  return <OrgUnitEditView config={ORG_UNIT_CONFIGS.division} id={id} />;
+  return <DivisionEditView id={id} />;
 }
