@@ -1,7 +1,6 @@
 import { redirect } from "next/navigation";
 
-import { OrgUnitReadView } from "@/components/organization/org-unit/read-view";
-import { ORG_UNIT_CONFIGS } from "@/lib/organization/org-unit/config";
+import { OfficeReadView } from "@/components/organization/office/read-view";
 
 export default async function OfficeReadPage({
   searchParams,
@@ -10,5 +9,5 @@ export default async function OfficeReadPage({
 }) {
   const { id } = await searchParams;
   if (!id) redirect("/organization/office/list");
-  return <OrgUnitReadView config={ORG_UNIT_CONFIGS.office} id={id} />;
+  return <OfficeReadView id={id} />;
 }

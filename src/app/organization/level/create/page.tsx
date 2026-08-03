@@ -1,6 +1,5 @@
-import { OrgUnitCreateView } from "@/components/organization/org-unit/create-view";
-import { ORG_UNIT_CONFIGS } from "@/lib/organization/org-unit/config";
+import { LevelCreateView } from "@/components/organization/level/create-view";
 
 export default function LevelCreatePage() {
-  return <OrgUnitCreateView config={ORG_UNIT_CONFIGS.level} />;
+  return <LevelCreateView />;
 }

@@ -1,5 +1,7 @@
-import type { OrgUnitStatus } from "@/types/organization/org-unit";
 import { cn } from "@/lib/utils";
+
+/** ค่าใน UI (select/filter) map จาก isActive — shared ทุก module (REQ-7.3), ไม่ import จาก type module ใด */
+export type OrgUnitStatus = "active" | "inactive";
 
 /** ป้ายสถานะการใช้งาน org unit — สีไม่ใช่ตัวสื่อความหมายเดียว มีข้อความกำกับเสมอ. */
 const statusStyles: Record<OrgUnitStatus, { chip: string; label: string }> = {

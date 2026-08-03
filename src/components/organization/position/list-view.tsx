@@ -8,34 +8,30 @@ import {
   getSortedRowModel,
   getPaginationRowModel,
 } from "@tanstack/react-table";
-import type { OrgUnit } from "@/types/organization/org-unit";
-import type { OrgUnitConfig } from "@/lib/organization/org-unit/config";
-import { getOrgUnits, deactivateOrgUnit } from "@/lib/api/admin/org-unit";
+import type { Position } from "@/types/organization/position";
+import { POSITION_BASE_PATH, POSITION_LABEL } from "@/lib/organization/position/config";
+import { getPositions, deactivatePosition } from "@/lib/api/admin/position";
 import { useDataTable } from "@/hooks/use-data-table";
 import { useToast } from "@/hooks/use-toast";
 import { DataTable } from "@/components/table/data-table";
 import { Toaster } from "@/components/shared/toaster";
-import { OrgUnitToolbar } from "./toolbar";
-import { buildOrgUnitColumns } from "./columns";
-import { OrgUnitDetailSheet } from "./detail-sheet";
-import { OrgUnitConfirmDialog } from "./confirm-dialog";
-import { statusOf } from "./status-badge";
-
-interface OrgUnitListViewProps {
-  config: OrgUnitConfig;
-}
+import { OrgUnitToolbar } from "@/components/organization/org-unit/toolbar";
+import { buildOrgUnitColumns } from "@/components/organization/org-unit/columns";
+import { OrgUnitConfirmDialog } from "@/components/organization/org-unit/confirm-dialog";
+import { statusOf } from "@/components/organization/org-unit/status-badge";
+import { PositionDetailSheet } from "./detail-sheet";
 
 /**
- * Client container หน้า list ของ org unit — ชุดเดียวใช้ร่วม 4 module ผ่าน config (REQ-7.2).
+ * Client container หน้า list ของ position (โมดูลอิสระ — REQ-7.2).
  * โหลดทั้งก้อนจาก backend แล้วกรอง/เรียง/แบ่งหน้า client-side (server ไม่รองรับ filter/sort — REQ-2).
  */
-export function OrgUnitListView({ config }: OrgUnitListViewProps) {
+export function PositionListView() {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
   const [dense, setDense] = useState(false);
-  const [detailUnit, setDetailUnit] = useState<OrgUnit | null>(null);
-  const [deactivateUnit, setDeactivateUnit] = useState<OrgUnit | null>(null);
-  const [units, setUnits] = useState<OrgUnit[]>([]);
+  const [detailUnit, setDetailUnit] = useState<Position | null>(null);
+  const [deactivateUnit, setDeactivateUnit] = useState<Position | null>(null);
+  const [units, setUnits] = useState<Position[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [reloadKey, setReloadKey] = useState(0);
@@ -45,7 +41,7 @@ export function OrgUnitListView({ config }: OrgUnitListViewProps) {
   // โหลด list จริงจาก backend (fetch-all — REQ-2.1). guard active กัน setState หลัง unmount.
   useEffect(() => {
     let active = true;
-    getOrgUnits(config.segment)
+    getPositions()
       .then((data) => {
         if (active) setUnits(data);
       })
@@ -58,48 +54,48 @@ export function OrgUnitListView({ config }: OrgUnitListViewProps) {
     return () => {
       active = false;
     };
-  }, [config.segment, reloadKey]);
+  }, [reloadKey]);
 
-  // toast เมื่อกลับจากหน้า create/edit (?toast=...) แล้วล้าง query — path จาก config ห้าม hardcode
+  // toast เมื่อกลับจากหน้า create/edit (?toast=...) แล้วล้าง query
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const t = params.get("toast");
     if (t) {
       show(t);
-      window.history.replaceState({}, "", `${config.basePath}/list`);
+      window.history.replaceState({}, "", `${POSITION_BASE_PATH}/list`);
     }
-  }, [show, config.basePath]);
+  }, [show]);
 
-  function goRead(unit: OrgUnit) {
+  function goRead(unit: Position) {
     setDetailUnit(null);
-    router.push(`${config.basePath}/read?id=${encodeURIComponent(unit.id)}`);
+    router.push(`${POSITION_BASE_PATH}/read?id=${encodeURIComponent(unit.id)}`);
   }
 
-  function goEdit(unit: OrgUnit) {
+  function goEdit(unit: Position) {
     setDetailUnit(null);
-    router.push(`${config.basePath}/edit?id=${encodeURIComponent(unit.id)}`);
+    router.push(`${POSITION_BASE_PATH}/edit?id=${encodeURIComponent(unit.id)}`);
   }
 
   // data = units เต็มก้อนแล้วกรองผ่าน globalFilterFn — row selection เป็น GLOBAL
   // (เลือกแล้วเปลี่ยนคำค้นยังคงเลือกอยู่) ตาม pattern ของ role/user module.
   const columns = useMemo(
     () =>
-      buildOrgUnitColumns({
-        label: config.label,
+      buildOrgUnitColumns<Position>({
+        label: POSITION_LABEL,
         onSelect: setDetailUnit,
         onRead: goRead,
         onEdit: goEdit,
         onDeactivate: setDeactivateUnit,
       }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- handlers เสถียร (router/setState); rebuild เมื่อ config เปลี่ยน
-    [config],
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- handlers เสถียร (router/setState)
+    [],
   );
 
-  const table = useDataTable<OrgUnit>({
+  const table = useDataTable<Position>({
     data: units,
     columns,
     getRowId: (u) => u.id,
-    meta: { onRowClick: (unit: OrgUnit) => setDetailUnit(unit) },
+    meta: { onRowClick: (unit: Position) => setDetailUnit(unit) },
     enableRowSelection: true,
     enableSortingRemoval: false,
     autoResetPageIndex: false,
@@ -146,7 +142,7 @@ export function OrgUnitListView({ config }: OrgUnitListViewProps) {
           <p className="px-5 py-10 text-center text-sm text-grey-500">กำลังโหลด…</p>
         ) : error ? (
           <div className="px-5 py-10 text-center text-sm text-grey-500">
-            <p>โหลด{config.label}ไม่สำเร็จ</p>
+            <p>โหลด{POSITION_LABEL}ไม่สำเร็จ</p>
             <button
               type="button"
               onClick={() => {
@@ -176,13 +172,12 @@ export function OrgUnitListView({ config }: OrgUnitListViewProps) {
         </p>
       </div>
 
-      <OrgUnitDetailSheet
+      <PositionDetailSheet
         unit={detailUnit}
         open={detailUnit !== null}
         onOpenChange={(open) => {
           if (!open) setDetailUnit(null);
         }}
-        label={config.label}
         onRead={goRead}
         onEdit={goEdit}
         onDeactivate={setDeactivateUnit}
@@ -193,7 +188,7 @@ export function OrgUnitListView({ config }: OrgUnitListViewProps) {
         onOpenChange={(open) => {
           if (!open) setDeactivateUnit(null);
         }}
-        title={`ปิดใช้งาน${config.label}`}
+        title={`ปิดใช้งาน${POSITION_LABEL}`}
         description={
           <>
             ต้องการปิดใช้งาน &ldquo;{deactivateUnit?.name}&rdquo; ใช่หรือไม่?
@@ -206,7 +201,7 @@ export function OrgUnitListView({ config }: OrgUnitListViewProps) {
         onConfirm={async () => {
           const unit = deactivateUnit;
           if (!unit) return;
-          const res = await deactivateOrgUnit(config.segment, unit.id);
+          const res = await deactivatePosition(unit.id);
           if (!res.ok) {
             setDeactivateUnit(null);
             show(`ปิดใช้งาน "${unit.name}" ไม่สำเร็จ`);

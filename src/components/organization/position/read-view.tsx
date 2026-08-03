@@ -3,31 +3,30 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Pencil } from "lucide-react";
-import type { OrgUnit } from "@/types/organization/org-unit";
-import type { OrgUnitConfig } from "@/lib/organization/org-unit/config";
-import { getOrgUnit } from "@/lib/api/admin/org-unit";
+import type { Position } from "@/types/organization/position";
+import { POSITION_BASE_PATH, POSITION_LABEL } from "@/lib/organization/position/config";
+import { getPosition } from "@/lib/api/admin/position";
 import { EditPageHeader } from "@/components/shared/edit-page-header";
-import { OrgUnitFormStatus } from "./form-status";
-import { OrgUnitStatusBadge } from "./status-badge";
+import { OrgUnitFormStatus } from "@/components/organization/org-unit/form-status";
+import { OrgUnitStatusBadge } from "@/components/organization/org-unit/status-badge";
 
 const fieldLabel = "mb-1.5 block text-xs font-semibold text-grey-700";
 
-interface OrgUnitReadViewProps {
-  config: OrgUnitConfig;
-  /** id (Guid) ของรายการ — view โหลดเองจาก GET /api/v1/{segment}/{id}. */
+interface PositionReadViewProps {
+  /** id (Guid) ของรายการ — view โหลดเองจาก GET /api/v1/positions/{id}. */
   id: string;
 }
 
-/** หน้าดูรายละเอียด org unit แบบเต็มหน้า — read-only + ปุ่มไปหน้าแก้ไข. */
-export function OrgUnitReadView({ config, id }: OrgUnitReadViewProps) {
-  const [unit, setUnit] = useState<OrgUnit | null>(null);
+/** หน้าดูรายละเอียด position แบบเต็มหน้า — read-only + ปุ่มไปหน้าแก้ไข. */
+export function PositionReadView({ id }: PositionReadViewProps) {
+  const [unit, setUnit] = useState<Position | null>(null);
   const [load, setLoad] = useState<"loading" | "ok" | "notfound" | "error">("loading");
 
-  const listHref = `${config.basePath}/list`;
+  const listHref = `${POSITION_BASE_PATH}/list`;
 
   useEffect(() => {
     let active = true;
-    getOrgUnit(config.segment, id)
+    getPosition(id)
       .then((u) => {
         if (!active) return;
         if (!u) {
@@ -43,16 +42,16 @@ export function OrgUnitReadView({ config, id }: OrgUnitReadViewProps) {
     return () => {
       active = false;
     };
-  }, [config.segment, id]);
+  }, [id]);
 
   const header = (
     <EditPageHeader
-      title={`ดู${config.label}`}
+      title={`ดู${POSITION_LABEL}`}
       backHref={listHref}
       breadcrumbs={[
         { label: "Console" },
-        { label: config.label, href: listHref },
-        { label: unit?.name ?? `ดู${config.label}` },
+        { label: POSITION_LABEL, href: listHref },
+        { label: unit?.name ?? `ดู${POSITION_LABEL}` },
       ]}
     />
   );
@@ -61,7 +60,7 @@ export function OrgUnitReadView({ config, id }: OrgUnitReadViewProps) {
     return (
       <>
         {header}
-        <OrgUnitFormStatus state="loading" backHref={listHref} label={config.label} />
+        <OrgUnitFormStatus state="loading" backHref={listHref} label={POSITION_LABEL} />
       </>
     );
   }
@@ -69,7 +68,7 @@ export function OrgUnitReadView({ config, id }: OrgUnitReadViewProps) {
     return (
       <>
         {header}
-        <OrgUnitFormStatus state="notfound" backHref={listHref} label={config.label} />
+        <OrgUnitFormStatus state="notfound" backHref={listHref} label={POSITION_LABEL} />
       </>
     );
   }
@@ -77,7 +76,7 @@ export function OrgUnitReadView({ config, id }: OrgUnitReadViewProps) {
     return (
       <>
         {header}
-        <OrgUnitFormStatus state="error" backHref={listHref} label={config.label} />
+        <OrgUnitFormStatus state="error" backHref={listHref} label={POSITION_LABEL} />
       </>
     );
   }
@@ -85,11 +84,11 @@ export function OrgUnitReadView({ config, id }: OrgUnitReadViewProps) {
   return (
     <>
       <EditPageHeader
-        title={`ดู${config.label}`}
+        title={`ดู${POSITION_LABEL}`}
         backHref={listHref}
         breadcrumbs={[
           { label: "Console" },
-          { label: config.label, href: listHref },
+          { label: POSITION_LABEL, href: listHref },
           { label: unit.name },
         ]}
         actions={
@@ -101,7 +100,7 @@ export function OrgUnitReadView({ config, id }: OrgUnitReadViewProps) {
               กลับ
             </Link>
             <Link
-              href={`${config.basePath}/edit?id=${encodeURIComponent(unit.id)}`}
+              href={`${POSITION_BASE_PATH}/edit?id=${encodeURIComponent(unit.id)}`}
               className="inline-flex h-11 min-w-[140px] items-center justify-center gap-1.5 rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
             >
               <Pencil className="size-4" />
@@ -117,7 +116,7 @@ export function OrgUnitReadView({ config, id }: OrgUnitReadViewProps) {
         style={{ boxShadow: "var(--shadow-card)" }}
       >
         <div className="px-6 py-5">
-          <p className="text-base font-bold text-primary">ข้อมูล{config.label}</p>
+          <p className="text-base font-bold text-primary">ข้อมูล{POSITION_LABEL}</p>
         </div>
         <div className="border-t border-[var(--divider)]" />
         <div className="px-6 pt-5 pb-6">
@@ -127,7 +126,7 @@ export function OrgUnitReadView({ config, id }: OrgUnitReadViewProps) {
               <p className="text-sm font-bold text-foreground">{unit.code}</p>
             </div>
             <div>
-              <p className={fieldLabel}>ชื่อ{config.label}</p>
+              <p className={fieldLabel}>ชื่อ{POSITION_LABEL}</p>
               <p className="text-sm font-bold text-foreground">{unit.name}</p>
             </div>
             <div>
