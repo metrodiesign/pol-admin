@@ -116,5 +116,9 @@ jobs:
         run: npm run build:merchant
       - name: Verify workspace boundaries and route parity
         run: npm run verify:workspaces
+      - name: Verify smoke signal cleanup
+        timeout-minutes: 1
+        run: node scripts/verify-smoke-signals.mjs
       - name: Smoke production routes
+        timeout-minutes: 2
         run: npm run smoke:routes

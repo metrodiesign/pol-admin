@@ -1,7 +1,17 @@
 import assert from "node:assert/strict";
+import { spawn } from "node:child_process";
+import { EventEmitter } from "node:events";
+import { readFile } from "node:fs/promises";
 import { createServer } from "node:net";
 import { join } from "node:path";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
+
+import {
+  signalExitCode,
+  stopManagedServer,
+  waitForManagedServer,
+} from "./workspace-process.mjs";
 
 import {
   assertPortAvailable,
@@ -13,6 +23,138 @@ import {
   findTestPolicyViolations,
   normalizePageRoutes,
 } from "./workspace-verification.mjs";
+
+const repositoryRoot = fileURLToPath(new URL("../..", import.meta.url));
+
+test("F-2/F-3: cleanup จบได้เมื่อ child exit พร้อม SIGKILL", async () => {
+  const child = new EventEmitter();
+  child.exitCode = null;
+  child.kill = (signal) => {
+    if (signal === "SIGKILL") {
+      child.exitCode = 137;
+      child.emit("exit", 137, signal);
+      child.emit("close", 137, signal);
+    }
+    return true;
+  };
+
+  let timeout;
+  try {
+    await Promise.race([
+      stopManagedServer({ child, name: "fixture" }, { gracefulTimeoutMs: 1 }),
+      new Promise((_, reject) => {
+        timeout = setTimeout(() => reject(new Error("cleanup did not settle")), 100);
+      }),
+    ]);
+  } finally {
+    clearTimeout(timeout);
+  }
+});
+
+test("F-3: cleanup timeout คืน error พร้อม server, PID และ phase", async () => {
+  const signals = [];
+  let destroyedStreams = 0;
+  const child = new EventEmitter();
+  child.exitCode = null;
+  child.pid = 42;
+  child.stdout = { destroy: () => destroyedStreams++ };
+  child.stderr = { destroy: () => destroyedStreams++ };
+  child.kill = (signal) => {
+    signals.push(signal);
+    return true;
+  };
+
+  await assert.rejects(
+    () =>
+      stopManagedServer(
+        { child, name: "fixture" },
+        { forceTimeoutMs: 1, gracefulTimeoutMs: 1 },
+      ),
+    /fixture cleanup failed \(PID 42, phase SIGKILL\).*within 1ms/,
+  );
+  assert.deepEqual(signals, ["SIGTERM", "SIGKILL"]);
+  assert.equal(destroyedStreams, 2);
+});
+
+test("F-2/F-5: cleanup ปิด process group แม้ leader ปิดไปก่อน", async () => {
+  if (process.platform === "win32") return;
+
+  const descendantSource = `
+    process.on("SIGTERM", () => {});
+    console.log("ready");
+    setInterval(() => {}, 1_000);
+  `;
+  const leaderSource = `
+    const { spawn } = require("node:child_process");
+    const descendant = spawn(process.execPath, ["-e", ${JSON.stringify(descendantSource)}], {
+      stdio: ["ignore", "pipe", "ignore"],
+    });
+    descendant.stdout.once("data", () => {
+      console.log(descendant.pid);
+      descendant.stdout.destroy();
+      descendant.unref();
+    });
+  `;
+  const child = spawn(process.execPath, ["-e", leaderSource], {
+    detached: true,
+    stdio: ["ignore", "pipe", "pipe"],
+  });
+  const server = {
+    child,
+    didClose: false,
+    name: "orphan fixture",
+    processGroupId: child.pid,
+  };
+  server.closedPromise = new Promise((resolveClose) => {
+    child.once("close", (...result) => {
+      server.didClose = true;
+      resolveClose(result);
+    });
+  });
+
+  try {
+    await server.closedPromise;
+    assert.equal(server.didClose, true);
+    await stopManagedServer(server, { forceTimeoutMs: 1_000, gracefulTimeoutMs: 20 });
+    assert.throws(
+      () => process.kill(-child.pid, 0),
+      (error) => error?.code === "ESRCH",
+    );
+  } finally {
+    try {
+      process.kill(-child.pid, "SIGKILL");
+    } catch (error) {
+      if (error?.code !== "ESRCH") throw error;
+    }
+  }
+});
+
+test("B-7: startup failure คง exit code และ recent output", async () => {
+  await assert.rejects(
+    () =>
+      waitForManagedServer({
+        child: { exitCode: 7 },
+        name: "fixture",
+        output: "recent fixture output",
+        port: 3001,
+        spawnError: null,
+      }),
+    /fixture exited before ready \(7\)[\s\S]*recent fixture output/,
+  );
+});
+
+test("B-8: signal exit code คง 130/143", () => {
+  assert.equal(signalExitCode("SIGINT"), 130);
+  assert.equal(signalExitCode("SIGTERM"), 143);
+});
+
+test("F-6: CI จำกัด smoke step ไม่เกิน 2 นาที", async () => {
+  const workflow = await readFile(join(repositoryRoot, ".github/workflows/ci.yml"), "utf8");
+  assert.match(
+    workflow,
+    /- name: Smoke production routes\n\s+timeout-minutes: 2\n\s+run: npm run smoke:routes/,
+  );
+});
 
 test("runtime smoke ปฏิเสธ port ที่มี owner อยู่แล้วโดยไม่ปิด owner", async () => {
   const owner = createServer();
