@@ -13,12 +13,16 @@ RUN apk add --no-cache libc6-compat
 RUN npm install -g npm@11.12.1
 WORKDIR /app
 COPY package.json package-lock.json ./
+COPY apps/admin/package.json ./apps/admin/package.json
+COPY apps/merchant/package.json ./apps/merchant/package.json
+COPY packages/ui/package.json ./packages/ui/package.json
+COPY packages/shared/package.json ./packages/shared/package.json
 RUN npm ci
 
-# ---- builder: build the app ----
+# ---- builder: build Admin only ----
 FROM base AS builder
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app ./
 COPY . .
 
 # NEXT_PUBLIC_* ใด ๆ ที่ต้องการต้อง ARG/ENV ก่อนบรรทัด build นี้ (ค่า inline เข้า JS bundle
@@ -27,34 +31,30 @@ COPY . .
 # เสิร์ฟ SPA+API origin เดียวกันใน prod). NEXT_PUBLIC_GOOGLE_CLIENT_ID_* เป็นของเก่าที่ dead แล้ว.
 # NEXT_PUBLIC_SKIP_AUTH: ตั้งใจไม่ ARG/ENV ที่นี่ — prod build ต้องไม่ bake flag นี้เข้าไปเลย
 ENV NODE_ENV=production
-RUN npm run build
+RUN npm run build:admin
 
 # ---- runner: minimal production image ----
 FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
-ENV PORT=5200
+ENV PORT=3001
 ENV HOSTNAME=0.0.0.0
-# ADMIN_API_ORIGIN: ตั้งใจไม่ set — next.config.ts rewrites() คืน [] เมื่อไม่ set
+# ADMIN_API_ORIGIN: ตั้งใจไม่ set — Admin next.config.ts rewrites() คืน [] เมื่อไม่ set
 # (reverse proxy เสิร์ฟ SPA+API origin เดียวกันอยู่แล้วใน prod)
 
 RUN addgroup --system --gid 1001 nodejs \
   && adduser --system --uid 1001 nextjs
 
-COPY --from=builder --chown=nextjs:nodejs /app/public ./public
-
-# permission ก่อน copy standalone — ให้ prerender/ISR cache เขียนได้ตอน runtime
-RUN mkdir .next && chown nextjs:nodejs .next
-
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/apps/admin/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/apps/admin/public ./apps/admin/public
+COPY --from=builder --chown=nextjs:nodejs /app/apps/admin/.next/static ./apps/admin/.next/static
 
 USER nextjs
 
-EXPOSE 5200
+EXPOSE 3001
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD node -e "require('http').get('http://127.0.0.1:'+(process.env.PORT||5200)+'/', r=>{process.exit(r.statusCode<500?0:1)}).on('error',()=>process.exit(1))"
+  CMD node -e "require('http').get('http://127.0.0.1:'+(process.env.PORT||3001)+'/', r=>{process.exit(r.statusCode<500?0:1)}).on('error',()=>process.exit(1))"
 
-CMD ["node", "server.js"]
+CMD ["node", "apps/admin/server.js"]

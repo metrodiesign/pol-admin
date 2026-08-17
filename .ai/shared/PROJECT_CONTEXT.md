@@ -5,29 +5,30 @@
 
 ## Purpose
 
-**Payment Orchestration Layer (POL) — Admin** คือ frontend ของ **admin portal ภายในองค์กร
-(internal-only, พนักงานเท่านั้น)** สำหรับทีม payment operations ของบริษัทประกัน. ระบบ POL คือชั้นที่
-รับชำระเบี้ยประกัน (policy premium) แล้ว route ธุรกรรมไปยังหลาย Payment Service Provider
-(PSP เช่น 2C2P, Omise) ตามกฎ routing; frontend นี้คือหน้าจอบริหารของ POL — ติดตามสถานะธุรกรรม
-ตลอด lifecycle, จัดการ payment link, originator (สาขา/ตัวแทน/นายหน้า/connected app), webhook,
+**Payment Orchestration Layer (POL) frontend** เป็น npm workspaces ที่มีสอง Next.js apps:
+`@pol/admin` สำหรับพนักงานภายใน และ `@pol/merchant` สำหรับ Merchant surface. ในระยะ migration
+ปัจจุบัน Merchant clone route implementation, UI, navigation และ Admin auth/API จาก Admin ทั้งชุด
+แล้วเพิ่ม `/register`; การคัด route และสร้าง Merchant-specific auth/navigation เป็นงานภายหลัง.
+
+ระบบ POL รับชำระเบี้ยประกันแล้ว route ธุรกรรมไปหลาย Payment Service Provider (PSP เช่น 2C2P,
+Omise) ตามกฎ routing. Frontend ใช้ติดตาม lifecycle, จัดการ payment link, originator, webhook,
 API client, audit และ report/reconciliation.
 
-One-line pitch: ที่เดียวให้พนักงานภายในมองเห็นและปฏิบัติการกับการรับชำระเบี้ยประกันข้าม PSP
-ทั้งหมด — capture/void/refund, routing, กระทบยอด, และ audit — บนหน้าจอ admin ตัวเดียว.
+One-line pitch: frontend สอง surface สำหรับมองเห็นและปฏิบัติการรับชำระเบี้ยประกันข้าม PSP
+โดยแยก deployment/runtime ownership ตั้งแต่ตอนนี้.
 
 ## Target Users
 
-ผู้ใช้คือ **พนักงานภายในองค์กรเท่านั้น** (ไม่ใช่ merchant หรือลูกค้าปลายทาง). RBAC แยกตาม role
-(ดู `src/types/role.ts`, `src/lib/mock/roles.ts`):
+Admin app ใช้โดย **พนักงานภายในองค์กร**. RBAC แยกตาม role
+(ดู `apps/admin/src/types/admin/role.ts` และ app-local mock):
 
 - **System Admin** (`admin.system`) — คุมทั้งระบบ: จัดการ user/role, ตั้งค่า PSP/webhook/API client, ดู audit
 - **Finance Admin** (`admin.finance`) — refund, reconciliation, financial report (PSP/channel breakdown, settlement)
 - **Operator** (`admin.operator`) — ปฏิบัติการธุรกรรม: capture/void/refund, สร้าง payment link, ติดตามสถานะ
 - **Viewer** (`admin.viewer`) — read-only: ธุรกรรม, policy, report, audit
 
-> หมายเหตุ: RBAC model นิยาม `merchant.*` role ไว้ด้วย แต่นั่นเป็นของ **merchant portal ซึ่งเป็นคนละ surface**.
-> repo นี้คือ **admin portal** สำหรับพนักงานภายใน — การกำหนด merchant role/permission ทำผ่าน roles module
-> ของ admin เอง.
+Merchant app เป็น surface แยกบน port 3002 แต่รอบนี้ยังใช้ `AdminMe`, `getMe`, Admin session,
+permissions, API และ navigation เหมือน Admin. ห้ามตีความ parity ชั่วคราวเป็น final Merchant model.
 
 ## Problem It Solves
 
@@ -42,7 +43,8 @@ One-line pitch: ที่เดียวให้พนักงานภาย�
 
 ## Key Features
 
-ฟีเจอร์หลักคือ payment domain ที่อยู่ใน `src/components/payment/*` (ดู [ARCHITECTURE.md](ARCHITECTURE.md)):
+ฟีเจอร์หลักอยู่ใน app-local route/component trees ใต้ `apps/*/src` (ดู
+[ARCHITECTURE.md](ARCHITECTURE.md)):
 
 - **Dashboard** — KPI การรับชำระ (ยอดวันนี้, link ค้าง, succeeded/failed), volume trend, PSP split, channel breakdown, top originators
 - **Transactions** — list + filter (status/originator/channel/PSP), bulk capture/void/refund, detail drawer + lifecycle track, export
@@ -67,21 +69,22 @@ One-line pitch: ที่เดียวให้พนักงานภาย�
 
 ## Non-Goals
 
-- **ไม่ใช่ merchant/customer-facing portal** — internal admin เท่านั้น
+- **ยังไม่ใช่ final Merchant product surface** — route/auth/navigation pruning และ Merchant dashboard แยก spec ภายหลัง
 - **ไม่ใช่ตัว hosted payment page** เอง — เป็นหน้าบริหารของระบบ ไม่ใช่หน้าที่ลูกค้าจ่ายเงิน
-- **ยังไม่มี backend จริง** — ทั้งหมดใช้ typed mock data (`src/lib/mock/*`); ไม่มี data fetching/auth จริง
-  ในชั้นนี้ (ดู Current State)
+- **Domain data ส่วนใหญ่ยังเป็น mock** — app-local typed mock; auth และ API adapters บางส่วนเรียก BFF จริง
 - **Minimals template demo pages ไม่นับเป็นฟีเจอร์ของผลิตภัณฑ์** — หน้า analytics/ecommerce/banking/
-  booking/calendar/chat/mail/kanban/tour/post/job/product/order ฯลฯ ใต้ `src/app/minimals/*`
+  booking/calendar/chat/mail/kanban/tour/post/job/product/order ฯลฯ ใต้ `apps/*/src/app/minimals/*`
   คือ scaffolding ที่สืบทอดมาจาก admin template ไม่ใช่ขอบเขตของ POL admin
 
 ## Current State (ground truth)
 
-- **Payment surface สร้างครบเป็น component library + types + mock** — `src/components/payment/*`
-  (16 โมดูล), `src/types/*` (transaction, psp, originator, role, permission, webhook, api-client,
-  audit, policy, invoice), `src/lib/mock/*` (originators/psp/transactions/webhooks/invoices/audit/roles/...)
-- **ยังไม่ wire เข้า Next.js route** — `src/app/minimals/*` ปัจจุบันยังเป็นหน้า demo ของ Minimals
-  template; `nav-config.ts` อ้าง route ของ payment (`/transactions`, `/psp`, ...) ไว้แล้วแต่ยังไม่มี
-  `page.tsx` จริง. **การ integrate routing คืองานถัดไป.**
-- ผลิตภัณฑ์เป็น **frontend ล้วน, client-side**, ภาษาไทยทั้ง UI; stack/idiom ดู
-  [stack/nextjs.md](stack/nextjs.md).
+- Repo เป็น npm workspaces: `apps/admin`, `apps/merchant`, `packages/ui`, `packages/shared`.
+- Admin และ Merchant มี app-local `src`, `public`, config, auth/API และ `.next`; ไม่มี app-to-app imports.
+- Route equation ปัจจุบันคือ `Merchant routes = Admin routes ∪ {/register}`. ทั้งสอง app มี Admin routes จริง.
+- `@pol/ui` เก็บเฉพาะ shared presentation ที่ใช้ร่วมจริง; `@pol/shared` เก็บ pure types/validation/utilities.
+- ทั้งสอง app คง rewrites `/admin/*`, `/producer/*`, `/api/*`; Merchant registration ใช้
+  `POST /producer/users/register`.
+- Development ใช้ HTTPS Admin 3001/Merchant 3002; production local ใช้ HTTP ports เดิม.
+- Root Docker image build/serve Admin เท่านั้น. Merchant deployment image ยังนอก scope.
+- Domain UI จำนวนมากยังใช้ typed mock; Admin/Merchant auth เป็น server-side OIDC BFF pattern.
+- Stack และ idiom ดู [stack/nextjs.md](stack/nextjs.md).

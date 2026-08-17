@@ -1,0 +1,94 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import type { MerchantUserStatus } from "@pol/shared/merchant-user";
+import { EditPageHeader } from "@/components/shared/edit-page-header";
+import { MerchantUserEditProfileCard } from "@/components/merchant/user/edit-profile-card";
+import { MerchantUserEditFormCard } from "@/components/merchant/user/edit-form-card";
+import { ConfirmDialog } from "@/components/policy/confirm-dialog";
+
+const cancelClass =
+  "inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-sm font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]";
+
+const FORM_ID = "merchant-user-edit-form";
+
+export default function MerchantUserEditPage() {
+  const router = useRouter();
+  const status: MerchantUserStatus = "PendingApproval";
+  const [confirmAction, setConfirmAction] = useState<"cancel" | "save" | null>(null);
+
+  return (
+    <>
+      <EditPageHeader
+        title="แก้ไข"
+        backHref="/merchant/user/list"
+        breadcrumbs={[
+          { label: "ตัวแทน/นายหน้า", href: "/merchant/user/list" },
+          { label: "สมชาย ใจดี" },
+        ]}
+        actions={
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setConfirmAction("cancel")}
+              className={cancelClass}
+            >
+              ยกเลิก
+            </button>
+            <button
+              type="button"
+              onClick={() => setConfirmAction("save")}
+              className="inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
+            >
+              บันทึก
+            </button>
+          </div>
+        }
+      />
+
+      <div className="grid grid-cols-1 gap-6 mmd:grid-cols-12">
+        <div className="mmd:col-span-4">
+          <MerchantUserEditProfileCard name="สมชาย ใจดี" status={status} />
+        </div>
+        <div className="mmd:col-span-8">
+          <MerchantUserEditFormCard
+            initialData={{
+              firstName: "สมชาย",
+              lastName: "ใจดี",
+              personType: "Individual",
+              idNumber: "1103702450000",
+              producerCode: "AG10001",
+              licenseNumber: "1234567890",
+              phoneNumber: "0970000001",
+              email: "somchai.j@viriyah.co.th",
+              acceptTerms: true,
+            }}
+            formId={FORM_ID}
+          />
+        </div>
+      </div>
+
+      <ConfirmDialog
+        open={confirmAction === "cancel"}
+        title="ต้องการออกจากหน้านี้?"
+        description="ข้อมูลที่แก้ไขในหน้านี้จะไม่ถูกบันทึก"
+        confirmLabel="ออกจากหน้านี้"
+        onConfirm={() => router.push("/merchant/user/list")}
+        onClose={() => setConfirmAction(null)}
+      />
+
+      <ConfirmDialog
+        open={confirmAction === "save"}
+        title="ยืนยันการบันทึก?"
+        description="ระบบจะบันทึกข้อมูลตัวแทน/นายหน้าตามที่แก้ไขในหน้านี้"
+        confirmLabel="ยืนยัน"
+        onConfirm={() => {
+          setConfirmAction(null);
+          (document.getElementById(FORM_ID) as HTMLFormElement | null)?.requestSubmit();
+        }}
+        onClose={() => setConfirmAction(null)}
+      />
+    </>
+  );
+}

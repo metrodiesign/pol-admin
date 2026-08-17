@@ -1,17 +1,30 @@
-# Stack profile: Next.js (POL admin / pol-admin)
+# Stack profile: Next.js (POL Admin/Merchant workspaces)
 
 > Optional stack profile — complements the neutral canon, ไม่แทนที่. กฎทั่วไปอยู่ใน
 > `../CODING_STANDARDS.md` / `../ARCHITECTURE.md` / `../TESTING_PROTOCOL.md`; ไฟล์นี้เก็บเฉพาะ
 > idiom ที่เจาะจง stack ของโปรเจกต์นี้. ground truth คือโค้ดจริง — แก้ที่นี่เมื่อ stack เปลี่ยน.
 
-## Versions (จาก package.json)
+ในไฟล์นี้ path `src/...` หมายถึง app-local path ใต้ `apps/admin/src/...` หรือ
+`apps/merchant/src/...` เว้นแต่ระบุ package ชัดเจน.
 
-- **next** 16.2.6 (App Router), **react** / **react-dom** 19.2.4, **typescript** ^5
+## Versions (จาก package manifests)
+
+- **next** 16.3.1 (App Router), **react** / **react-dom** 19.2.4, **typescript** ^5
 - **tailwindcss** ^4 + **@tailwindcss/postcss** ^4 (Tailwind v4, CSS-first — ไม่มี `tailwind.config.*`)
 - UI primitives: **shadcn** style `base-nova` build บน **@base-ui/react** ^1.5.0 — **ไม่ใช่ @radix-ui**
 - **lucide-react** ^1.16, **recharts** ^3.8, **@tanstack/react-table** ^8.21
 - **class-variance-authority** ^0.7, **clsx** ^2.1, **tailwind-merge** ^3.6, **tw-animate-css** ^1.4
 - **simplebar** ^6.3 / **simplebar-react** ^3.3 (custom scrollbar ใน popover/drawer)
+
+## Workspace Model
+
+- `apps/admin` = `@pol/admin`; HTTPS dev 3001, HTTP production local 3001.
+- `apps/merchant` = `@pol/merchant`; HTTPS dev 3002, HTTP production local 3002.
+- `packages/ui` = `@pol/ui`; shared presentation exports ที่ใช้จริงร่วมกัน.
+- `packages/shared` = `@pol/shared`; pure types/validation/utilities.
+- App มี route tree, auth/API, navigation, config, `public` และ `.next` ของตัวเอง.
+- ห้าม app-to-app imports และ package-to-app imports. ไม่สร้าง shared route/auth abstraction.
+- Merchant route contract ชั่วคราวคือ Admin parity และเพิ่ม `/register`.
 
 ## Server vs client boundary
 
@@ -23,9 +36,9 @@
 
 ## Styling (Tailwind v4 CSS-first)
 
-- `src/app/globals.css`: `@import "tailwindcss"`, `@import "tw-animate-css"`, และ `@theme {}`
+- แต่ละ app มี `src/app/globals.css`: `@import "tailwindcss"`, `@import "tw-animate-css"`, และ `@theme {}`
   เป็น **single source ของ design token** (color/typography/shadow/radius/breakpoint).
-  ไม่มีไฟล์ config — token อยู่ใน CSS ล้วน.
+  ไม่มีไฟล์ config — token อยู่ใน CSS ล้วน; `@source` scan `packages/ui/src` สำหรับ shared UI.
 - breakpoint custom: `--breakpoint-mmd` (900px), `--breakpoint-mlg` (1200px) เพื่อ parity กับ MUI;
   เรียงเป็น rem ให้มาก่อน sm/md/lg เพื่อ override precedence.
 - **`cn()` = `clsx` + `tailwind-merge`** อยู่ใน `src/lib/utils.ts` — ใช้รวม className ทุกที่.
@@ -37,16 +50,17 @@
   นิยาม token เอง. เกินจาก 6 semantic families (`primary/secondary/info/success/warning/error`+grey)
   ก็หยิบ default scale มาใช้.
 - ยืนยันว่า utility class ที่เพิ่งใช้ถูก **generate จริง**: grep substring (เช่น `orange`, `teal`) ใน
-  prod CSS ก้อนใหญ่ `.next/static/chunks/*.css` — **build เขียวไม่การันตี** (unknown utility = เงียบ
+  prod CSS ก้อนใหญ่ `apps/<app>/.next/static/chunks/*.css` — **build เขียวไม่การันตี** (unknown utility = เงียบ
   ไม่ error). อย่าใช้ fixed-string grep ชื่อ class เต็มข้ามหลายไฟล์ — minification/`$VAR` expansion
   ให้ 0 หลอกได้.
 
 ## UI primitives (shadcn-on-base-ui)
 
-- ทุก primitive ใน `src/components/ui/*` wrap **@base-ui/react** (ไม่ใช่ radix) + `cn()` +
+- App-local primitive ใน `src/components/ui/*` wrap **@base-ui/react** (ไม่ใช่ radix) + `cn()` +
   `data-slot="*"` บน subcomponent เพื่อ scope CSS โดยไม่ class-drill. ตั้งค่าใน `components.json`
   (style `base-nova`, base color `neutral`, icon `lucide`).
 - เพิ่ม primitive ใหม่: ทำตาม pattern เดิม (wrap base-ui + cva + cn + data-slot) — **อย่า import @radix-ui**.
+- `@pol/ui` ปัจจุบัน export `avatar-upload`, `fieldset`, `logo`; เพิ่มของใหม่เมื่อสอง app ใช้ implementation เดียวกันจริง.
 
 ## Domain wrappers
 
@@ -63,19 +77,21 @@
   (เช่น `export const POLICIES: Policy[]`). transaction/policy/merchant-user/admin-user ยังไม่มี backend endpoint.
 - data flow: `lib/mock/*` -> hook (filter/sort/paginate ผ่าน TanStack) -> page container spread
   เป็น props -> child component render. ไม่มี global store (ไม่มี Redux/Zustand) — React hook + context.
-- **Auth = real backend แล้ว** (ดู section "Auth" ล่าง): `src/lib/api/admin-api.ts` คือ API client จริงตัวแรก;
+- **Auth = real backend แล้ว** (ดู section "Auth" ล่าง): app-local `src/lib/api/admin/*` คือ API client จริง;
   `/admin/me` เป็น real fetch. swap domain mock->real: เพิ่ม module `src/lib/api/<domain>.ts` คืน Promise,
   `const ENDPOINT: string|null = null` (null=mock, set=adminFetch) — migrate consumer ต่อ domain เมื่อ endpoint พร้อม.
 
 ## Auth (server-side OIDC BFF)
 
-- admin auth = **server-side OIDC BFF** (contract: `pol-core/docs/reference/admin-fe-integration.md` +
+- ทั้งสอง app ใช้ **server-side OIDC BFF** แบบ Admin ชั่วคราว (contract:
+  `pol-core/docs/reference/admin-fe-integration.md` +
   `admin-google-sso.md`). FE **ไม่ถือ token**; session = httpOnly cookie ที่ backend set. ไม่มี GIS/id-token/Bearer.
-- **same-origin proxy บังคับ**: `next.config.ts` `rewrites()` `/admin/:path*` -> `process.env.ADMIN_API_ORIGIN`
-  (dev = `http://localhost:5100`; **prod เว้นว่าง** -> rewrite คืน `[]` เพราะ reverse proxy same-origin อยู่แล้ว).
+- **same-origin proxy บังคับ**: app-local `next.config.ts` rewrite `/admin/*`, `/producer/*`, `/api/*`
+  ไป `process.env.ADMIN_API_ORIGIN` (dev = `https://localhost:5001`; **prod เว้นว่าง** -> rewrite คืน `[]`
+  เพราะ reverse proxy same-origin อยู่แล้ว).
   ผลพลอยได้: browser เห็นทุก call เป็น same-origin -> **CORS ไม่ถูก exercise** (อย่าไล่ debug CORS เมื่อใช้ proxy นี้;
   doc backend เขียน admin origin 5130 ก็ไม่มีผล).
-- `src/lib/api/admin-api.ts`: `adminFetch` (credentials:'include', แนบ `X-CSRF-Token`=cookie `adm_csrf` เฉพาะ
+- `src/lib/api/admin/auth.ts`: `adminFetch` (credentials:'include', แนบ `X-CSRF-Token`=cookie `adm_csrf` เฉพาะ
   mutation, 401->`login()`), `getMe()` (200->AdminMe / 401->null), `login(returnTo)` (full-page navigate
   `/admin/auth/login?returnTo=`), `logout`/`logoutAll`. pure helper แยกไว้ unit-test (node) ได้.
 - guard = **client-side** (ตรงกับ contract): `auth-provider.tsx` (getMe on mount, `useAuth`) +
@@ -86,6 +102,10 @@
 - **E2E recipe**: real backend ต้อง Google human-auth + provisioned admin -> validate ครบไม่ได้ด้วย automation.
   ใช้ **contract-mock backend** (no-dep node http บน :5100 พูดตาม contract) + cookie-jar curl ผ่าน proxy +
   isolated browser context -> exercise proxy/guard/401/CSRF/authed ครบแบบ deterministic.
+- Merchant clone `AdminMe`, `getMe`, Admin session/API และ navigation. Merchant-only auth provider/dashboard
+  ยังไม่มี; การคัดออกเป็น feature แยก.
+- Development frontend origins คือ Admin `https://localhost:3001` และ Merchant `https://localhost:3002`.
+  Staging/production ต้องประสาน backend allowlist/OAuth callback และ reverse proxy ของแต่ละ origin ก่อน deploy.
 
 ## App setup & theming
 
@@ -106,12 +126,27 @@
   หมายเหตุ: page URL `/admin/*` อยู่ร่วมกับ BFF rewrite `/admin/:path*` ได้ใน dev (afterFiles — page ชนะ);
   prod ต้อง confirm ว่า reverse proxy ไม่ route `/admin/*` ทั้ง prefix ไป backend.
 
+## Environment
+
+- Template อยู่ที่ `apps/admin/.env.example` และ `apps/merchant/.env.example`.
+- Developer คัดลอกเป็น app-local `.env.local` ด้วยมือ; ห้าม auto-copy root env หรือ secret.
+- `ADMIN_API_ORIGIN=https://localhost:5001` เปิด dev rewrites; production เว้นว่างเมื่อ reverse proxy
+  ให้ SPA/API เป็น same-origin.
+- Generated HTTPS certificates อยู่ app-local `certificates/` และถูก ignore.
+
 ## Tooling
 
-- scripts: `dev` = `next dev -p 5200`, `start` = `next start -p 5200`, `build` = `next build`
-  (Next 16 ใช้ Turbopack เป็น default), `lint` = `eslint`.
-- **test runner = vitest** (`vitest` ^4.1.9, config `vitest.config.ts`: alias `@`→`./src`, `environment: node`, include `src/**/*.test.ts`); script `test` = `vitest run`. gate `.ai/bin/gate-task.sh` auto-detect `"test"` → รัน `npm test` เป็น code-green ตอน mark `[x]`. tests co-located `src/**/*.test.ts` (`lib/api/admin/*`, `lib/api/merchant/*`, `lib/policy/*`, `lib/merchant/user/*`, `lib/control/*`).
-- typecheck: ใช้ `tsc --noEmit` หรือ `next build` (ยังไม่มี script `typecheck` แยก — เพิ่มได้เพื่อให้ gate auto-detect).
+- Root scripts: `dev:admin`, `dev:merchant`, `build:admin`, `build:merchant`, `start:admin`,
+  `start:merchant`, `test:admin`, `test:merchant`, `lint`, `typecheck`.
+- Backward-compatible root aliases `dev`, `dev:clean`, `build`, `start` ชี้ Admin; root `test` รัน verifier
+  unit tests แล้วทุก workspace tests.
+- App dev scripts ใช้ `next dev --experimental-https` บน 3001/3002. App start scripts ใช้ HTTP
+  บน ports เดิม; TLS production เป็นหน้าที่ reverse proxy.
+- **test runner = vitest** (`vitest` ^4.1.9, app-local config: alias `@`→`./src`, `environment: node`,
+  include `src/**/*.test.ts`); `@pol/shared` มี validation tests ของตัวเอง.
+- `npm run verify:workspaces` ตรวจ normalized route equation, import boundaries และ `.only`/`.skip`.
+- `npm run smoke:routes` spawn production servers, probe contract และหยุดเฉพาะ child processes ที่สร้างเอง.
+- Build output: `apps/admin/.next` และ `apps/merchant/.next`; standalone output แยกกัน.
 
 ## Navigation (sidebar)
 
