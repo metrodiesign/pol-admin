@@ -1,5 +1,5 @@
-node_modules
-.next
+**/node_modules
+**/.next
 .git
 .github
 .githooks
@@ -12,13 +12,13 @@ docs
 retrospectives
 scripts
 *.md
-.env
-.env.*
-!.env.example
+**/.env
+**/.env.*
 .DS_Store
-coverage
+**/coverage
 .playwright-mcp
-next-env.d.ts
-tsconfig.tsbuildinfo
+**/next-env.d.ts
+**/tsconfig.tsbuildinfo
+**/certificates
 Dockerfile
 .dockerignore

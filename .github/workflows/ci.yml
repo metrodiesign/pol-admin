@@ -9,11 +9,9 @@ on:
 permissions:
   contents: read
 
-# The framework is stack-agnostic: this repo ships no application code or package
-# manifest, so CI exercises the framework's OWN deliverables — the guard engine
-# (.ai/bin/check-*.sh) via its adversarial suite, a full-tree secret scan, and the
-# REQ-coverage tracer. A downstream project that scaffolds an app adds its own
-# typecheck/test steps (the task gate already auto-detects them — see .ai/bin/gate-task.sh).
+# Framework guards remain isolated from application verification. Both jobs must pass:
+# guard regressions, secret scan and REQ trace protect the workflow; application gates
+# prove the Admin/Merchant workspaces install, test, build and serve their route contract.
 jobs:
   pr-base-guard:
     # Branch policy: main only ever advances via a release PR from develop. Branch
@@ -58,6 +56,7 @@ jobs:
             echo "::endgroup::"
           done
           exit "$status"
+
       - name: Secret scan
         # Tier 1 floor: full-tree secret scan (single source: .ai/bin/check-secrets.sh).
         # --all scans the whole tree (not just a staged diff) so CI catches anything that
@@ -88,3 +87,34 @@ jobs:
             echo "::endgroup::"
           done
           exit "$status"
+
+  application:
+    name: application workspaces
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.19.0'
+          cache: npm
+      - name: Pin npm
+        run: npm install --global npm@11.12.1
+      - name: Install workspaces
+        run: npm ci
+      - name: Audit production dependencies
+        run: npm audit --omit=dev --audit-level=high
+      - name: Lint
+        run: npm run lint
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Test
+        run: npm test
+      - name: Build Admin
+        run: npm run build:admin
+      - name: Build Merchant
+        run: npm run build:merchant
+      - name: Verify workspace boundaries and route parity
+        run: npm run verify:workspaces
+      - name: Smoke production routes
+        run: npm run smoke:routes

@@ -1,0 +1,15 @@
+{
+  "name": "@pol/shared",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./merchant-user": "./src/merchant-user.ts",
+    "./merchant-user-validation": "./src/merchant-user-validation.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  }
+}

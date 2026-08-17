@@ -1,7 +1,15 @@
 # pol-admin
 
-Admin portal สำหรับทีม Payment Operations — ดูและปฏิบัติการธุรกรรมการรับชำระเบี้ยประกัน
-ข้าม PSP (2C2P, Omise) ทั้งหมดจากหน้าจอเดียว (internal-only, พนักงานเท่านั้น)
+Frontend monorepo สำหรับทีม Payment Operations. มี Admin app และ Merchant app ที่ clone
+route, UI, navigation และ Admin auth/API จาก Admin ชั่วคราว เพื่อคัด Merchant surface ภายหลัง.
+
+| App | Workspace | Development | Production local | Route เพิ่ม |
+|-----|-----------|-------------|------------------|------------|
+| Admin | `@pol/admin` | `https://localhost:3001` | `http://localhost:3001` | ไม่มี `/register` |
+| Merchant | `@pol/merchant` | `https://localhost:3002` | `http://localhost:3002` | `/register` |
+
+คู่มือรัน frontend-only, full stack, Docker, troubleshooting และ production checklist อยู่ที่
+[docs/dev-setup.md](docs/dev-setup.md).
 
 ## สารบัญ
 
@@ -23,34 +31,36 @@ Admin portal สำหรับทีม Payment Operations — ดูและ�
 
 | ส่วน | เทคโนโลยี | เวอร์ชัน |
 |------|-----------|---------|
-| Framework | Next.js App Router | 16.2.6 |
+| Framework | Next.js App Router | 16.3.1 |
 | Runtime | React | 19.2.4 |
 | ภาษา | TypeScript | ^5 |
 | Styling | Tailwind CSS v4 (CSS-first, ไม่มี config file) | ^4 |
 | UI Primitives | shadcn style `base-nova` บน `@base-ui/react` (ไม่ใช่ Radix) | ^1.5.0 |
 | Icons | lucide-react | ^1.16 |
-| Charts | recharts (ห่อใน `src/components/charts/*`) | ^3.8 |
-| Tables | @tanstack/react-table (ห่อใน `src/components/table/*`) | ^8.21 |
+| Charts | recharts (ห่อใน `apps/*/src/components/charts/*`) | ^3.8 |
+| Tables | @tanstack/react-table (ห่อใน `apps/*/src/components/table/*`) | ^8.21 |
 | Test Runner | Vitest | ^4.1.9 |
-| Dev Port | 5200 | |
+| Package manager | npm workspaces | 11.12.1 |
 
-> ยังไม่มี backend domain จริง — domain data ใช้ typed mock ใน `src/lib/mock/*`.
+> ยังไม่มี backend domain จริง — domain data ใช้ typed mock ใน `apps/*/src/lib/mock/*`.
 > Auth เป็น server-side OIDC BFF จริงแล้ว (ดู [Authentication](#authentication)).
 
 ---
 
 ## Prerequisites
 
-- **Node.js** >= 20 (แนะนำ LTS ล่าสุด)
-- **npm** >= 10 (มากับ Node 20)
-- ถ้าต้องการต่อ backend จริง: รัน [pol-core](../pol-core) บนพอร์ต 5100 ไว้ก่อน
+- **Node.js** `^20.17.0` หรือ `>=22.9.0`; แนะนำ 22.19.0 ตาม CI/Docker
+- **npm** 11.12.1
+- ถ้าต้องการต่อ backend จริง: รัน [pol-core](https://github.com/metrodiesign/pol-core) ที่ `https://localhost:5001`
 
 ตรวจสอบเวอร์ชัน:
 
 ```bash
-node -v   # >= 20
-npm -v    # >= 10
+node -v   # ^20.17.0 หรือ >=22.9.0
+npm -v    # 11.12.1
 ```
+
+ใช้ Node 22.19.0 เมื่อต้องการ toolchain ตรง CI/Docker.
 
 ---
 
@@ -61,36 +71,44 @@ npm -v    # >= 10
 git clone git@github.com:metrodiesign/pol-admin.git
 cd pol-admin
 
-# 2. ติดตั้ง dependency
-npm install
+# 2. ติดตั้งทุก workspace จาก root lockfile
+npm ci
 
-# 3. คัดลอก env template
-cp .env.example .env.local
+# 3. คัดลอก env แยก app ด้วยมือ
+cp apps/admin/.env.example apps/admin/.env.local
+cp apps/merchant/.env.example apps/merchant/.env.local
 ```
 
-จากนั้นแก้ไขค่าใน `.env.local` ตาม [Environment Variables](#environment-variables)
+อย่าย้ายหรือคัดลอก root `.env.local` อัตโนมัติ. แต่ละ app โหลด environment จาก workspace ของตัวเอง.
 
 ---
 
 ## Environment Variables
 
-สร้างไฟล์ `.env.local` จาก `.env.example` (ห้าม commit `.env.local` เข้า git)
+สร้าง `apps/admin/.env.local` และ `apps/merchant/.env.local` จาก template ของ app นั้น
+(ห้าม commit `.env.local` เข้า git)
 
 | ตัวแปร | ค่า dev | ค่า prod | คำอธิบาย |
 |--------|---------|----------|----------|
-| `ADMIN_API_ORIGIN` | `http://localhost:5100` | ว่าง (ไม่ตั้ง) | origin ของ BFF — Next.js จะ rewrite `/admin/*` และ `/producer/*` ไปยัง host นี้ บังคับ same-origin ใน dev |
+| `ADMIN_API_ORIGIN` | `https://localhost:5001` | ว่าง (ไม่ตั้ง) | BFF origin สำหรับ rewrites `/admin/*`, `/producer/*`, `/api/*` ใน dev |
+| `NEXT_PUBLIC_API_ORIGIN` | `https://localhost:5001` | build-time ตาม deployment | Origin สำหรับ full-page OIDC login navigation |
+| `NEXT_PUBLIC_SKIP_AUTH` | ไม่ตั้ง | ห้ามตั้ง | ข้าม auth เฉพาะ frontend-only development |
 
 **Dev (ต่อ backend จริง):**
 
 ```env
-ADMIN_API_ORIGIN=http://localhost:5100
+ADMIN_API_ORIGIN=https://localhost:5001
+NEXT_PUBLIC_API_ORIGIN=https://localhost:5001
 ```
 
 **Dev (mock-only, ไม่ต้อง backend):**
 
 ```env
-# ไม่ต้องตั้ง ADMIN_API_ORIGIN — rewrite จะ return [] อัตโนมัติ
+NEXT_PUBLIC_SKIP_AUTH=true
+# ไม่ตั้ง ADMIN_API_ORIGIN และ NEXT_PUBLIC_API_ORIGIN
 ```
+
+`NEXT_PUBLIC_SKIP_AUTH` ใช้ได้เฉพาะ development; production guard บังคับปิด.
 
 **Production:**
 
@@ -104,18 +122,33 @@ ADMIN_API_ORIGIN=http://localhost:5100
 
 ## การรัน Dev Server
 
+ใช้สอง terminal เพื่อให้ `.next` และ certificate แยกกัน:
+
 ```bash
-npm run dev
+# Terminal 1
+npm run dev:admin
+
+# Terminal 2
+npm run dev:merchant
 ```
 
-แอปขึ้นที่ [http://localhost:5200](http://localhost:5200)
+- Admin: [https://localhost:3001](https://localhost:3001)
+- Merchant: [https://localhost:3002](https://localhost:3002)
+
+`npm run dev` และ `npm run dev:clean` ชี้ Admin เพื่อคงคำสั่งเดิม.
+
+ครั้งแรก Next.js จะสร้าง certificate ใต้ app-local `certificates/` และอาจขอสิทธิ์ระบบเพื่อ trust
+local CA. อนุมัติ trust prompt ของระบบก่อนใช้ browser; `curl -k` ใช้ได้เฉพาะ diagnostic local.
+
+เมื่อต่อ `pol-core` ให้รัน `dotnet dev-certs https --trust`. ถ้า Node ยังไม่อ่าน system CA ให้เพิ่ม
+`NODE_OPTIONS=--use-system-ca` ตอนรัน frontend; ดูขั้นตอนเต็มใน [docs/dev-setup.md](docs/dev-setup.md#8-https-และ-certificate).
 
 Next.js 16 ใช้ **Turbopack** เป็น default (เร็วกว่า Webpack มาก)
 
 **ดู raw log (แนะนำ):**
 
 ```bash
-rtk proxy npm run dev
+rtk proxy npm run dev:admin
 ```
 
 > หมายเหตุ: ถ้าใช้ `npm run dev` โดยตรงผ่าน rtk hook output จะถูก filter เป็น summary `Errors: N | Warnings: N` บดบัง log จริง — ใช้ `rtk proxy` เพื่อดู raw output
@@ -124,11 +157,12 @@ rtk proxy npm run dev
 
 ```bash
 # ดู body จาก curl ก่อน — 404 ที่มี HTML body = zombie
-curl -i http://localhost:5200
+curl -k -i https://localhost:3001
 
-# kill แล้ว restart
-lsof -ti :5200 | xargs kill -9
-npm run dev
+# ตรวจ owner แล้วหยุดจาก terminal เดิม หรือส่ง SIGTERM ให้ PID ที่ยืนยันแล้ว
+lsof -nP -iTCP:3001 -sTCP:LISTEN
+kill <PID>
+npm run dev:admin
 ```
 
 ---
@@ -136,17 +170,22 @@ npm run dev
 ## Build สำหรับ Production
 
 ```bash
-npm run build
-npm run start
+npm run build:admin
+npm run build:merchant
+
+# รันคนละ terminal หลัง build
+npm run start:admin
+npm run start:merchant
 ```
 
-`start` รันบนพอร์ต 5200 เช่นกัน
+Production local ใช้ HTTP: Admin `http://localhost:3001`, Merchant `http://localhost:3002`.
+`build` และ `start` ชี้ Admin. Production TLS ให้ reverse proxy จัดการ.
 
 **ตรวจสอบ Tailwind utility ที่ใช้ถูก generate:**
 
 ```bash
 # หลัง build — grep ใน CSS จริง ไม่ใช่ source
-grep -r "orange" .next/static/chunks/*.css | head -5
+grep -r "orange" apps/admin/.next/static/chunks/*.css | head -5
 ```
 
 > `next build` เขียว ≠ utility class ถูก generate เสมอ (unknown utility เงียบไม่ error)
@@ -158,20 +197,15 @@ grep -r "orange" .next/static/chunks/*.css | head -5
 ```bash
 # รัน test suite ทั้งหมด
 npm test
-
-# watch mode (ระหว่าง dev)
-npx vitest
 ```
 
-Test ทั้งหมดอยู่ที่ `src/**/*.test.ts` (co-located กับ logic ที่ทดสอบ)
+App tests อยู่ที่ `apps/*/src/**/*.test.ts`; shared tests อยู่ใน package ที่รับผิดชอบ.
 Environment = `node` (ไม่ใช่ jsdom)
 
 **Typecheck:**
 
 ```bash
-npx tsc --noEmit
-# หรือ
-npm run build  # ตรวจ type พร้อมกัน
+npm run typecheck
 ```
 
 **Lint:**
@@ -185,36 +219,17 @@ npm run lint
 ## โครงสร้างโปรเจกต์
 
 ```
-src/
-  app/                  # Next.js App Router
-    globals.css         # design token single-source (@theme) + dark mode + theme variants
-    layout.tsx          # root: SettingsProvider, fonts (Google 5 ตระกูล), SETTINGS_INIT_SCRIPT
-    dashboard/          # route group (Minimals template demo + POL routes ที่จะ wire ทีหลัง)
-
-  components/
-    ui/                 # primitive: shadcn/base-nova บน @base-ui/react — prop-only, ห้าม import @radix-ui
-    payment/            # (*) POL domain surface จริง:
-                        #   dashboard, transactions, invoices, psp, api-clients,
-                        #   webhooks, audit, users, roles, branches, agents, apps,
-                        #   reports, notifications, shell
-    dashboard/          # Minimals template demo (scaffolding, ไม่ใช่ product feature)
-    layout/             # app shell: sidebar/topbar, nav-config.ts, minimals-nav-config.ts
-    form/               # field wrapper: text/select/date/country/phone-country
-    charts/             # recharts wrapper (ใช้ wrapper เสมอ ห้ามเรียก recharts ตรงในหน้า)
-    table/              # @tanstack/react-table UI: data-table, pagination
-    shared/             # cross-app: breadcrumbs, page-header, avatar-upload
-    providers/          # settings-provider.tsx (theme/mode/preset runtime control)
-
-  hooks/                # stateful logic: use-data-table, use-policy-table-with-cart, ...
-  lib/
-    mock/               # typed mock data (NO backend): transactions/psp/webhooks/audit/...
-    api/                # API client จริง: admin-api.ts (adminFetch, getMe, login, logout)
-    utils.ts            # cn() (clsx+tailwind-merge), formatTHB()
-    breadcrumbs.ts      # buildBreadcrumbs()
-  types/                # domain contracts (PascalCase): transaction, psp, originator, role, ...
+apps/
+  admin/                # @pol/admin; route tree, auth/API, config, public, .next แยก
+  merchant/             # @pol/merchant; clone parity + /register
+packages/
+  ui/                   # @pol/ui; shared UI primitives/styles ที่ใช้จริงร่วมกัน
+  shared/               # @pol/shared; pure types/validation/utilities
+scripts/                # route parity, import boundary และ runtime smoke checks
 ```
 
-> `(*)` = product surface จริง. domain data ยังเป็น mock; auth เป็น real BFF แล้ว.
+ห้าม app import source จากอีก app และห้าม package import app. Route/auth abstraction ยังเป็น app-local
+โดยเจตนา เพื่อคัด Merchant routes ภายหลังได้ง่าย.
 
 ---
 
@@ -224,13 +239,13 @@ src/
 
 - Session = **httpOnly cookie** ที่ backend set (ไม่มี GIS/id-token/Bearer ใน FE)
 - Guard = client-side: `auth-provider.tsx` (call `getMe` on mount) + `auth-guard.tsx` (loading/anon -> redirect `/login`)
-- Public routes (ไม่ผ่าน MinimalsLayout): `/login`, `/logout`, `/login-error`
+- Public routes (ไม่ผ่าน MinimalsLayout): `/login`, `/logout`, `/login-error`; Merchant เพิ่ม `/register`
 
 **Flow auth dev (ต้อง backend):**
 
 ```
-Browser -> Next.js (port 5200)
-          -> /admin/* rewrite -> pol-core (port 5100)
+Browser -> Admin HTTPS :3001 หรือ Merchant HTTPS :3002
+          -> /admin/* rewrite -> pol-core HTTPS :5001
              <- httpOnly session cookie
 Browser ถือ session ผ่าน cookie (same-origin)
 ```
@@ -239,7 +254,10 @@ Browser ถือ session ผ่าน cookie (same-origin)
 
 **Error redirect:** backend deny -> `/login-error?reason=<label>` (FE map เป็นข้อความใน `login-error/page.tsx`)
 
-> ถ้าต้องการ E2E test ที่ deterministic: ใช้ contract-mock backend (node http บน 5100) แทน Google SSO จริง
+Merchant ใช้ `AdminMe`, `getMe`, Admin session/API และ navigation เหมือน Admin ในรอบนี้.
+Development backend ต้องตั้ง Admin/Merchant `SpaBaseUrl` เป็น `https://localhost:3001` และ
+`https://localhost:3002`. ก่อน deploy staging/production ต้องตั้ง frontend origins, OAuth callbacks
+และ reverse proxy ให้ SPA กับ `/admin/*`, `/producer/*`, `/api/*` เป็น same-origin.
 
 ---
 
@@ -279,23 +297,23 @@ import { columns } from "./columns";
 
 ต้องแก้ **สองไฟล์** เสมอ:
 
-1. `src/components/layout/nav-config.ts` — breadcrumb + search
-2. `src/components/layout/minimals-nav-config.ts` — sidebar render จากไฟล์นี้เท่านั้น
+1. `apps/<app>/src/components/layout/nav-config.ts` — breadcrumb + search
+2. `apps/<app>/src/components/layout/minimals-nav-config.ts` — sidebar render จากไฟล์นี้เท่านั้น
 
 > แก้แค่ `nav-config.ts` เมนูจะไม่ขึ้นใน sidebar จริง
 
 ### Pattern หลัก
 
-- **Data flow**: `lib/mock/*` -> hook -> page container spread props -> child render
+- **Data flow**: app-local `lib/mock/*` -> hook -> page container spread props -> child render
 - **ไม่มี global store** (ไม่มี Redux/Zustand) — React hook + context เท่านั้น
-- **Design token**: อยู่ใน `src/app/globals.css` เป็น `@theme {}` ที่เดียว — ห้ามทำซ้ำค่าดิบ
-- **Charts**: ใช้ wrapper ใน `src/components/charts/*` เสมอ — ห้ามเรียก recharts โดยตรงในหน้า
+- **Design token**: อยู่ใน `apps/<app>/src/app/globals.css` เป็น `@theme {}` — shared UI ถูก scan ผ่าน `@source`
+- **Charts**: ใช้ wrapper ใน `apps/<app>/src/components/charts/*` เสมอ — ห้ามเรียก recharts โดยตรงในหน้า
 - **`cn()`**: ใช้รวม className ทุกที่ (`clsx` + `tailwind-merge`)
 
 ### เพิ่ม Domain API (swap mock -> real)
 
 ```ts
-// src/lib/api/<domain>.ts
+// apps/<app>/src/lib/api/<domain>.ts
 const ENDPOINT: string | null = null; // null = ใช้ mock, ใส่ path = ใช้ real fetch
 
 export async function getTransactions() {
@@ -321,7 +339,7 @@ fix/*     — bug fix branches
 
 - ห้าม commit ตรงเข้า `main` หรือ `develop` — ต้องผ่าน PR + review
 - ห้าม force push
-- PR merge ได้ต่อเมื่อ CI ผ่าน (test + lint)
+- PR merge ได้ต่อเมื่อ CI ผ่านทุก application และ framework guard checks
 - ห้าม commit `.env.local`, `.env.*` (อยู่ใน `.gitignore` แล้ว)
 
 ### การสร้าง Feature ใหม่ (Spec-Driven)
@@ -340,9 +358,9 @@ Spec artifacts อยู่ที่ `.claude/specs/<feature-name>/`
 
 ### CI / Hooks
 
-- **Pre-commit hook** (`.githooks/`): typecheck + lint — รันอัตโนมัติก่อน commit
-- **CI** (`.github/workflows/`): test + lint — required check ก่อน merge
-- **Claude hooks** (`.claude/hooks/`): guard เพิ่มเติมระหว่าง dev (secret scan, destructive op check)
+- **Pre-commit hook** (`.githooks/`): staged-change secret scan + task Evidence gate
+- **CI** (`.github/workflows/`): audit + lint + typecheck + tests + builds + parity/smoke — required check ก่อน merge
+- **Agent hooks** (`.claude/`, `.codex/`, `.opencode/`): guard เพิ่มเติมระหว่าง session ตาม harness
 
 ถ้า hook block แล้วไม่แน่ใจว่าส่วนไหนของคำสั่งรันแล้ว ให้ตรวจ `git status` และ filesystem ก่อนรันซ้ำ
 

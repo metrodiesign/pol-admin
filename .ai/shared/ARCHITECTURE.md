@@ -24,7 +24,9 @@ operating layer ที่ vendor-neutral ออกจาก per-agent adapter:
 .agents/              # adapter ร่วม (skills/)
 .githooks/            # enforcement floor (Tier 1): pre-commit, pre-push
 .github/              # CI workflows + pull_request_template.md
-scripts/              # automation (pane-loop, cost/trace tooling, spec-state, ...)
+apps/                 # deployable Next.js workspaces: admin, merchant
+packages/             # shared workspaces: ui, shared
+scripts/              # framework automation + workspace parity/runtime verification
 docs/                 # คู่มือผู้ใช้ของ framework
 retrospectives/       # บันทึก retro รายเดือน
 .claude/specs/<feature-name>/   # spec artifact ต่อ feature: requirements.md, design.md, tasks.md
@@ -47,39 +49,45 @@ retrospectives/       # บันทึก retro รายเดือน
 - จัด import เป็นชั้น: external ก่อน → internal absolute → relative
 - naming convention ชัดและคงเส้นคงวาทั้ง project (ดู Naming Conventions ด้านล่าง)
 
-### โครงสร้าง `src/` จริงของ POL admin (pol-admin)
+### โครงสร้าง application จริงของ POL frontend
 
-แอปนี้คือ Next.js 16 App Router (frontend ล้วน, client-side, mock data). stack/idiom: [stack/nextjs.md](stack/nextjs.md).
+Repo ใช้ npm workspaces และ Next.js 16 App Router. Stack/idiom: [stack/nextjs.md](stack/nextjs.md).
 
 ```
-src/
-  app/                 # App Router: layout.tsx (root: SettingsProvider, fonts, globals.css), dashboard routes
-    globals.css        #   design token single-source (@theme) + theme variants + dark mode
-  components/
-    ui/                # primitive: shadcn style base-nova บน @base-ui/react (ไม่ใช่ radix) — prop-only
-    payment/           # (*) POL domain (product surface): dashboard, transactions, invoices, psp, api-clients,
-                       #   webhooks, audit, users, roles, branches, agents, apps, reports, notifications,
-                       #   shell, toast (+ shared: status-badge, stat-card, entity-drawer, lifecycle-track)
-    dashboard/         # Minimals template demo modules (analytics/ecommerce/banking/.../policy) — scaffolding
-    layout/            # app shell: *-layout, sidebar/topbar, nav-config.ts, drawers, logo, settings-drawer
-    form/              # field wrapper: text/select/date/country/phone-country + form-control
-    charts/            # recharts wrapper: donut/radial/stacked-bar/sparkline + legend/tooltip
-    table/             # @tanstack/react-table UI: data-table, pagination, selected-action, no-data
-    shared/            # cross-app: custom-breadcrumbs, page-header, avatar-upload, fieldset
-    providers/         # settings-provider.tsx (theme/mode/preset/layout/font runtime control)
-  hooks/               # stateful logic: use-data-table, use-policy-table-with-cart, use-invoices-table,
-                       #   use-scroll-lock, use-is-mobile
-  lib/
-    mock/              # typed mock data (NO backend): originators/psp/transactions/webhooks/invoices/audit/...
-    utils.ts           # cn() (clsx+tailwind-merge), formatTHB()
-    breadcrumbs.ts     # buildBreadcrumbs() — map nav-config -> trail
-  types/               # domain contracts (PascalCase): transaction, psp, originator, role, permission,
-                       #   webhook, api-client, audit, policy, invoice, ...
+apps/
+  admin/                       # package @pol/admin
+    src/                       # route tree, components, auth/API, mocks, types
+    public/                    # Admin-owned static assets
+    next.config.ts             # Admin rewrites/images/standalone config
+    .env.example               # Admin environment contract
+    .next/                     # Admin-only build output
+  merchant/                    # package @pol/merchant
+    src/                       # cloned Admin implementation + /register
+    public/                    # Merchant-owned static assets
+    next.config.ts             # independent cloned config
+    .env.example               # Merchant environment contract
+    .next/                     # Merchant-only build output
+packages/
+  ui/                          # package @pol/ui; shared presentation exports only
+  shared/                      # package @pol/shared; pure types/validation/utilities
+scripts/
+  verify-workspaces.mjs        # route equation, import boundaries, test policy
+  smoke-workspace-routes.mjs   # child-process-safe HTTP production smoke
 ```
 
-> (*) = product surface จริง. `components/dashboard/*` + route ใน `app/minimals/*` ส่วนใหญ่ยังเป็น
-> demo ของ Minimals template (de-navved); payment domain ยังไม่ wire เข้า route — ดู PROJECT_CONTEXT
-> "Current State". layout data flow: `lib/mock/*` -> hook -> page container spread เป็น props -> child render.
+Boundary contract:
+
+- App import `@pol/ui` และ `@pol/shared` ได้; ห้าม import source จากอีก app.
+- Package ห้าม import app และ `@pol/shared` ห้ามพึ่ง framework/browser side effect.
+- Route, auth/API, navigation, config และ public assets เป็น app-local โดยเจตนา.
+- ไม่สร้าง shared route/auth abstraction เพราะ Merchant pruning ต้องลบได้โดยไม่กระทบ Admin.
+- `@pol/ui` มีเฉพาะ primitives ที่สอง app ใช้ร่วมจริง; component ที่ยังต้อง diverge อยู่ app-local.
+- แต่ละ app มี `@/* -> ./src/*`; package imports ใช้ public export (`@pol/ui/*`, `@pol/shared/*`).
+- แต่ละ app scan `packages/ui/src` ผ่าน Tailwind `@source` แต่คง global tokens คนละ copy.
+- Build output และ standalone server ต้องอยู่ใน app workspace ของตัวเอง; ห้ามใช้ shared `distDir`.
+
+Route contract ชั่วคราว: `Merchant routes = Admin routes ∪ {/register}`. Merchant clone Admin route
+implementation, auth/API และ navigation จริง; final Merchant surface อยู่นอก scope feature นี้.
 
 `.github-sync.json` ใน `.claude/specs/<feature>/` = sidecar manifest ของ `/spec-sync-github`
 (link map issue<->task) — commit เข้า repo, เฉพาะคำสั่ง sync เขียน; ห้ามแก้มือ,
@@ -120,5 +128,7 @@ src/
 - ห้าม duplicate magic constant / ค่าดิบซ้ำหลายที่ (ใช้ single source แทน)
 - ห้าม inline data ก้อนใหญ่ในไฟล์ presentation
 - ห้ามฝังสูตรคำนวณ/business logic ตรงในตัว view
+- ห้าม app-to-app import หรือ package-to-app import
+- ห้ามย้าย route/auth/navigation ไป shared package เพื่อแก้ duplicate ระหว่าง parity phase
 - ห้าม mark task `[x]` ทั้งที่ typecheck/test ยังไม่เขียว หรือไม่มี Evidence
 - test ต้อง assert พฤติกรรมที่สังเกตได้ ไม่ใช่ snapshot รายละเอียดภายในที่เปราะ
