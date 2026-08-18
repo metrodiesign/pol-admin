@@ -24,9 +24,10 @@ operating layer ที่ vendor-neutral ออกจาก per-agent adapter:
 .agents/              # adapter ร่วม (skills/)
 .githooks/            # enforcement floor (Tier 1): pre-commit, pre-push
 .github/              # CI workflows + pull_request_template.md
-apps/                 # deployable Next.js workspaces: admin, merchant
+src/                  # root Admin Next.js application source
+public/               # root Admin static assets
 packages/             # shared workspaces: ui, shared
-scripts/              # framework automation + workspace parity/runtime verification
+scripts/              # framework automation + root Admin runtime verification
 docs/                 # คู่มือผู้ใช้ของ framework
 retrospectives/       # บันทึก retro รายเดือน
 .claude/specs/<feature-name>/   # spec artifact ต่อ feature: requirements.md, design.md, tasks.md
@@ -54,40 +55,37 @@ retrospectives/       # บันทึก retro รายเดือน
 Repo ใช้ npm workspaces และ Next.js 16 App Router. Stack/idiom: [stack/nextjs.md](stack/nextjs.md).
 
 ```
-apps/
-  admin/                       # package @pol/admin
-    src/                       # route tree, components, auth/API, mocks, types
-    public/                    # Admin-owned static assets
-    next.config.ts             # Admin rewrites/images/standalone config
-    .env.example               # Admin environment contract
-    .next/                     # Admin-only build output
-  merchant/                    # package @pol/merchant
-    src/                       # cloned Admin implementation + /register
-    public/                    # Merchant-owned static assets
-    next.config.ts             # independent cloned config
-    .env.example               # Merchant environment contract
-    .next/                     # Merchant-only build output
+src/                            # root route tree, components, auth/API, mocks, types
+public/                         # Admin-owned static assets
+next.config.ts                  # Admin rewrites/images/standalone config
+.env.example                    # Admin environment contract
+.next/                          # root build output (generated)
 packages/
   ui/                          # package @pol/ui; shared presentation exports only
   shared/                      # package @pol/shared; pure types/validation/utilities
 scripts/
-  verify-workspaces.mjs        # route equation, import boundaries, test policy
-  smoke-workspace-routes.mjs   # child-process-safe HTTP production smoke
+  verify-workspaces.mjs        # topology, Admin routes, import boundaries, test policy
+  smoke-workspace-routes.mjs   # child-process-safe Admin HTTP production smoke
 ```
 
 Boundary contract:
 
-- App import `@pol/ui` และ `@pol/shared` ได้; ห้าม import source จากอีก app.
+- Root packageเป็น application; workspace graph ระบุ explicitเฉพาะ `packages/ui`, `packages/shared`.
+- Admin import `@pol/ui` และ `@pol/shared` ได้.
 - Package ห้าม import app และ `@pol/shared` ห้ามพึ่ง framework/browser side effect.
-- Route, auth/API, navigation, config และ public assets เป็น app-local โดยเจตนา.
-- ไม่สร้าง shared route/auth abstraction เพราะ Merchant pruning ต้องลบได้โดยไม่กระทบ Admin.
-- `@pol/ui` มีเฉพาะ primitives ที่สอง app ใช้ร่วมจริง; component ที่ยังต้อง diverge อยู่ app-local.
-- แต่ละ app มี `@/* -> ./src/*`; package imports ใช้ public export (`@pol/ui/*`, `@pol/shared/*`).
-- แต่ละ app scan `packages/ui/src` ผ่าน Tailwind `@source` แต่คง global tokens คนละ copy.
-- Build output และ standalone server ต้องอยู่ใน app workspace ของตัวเอง; ห้ามใช้ shared `distDir`.
+- Route, auth/API, navigation, config และ public assets เป็น Admin-local โดยเจตนา.
+- `@pol/ui` มีเฉพาะ shared presentation primitives; domain component อยู่ Admin-local.
+- Admin มี `@/* -> ./src/*`; package imports ใช้ public export (`@pol/ui/*`, `@pol/shared/*`).
+- Admin scan `packages/ui/src` ผ่าน Tailwind `@source`.
+- Build output และ standalone server อยู่ที่ root `.next`; ห้ามใช้ shared `distDir`.
+- Verifier ปฏิเสธ import ที่อ้าง Merchant workspace เดิมและ package-to-Admin import.
 
-Route contract ชั่วคราว: `Merchant routes = Admin routes ∪ {/register}`. Merchant clone Admin route
-implementation, auth/API และ navigation จริง; final Merchant surface อยู่นอก scope feature นี้.
+Admin route contract ตรวจ `/`, `/admin/user/list`, `/checkout/[sessionId]`, `/dashboard` และ
+`/minimals/subpaths/[...segments]`; `/register` ต้องไม่ถูก expose. `/merchant/*` และ `/producer/*`
+เป็น Merchant-management และ producer-domain capabilities ภายใน Admin จึงต้องคงไว้.
+
+Merchant frontend มี canonical owner แยกที่
+[pol-merchant](https://github.com/metrodiesign/pol-merchant.git). สอง repository ไม่มี source synchronization.
 
 `.github-sync.json` ใน `.claude/specs/<feature>/` = sidecar manifest ของ `/spec-sync-github`
 (link map issue<->task) — commit เข้า repo, เฉพาะคำสั่ง sync เขียน; ห้ามแก้มือ,
@@ -128,7 +126,7 @@ implementation, auth/API และ navigation จริง; final Merchant surfa
 - ห้าม duplicate magic constant / ค่าดิบซ้ำหลายที่ (ใช้ single source แทน)
 - ห้าม inline data ก้อนใหญ่ในไฟล์ presentation
 - ห้ามฝังสูตรคำนวณ/business logic ตรงในตัว view
-- ห้าม app-to-app import หรือ package-to-app import
-- ห้ามย้าย route/auth/navigation ไป shared package เพื่อแก้ duplicate ระหว่าง parity phase
+- ห้าม package-to-app import หรือ import source จาก Merchant repository/workspace
+- ห้ามย้าย Admin route/auth/navigation ไป shared package โดยไม่มีผู้ใช้ร่วมจริง
 - ห้าม mark task `[x]` ทั้งที่ typecheck/test ยังไม่เขียว หรือไม่มี Evidence
 - test ต้อง assert พฤติกรรมที่สังเกตได้ ไม่ใช่ snapshot รายละเอียดภายในที่เปราะ

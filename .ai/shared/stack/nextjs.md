@@ -1,11 +1,10 @@
-# Stack profile: Next.js (POL Admin/Merchant workspaces)
+# Stack profile: Next.js (POL Admin root app)
 
 > Optional stack profile — complements the neutral canon, ไม่แทนที่. กฎทั่วไปอยู่ใน
 > `../CODING_STANDARDS.md` / `../ARCHITECTURE.md` / `../TESTING_PROTOCOL.md`; ไฟล์นี้เก็บเฉพาะ
 > idiom ที่เจาะจง stack ของโปรเจกต์นี้. ground truth คือโค้ดจริง — แก้ที่นี่เมื่อ stack เปลี่ยน.
 
-ในไฟล์นี้ path `src/...` หมายถึง app-local path ใต้ `apps/admin/src/...` หรือ
-`apps/merchant/src/...` เว้นแต่ระบุ package ชัดเจน.
+ในไฟล์นี้ path `src/...` หมายถึง app-local path ใต้ `src/...` เว้นแต่ระบุ package ชัดเจน.
 
 ## Versions (จาก package manifests)
 
@@ -16,15 +15,16 @@
 - **class-variance-authority** ^0.7, **clsx** ^2.1, **tailwind-merge** ^3.6, **tw-animate-css** ^1.4
 - **simplebar** ^6.3 / **simplebar-react** ^3.3 (custom scrollbar ใน popover/drawer)
 
-## Workspace Model
+## Application and Package Model
 
-- `apps/admin` = `@pol/admin`; HTTPS dev 3001, HTTP production local 3001.
-- `apps/merchant` = `@pol/merchant`; HTTPS dev 3002, HTTP production local 3002.
+- Repository root = `pol-admin` application; HTTPS dev 3001, HTTP production local 3001.
 - `packages/ui` = `@pol/ui`; shared presentation exports ที่ใช้จริงร่วมกัน.
 - `packages/shared` = `@pol/shared`; pure types/validation/utilities.
-- App มี route tree, auth/API, navigation, config, `public` และ `.next` ของตัวเอง.
-- ห้าม app-to-app imports และ package-to-app imports. ไม่สร้าง shared route/auth abstraction.
-- Merchant route contract ชั่วคราวคือ Admin parity และเพิ่ม `/register`.
+- Workspace graph ระบุ explicitเฉพาะสอง package paths; root packageเป็น Admin application.
+- Admin มี route tree, auth/API, navigation, config, `public` และ `.next` ของตัวเอง.
+- ห้าม package-to-app imports และ import source จาก Merchant workspace เดิม.
+- Merchant frontend อยู่ใน canonical [pol-merchant](https://github.com/metrodiesign/pol-merchant.git).
+- ไม่มี source synchronization ระหว่างสอง repository.
 
 ## Server vs client boundary
 
@@ -36,7 +36,7 @@
 
 ## Styling (Tailwind v4 CSS-first)
 
-- แต่ละ app มี `src/app/globals.css`: `@import "tailwindcss"`, `@import "tw-animate-css"`, และ `@theme {}`
+- Admin มี `src/app/globals.css`: `@import "tailwindcss"`, `@import "tw-animate-css"`, และ `@theme {}`
   เป็น **single source ของ design token** (color/typography/shadow/radius/breakpoint).
   ไม่มีไฟล์ config — token อยู่ใน CSS ล้วน; `@source` scan `packages/ui/src` สำหรับ shared UI.
 - breakpoint custom: `--breakpoint-mmd` (900px), `--breakpoint-mlg` (1200px) เพื่อ parity กับ MUI;
@@ -50,7 +50,7 @@
   นิยาม token เอง. เกินจาก 6 semantic families (`primary/secondary/info/success/warning/error`+grey)
   ก็หยิบ default scale มาใช้.
 - ยืนยันว่า utility class ที่เพิ่งใช้ถูก **generate จริง**: grep substring (เช่น `orange`, `teal`) ใน
-  prod CSS ก้อนใหญ่ `apps/<app>/.next/static/chunks/*.css` — **build เขียวไม่การันตี** (unknown utility = เงียบ
+  prod CSS ก้อนใหญ่ `.next/static/chunks/*.css` — **build เขียวไม่การันตี** (unknown utility = เงียบ
   ไม่ error). อย่าใช้ fixed-string grep ชื่อ class เต็มข้ามหลายไฟล์ — minification/`$VAR` expansion
   ให้ 0 หลอกได้.
 
@@ -60,7 +60,7 @@
   `data-slot="*"` บน subcomponent เพื่อ scope CSS โดยไม่ class-drill. ตั้งค่าใน `components.json`
   (style `base-nova`, base color `neutral`, icon `lucide`).
 - เพิ่ม primitive ใหม่: ทำตาม pattern เดิม (wrap base-ui + cva + cn + data-slot) — **อย่า import @radix-ui**.
-- `@pol/ui` ปัจจุบัน export `avatar-upload`, `fieldset`, `logo`; เพิ่มของใหม่เมื่อสอง app ใช้ implementation เดียวกันจริง.
+- `@pol/ui` ปัจจุบัน export `avatar-upload`, `fieldset`, `logo`; เพิ่มเมื่อ Admin หรือ retained package ต้องใช้ร่วมจริง.
 
 ## Domain wrappers
 
@@ -83,10 +83,10 @@
 
 ## Auth (server-side OIDC BFF)
 
-- ทั้งสอง app ใช้ **server-side OIDC BFF** แบบ Admin ชั่วคราว (contract:
+- Admin ใช้ **server-side OIDC BFF** (contract:
   `pol-core/docs/reference/admin-fe-integration.md` +
   `admin-google-sso.md`). FE **ไม่ถือ token**; session = httpOnly cookie ที่ backend set. ไม่มี GIS/id-token/Bearer.
-- **same-origin proxy บังคับ**: app-local `next.config.ts` rewrite `/admin/*`, `/producer/*`, `/api/*`
+- **same-origin proxy บังคับ**: root `next.config.ts` rewrite `/admin/*`, `/producer/*`, `/api/*`
   ไป `process.env.ADMIN_API_ORIGIN` (dev = `https://localhost:5001`; **prod เว้นว่าง** -> rewrite คืน `[]`
   เพราะ reverse proxy same-origin อยู่แล้ว).
   ผลพลอยได้: browser เห็นทุก call เป็น same-origin -> **CORS ไม่ถูก exercise** (อย่าไล่ debug CORS เมื่อใช้ proxy นี้;
@@ -102,10 +102,10 @@
 - **E2E recipe**: real backend ต้อง Google human-auth + provisioned admin -> validate ครบไม่ได้ด้วย automation.
   ใช้ **contract-mock backend** (no-dep node http บน :5100 พูดตาม contract) + cookie-jar curl ผ่าน proxy +
   isolated browser context -> exercise proxy/guard/401/CSRF/authed ครบแบบ deterministic.
-- Merchant clone `AdminMe`, `getMe`, Admin session/API และ navigation. Merchant-only auth provider/dashboard
-  ยังไม่มี; การคัดออกเป็น feature แยก.
-- Development frontend origins คือ Admin `https://localhost:3001` และ Merchant `https://localhost:3002`.
-  Staging/production ต้องประสาน backend allowlist/OAuth callback และ reverse proxy ของแต่ละ origin ก่อน deploy.
+- Development frontend origin คือ Admin `https://localhost:3001`.
+  Staging/production ต้องประสาน backend allowlist/OAuth callback และ reverse proxy ของ Admin origin ก่อน deploy.
+- Merchant auth/runtime contract เป็นเจ้าของโดย canonical
+  [pol-merchant](https://github.com/metrodiesign/pol-merchant.git).
 
 ## App setup & theming
 
@@ -128,25 +128,23 @@
 
 ## Environment
 
-- Template อยู่ที่ `apps/admin/.env.example` และ `apps/merchant/.env.example`.
-- Developer คัดลอกเป็น app-local `.env.local` ด้วยมือ; ห้าม auto-copy root env หรือ secret.
+- Template อยู่ที่ `.env.example`.
+- Developer คัดลอกเป็น `.env.local` ด้วยมือ; ห้าม auto-copy root env หรือ secret.
 - `ADMIN_API_ORIGIN=https://localhost:5001` เปิด dev rewrites; production เว้นว่างเมื่อ reverse proxy
   ให้ SPA/API เป็น same-origin.
-- Generated HTTPS certificates อยู่ app-local `certificates/` และถูก ignore.
+- Generated HTTPS certificates อยู่ root `certificates/` และถูก ignore.
 
 ## Tooling
 
-- Root scripts: `dev:admin`, `dev:merchant`, `build:admin`, `build:merchant`, `start:admin`,
-  `start:merchant`, `test:admin`, `test:merchant`, `lint`, `typecheck`.
-- Backward-compatible root aliases `dev`, `dev:clean`, `build`, `start` ชี้ Admin; root `test` รัน verifier
-  unit tests แล้วทุก workspace tests.
-- App dev scripts ใช้ `next dev --experimental-https` บน 3001/3002. App start scripts ใช้ HTTP
-  บน ports เดิม; TLS production เป็นหน้าที่ reverse proxy.
-- **test runner = vitest** (`vitest` ^4.1.9, app-local config: alias `@`→`./src`, `environment: node`,
+- Root scripts `dev`, `dev:clean`, `build`, `start` เรียก Next.js โดยตรง; `test` รัน verifier,
+  root Vitest และ retained package tests; `lint`/`typecheck` ครอบ root app กับ retained packages.
+- Admin dev script ใช้ `next dev --experimental-https` บน 3001. Admin start script ใช้ HTTP
+  บน port เดิม; TLS production เป็นหน้าที่ reverse proxy.
+- **test runner = vitest** (`vitest` ^4.1.9, root config: alias `@`→`./src`, `environment: node`,
   include `src/**/*.test.ts`); `@pol/shared` มี validation tests ของตัวเอง.
-- `npm run verify:workspaces` ตรวจ normalized route equation, import boundaries และ `.only`/`.skip`.
-- `npm run smoke:routes` spawn production servers, probe contract และหยุดเฉพาะ child processes ที่สร้างเอง.
-- Build output: `apps/admin/.next` และ `apps/merchant/.next`; standalone output แยกกัน.
+- `npm run verify:workspaces` ตรวจ exact topology, Admin route contract, import boundaries และ `.only`/`.skip`.
+- `npm run smoke:routes` spawn Admin production server, probe contract และหยุดเฉพาะ child process ที่สร้างเอง.
+- Build output และ standalone output อยู่ที่ `.next`.
 
 ## Navigation (sidebar)
 
@@ -155,9 +153,8 @@
   `minimals-nav-config.ts` เท่านั้น. แก้แค่ `nav-config.ts` = เมนูไม่ขึ้นใน sidebar จริง (เคสจริง
   /policy/list). verify เมนู active บน production build ไม่ใช่เชื่อว่าแก้ config แล้วพอ.
 
-## Known mismatch (flag, ยังไม่แก้)
+## Known Admin domain mismatch (flag, ยังไม่แก้)
 
-- merchant role (`components/merchant/role`, clone จาก admin `components/admin/role`) ใช้ resource keys
-  ของ admin domain (`txn`/`merchant`/`finance`/`user`/`system`) — ยังไม่ใช่ resource ของ merchant user จริง.
-  copy โครง + mock เดิมไปก่อน, ปรับ resource model ให้ตรง merchant user domain แยก PR
-  (spec: `merchant-user-management` REQ-8 note).
+- Admin Merchant-management role (`components/merchant/role`) ใช้ resource keys
+  ของ Admin domain (`txn`/`merchant`/`finance`/`user`/`system`). ปรับ resource model ให้ตรง
+  Merchant-management domain ในงานแยก (spec: `merchant-user-management` REQ-8 note).

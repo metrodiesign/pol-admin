@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-08-18",
+  "baseline": ".claude/specs/restore-root-app-layout/browser-baseline.json",
+  "candidateSnapshot": {
+    "path": "/tmp/pol-admin-root-candidate.SOzTWO/tree",
+    "treeId": "d1122323bada919f0e8f59eaa8304c78437f810a",
+    "paths": 989,
+    "manifestSha256": "20eeff82821163103b4ff0b842bbe8eaabd2e6dfb2a35c0f991a1ac81c99c186",
+    "envLocalFiles": 0,
+    "certificatesIncluded": false,
+    "realGitIndexChanged": false
+  },
+  "toolchain": {
+    "node": "22.19.0",
+    "npm": "11.12.1",
+    "browser": "same persistent browser and tab as nested baseline"
+  },
+  "routes": {
+    "count": 112,
+    "sha256": "6011454515d15a40e39e171ef87e748f92a63a0f0a995ff43c3c16455d387216"
+  },
+  "observations": [
+    {
+      "route": "/dashboard",
+      "width": 375,
+      "pathname": "/login",
+      "title": "เข้าสู่ระบบ POL Pay",
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "assetCount": 29,
+      "failedAssetCount": 0,
+      "brokenImageCount": 0,
+      "consoleErrorCount": 0,
+      "horizontalOverflow": false,
+      "bodyTextSha256": "078534a05b81ee239a94639065eb0cc24465d4e418f1da621b4954fd96646dbe",
+      "domSha256": "1619284126009b1a3e6e04b8543fffb4a297aee9f3b9c18622124a30697612b4",
+      "screenshotSha256": "314c76b612552dc79fb9280cbe2c67d72e5d9c73f1b81cad3ca6c65204a10098"
+    },
+    {
+      "route": "/dashboard",
+      "width": 768,
+      "pathname": "/login",
+      "title": "เข้าสู่ระบบ POL Pay",
+      "clientWidth": 768,
+      "scrollWidth": 768,
+      "assetCount": 29,
+      "failedAssetCount": 0,
+      "brokenImageCount": 0,
+      "consoleErrorCount": 0,
+      "horizontalOverflow": false,
+      "bodyTextSha256": "078534a05b81ee239a94639065eb0cc24465d4e418f1da621b4954fd96646dbe",
+      "domSha256": "1619284126009b1a3e6e04b8543fffb4a297aee9f3b9c18622124a30697612b4",
+      "screenshotSha256": "073228c94a8ab404fd9d04b1779e2957d1dca3dc6526fdcca2aff014f05a3c0e"
+    },
+    {
+      "route": "/dashboard",
+      "width": 1440,
+      "pathname": "/login",
+      "title": "เข้าสู่ระบบ POL Pay",
+      "clientWidth": 1440,
+      "scrollWidth": 1440,
+      "assetCount": 29,
+      "failedAssetCount": 0,
+      "brokenImageCount": 0,
+      "consoleErrorCount": 0,
+      "horizontalOverflow": false,
+      "bodyTextSha256": "078534a05b81ee239a94639065eb0cc24465d4e418f1da621b4954fd96646dbe",
+      "domSha256": "1619284126009b1a3e6e04b8543fffb4a297aee9f3b9c18622124a30697612b4",
+      "screenshotSha256": "db72145bfb2a6377b95a238c1a8a1aa39fee66611bf62ff71be6143a778dcb0b"
+    },
+    {
+      "route": "/admin/user/list",
+      "width": 375,
+      "pathname": "/login",
+      "title": "เข้าสู่ระบบ POL Pay",
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "assetCount": 29,
+      "failedAssetCount": 0,
+      "brokenImageCount": 0,
+      "consoleErrorCount": 0,
+      "horizontalOverflow": false,
+      "bodyTextSha256": "078534a05b81ee239a94639065eb0cc24465d4e418f1da621b4954fd96646dbe",
+      "domSha256": "1619284126009b1a3e6e04b8543fffb4a297aee9f3b9c18622124a30697612b4",
+      "screenshotSha256": "314c76b612552dc79fb9280cbe2c67d72e5d9c73f1b81cad3ca6c65204a10098"
+    },
+    {
+      "route": "/admin/user/list",
+      "width": 768,
+      "pathname": "/login",
+      "title": "เข้าสู่ระบบ POL Pay",
+      "clientWidth": 768,
+      "scrollWidth": 768,
+      "assetCount": 29,
+      "failedAssetCount": 0,
+      "brokenImageCount": 0,
+      "consoleErrorCount": 0,
+      "horizontalOverflow": false,
+      "bodyTextSha256": "078534a05b81ee239a94639065eb0cc24465d4e418f1da621b4954fd96646dbe",
+      "domSha256": "1619284126009b1a3e6e04b8543fffb4a297aee9f3b9c18622124a30697612b4",
+      "screenshotSha256": "e60719a292dcf673f43088bc424b4fa2c04c8abd5b2655fd07c0b61f45e8002c"
+    },
+    {
+      "route": "/admin/user/list",
+      "width": 1440,
+      "pathname": "/login",
+      "title": "เข้าสู่ระบบ POL Pay",
+      "clientWidth": 1440,
+      "scrollWidth": 1440,
+      "assetCount": 29,
+      "failedAssetCount": 0,
+      "brokenImageCount": 0,
+      "consoleErrorCount": 0,
+      "horizontalOverflow": false,
+      "bodyTextSha256": "078534a05b81ee239a94639065eb0cc24465d4e418f1da621b4954fd96646dbe",
+      "domSha256": "1619284126009b1a3e6e04b8543fffb4a297aee9f3b9c18622124a30697612b4",
+      "screenshotSha256": "db72145bfb2a6377b95a238c1a8a1aa39fee66611bf62ff71be6143a778dcb0b"
+    }
+  ],
+  "comparison": {
+    "observations": 6,
+    "failures": 0,
+    "pathnameMatches": 6,
+    "titleMatches": 6,
+    "clientWidthMatches": 6,
+    "bodyTextMatches": 6,
+    "assetCountMatches": 6,
+    "additionalFailedAssets": 0,
+    "additionalBrokenImages": 0,
+    "additionalConsoleErrors": 0,
+    "overflowRegressions": 0
+  },
+  "nonBlockingDiagnostics": {
+    "exactScreenshotMatches": 3,
+    "exactDomHashMatches": 0,
+    "acceptanceBasis": "REQ-9.13 through REQ-9.16 compare routes, viewports, missing assets, console errors and horizontal overflow; body text equality is an additional check"
+  }
+}

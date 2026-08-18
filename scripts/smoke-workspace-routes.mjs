@@ -66,9 +66,7 @@ function stopServers() {
 
 function cleanupAndVerifyPorts() {
   if (!cleanup) {
-    cleanup = stopServers().then(() =>
-      Promise.all([assertPortAvailable(3001), assertPortAvailable(3002)]),
-    );
+    cleanup = stopServers().then(() => assertPortAvailable(3001));
   }
   return cleanup;
 }
@@ -113,24 +111,17 @@ for (const signal of ["SIGINT", "SIGTERM"]) {
 }
 
 try {
-  await Promise.all([assertPortAvailable(3001), assertPortAvailable(3002)]);
-  const admin = startServer("Admin", "start:admin", 3001);
-  const merchant = startServer("Merchant", "start:merchant", 3002);
-  await Promise.all([waitForManagedServer(admin), waitForManagedServer(merchant)]);
+  await assertPortAvailable(3001);
+  const admin = startServer("Admin", "start", 3001);
+  await waitForManagedServer(admin);
 
   await probe("Admin /", "http://127.0.0.1:3001/", assertRedirectToDashboard);
-  await probe("Merchant /", "http://127.0.0.1:3002/", assertRedirectToDashboard);
   await probe(
-    "Merchant /admin/user/list",
-    "http://127.0.0.1:3002/admin/user/list",
+    "Admin /admin/user/list",
+    "http://127.0.0.1:3001/admin/user/list",
     assertNotFoundIsFalse,
   );
   await probe("Admin /register", "http://127.0.0.1:3001/register", assertStatus(404));
-  await probe(
-    "Merchant /register",
-    "http://127.0.0.1:3002/register",
-    assertNotFoundIsFalse,
-  );
 } catch (error) {
   console.error(error instanceof Error ? error.message : error);
   process.exitCode = 1;

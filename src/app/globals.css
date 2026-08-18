@@ -1,0 +1,698 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "simplebar-react/dist/simplebar.min.css";
+@source "../../packages/ui/src";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  /* ---- MUI-aligned breakpoints (minimals clone responsive parity; MUI sm600/md900/lg1200).
+     MUST stay in rem: Tailwind v4 only sorts breakpoint media blocks when units are consistent
+     with the rem defaults — px here emits mmd/mlg BEFORE sm/md/lg and breaks sm:->mmd: overrides. */
+  --breakpoint-mmd: 56.25rem; /* 900px */
+  --breakpoint-mlg: 75rem; /* 1200px */
+
+  /* ---- Brand palette (extracted from minimals.cc) ---- */
+  --color-primary-lighter: #d0ecfe;
+  --color-primary-light: #73bafb;
+  --color-primary: #0c68e9;
+  --color-primary-dark: #063cb4;
+  --color-primary-darker: #042174;
+
+  --color-secondary-lighter: #efd6ff;
+  --color-secondary-light: #c684ff;
+  --color-secondary: #8e33ff;
+  --color-secondary-dark: #5119b7;
+  --color-secondary-darker: #27097a;
+
+  --color-info-lighter: #cafdf5;
+  --color-info-light: #61f3f3;
+  --color-info: #00b8d9;
+  --color-info-dark: #006c9c;
+  --color-info-darker: #003768;
+
+  --color-success-lighter: #d3fcd2;
+  --color-success-light: #77ed8b;
+  --color-success: #22c55e;
+  --color-success-dark: #118d57;
+  --color-success-darker: #065e49;
+
+  --color-warning-lighter: #fff5cc;
+  --color-warning-light: #ffd666;
+  --color-warning: #ffab00;
+  --color-warning-dark: #b76e00;
+  --color-warning-darker: #7a4100;
+
+  --color-error-lighter: #ffe9d5;
+  --color-error-light: #ffac82;
+  --color-error: #ff5630;
+  --color-error-dark: #b71d18;
+  --color-error-darker: #7a0916;
+
+  /* ---- Grey scale ---- */
+  --color-grey-50: #fcfdfd;
+  --color-grey-100: #f9fafb;
+  --color-grey-200: #f4f6f8;
+  --color-grey-300: #dfe3e8;
+  --color-grey-400: #c4cdd5;
+  --color-grey-500: #919eab;
+  --color-grey-600: #637381;
+  --color-grey-700: #454f5b;
+  --color-grey-800: #1c252e;
+  --color-grey-900: #141a21;
+
+  /* ---- Semantic surfaces ---- */
+  --color-text-primary: #1c252e;
+  --color-text-secondary: #637381;
+  --color-text-disabled: #919eab;
+  --color-bg: #ffffff;
+  --color-bg-paper: #ffffff;
+  --color-bg-neutral: #f4f6f8;
+
+  /* ---- Shape ---- */
+  --radius-card: 16px;
+  --radius-control: 8px;
+
+  /* ---- Elevation (minimals customShadows — z-series single-layer, grey 145 158 171) ---- */
+  --shadow-z1: 0 1px 2px 0 rgba(145, 158, 171, 0.16);
+  --shadow-z4: 0 4px 8px 0 rgba(145, 158, 171, 0.16);
+  --shadow-z8: 0 8px 16px 0 rgba(145, 158, 171, 0.16);
+  --shadow-z12: 0 12px 24px -4px rgba(145, 158, 171, 0.16);
+  --shadow-z16: 0 16px 32px -4px rgba(145, 158, 171, 0.16);
+  --shadow-z20: 0 20px 40px -4px rgba(145, 158, 171, 0.16);
+  --shadow-z24: 0 24px 48px 0 rgba(145, 158, 171, 0.16);
+  --shadow-card: 0 0 2px 0 rgba(145, 158, 171, 0.2), 0 12px 24px -4px rgba(145, 158, 171, 0.12);
+  --shadow-dropdown: 0 0 2px 0 rgba(145, 158, 171, 0.24), -20px 20px 40px -4px rgba(145, 158, 171, 0.24);
+  --shadow-dialog: -40px 40px 80px -8px rgba(0, 0, 0, 0.24);
+  --shadow-primary: 0 8px 16px 0 rgba(0, 167, 111, 0.24);
+  --shadow-secondary: 0 8px 16px 0 rgba(142, 51, 255, 0.24);
+  --shadow-info: 0 8px 16px 0 rgba(0, 184, 217, 0.24);
+  --shadow-success: 0 8px 16px 0 rgba(34, 197, 94, 0.24);
+  --shadow-warning: 0 8px 16px 0 rgba(255, 171, 0, 0.24);
+  --shadow-error: 0 8px 16px 0 rgba(255, 86, 48, 0.24);
+
+  /* ---- Typography ---- */
+  /* Thai font appended after the Latin face so Latin glyphs use Public Sans and
+     Thai glyphs use Noto Sans Thai (Latin face has no Thai coverage). */
+  --font-sans: var(--font-public-sans), var(--font-noto-thai), ui-sans-serif,
+    system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    sans-serif;
+
+  /* ---- Typography (Public Sans body, Barlow display — extracted from minimals) ---- */
+  --font-display: "Barlow", var(--font-public-sans), var(--font-noto-thai),
+    ui-sans-serif, system-ui, sans-serif;
+  /* ---- Control-plane signature: monospace data face for machine identifiers
+     (masked keys, idempotency keys, event/client IDs, signatures, refs). ---- */
+  --font-mono: var(--font-ibm-plex-mono), ui-monospace, SFMono-Regular,
+    "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  /* ---- Body/display scale: floor 14px, body 16px (rebalanced up) ---- */
+  --text-xs: 0.875rem;            /* 14px ← floor */
+  --text-xs--line-height: 1.25rem;
+  --text-sm: 0.9375rem;           /* 15px ← body (text-sm) */
+  --text-sm--line-height: 1.375rem;
+  --text-base: 1rem;              /* 16px ← normal */
+  --text-base--line-height: 1.5rem;
+  --text-lg: 1.25rem;             /* 20px */
+  --text-lg--line-height: 1.75rem;
+  --text-xl: 1.5rem;              /* 24px */
+  --text-xl--line-height: 2rem;
+  --text-2xl: 1.75rem;            /* 28px */
+  --text-2xl--line-height: 2.25rem;
+  --text-3xl: 2rem;               /* 32px */
+  --text-3xl--line-height: 2.5rem;
+  --text-4xl: 2.5rem;             /* 40px */
+  --text-4xl--line-height: 2.75rem;
+  --text-5xl: 3rem;               /* 48px */
+  --text-5xl--line-height: 3rem;
+  /* clamp ranges = base rem (mobile) -> computed px @1440 (desktop), matching MUI responsiveFontSizes */
+  --text-h1: clamp(2.5rem, 1.972rem + 2.253vw, 4rem);
+  --text-h2: clamp(2rem, 1.648rem + 1.502vw, 3rem);
+  --text-h3: clamp(1.75rem, 1.662rem + 0.376vw, 2rem);     /* 28→32px */
+  --text-h4: clamp(1.5rem, 1.412rem + 0.376vw, 1.75rem);   /* 24→28px */
+  --text-h5: clamp(1.375rem, 1.331rem + 0.188vw, 1.5rem);  /* 22→24px */
+  --text-h6: clamp(1.25rem, 1.206rem + 0.188vw, 1.375rem); /* 20→22px */
+}
+
+@theme {
+  /* ===== Viriyah corporate palette (CI Manual 2.11–2.16) — additive, ไม่กระทบ token เดิม ===== */
+
+  /* สีหลัก (2.11) */
+  --color-crop-blue: #0033a2;          /* น้ำเงินวิริยะ — PANTONE 286 C */
+  --color-crop-gold: #fcaf17;          /* เหลืองทอง — PANTONE 7409 C */
+  --color-crop-black: #000000;
+  --color-crop-white: #ffffff;
+
+  /* น้ำเงินวิริยะ — shade 100/80/60/40/20 (2.15) */
+  --color-crop-blue-100: #0033a2;
+  --color-crop-blue-80: #5165aa;
+  --color-crop-blue-60: #7b8ec5;
+  --color-crop-blue-40: #a8b4dc;
+  --color-crop-blue-20: #d5dcf1;
+
+  /* ดำ — shade 80/60/40/20 (2.15) */
+  --color-crop-black-80: #565759;
+  --color-crop-black-60: #898b8b;
+  --color-crop-black-40: #b1b2b1;
+  --color-crop-black-20: #c8c7c6;
+
+  /* สีรอง (2.12) */
+  --color-crop-grey-light: #d9d7d5;    /* เทาอ่อน — Cool Gray 1 */
+  --color-crop-grey: #a7a7a8;          /* เทาเงิน — Cool Gray 6 */
+  --color-crop-navy: #2b375f;          /* น้ำเงินเข้ม — PANTONE 288 */
+  --color-crop-silver: #898b8c;        /* เงินพิเศษ — PANTONE 877 */
+  --color-crop-gold-special: #7f7452;  /* ทองพิเศษ — PANTONE 871 */
+
+  /* น้ำเงินเข้ม — shade 100/80/60/40/20 (2.16) */
+  --color-crop-navy-100: #2b375f;
+  --color-crop-navy-80: #474f8a;
+  --color-crop-navy-60: #6e72a5;
+  --color-crop-navy-40: #9ba0c6;
+  --color-crop-navy-20: #ced1e0;
+
+  /* เทาเงิน (Cool Gray 6) — shade 80/60/40/20 (2.16) */
+  --color-crop-grey-80: #bbbab9;
+  --color-crop-grey-60: #c8c7c6;
+  --color-crop-grey-40: #d0cfcc;
+  --color-crop-grey-20: #d9d7d5;
+}
+
+/* ---- shadcn primitive tokens mapped to the Minimal palette ---- */
+:root {
+  --radius: 0.5rem;
+
+  --background: #ffffff;
+  --foreground: #1c252e;
+  --card: #ffffff;
+  --card-foreground: #1c252e;
+  --popover: #ffffff;
+  --popover-foreground: #1c252e;
+  --primary: var(--color-primary);
+  --primary-foreground: #ffffff;
+  --secondary: #f4f6f8;
+  --secondary-foreground: #1c252e;
+  --muted: #f4f6f8;
+  --muted-foreground: #637381;
+  --accent: #f4f6f8;
+  --accent-foreground: #1c252e;
+  --destructive: #ff5630;
+  --destructive-foreground: #ffffff;
+  --border: rgba(145 158 171 / 0.2);
+  --input: rgba(145 158 171 / 0.2);
+  --ring: var(--color-primary);
+
+  /* extra Minimal helpers */
+  --divider: rgba(145 158 171 / 0.2);
+  --action-hover: rgba(145 158 171 / 0.08);
+  --action-selected: rgba(145 158 171 / 0.16);
+  --primary-soft: color-mix(in srgb, var(--color-primary) 8%, transparent);
+}
+
+/* ---- Minimals clone primary = green; scoped to the /dashboard subtree so
+   the default (non-minimals) theme keeps its blue primary. Applied via
+   .theme-minimals on the dashboard layout root. Tailwind v4 utilities read
+   var(--color-primary) at use-site, so overriding it on an ancestor recolors
+   bg-/text-/ring-primary. ---- */
+.theme-minimals {
+  /* primary — น้ำเงินวิริยะ (CI 2.11); lighter/light = crop blue tint, dark/darker derived */
+  --color-primary-lighter: var(--color-crop-blue-20);
+  --color-primary-light: var(--color-crop-blue-60);
+  --color-primary: var(--color-crop-blue);
+  --color-primary-dark: var(--color-crop-navy);
+  --color-primary-darker: #1d2647;
+  --primary: var(--color-crop-blue);
+  --ring: var(--color-crop-blue);
+  --primary-soft: color-mix(in srgb, var(--color-crop-blue) 12%, transparent);
+  --shadow-primary: 0 8px 16px 0 rgba(0, 51, 162, 0.24);
+
+  /* === main content canvas = เทาอ่อน (CI 2.12 #D9D7D5); shell = น้ำเงิน === */
+  --color-bg: #fcfdfd;       /* main content (เทาอ่อนมาก เกือบขาว) */
+  --background: #fcfdfd;
+  --color-bg-neutral: #eceeef;
+
+  /* gold accent (5%) */
+  --color-secondary: var(--color-crop-gold);
+}
+
+/* Topbar น้ำเงิน — icon/text เป็นขาว */
+.theme-minimals [data-topbar] {
+  --color-grey-800: #ffffff;
+  --color-grey-700: #ffffff;
+  --color-grey-600: rgba(255, 255, 255, 0.86);
+  --color-grey-500: rgba(255, 255, 255, 0.56);
+}
+
+/* Horizontal nav (เมื่อ navLayout=horizontal) — text ขาว, active = ทอง */
+.theme-minimals [data-hnav] {
+  --color-primary: var(--color-crop-gold);
+  --color-grey-800: #ffffff;
+  --color-grey-700: #ffffff;
+  --color-grey-600: rgba(255, 255, 255, 0.72);
+  --color-grey-200: rgba(255, 255, 255, 0.12);
+}
+
+/* ---- Color presets — runtime switch via data-preset on the .theme-minimals root.
+   default = green (the .theme-minimals values above). Extracted main/dark from
+   minimals settings drawer; lighter/light are minimals palette approximations. ---- */
+.theme-minimals[data-preset="cyan"] {
+  --color-primary-lighter: #ccf4fe; --color-primary-light: #68cdf9;
+  --color-primary: #078dee; --color-primary-dark: #0351ab; --color-primary-darker: #012972;
+  --primary: #078dee; --ring: #078dee; --primary-soft: color-mix(in srgb, #078dee 8%, transparent);
+}
+.theme-minimals[data-preset="purple"] {
+  --color-primary-lighter: #ebd6fd; --color-primary-light: #b985f4;
+  --color-primary: #7635dc; --color-primary-dark: #431a9e; --color-primary-darker: #200a69;
+  --primary: #7635dc; --ring: #7635dc; --primary-soft: color-mix(in srgb, #7635dc 8%, transparent);
+}
+.theme-minimals[data-preset="blue"] {
+  --color-primary-lighter: #d1e9fc; --color-primary-light: #76b0f1;
+  --color-primary: #0c68e9; --color-primary-dark: #063cb4; --color-primary-darker: #042174;
+  --primary: #0c68e9; --ring: #0c68e9; --primary-soft: color-mix(in srgb, #0c68e9 8%, transparent);
+}
+.theme-minimals[data-preset="orange"] {
+  --color-primary-lighter: #fef4d4; --color-primary-light: #fed680;
+  --color-primary: #fda92d; --color-primary-dark: #b66816; --color-primary-darker: #793908;
+  --primary: #fda92d; --ring: #fda92d; --primary-soft: color-mix(in srgb, #fda92d 8%, transparent);
+}
+.theme-minimals[data-preset="red"] {
+  --color-primary-lighter: #ffe3d5; --color-primary-light: #ffc1ac;
+  --color-primary: #ff3030; --color-primary-dark: #b71d18; --color-primary-darker: #7a0916;
+  --primary: #ff3030; --ring: #ff3030; --primary-soft: color-mix(in srgb, #ff3030 8%, transparent);
+}
+
+.dark {
+  --background: #141a21;
+  --foreground: #ffffff;
+  --card: #1c252e;
+  --card-foreground: #ffffff;
+  --popover: #1c252e;
+  --popover-foreground: #ffffff;
+  --primary-foreground: #ffffff;
+  --secondary: #1c252e;
+  --secondary-foreground: #ffffff;
+  --muted: #1c252e;
+  --muted-foreground: #919eab;
+  --accent: #1c252e;
+  --accent-foreground: #ffffff;
+  --destructive: #ff5630;
+  --destructive-foreground: #ffffff;
+  --border: rgba(145 158 171 / 0.16);
+  --input: rgba(145 158 171 / 0.16);
+
+  --divider: rgba(145 158 171 / 0.16);
+  --action-hover: rgba(145 158 171 / 0.08);
+  --action-selected: rgba(145 158 171 / 0.12);
+
+  --color-bg: #141a21;
+  --color-bg-paper: #1c252e;
+  --color-bg-neutral: #28323d;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #919eab;
+  --color-text-disabled: #637381;
+
+  --shadow-z1: 0 1px 2px 0 rgba(0, 0, 0, 0.16);
+  --shadow-z4: 0 4px 8px 0 rgba(0, 0, 0, 0.16);
+  --shadow-z8: 0 8px 16px 0 rgba(0, 0, 0, 0.16);
+  --shadow-z12: 0 12px 24px -4px rgba(0, 0, 0, 0.16);
+  --shadow-z16: 0 16px 32px -4px rgba(0, 0, 0, 0.16);
+  --shadow-z20: 0 20px 40px -4px rgba(0, 0, 0, 0.16);
+  --shadow-z24: 0 24px 48px 0 rgba(0, 0, 0, 0.16);
+  --shadow-card: 0 0 2px 0 rgba(0, 0, 0, 0.2), 0 12px 24px -4px rgba(0, 0, 0, 0.12);
+  --shadow-dropdown: 0 0 2px 0 rgba(0, 0, 0, 0.24), -20px 20px 40px -4px rgba(0, 0, 0, 0.24);
+  --shadow-dialog: -40px 40px 80px -8px rgba(0, 0, 0, 0.24);
+}
+
+/* Expose shadcn :root vars as Tailwind color utilities (border-border, bg-card, ...) */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  body {
+    background: var(--color-bg);
+    color: var(--color-text-primary);
+    /* --font-active set on <html> by the settings provider (Font → Family);
+       falls back to the Public Sans stack when unset. Thai face appended so the
+       selected Latin font never strands Thai glyphs on the OS fallback. */
+    font-family: var(--font-active, var(--font-public-sans)),
+      var(--font-noto-thai), ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  /* Restore pointer cursor on interactive elements — Tailwind v4 preflight
+     removes the browser default cursor:pointer on <button>. */
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+/* SimpleBar scrollbar — auto-hide, matches minimals.cc */
+.simplebar-scrollbar::before {
+  background: rgba(99, 115, 129, 0.48);
+  border-radius: 4px;
+}
+
+/* ---- Loading animations ---- */
+@keyframes splash-logo-pulse {
+  0%                { transform: scale(1);   opacity: 1; }
+  16.67%            { transform: scale(0.9); opacity: 0.48; }
+  33.33%            { transform: scale(0.9); opacity: 0.48; }
+  50%               { transform: scale(1);   opacity: 1; }
+  100%              { transform: scale(1);   opacity: 1; }
+}
+
+@keyframes splash-inner-ring {
+  0%   { transform: scale(1.6) rotate(270deg); opacity: 0.25; border-radius: 25%; }
+  25%  { transform: scale(1)   rotate(0deg);   opacity: 1;    border-radius: 25%; }
+  50%  { transform: scale(1)   rotate(0deg);   opacity: 1;    border-radius: 50%; }
+  75%  { transform: scale(1.6) rotate(270deg); opacity: 1;    border-radius: 50%; }
+  100% { transform: scale(1.6) rotate(270deg); opacity: 0.25; border-radius: 25%; }
+}
+
+@keyframes splash-outer-ring {
+  0%   { transform: scale(1)   rotate(0deg);   opacity: 1;    border-radius: 25%; }
+  25%  { transform: scale(1.2) rotate(270deg); opacity: 0.25; border-radius: 25%; }
+  50%  { transform: scale(1.2) rotate(270deg); opacity: 0.25; border-radius: 50%; }
+  75%  { transform: scale(1)   rotate(0deg);   opacity: 0.25; border-radius: 50%; }
+  100% { transform: scale(1)   rotate(0deg);   opacity: 1;    border-radius: 25%; }
+}
+
+@keyframes progress-bar1 {
+  0% { left: -35%; right: 100%; }
+  60% { left: 100%; right: -90%; }
+  100% { left: 100%; right: -90%; }
+}
+
+@keyframes progress-bar2 {
+  0% { left: -200%; right: 100%; }
+  60% { left: 107%; right: -8%; }
+  100% { left: 107%; right: -8%; }
+}
+
+/* Reusable card surface matching source elevation */
+.dashboard-card {
+  background: var(--color-bg-paper);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+/* Dark mode overrides for Tailwind grey utilities */
+.dark .text-grey-800 { color: #f9fafb; }
+.dark .text-grey-700 { color: #dfe3e8; }
+.dark .text-grey-600 { color: #919eab; }
+.dark .text-grey-500 { color: #637381; }
+.dark .bg-grey-100 { background-color: #28323d; }
+.dark .bg-grey-200 { background-color: #28323d; }
+.dark .bg-grey-50 { background-color: #1c252e; }
+.dark .border-grey-800 { border-color: #f9fafb; }
+.dark .border-grey-300 { border-color: rgba(145 158 171 / 0.16); }
+.dark .border-grey-200 { border-color: rgba(145 158 171 / 0.12); }
+.dark .divide-grey-300 > :not(:last-child) { border-color: rgba(145 158 171 / 0.16); }
+
+/* ---- Interactive states ---- */
+.dashboard-card {
+  transition: box-shadow 200ms ease-in-out;
+}
+
+/* Smooth transitions for all interactive elements */
+button, a, input, select, textarea {
+  transition-property: color, background-color, border-color, box-shadow, opacity;
+  transition-duration: 150ms;
+  transition-timing-function: ease-in-out;
+}
+
+/* Minimals clone: override transition duration to match MUI's 250ms easing.
+   Scoped to .theme-minimals so the default theme stays at 150ms. */
+.theme-minimals button,
+.theme-minimals a,
+.theme-minimals [role="button"] {
+  transition-duration: 250ms;
+}
+
+/* Focus-visible for keyboard navigation (exclude inputs — they handle focus via border) */
+:focus-visible:not(input, textarea, select) {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ภายใน select popup ไม่ใช้ outline หนา — item มี data-highlighted bg เป็น focus indicator อยู่แล้ว */
+[data-slot="select-content"]:focus-visible,
+[data-slot="select-content"] :focus-visible {
+  outline: none;
+}
+
+/* ---- Shared form input style (used in invoice-form, etc.) ---- */
+.form-input {
+  display: block;
+  width: 100%;
+  height: 3rem; /* h-12 */
+  padding: 0 0.875rem; /* px-3.5 */
+  border-radius: var(--radius-control);
+  border: 1px solid var(--divider);
+  background-color: transparent;
+  color: var(--color-text-primary);
+  font-size: 1rem; /* 16px — body */
+  outline: none;
+  transition: border-color 150ms ease-in-out, box-shadow 150ms ease-in-out;
+}
+.form-input:focus {
+  border-color: var(--color-grey-800);
+  box-shadow: inset 0 0 0 1px var(--color-grey-800);
+}
+.form-input::placeholder {
+  color: var(--color-grey-500);
+}
+.dark .form-input {
+  border-color: rgba(145, 158, 171, 0.2);
+  color: #ffffff;
+}
+.dark .form-input::placeholder {
+  color: var(--color-grey-600);
+}
+/* textarea variant */
+textarea.form-input {
+  height: auto;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  resize: vertical;
+}
+
+/* Table row hover */
+tbody tr {
+  transition: background-color 150ms ease-in-out;
+}
+
+/* ---- Toast progress bar animation ---- */
+@keyframes toast-progress {
+  from { width: 100%; }
+  to   { width: 0%; }
+}
+
+
+/* ---- Print styles ---- */
+
+/**
+ * .no-print utility: add to any element that should be hidden in print.
+ * Also applied automatically to the toast host (class added in toast-provider).
+ */
+.no-print {
+  /* screen: no-op (class is a marker only) */
+}
+
+@media print {
+  /* Hide chrome: sidebar, topbar, drawers, sheets, dialogs, toasts */
+  aside,
+  header,
+  nav,
+  [role="dialog"],
+  [data-radix-popper-content-wrapper],
+  .no-print {
+    display: none !important;
+  }
+
+  /* Full-bleed white page, black text */
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  /* Remove card shadows */
+  .dashboard-card,
+  [class*="shadow"] {
+    box-shadow: none !important;
+  }
+
+  /* Stretch main content edge-to-edge */
+  [data-dashboard-main] {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  @page {
+    margin: 14mm;
+  }
+}
+
+/* ---- Typography utilities (MUI variant parity; h1-h3 use Barlow display) ---- */
+@utility text-h1 { font-family: var(--font-display); font-size: var(--text-h1); line-height: 1.25; font-weight: 800; }
+@utility text-h2 { font-family: var(--font-display); font-size: var(--text-h2); line-height: 1.333; font-weight: 800; }
+@utility text-h3 { font-family: var(--font-display); font-size: var(--text-h3); line-height: 1.5; font-weight: 700; }
+@utility text-h4 { font-size: var(--text-h4); line-height: 1.5; font-weight: 700; }
+@utility text-h5 { font-size: var(--text-h5); line-height: 1.5; font-weight: 700; }
+@utility text-h6 { font-size: var(--text-h6); line-height: 1.556; font-weight: 600; }
+@utility text-subtitle1 { font-size: 1rem; line-height: 1.5; font-weight: 600; }
+@utility text-subtitle2 { font-size: 0.875rem; line-height: 1.571; font-weight: 600; }
+@utility text-body1 { font-size: 1rem; line-height: 1.5; font-weight: 400; }
+@utility text-body2 { font-size: 0.875rem; line-height: 1.571; font-weight: 400; }
+@utility text-caption { font-size: 0.875rem; line-height: 1.5; font-weight: 400; }
+@utility text-overline { font-size: 0.875rem; line-height: 1.5; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* ---- Control-plane data face: machine identifiers, tabular figures aligned ---- */
+@utility text-data { font-family: var(--font-mono); font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+
+/* ---- Control-plane health spine: vertical state bar on list rows / cards.
+   Decorative only — the same state is always shown in a text badge too. ---- */
+@utility status-spine { display: inline-block; width: 3px; border-radius: 9999px; align-self: stretch; }
+
+/* ---- Settings: compact density ---- */
+[data-compact="true"] [data-dashboard-main] {
+  padding-top: 0.75rem;
+  padding-bottom: 2.5rem;
+}
+
+/* ---- Settings: high contrast (stronger card elevation) ---- */
+[data-contrast="true"] .dashboard-card {
+  box-shadow: var(--shadow-z16);
+}
+
+/* ---- date-range-field: react-day-picker colors -> semantic tokens (Viriyah palette
+   flows through --primary/--primary-soft already) — only CSS variable overrides,
+   layout/structure stays react-day-picker/style.css default. ---- */
+.date-range-calendar .rdp-root {
+  --rdp-accent-color: var(--primary);
+  --rdp-accent-background-color: var(--primary-soft);
+  --rdp-today-color: var(--primary);
+  /* จูนให้เข้าธีม: endpoint เป็นวงกลมทึบไม่มีเส้นขอบ, ขนาด/ตัวอักษรเท่า data table */
+  --rdp-selected-border: none;
+  --rdp-day-width: 40px;
+  --rdp-day-height: 40px;
+  --rdp-day_button-width: 40px;
+  --rdp-day_button-height: 40px;
+  /* nav ปุ่มต้องจัตุรัส ไม่งั้น radius เต็มได้ทรงแคปซูล (default 2.25x2.75rem) */
+  --rdp-nav-height: 40px;
+  --rdp-nav_button-width: 40px;
+  --rdp-nav_button-height: 40px;
+  font-size: 0.875rem;
+}
+.date-range-calendar .rdp-month_caption {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+.date-range-calendar .rdp-weekday {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-grey-500);
+}
+.date-range-calendar .rdp-selected {
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+/* endpoint: RDP ทาพื้นครึ่งซ้าย/ขวาไว้ที่ td (ต่อแถบ) — โผล่เป็นเหลี่ยมข้างวงกลม ตัดทิ้ง */
+.date-range-calendar .rdp-range_start,
+.date-range-calendar .rdp-range_end {
+  background: transparent;
+}
+/* วันกลางช่วง: วงกลมรายวันเหมือน endpoint (ไม่ใช่แถบต่อเนื่อง) — RDP ทาพื้นไว้ที่ td ย้ายมาที่ปุ่ม */
+.date-range-calendar .rdp-range_middle {
+  color: var(--foreground);
+  background-color: transparent;
+}
+.date-range-calendar .rdp-range_middle .rdp-day_button {
+  background-color: var(--primary-soft);
+  border-radius: 9999px;
+}
+/* nav chevron: ghost icon button แบบ toolbar (ไม่ใช่ accent ฟ้าสด) — อิง shadcn calendar */
+.date-range-calendar .rdp-button_previous,
+.date-range-calendar .rdp-button_next {
+  border-radius: 9999px;
+  transition: background-color 0.15s;
+}
+.date-range-calendar .rdp-button_previous:hover,
+.date-range-calendar .rdp-button_next:hover {
+  background-color: var(--action-hover);
+}
+.date-range-calendar .rdp-chevron {
+  fill: var(--color-grey-600);
+  width: 18px;
+  height: 18px;
+}
+/* single-selected (คลิกวันเริ่มต้น ยังไม่มีวันสิ้นสุด): วงกลมทึบ primary
+   — RDP ให้แค่ .rdp-selected (ไม่มี range_*) และ default border ถูกปิดด้วย
+   --rdp-selected-border ข้างบน; อิง shadcn data-selected-single -> bg-primary */
+.date-range-calendar
+  .rdp-selected:not(.rdp-range_start):not(.rdp-range_end):not(.rdp-range_middle)
+  .rdp-day_button {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  border-radius: 9999px;
+}
+/* preview range: เลือก start แล้ว hover/focus วันอื่น — บอกล่วงหน้าว่าช่วงจะกินถึงไหน */
+.date-range-calendar .rdp-preview_middle:not(.rdp-selected) .rdp-day_button {
+  background-color: var(--primary-soft);
+  border-radius: 9999px;
+}
+.date-range-calendar .rdp-preview_end:not(.rdp-selected) .rdp-day_button {
+  background-color: var(--primary-soft);
+  border-radius: 9999px;
+  font-weight: 600;
+}
+/* day hover state (วันที่ยังไม่ถูกเลือก และไม่อยู่ใน preview — ไม่งั้นทับสี preview) */
+.date-range-calendar
+  .rdp-day:not(.rdp-selected):not(.rdp-preview_middle):not(.rdp-preview_end)
+  .rdp-day_button:hover {
+  background-color: var(--action-hover);
+  border-radius: 9999px;
+}
+/* today: วงพื้น muted แบบ subtle เมื่อยังไม่อยู่ใน selection/preview */
+.date-range-calendar
+  .rdp-today:not(.rdp-selected):not(.rdp-preview_middle):not(.rdp-preview_end)
+  .rdp-day_button {
+  background-color: var(--muted);
+  border-radius: 9999px;
+  font-weight: 600;
+}
+/* focus-visible ring บนวัน (keyboard nav) — อิง shadcn focused-day ring */
+.date-range-calendar .rdp-day_button:focus-visible {
+  outline: none;
+  border-radius: 9999px;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 50%, transparent);
+}
+/* caption dropdown (เดือน/ปี พ.ศ.) ใช้ ui/select ผ่าน components.Dropdown — จัดแค่ระยะ */
+.date-range-calendar .rdp-dropdowns {
+  gap: 0.25rem;
+}
