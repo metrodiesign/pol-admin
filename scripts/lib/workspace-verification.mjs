@@ -1,4 +1,5 @@
-import { readFileSync, readdirSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { createServer } from "node:net";
 import { dirname, extname, isAbsolute, relative, resolve, sep } from "node:path";
 
@@ -24,6 +25,59 @@ const IGNORED_DIRECTORIES = new Set([
 ]);
 const TEST_FILE_RE = /\.(?:test|spec)\.(?:[cm]?[jt]sx?)$/;
 const TEST_POLICY_RE = /\b(?:describe|it|suite|test)\s*\.\s*(?:only|skip)\s*\(/g;
+const EXPECTED_WORKSPACES = ["packages/ui", "packages/shared"];
+const EXPECTED_LOCAL_PACKAGES = new Map([
+  ["node_modules/@pol/shared", "packages/shared"],
+  ["node_modules/@pol/ui", "packages/ui"],
+]);
+const REMOVED_APPLICATION_NAMES = ["admin", "merchant"];
+const EXPECTED_ROUTE_COUNT = 112;
+const EXPECTED_ROUTE_SHA256 = "6011454515d15a40e39e171ef87e748f92a63a0f0a995ff43c3c16455d387216";
+const FIXTURE_START = "active-reference-fixture:start";
+const FIXTURE_END = "active-reference-fixture:end";
+const NEGATIVE_FIXTURE_SUFFIX = ["scripts", "lib", "workspace-verification.test.mjs"].join("/");
+const ROOT_REFERENCE_FILES = [
+  "package.json",
+  "package-lock.json",
+  ".dockerignore",
+  ".gitignore",
+  ".env.example",
+  "components.json",
+  "eslint.config.mjs",
+  "next.config.ts",
+  "opencode.json",
+  "postcss.config.mjs",
+  "tsconfig.base.json",
+  "tsconfig.json",
+  "vitest.config.ts",
+  "AGENTS.md",
+  "CLAUDE.md",
+  "claude-code-spec-driven-workflow.md",
+  "Dockerfile",
+];
+const ACTIVE_REFERENCE_TREES = [".github", "scripts", "docs", ".ai/shared", "src", "packages"];
+
+function applicationPackageName(name) {
+  return ["@pol", name].join("/");
+}
+
+function applicationWorkspacePath(name) {
+  return ["apps", name].join("/");
+}
+
+function adminScriptAlias(command) {
+  return [command, "admin"].join(":");
+}
+
+export function forbiddenActiveReferences() {
+  return [
+    ...REMOVED_APPLICATION_NAMES.flatMap((name) => [
+      applicationPackageName(name),
+      applicationWorkspacePath(name),
+    ]),
+    ...["dev", "build", "start", "test"].map(adminScriptAlias),
+  ];
+}
 
 function sortStrings(values) {
   return [...values].sort((left, right) => left.localeCompare(right));
@@ -51,6 +105,64 @@ export async function assertPortAvailable(port) {
     });
   } finally {
     if (probe.listening) await new Promise((resolveClose) => probe.close(resolveClose));
+  }
+}
+
+export function assertWorkspaceTopology(rootManifest, lockfile) {
+  const actualWorkspaces = rootManifest?.workspaces;
+  if (JSON.stringify(actualWorkspaces) !== JSON.stringify(EXPECTED_WORKSPACES)) {
+    throw new Error(
+      `Root workspaces must equal ${EXPECTED_WORKSPACES.join(", ")}; got ${JSON.stringify(actualWorkspaces)}`,
+    );
+  }
+
+  const packages = lockfile?.packages;
+  if (!packages || typeof packages !== "object" || Array.isArray(packages)) {
+    throw new TypeError("Lockfile packages must be an object");
+  }
+
+  const lockedWorkspaces = packages[""]?.workspaces;
+  if (JSON.stringify(lockedWorkspaces) !== JSON.stringify(EXPECTED_WORKSPACES)) {
+    throw new Error(
+      `Lockfile workspaces must equal ${EXPECTED_WORKSPACES.join(", ")}; got ${JSON.stringify(lockedWorkspaces)}`,
+    );
+  }
+
+  const removedApplicationReferences = Object.entries(packages)
+    .filter(([key, value]) =>
+      REMOVED_APPLICATION_NAMES.some((name) => {
+        const packageName = applicationPackageName(name);
+        const workspacePath = applicationWorkspacePath(name);
+        return (
+          key === workspacePath ||
+          key === `node_modules/${packageName}` ||
+          value?.name === packageName ||
+          value?.resolved === workspacePath
+        );
+      }),
+    )
+    .map(([key]) => key);
+  if (removedApplicationReferences.length > 0) {
+    throw new Error(
+      `Lockfile still resolves removed application workspace: ${removedApplicationReferences.join(", ")}`,
+    );
+  }
+
+  const actualLocalLinks = Object.entries(packages)
+    .filter(([key, value]) => key.startsWith("node_modules/@pol/") && value?.link === true)
+    .map(([key]) => key)
+    .sort();
+  const expectedLocalLinks = [...EXPECTED_LOCAL_PACKAGES.keys()].sort();
+  if (JSON.stringify(actualLocalLinks) !== JSON.stringify(expectedLocalLinks)) {
+    throw new Error(
+      `Local workspace links must equal ${expectedLocalLinks.join(", ")}; got ${actualLocalLinks.join(", ")}`,
+    );
+  }
+
+  for (const [linkKey, workspacePath] of EXPECTED_LOCAL_PACKAGES) {
+    if (packages[linkKey]?.resolved !== workspacePath) {
+      throw new Error(`${linkKey} must resolve to ${workspacePath}`);
+    }
   }
 }
 
@@ -82,42 +194,22 @@ export function readPageRoutes(manifestPath) {
   return normalizePageRoutes(manifest);
 }
 
-export function compareRouteParity(adminRoutes, merchantRoutes) {
-  const admin = new Set(adminRoutes);
-  const merchant = new Set(merchantRoutes);
-  const expectedMerchant = new Set([...admin, "/register"]);
-
-  return {
-    adminHasRegister: admin.has("/register"),
-    missingFromMerchant: sortStrings(
-      [...expectedMerchant].filter((route) => !merchant.has(route)),
-    ),
-    extraInMerchant: sortStrings(
-      [...merchant].filter((route) => !expectedMerchant.has(route)),
-    ),
-  };
+export function pageRouteFingerprint(routes) {
+  return createHash("sha256").update(JSON.stringify(routes), "utf8").digest("hex");
 }
 
-export function assertRouteParity(adminRoutes, merchantRoutes) {
-  const result = compareRouteParity(adminRoutes, merchantRoutes);
-  if (
-    result.adminHasRegister ||
-    result.missingFromMerchant.length > 0 ||
-    result.extraInMerchant.length > 0
-  ) {
+export function assertAdminRouteIdentity(adminRoutes) {
+  assertRequiredAdminRoutes(adminRoutes);
+  const fingerprint = pageRouteFingerprint(adminRoutes);
+  if (adminRoutes.length !== EXPECTED_ROUTE_COUNT || fingerprint !== EXPECTED_ROUTE_SHA256) {
     throw new Error(
-      [
-        "Route parity failed",
-        `Admin contains /register: ${result.adminHasRegister}`,
-        `Missing from Merchant: ${result.missingFromMerchant.join(", ") || "-"}`,
-        `Extra in Merchant: ${result.extraInMerchant.join(", ") || "-"}`,
-      ].join("\n"),
+      `Admin route identity must equal ${EXPECTED_ROUTE_COUNT} routes / ${EXPECTED_ROUTE_SHA256}; got ${adminRoutes.length} / ${fingerprint}`,
     );
   }
 }
 
-export function assertRequiredRoutes(adminRoutes, merchantRoutes) {
-  const requiredCommonRoutes = [
+export function assertRequiredAdminRoutes(adminRoutes) {
+  const requiredAdminRoutes = [
     "/",
     "/admin/user/list",
     "/checkout/[sessionId]",
@@ -126,12 +218,10 @@ export function assertRequiredRoutes(adminRoutes, merchantRoutes) {
   ];
   const missing = [];
 
-  for (const route of requiredCommonRoutes) {
+  for (const route of requiredAdminRoutes) {
     if (!adminRoutes.includes(route)) missing.push(`Admin ${route}`);
-    if (!merchantRoutes.includes(route)) missing.push(`Merchant ${route}`);
   }
   if (adminRoutes.includes("/register")) missing.push("Admin must not expose /register");
-  if (!merchantRoutes.includes("/register")) missing.push("Merchant /register");
 
   if (missing.length > 0) {
     throw new Error(`Required routes failed:\n${missing.map((item) => `- ${item}`).join("\n")}`);
@@ -159,7 +249,12 @@ function packageImportTargetsApp(specifier, appName) {
 
 function textImportTargetsApp(specifier, appName) {
   const normalized = specifier.replaceAll("\\", "/");
-  return normalized.includes(`apps/${appName}/src`);
+  const appPath = `apps/${appName}`;
+  return (
+    normalized === appPath ||
+    normalized.startsWith(`${appPath}/`) ||
+    normalized.includes(`/${appPath}/`)
+  );
 }
 
 function resolvedImportTarget(file, specifier) {
@@ -169,39 +264,37 @@ function resolvedImportTarget(file, specifier) {
 }
 
 export function findBoundaryViolations(files, roots) {
-  const appRoots = {
-    admin: resolve(roots.admin),
-    merchant: resolve(roots.merchant),
-  };
+  const appSourceRoot = resolve(roots.appSource);
+  const removedAdminRoot = resolve(roots.removedAdminWorkspace);
+  const removedMerchantRoot = resolve(roots.removedMerchantWorkspace);
   const packageRoot = resolve(roots.packages);
   const violations = [];
 
   for (const entry of files) {
     const file = resolve(entry.file);
-    const owner = isWithin(appRoots.admin, file)
-      ? "admin"
-      : isWithin(appRoots.merchant, file)
-        ? "merchant"
-        : isWithin(packageRoot, file)
-          ? "package"
-          : null;
+    const owner = isWithin(appSourceRoot, file)
+      ? "application"
+      : isWithin(packageRoot, file)
+        ? "package"
+        : null;
     if (!owner) continue;
 
     for (const specifier of extractModuleSpecifiers(entry.content)) {
       const target = resolvedImportTarget(file, specifier);
-      const targetsAdmin =
+      const targetsApplicationSource = target !== null && isWithin(appSourceRoot, target);
+      const targetsRemovedAdmin =
         packageImportTargetsApp(specifier, "admin") ||
         textImportTargetsApp(specifier, "admin") ||
-        (target !== null && isWithin(appRoots.admin, target));
-      const targetsMerchant =
+        (target !== null && isWithin(removedAdminRoot, target));
+      const targetsRemovedMerchant =
         packageImportTargetsApp(specifier, "merchant") ||
         textImportTargetsApp(specifier, "merchant") ||
-        (target !== null && isWithin(appRoots.merchant, target));
+        (target !== null && isWithin(removedMerchantRoot, target));
 
       if (
-        (owner === "admin" && targetsMerchant) ||
-        (owner === "merchant" && targetsAdmin) ||
-        (owner === "package" && (targetsAdmin || targetsMerchant))
+        (owner === "application" && (targetsRemovedAdmin || targetsRemovedMerchant)) ||
+        (owner === "package" &&
+          (targetsApplicationSource || targetsRemovedAdmin || targetsRemovedMerchant))
       ) {
         violations.push({ file, specifier });
       }
@@ -250,4 +343,87 @@ export function readCodeFiles(root) {
 
   visit(absoluteRoot);
   return files;
+}
+
+function readTextTree(root) {
+  const files = [];
+
+  function visit(target) {
+    const entries = readdirSync(target, { withFileTypes: true }).sort((left, right) =>
+      left.name.localeCompare(right.name),
+    );
+    for (const entry of entries) {
+      if (entry.isSymbolicLink()) continue;
+      const entryPath = resolve(target, entry.name);
+      if (entry.isDirectory()) {
+        if (!IGNORED_DIRECTORIES.has(entry.name)) visit(entryPath);
+      } else if (entry.isFile()) {
+        const content = readFileSync(entryPath, "utf8");
+        if (!content.includes("\0")) files.push({ file: entryPath, content });
+      }
+    }
+  }
+
+  visit(resolve(root));
+  return files;
+}
+
+export function readActiveReferenceFiles(repositoryRoot) {
+  const root = resolve(repositoryRoot);
+  const files = [];
+  const seen = new Set();
+
+  function addFile(file) {
+    const absoluteFile = resolve(file);
+    if (seen.has(absoluteFile) || !existsSync(absoluteFile)) return;
+    const content = readFileSync(absoluteFile, "utf8");
+    if (content.includes("\0")) return;
+    seen.add(absoluteFile);
+    files.push({ file: absoluteFile, content });
+  }
+
+  for (const file of ROOT_REFERENCE_FILES) addFile(resolve(root, file));
+  for (const entry of readdirSync(root, { withFileTypes: true })) {
+    if (entry.isFile() && entry.name.startsWith("README")) addFile(resolve(root, entry.name));
+  }
+  for (const tree of ACTIVE_REFERENCE_TREES) {
+    const treeRoot = resolve(root, tree);
+    if (!existsSync(treeRoot)) continue;
+    for (const entry of readTextTree(treeRoot)) addFile(entry.file);
+  }
+
+  return files.sort((left, right) => left.file.localeCompare(right.file));
+}
+
+function isVerifiedFixtureLine(file, lines, lineIndex) {
+  if (!file.replaceAll("\\", "/").endsWith(NEGATIVE_FIXTURE_SUFFIX)) return false;
+  let insideFixture = false;
+  for (let index = 0; index <= lineIndex; index += 1) {
+    if (lines[index].includes(FIXTURE_START)) insideFixture = true;
+    if (lines[index].includes(FIXTURE_END)) insideFixture = false;
+  }
+  return insideFixture;
+}
+
+export function findActiveReferenceViolations(files) {
+  const violations = [];
+  const forbidden = forbiddenActiveReferences();
+
+  for (const entry of files) {
+    const lines = entry.content.split("\n");
+    for (let lineIndex = 0; lineIndex < lines.length; lineIndex += 1) {
+      for (const reference of forbidden) {
+        if (!lines[lineIndex].includes(reference)) continue;
+        if (isVerifiedFixtureLine(entry.file, lines, lineIndex)) continue;
+        violations.push({ file: entry.file, line: lineIndex + 1, reference });
+      }
+    }
+  }
+
+  return violations.sort(
+    (left, right) =>
+      left.file.localeCompare(right.file) ||
+      left.line - right.line ||
+      left.reference.localeCompare(right.reference),
+  );
 }

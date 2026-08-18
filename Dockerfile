@@ -13,13 +13,11 @@ RUN apk add --no-cache libc6-compat
 RUN npm install -g npm@11.12.1
 WORKDIR /app
 COPY package.json package-lock.json ./
-COPY apps/admin/package.json ./apps/admin/package.json
-COPY apps/merchant/package.json ./apps/merchant/package.json
 COPY packages/ui/package.json ./packages/ui/package.json
 COPY packages/shared/package.json ./packages/shared/package.json
 RUN npm ci
 
-# ---- builder: build Admin only ----
+# ---- builder: build root Admin app ----
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app ./
@@ -31,7 +29,7 @@ COPY . .
 # เสิร์ฟ SPA+API origin เดียวกันใน prod). NEXT_PUBLIC_GOOGLE_CLIENT_ID_* เป็นของเก่าที่ dead แล้ว.
 # NEXT_PUBLIC_SKIP_AUTH: ตั้งใจไม่ ARG/ENV ที่นี่ — prod build ต้องไม่ bake flag นี้เข้าไปเลย
 ENV NODE_ENV=production
-RUN npm run build:admin
+RUN npm run build
 
 # ---- runner: minimal production image ----
 FROM base AS runner
@@ -46,9 +44,9 @@ ENV HOSTNAME=0.0.0.0
 RUN addgroup --system --gid 1001 nodejs \
   && adduser --system --uid 1001 nextjs
 
-COPY --from=builder --chown=nextjs:nodejs /app/apps/admin/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/apps/admin/public ./apps/admin/public
-COPY --from=builder --chown=nextjs:nodejs /app/apps/admin/.next/static ./apps/admin/.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 USER nextjs
 
@@ -57,4 +55,4 @@ EXPOSE 3001
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
   CMD node -e "require('http').get('http://127.0.0.1:'+(process.env.PORT||3001)+'/', r=>{process.exit(r.statusCode<500?0:1)}).on('error',()=>process.exit(1))"
 
-CMD ["node", "apps/admin/server.js"]
+CMD ["node", "server.js"]

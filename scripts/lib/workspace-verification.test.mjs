@@ -14,19 +14,84 @@ import {
 } from "./workspace-process.mjs";
 
 import {
+  assertAdminRouteIdentity,
   assertPortAvailable,
-  assertRequiredRoutes,
-  assertRouteParity,
-  compareRouteParity,
+  assertRequiredAdminRoutes,
+  assertWorkspaceTopology,
   extractModuleSpecifiers,
+  findActiveReferenceViolations,
   findBoundaryViolations,
   findTestPolicyViolations,
+  forbiddenActiveReferences,
   normalizePageRoutes,
+  pageRouteFingerprint,
 } from "./workspace-verification.mjs";
 
 const repositoryRoot = fileURLToPath(new URL("../..", import.meta.url));
 
-test("F-2/F-3: cleanup จบได้เมื่อ child exit พร้อม SIGKILL", async () => {
+// active-reference-fixture:start
+const REMOVED_ADMIN_PACKAGE = "@pol/admin";
+const REMOVED_ADMIN_WORKSPACE = "apps/admin";
+const REMOVED_MERCHANT_PACKAGE = "@pol/merchant";
+const REMOVED_MERCHANT_WORKSPACE = "apps/merchant";
+const REMOVED_DEV_ALIAS = "dev:admin";
+const REMOVED_BUILD_ALIAS = "build:admin";
+const REMOVED_START_ALIAS = "start:admin";
+const REMOVED_TEST_ALIAS = "test:admin";
+const RAW_FORBIDDEN_FIXTURES = [
+  REMOVED_ADMIN_PACKAGE,
+  REMOVED_ADMIN_WORKSPACE,
+  REMOVED_MERCHANT_PACKAGE,
+  REMOVED_MERCHANT_WORKSPACE,
+  REMOVED_DEV_ALIAS,
+  REMOVED_BUILD_ALIAS,
+  REMOVED_START_ALIAS,
+  REMOVED_TEST_ALIAS,
+];
+// active-reference-fixture:end
+
+function validWorkspaceTopology() {
+  const workspaces = ["packages/ui", "packages/shared"];
+  return {
+    lockfile: {
+      packages: {
+        "": { workspaces },
+        "node_modules/@pol/shared": { link: true, resolved: "packages/shared" },
+        "node_modules/@pol/ui": { link: true, resolved: "packages/ui" },
+        "packages/shared": { name: "@pol/shared" },
+        "packages/ui": { name: "@pol/ui" },
+      },
+    },
+    rootManifest: { workspaces },
+  };
+}
+
+test("REQ-3.3, REQ-5.5: topology guard ยอมรับ retained package workspaces เท่านั้น", () => {
+  const { lockfile, rootManifest } = validWorkspaceTopology();
+  assert.doesNotThrow(() => assertWorkspaceTopology(rootManifest, lockfile));
+});
+
+test("REQ-3.3, REQ-5.4 ถึง REQ-5.6: topology guard ปฏิเสธ wildcard และ removed app link", () => {
+  const wildcard = validWorkspaceTopology();
+  wildcard.rootManifest.workspaces = ["apps/*", "packages/*"];
+  assert.throws(
+    () => assertWorkspaceTopology(wildcard.rootManifest, wildcard.lockfile),
+    /Root workspaces must equal/,
+  );
+
+  const removed = validWorkspaceTopology();
+  removed.lockfile.packages[REMOVED_MERCHANT_WORKSPACE] = { name: REMOVED_MERCHANT_PACKAGE };
+  removed.lockfile.packages[`node_modules/${REMOVED_MERCHANT_PACKAGE}`] = {
+    link: true,
+    resolved: REMOVED_MERCHANT_WORKSPACE,
+  };
+  assert.throws(
+    () => assertWorkspaceTopology(removed.rootManifest, removed.lockfile),
+    /Lockfile still resolves removed application workspace/,
+  );
+});
+
+test("REQ-4.14: cleanup จบได้เมื่อ managed child exit พร้อม SIGKILL", async () => {
   const child = new EventEmitter();
   child.exitCode = null;
   child.kill = (signal) => {
@@ -51,7 +116,7 @@ test("F-2/F-3: cleanup จบได้เมื่อ child exit พร้อม
   }
 });
 
-test("F-3: cleanup timeout คืน error พร้อม server, PID และ phase", async () => {
+test("REQ-4.14: cleanup timeout คืน error พร้อม server, PID และ phase", async () => {
   const signals = [];
   let destroyedStreams = 0;
   const child = new EventEmitter();
@@ -76,7 +141,7 @@ test("F-3: cleanup timeout คืน error พร้อม server, PID และ
   assert.equal(destroyedStreams, 2);
 });
 
-test("F-2/F-5: cleanup ปิด process group แม้ leader ปิดไปก่อน", async () => {
+test("REQ-4.14: cleanup ปิด managed process group แม้ leader ปิดไปก่อน", async () => {
   if (process.platform === "win32") return;
 
   const descendantSource = `
@@ -143,12 +208,12 @@ test("B-7: startup failure คง exit code และ recent output", async () =
   );
 });
 
-test("B-8: signal exit code คง 130/143", () => {
+test("REQ-4.14 และ REQ-4.15: signal exit code คง 130/143", () => {
   assert.equal(signalExitCode("SIGINT"), 130);
   assert.equal(signalExitCode("SIGTERM"), 143);
 });
 
-test("F-6: CI จำกัด smoke step ไม่เกิน 2 นาที", async () => {
+test("REQ-5.8: CI จำกัด smoke step ไม่เกิน 2 นาที", async () => {
   const workflow = await readFile(join(repositoryRoot, ".github/workflows/ci.yml"), "utf8");
   assert.match(
     workflow,
@@ -156,7 +221,82 @@ test("F-6: CI จำกัด smoke step ไม่เกิน 2 นาที", 
   );
 });
 
-test("runtime smoke ปฏิเสธ port ที่มี owner อยู่แล้วโดยไม่ปิด owner", async () => {
+test("REQ-5.13 ถึง REQ-5.19: smoke จัดการ root Admin port 3001 เท่านั้น", async () => {
+  const [smoke, signals] = await Promise.all([
+    readFile(join(repositoryRoot, "scripts/smoke-workspace-routes.mjs"), "utf8"),
+    readFile(join(repositoryRoot, "scripts/verify-smoke-signals.mjs"), "utf8"),
+  ]);
+
+  assert.match(smoke, /startServer\("Admin", "start", 3001\)/);
+  assert.match(smoke, /127\.0\.0\.1:3001\/admin\/user\/list/);
+  assert.match(smoke, /127\.0\.0\.1:3001\/register/);
+  assert.doesNotMatch(smoke, /Merchant|3002/);
+  assert.doesNotMatch(signals, /3002/);
+  for (const reference of [REMOVED_START_ALIAS, REMOVED_MERCHANT_PACKAGE]) {
+    assert.equal(smoke.includes(reference), false);
+  }
+});
+
+test("REQ-6.1 ถึง REQ-6.10: CI คง full root gates", async () => {
+  const workflow = await readFile(join(repositoryRoot, ".github/workflows/ci.yml"), "utf8");
+
+  for (const command of [
+    "npm ci",
+    "npm audit --omit=dev --audit-level=high",
+    "npm run lint",
+    "npm run typecheck",
+    "npm test",
+    "npm run build",
+    "npm run verify:workspaces",
+    "npm run smoke:routes",
+  ]) {
+    assert.match(workflow, new RegExp(command.replaceAll(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+  }
+  assert.match(workflow, /node-version: '22\.19\.0'/);
+  assert.match(workflow, /npm install --global npm@11\.12\.1/);
+  assert.match(workflow, /Guard regression tests/);
+  assert.match(workflow, /Secret scan/);
+  assert.match(workflow, /Spec trace \(REQ coverage\)/);
+  assert.doesNotMatch(workflow, /Build Merchant|route parity/);
+  for (const reference of forbiddenActiveReferences()) {
+    assert.equal(workflow.includes(reference), false);
+  }
+});
+
+test("REQ-6.11 ถึง REQ-6.28: Dockerfile ใช้ root standalone non-root runtime", async () => {
+  const dockerfile = await readFile(join(repositoryRoot, "Dockerfile"), "utf8");
+  const dependencyStage = dockerfile.slice(0, dockerfile.indexOf("# ---- builder"));
+
+  assert.match(dockerfile, /FROM node:22\.19\.0-alpine3\.22 AS base/);
+  assert.deepEqual(dependencyStage.match(/^COPY .*package.*$/gm), [
+    "COPY package.json package-lock.json ./",
+    "COPY packages/ui/package.json ./packages/ui/package.json",
+    "COPY packages/shared/package.json ./packages/shared/package.json",
+  ]);
+  assert.match(dockerfile, /RUN npm run build/);
+  assert.match(dockerfile, /\/app\/\.next\/standalone \.\//);
+  assert.match(dockerfile, /\/app\/public \.\/public/);
+  assert.match(dockerfile, /\/app\/\.next\/static \.\/\.next\/static/);
+  assert.match(dockerfile, /USER nextjs/);
+  assert.match(dockerfile, /EXPOSE 3001/);
+  assert.match(dockerfile, /r\.statusCode<500\?0:1/);
+  assert.match(dockerfile, /CMD \["node", "server\.js"\]/);
+  assert.doesNotMatch(dockerfile, /Merchant image|Merchant service/);
+  for (const reference of forbiddenActiveReferences()) {
+    assert.equal(dockerfile.includes(reference), false);
+  }
+});
+
+test("REQ-4.13: Docker context ตัด exact env pattern set ทุกระดับ", async () => {
+  const dockerignore = await readFile(join(repositoryRoot, ".dockerignore"), "utf8");
+  const envPatterns = dockerignore
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line.includes(".env"));
+  assert.deepEqual(envPatterns, [".env", ".env.*"]);
+});
+
+test("REQ-4.16: runtime smoke ปฏิเสธ port ที่มี owner อยู่แล้วโดยไม่ปิด owner", async () => {
   const owner = createServer();
   await new Promise((resolveListen) => owner.listen(0, "127.0.0.1", resolveListen));
   const address = owner.address();
@@ -172,9 +312,10 @@ test("runtime smoke ปฏิเสธ port ที่มี owner อยู่�
   await assert.doesNotReject(() => assertPortAvailable(address.port));
 });
 
-test("REQ-3.11 ถึง REQ-3.14: normalize เฉพาะ page routes และคง dynamic notation", () => {
+test("REQ-2.12, REQ-5.3: normalize และ fingerprint root page routes แบบ deterministic", () => {
   const routes = normalizePageRoutes({
     "/page": "app/page.js",
+    "/admin/user/list/page": "app/admin/user/list/page.js",
     "/dashboard/layout": "app/dashboard/layout.js",
     "/dashboard/page": "app/dashboard/page.js",
     "/_not-found/page": "app/_not-found/page.js",
@@ -184,53 +325,41 @@ test("REQ-3.11 ถึง REQ-3.14: normalize เฉพาะ page routes แล�
 
   assert.deepEqual(routes, [
     "/",
+    "/admin/user/list",
     "/checkout/[sessionId]",
     "/dashboard",
     "/minimals/subpaths/[...segments]",
   ]);
+  assert.match(pageRouteFingerprint(routes), /^[0-9a-f]{64}$/);
+  assert.notEqual(pageRouteFingerprint(routes), pageRouteFingerprint([...routes].reverse()));
+  assert.throws(() => assertAdminRouteIdentity(routes), /Admin route identity must equal 112 routes/);
 });
 
-test("REQ-3.11: manifest ต้องเป็น JSON object", () => {
+test("REQ-4.17: manifest ต้องเป็น JSON object", () => {
   assert.throws(() => normalizePageRoutes(null), /JSON object/);
   assert.throws(() => normalizePageRoutes([]), /JSON object/);
 });
 
-test("REQ-3.5 และ REQ-9.10: Merchant ต่างจาก Admin ได้เฉพาะ /register", () => {
-  const admin = ["/", "/admin/user/list", "/dashboard"];
-  const merchant = [...admin, "/register"];
-
-  assert.doesNotThrow(() => assertRouteParity(admin, merchant));
-  assert.deepEqual(compareRouteParity(admin, merchant), {
-    adminHasRegister: false,
-    missingFromMerchant: [],
-    extraInMerchant: [],
-  });
-});
-
-test("REQ-9.10: parity check รายงาน extra และ missing routes แบบ deterministic", () => {
-  assert.throws(
-    () => assertRouteParity(["/", "/dashboard"], ["/", "/register", "/unexpected"]),
-    /Missing from Merchant: \/dashboard[\s\S]*Extra in Merchant: \/unexpected/,
-  );
-  assert.throws(
-    () => assertRouteParity(["/", "/register"], ["/", "/register"]),
-    /Admin contains \/register: true/,
-  );
-});
-
-test("REQ-3.8 ถึง REQ-3.10: required route guard จับ route สำคัญที่หาย", () => {
-  const common = [
+test("REQ-4.2, REQ-4.3 และ REQ-4.18: Admin route guard จับ required route และ /register", () => {
+  const required = [
     "/",
     "/admin/user/list",
     "/checkout/[sessionId]",
     "/dashboard",
     "/minimals/subpaths/[...segments]",
   ];
-  assert.doesNotThrow(() => assertRequiredRoutes(common, [...common, "/register"]));
-  assert.throws(() => assertRequiredRoutes(common, ["/", "/register"]), /Merchant \/admin\/user\/list/);
+  assert.doesNotThrow(() => assertRequiredAdminRoutes(required));
+  assert.throws(
+    () => assertRequiredAdminRoutes(required.filter((route) => route !== "/admin/user/list")),
+    /Admin \/admin\/user\/list/,
+  );
+  assert.throws(
+    () => assertRequiredAdminRoutes([...required, "/register"]),
+    /Admin must not expose \/register/,
+  );
 });
 
-test("REQ-9.14: module parser ครอบ static, side-effect, dynamic และ require imports", () => {
+test("REQ-4.5 ถึง REQ-4.8: module parser ครอบ static, side-effect, dynamic และ require imports", () => {
   const source = [
     'import value from "alpha";',
     'export { other } from "beta";',
@@ -241,43 +370,81 @@ test("REQ-9.14: module parser ครอบ static, side-effect, dynamic แล�
   assert.deepEqual(extractModuleSpecifiers(source), ["alpha", "beta", "delta", "epsilon", "gamma"]);
 });
 
-test("REQ-1.6, REQ-6.6 และ REQ-9.14: boundary scan ปฏิเสธ app-to-app และ package-to-app imports", () => {
+test("REQ-3.24, REQ-5.4 ถึง REQ-5.7: boundary scan ปฏิเสธ removed apps และ package-to-app imports", () => {
   const repo = join("/", "repo");
   const roots = {
-    admin: join(repo, "apps/admin"),
-    merchant: join(repo, "apps/merchant"),
+    appSource: join(repo, "src"),
     packages: join(repo, "packages"),
+    removedAdminWorkspace: join(repo, REMOVED_ADMIN_WORKSPACE),
+    removedMerchantWorkspace: join(repo, REMOVED_MERCHANT_WORKSPACE),
   };
   const files = [
     {
-      file: join(repo, "apps/admin/src/allowed.ts"),
+      file: join(repo, "src/allowed.ts"),
       content: 'import { Logo } from "@pol/ui/logo";',
     },
     {
-      file: join(repo, "apps/admin/src/bad.ts"),
-      content: 'import value from "../../merchant/src/value";',
+      file: join(repo, "src/bad-relative.ts"),
+      content: `import value from "../${REMOVED_MERCHANT_WORKSPACE}/src/value";`,
     },
     {
-      file: join(repo, "apps/merchant/src/bad.ts"),
-      content: 'import value from "@pol/admin/internal";',
+      file: join(repo, "src/bad-package.ts"),
+      content: `import value from "${REMOVED_ADMIN_PACKAGE}/internal";`,
     },
     {
-      file: join(repo, "packages/shared/src/bad.ts"),
-      content: 'export { value } from "../../../apps/admin/src/value";',
+      file: join(repo, "packages/shared/src/bad-app.ts"),
+      content: 'export { value } from "../../../src/value";',
+    },
+    {
+      file: join(repo, "packages/shared/src/bad-merchant.ts"),
+      content: `export { value } from "${join(repo, REMOVED_MERCHANT_WORKSPACE, "src/value")}";`,
     },
   ];
 
   assert.deepEqual(
     findBoundaryViolations(files, roots).map(({ file, specifier }) => [file, specifier]),
     [
-      [join(repo, "apps/admin/src/bad.ts"), "../../merchant/src/value"],
-      [join(repo, "apps/merchant/src/bad.ts"), "@pol/admin/internal"],
-      [join(repo, "packages/shared/src/bad.ts"), "../../../apps/admin/src/value"],
+      [join(repo, "packages/shared/src/bad-app.ts"), "../../../src/value"],
+      [
+        join(repo, "packages/shared/src/bad-merchant.ts"),
+        join(repo, REMOVED_MERCHANT_WORKSPACE, "src/value"),
+      ],
+      [join(repo, "src/bad-package.ts"), `${REMOVED_ADMIN_PACKAGE}/internal`],
+      [join(repo, "src/bad-relative.ts"), `../${REMOVED_MERCHANT_WORKSPACE}/src/value`],
     ],
   );
 });
 
-test("REQ-9.15: test policy scan จับ focused และ skipped tests", () => {
+test("REQ-5.6, REQ-5.8: active-reference scan ยอมเฉพาะ marked negative fixture", () => {
+  const fixtureFile = join("/", "repo", "scripts/lib/workspace-verification.test.mjs");
+  const fixtureBody = forbiddenActiveReferences().join("\n");
+  assert.deepEqual(
+    [...forbiddenActiveReferences()].sort(),
+    [...RAW_FORBIDDEN_FIXTURES].sort(),
+  );
+  const markedFixture = [
+    `// ${"active-reference-fixture:start"}`,
+    fixtureBody,
+    `// ${"active-reference-fixture:end"}`,
+  ].join("\n");
+
+  assert.deepEqual(
+    findActiveReferenceViolations([{ file: fixtureFile, content: markedFixture }]),
+    [],
+  );
+
+  const violations = findActiveReferenceViolations([
+    { file: fixtureFile, content: fixtureBody },
+    { file: join("/", "repo", "README.md"), content: fixtureBody },
+  ]);
+  assert.equal(violations.length, forbiddenActiveReferences().length * 2);
+  assert.deepEqual(
+    new Set(violations.map(({ reference }) => reference)),
+    new Set(forbiddenActiveReferences()),
+  );
+});
+
+test("REQ-4.9: test policy scan จับ focused และ skipped tests", () => {
   const focusedToken = ["describe", ".", "only", "("].join("");
   const skippedToken = ["test", ".", "skip", "("].join("");
   const violations = findTestPolicyViolations([

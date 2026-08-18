@@ -1,15 +1,14 @@
-# คู่มือการรัน POL Admin/Merchant
+# คู่มือการรัน POL Admin
 
 คู่มือหลักสำหรับติดตั้งและรัน `pol-admin` แบบ frontend-only, ต่อ `pol-core`, production local และ Docker รวมถึงขั้นตรวจสอบและแก้ปัญหาที่พบบ่อย.
 
 ## 1. ภาพรวมระบบ
 
-Repository นี้เป็น npm workspaces มี Next.js สอง app และ shared packages สองชุด.
+Repository นี้มี Next.js Admin app ที่ root และ npm package workspaces สองชุด.
 
-| ส่วน | Workspace หรือ repo | Development | หน้าที่ |
+| ส่วน | Location หรือ repo | Development | หน้าที่ |
 |---|---|---|---|
-| Admin frontend | `@pol/admin` | `https://localhost:3001` | Admin console |
-| Merchant frontend | `@pol/merchant` | `https://localhost:3002` | Merchant surface ชั่วคราว |
+| Admin frontend | repository root | `https://localhost:3001` | Admin console |
 | Shared UI | `@pol/ui` | ไม่มี server | UI primitives ที่ใช้ร่วมกัน |
 | Shared logic | `@pol/shared` | ไม่มี server | Pure types, validation และ utilities |
 | Backend API | `pol-core` | `https://localhost:5001` | REST API, BFF session และ OIDC |
@@ -18,23 +17,28 @@ Repository นี้เป็น npm workspaces มี Next.js สอง app แ
 | Non-Motor simulator DB | `pol-core` Docker Compose | `localhost:11435` | Database `mammothdb` |
 | Seq | `pol-core` Docker Compose | `http://localhost:5341` | Local structured logs |
 
-สถานะ Merchant ปัจจุบันเป็น migration baseline ไม่ใช่ final product surface:
+Application/package topology กำหนดแบบ explicit:
 
-- Route equation คือ `Merchant routes = Admin routes ∪ {/register}`.
-- Merchant ยังใช้ `AdminMe`, `getMe`, Admin session, permissions, API และ navigation.
-- Admin ไม่มี `/register`; Merchant มี `/register`.
-- Root `Dockerfile` build และ serve Admin เท่านั้น.
+- root `pol-admin` application
+- `packages/ui`
+- `packages/shared`
+
+`pol-admin` เป็น canonical repository สำหรับ Admin frontend. Merchant frontend อยู่ที่
+[pol-merchant](https://github.com/metrodiesign/pol-merchant.git) และไม่มี source synchronization
+ระหว่างสอง repository. `/merchant/*` และ `/producer/*` ที่ยังอยู่ใน Admin เป็น Merchant-management
+และ producer-domain capabilities ของพนักงานภายใน ไม่ใช่ Merchant app.
 
 ## 2. เลือกโหมดการรัน
 
 | ต้องการ | Backend/DB | Frontend environment | คำสั่งหลัก |
 |---|---:|---|---|
-| ดู UI และ mock data | ไม่ต้อง | `NEXT_PUBLIC_SKIP_AUTH=true` | `npm run dev:admin` หรือ `npm run dev:merchant` |
-| ทดสอบ auth/API จริง | ต้องรัน | API origin = `https://localhost:5001` | รัน `pol-core` แล้วรัน frontend ทั้งสอง app |
-| ตรวจ production bundle | ไม่จำเป็นสำหรับ route smoke | Build แยก app | `npm run build:admin` และ `npm run build:merchant` |
+| ดู UI และ mock data | ไม่ต้อง | `NEXT_PUBLIC_SKIP_AUTH=true` | `npm run dev` |
+| ทดสอบ auth/API จริง | ต้องรัน | API origin = `https://localhost:5001` | รัน `pol-core` แล้วรัน Admin |
+| ตรวจ production bundle | ไม่จำเป็นสำหรับ route smoke | Build Admin | `npm run build` |
 | ทดสอบ Admin container | ไม่จำเป็นสำหรับ root route | Same-origin production contract | `docker build` แล้ว `docker run` |
 
-ถ้าเริ่มครั้งแรกและต้องการเห็นหน้าจอเร็วสุด ให้เริ่มจาก frontend-only. ถ้าต้องทดสอบ login, session, CSRF หรือ registration ต้องใช้ full stack.
+ถ้าเริ่มครั้งแรกและต้องการเห็นหน้าจอเร็วสุด ให้เริ่มจาก frontend-only. ถ้าต้องทดสอบ login,
+session, CSRF หรือ API จริง ต้องใช้ full stack.
 
 ## 3. Prerequisites
 
@@ -90,7 +94,7 @@ cd pol-admin
 npm ci
 ```
 
-ใช้ `npm ci` จาก repository root เท่านั้น เพื่อให้ dependency graph ตรง `package-lock.json` และติดตั้งครบทุก workspace.
+ใช้ `npm ci` จาก repository root เท่านั้น เพื่อให้ dependency graph ตรง `package-lock.json` และติดตั้ง root app พร้อม package workspacesครบ.
 
 เปิด local enforcement floor ครั้งเดียวต่อ clone:
 
@@ -103,20 +107,18 @@ git config core.hooksPath
 
 ## 5. ตั้งค่า Frontend Environment
 
-แต่ละ app โหลด environment จาก workspace ของตัวเอง:
+Root Admin app โหลด environment จาก repository root:
 
-- Admin อ่าน `apps/admin/.env.local`.
-- Merchant อ่าน `apps/merchant/.env.local`.
-- Root `.env.local` ไม่ถูกอ่าน ไม่ถูกย้าย และไม่ถูกคัดลอกอัตโนมัติ.
+- Admin อ่าน `.env.local`.
+- `.env.local` อยู่ที่ root, ถูก ignore และห้าม tooling ย้าย คัดลอก หรือ overwrite อัตโนมัติ.
 - `.env.local` ถูก ignore; commit ได้เฉพาะ `.env.example`.
 
 ### โหมดต่อ Backend จริง
 
-สร้าง app-local files จาก templates:
+สร้าง root local file จาก template:
 
 ```bash
-cp apps/admin/.env.example apps/admin/.env.local
-cp apps/merchant/.env.example apps/merchant/.env.local
+cp .env.example .env.local
 ```
 
 ค่ามาตรฐาน local development:
@@ -128,7 +130,7 @@ NEXT_PUBLIC_API_ORIGIN=https://localhost:5001
 
 ### โหมด Frontend-only
 
-ใช้ไฟล์ `.env.local` ของแต่ละ app ที่มีเฉพาะ:
+ใช้ `.env.local` ที่มีเฉพาะ:
 
 ```env
 NEXT_PUBLIC_SKIP_AUTH=true
@@ -150,35 +152,26 @@ NEXT_PUBLIC_SKIP_AUTH=true
 
 ## 6. รัน Frontend-only
 
-เปิดสอง terminal จาก `pol-admin` root:
+รันจาก `pol-admin` root:
 
 ```bash
-# Terminal 1: Admin
-npm run dev:admin
-```
-
-```bash
-# Terminal 2: Merchant
-npm run dev:merchant
+npm run dev
 ```
 
 เปิด:
 
 - Admin: `https://localhost:3001`
-- Merchant: `https://localhost:3002`
 
-ครั้งแรก Next.js สร้าง certificate ใต้ `apps/<app>/certificates/` และอาจเปิด system trust prompt. Certificate และ `.next` แยกต่อ app จึงรันพร้อมกันได้.
+ครั้งแรก Next.js สร้าง certificate ใต้ `certificates/` และอาจเปิด system trust prompt.
 
-Root aliases ต่อไปนี้ชี้ Admin:
+Root commands เรียก application โดยตรง:
 
-| Alias | คำสั่งจริง |
+| Command | พฤติกรรม |
 |---|---|
-| `npm run dev` | `npm run dev:admin` |
-| `npm run dev:clean` | ล้าง Admin `.next` และ `tsconfig.tsbuildinfo` แล้วรัน Admin |
-| `npm run build` | `npm run build:admin` |
-| `npm run start` | `npm run start:admin` |
-
-อย่าใช้ generic aliases เพื่อ deploy Merchant.
+| `npm run dev` | `next dev` แบบ HTTPS port `3001` |
+| `npm run dev:clean` | ล้าง root `.next` และ `tsconfig.tsbuildinfo` แล้วรัน `dev` |
+| `npm run build` | `next build` ที่ root |
+| `npm run start` | `next start` แบบ HTTP port `3001` |
 
 ## 7. รัน Full Stack
 
@@ -225,7 +218,7 @@ dotnet ef database update --context PolDbContext \
   --startup-project src/Hosts/Api
 ```
 
-### รันสี่ Terminal
+### รันสาม Terminal
 
 Terminal 1 รัน backend dependencies:
 
@@ -249,14 +242,7 @@ Terminal 3 รัน Admin:
 
 ```bash
 cd pol-admin
-npm run dev:admin
-```
-
-Terminal 4 รัน Merchant:
-
-```bash
-cd pol-admin
-npm run dev:merchant
+npm run dev
 ```
 
 Config หรือ DI change ใน `pol-core` ต้อง full restart; hot reload อาจไม่โหลดค่าใหม่.
@@ -276,20 +262,18 @@ curl -k -i https://localhost:5001/health/ready
 
 ```bash
 curl -k -I https://localhost:3001/
-curl -k -I https://localhost:3002/
 ```
 
-Root ของทั้งสอง app ควรตอบ `307` หรือ `308` ไป `/dashboard`.
+Root ของ Admin ควรตอบ `307` หรือ `308` ไป `/dashboard`.
 
 ตรวจ route contract:
 
 ```bash
-curl -k -o /dev/null -s -w '%{http_code}\n' https://localhost:3002/admin/user/list
+curl -k -o /dev/null -s -w '%{http_code}\n' https://localhost:3001/admin/user/list
 curl -k -o /dev/null -s -w '%{http_code}\n' https://localhost:3001/register
-curl -k -o /dev/null -s -w '%{http_code}\n' https://localhost:3002/register
 ```
 
-ค่าที่คาด: Merchant Admin route ไม่ใช่ `404`, Admin register เป็น `404`, Merchant register ไม่ใช่ `404`.
+ค่าที่คาด: Admin user route ไม่ใช่ `404` และ Admin register เป็น `404`.
 
 HTTP status ของ protected page ไม่พิสูจน์ authorization. Auth guard ทำงานฝั่ง client และ backend ต้องบังคับ session/permission ทุก API endpoint.
 
@@ -300,23 +284,19 @@ Development มี certificate สองชุด:
 | Certificate | ใช้กับ | วิธี trust |
 |---|---|---|
 | ASP.NET Core dev certificate | `https://localhost:5001` | `dotnet dev-certs https --trust` |
-| Next.js generated certificate | `https://localhost:3001` และ `3002` | ยืนยัน system prompt ตอนรัน app ครั้งแรก |
+| Next.js generated certificate | `https://localhost:3001` | ยืนยัน system prompt ตอนรัน app ครั้งแรก |
 
 ถ้า Next.js proxy ไป `5001` แล้วพบ `self-signed certificate` หรือ `unable to verify the first certificate`, ให้ trust .NET certificate ก่อน. ถ้า Node ยังไม่อ่าน system CA ให้รัน frontend ด้วย:
 
 ```bash
-NODE_OPTIONS=--use-system-ca npm run dev:admin
-```
-
-```bash
-NODE_OPTIONS=--use-system-ca npm run dev:merchant
+NODE_OPTIONS=--use-system-ca npm run dev
 ```
 
 ใช้ `curl -k` เฉพาะ local diagnostic. ห้ามปิด TLS verification ใน source หรือ production.
 
-Production local ของ Next.js ใช้ HTTP บน ports `3001` และ `3002`; TLS production ต้อง terminate ที่ reverse proxy.
+Production local ของ Next.js ใช้ HTTP บน port `3001`; TLS production ต้อง terminate ที่ reverse proxy.
 
-## 9. Auth และ Registration Flow
+## 9. Auth และ Producer-domain Flow
 
 ระบบใช้ server-side OIDC BFF:
 
@@ -332,12 +312,6 @@ Admin Google login เริ่มที่:
 GET https://localhost:5001/api/v1/admins/auth/google/login?returnTo=/dashboard
 ```
 
-Merchant Google login เริ่มที่:
-
-```text
-GET https://localhost:5001/api/v1/merchants/auth/google/login?returnTo=/register
-```
-
 Microsoft เปลี่ยน provider segment จาก `google` เป็น `microsoft`.
 
 Backend development config ต้องมี:
@@ -345,44 +319,30 @@ Backend development config ต้องมี:
 | ค่า | Development origin |
 |---|---|
 | Admin SPA base URL | `https://localhost:3001` |
-| Merchant SPA base URL | `https://localhost:3002` |
 | Admin CORS origin | `https://localhost:3001` |
-| Merchant CORS origin | `https://localhost:3002` |
 
-Merchant registration:
-
-1. Backend callback ส่งผู้สมัครไป `/register?ticket=...` บน Merchant origin.
-2. Merchant `/register` ตรวจว่ามี ticket.
-3. Form ส่ง multipart `POST /producer/users/register`.
-4. Next.js dev rewrite ส่งต่อไป `/api/v1/merchants/users/register` บน backend.
-
-Admin `/register` ต้องตอบ `404`. URL registration จาก backend/IdP ต้องชี้ Merchant origin ไม่ใช่ Admin origin.
-
-ข้อจำกัดปัจจุบัน: Merchant cloned Admin pages ยังใช้ Admin session/permissions. ต้องทดสอบ backend authorization จริงก่อนเปิด Merchant เป็น public production surface.
+Admin `/register` ต้องตอบ `404`. Rewrite `/producer/*` ยังคงอยู่เพื่อรองรับ producer-domain API
+ที่ Admin เรียกใช้. Merchant-facing auth และ registration เป็นเจ้าของโดย
+[pol-merchant](https://github.com/metrodiesign/pol-merchant.git).
 
 ## 10. คำสั่ง Frontend
 
 | งาน | Root command | ผล |
 |---|---|---|
-| Admin dev | `npm run dev:admin` | HTTPS `3001` |
-| Merchant dev | `npm run dev:merchant` | HTTPS `3002` |
+| Admin dev | `npm run dev` | HTTPS `3001` |
 | Admin clean dev | `npm run dev:clean` | ล้างเฉพาะ Admin cache แล้วรัน dev |
-| Admin build | `npm run build:admin` | Output `apps/admin/.next` |
-| Merchant build | `npm run build:merchant` | Output `apps/merchant/.next` |
-| Admin production local | `npm run start:admin` | HTTP `3001` |
-| Merchant production local | `npm run start:merchant` | HTTP `3002` |
-| Admin tests | `npm run test:admin` | Vitest ของ Admin |
-| Merchant tests | `npm run test:merchant` | Vitest ของ Merchant |
-| ทุก tests | `npm test` | Verifier unit tests และ workspace tests |
-| Lint | `npm run lint` | ทุก workspace |
-| Typecheck | `npm run typecheck` | ทุก workspace |
-| Route/boundary verify | `npm run verify:workspaces` | Route parity, import boundary, test policy |
-| Production route smoke | `npm run smoke:routes` | Start ทั้งสอง production servers แล้ว probe routes |
+| Admin build | `npm run build` | Output `.next` |
+| Admin production local | `npm run start` | HTTP `3001` |
+| Tests | `npm test` | Verifier unit tests, root Vitest และ `packages/shared` tests |
+| Lint | `npm run lint` | Root app และ retained packages |
+| Typecheck | `npm run typecheck` | Root app และ retained packages |
+| Route/boundary verify | `npm run verify:workspaces` | Topology, Admin routes, import boundary, test policy |
+| Production route smoke | `npm run smoke:routes` | Start Admin production server แล้ว probe routes |
 
 ดู raw dev log เมื่อ local RTK filter ซ่อน output:
 
 ```bash
-rtk proxy npm run dev:admin
+rtk proxy npm run dev
 ```
 
 ## 11. Build และ Verification ก่อนส่งงาน
@@ -395,23 +355,22 @@ npm audit --omit=dev --audit-level=high
 npm run lint
 npm run typecheck
 npm test
-npm run build:admin
-npm run build:merchant
+npm run build
 npm run verify:workspaces
 npm run smoke:routes
 ```
 
 เงื่อนไขสำคัญ:
 
-- `verify:workspaces` ต้องรันหลัง build ทั้งสอง app เพราะอ่าน `.next/server/app-paths-manifest.json`.
-- `smoke:routes` ต้องใช้ ports `3001` และ `3002` ที่ว่าง.
+- `verify:workspaces` ต้องรันหลัง Admin build เพราะอ่าน `.next/server/app-paths-manifest.json`.
+- `smoke:routes` ต้องใช้ port `3001` ที่ว่าง.
 - Smoke script หยุดเฉพาะ child processes ที่ตัวเองสร้าง; ไม่ปิด process ที่ครอง port อยู่ก่อน.
-- Route parity อนุญาต delta เพียง `/register`.
+- Admin route contract ต้องคง required routes และ `/register` ต้องเป็น `404`.
 
 ตรวจ Tailwind utility ที่เพิ่งเพิ่มจาก production CSS จริง:
 
 ```bash
-grep -r "orange" apps/admin/.next/static/chunks/*.css | head -5
+grep -r "orange" .next/static/chunks/*.css | head -5
 ```
 
 Build เขียวไม่ยืนยันว่า unknown Tailwind utility ถูก generate.
@@ -421,24 +380,18 @@ Build เขียวไม่ยืนยันว่า unknown Tailwind utili
 Build ก่อน start:
 
 ```bash
-npm run build:admin
-npm run build:merchant
+npm run build
 ```
 
-รันแยก terminal:
+รัน:
 
 ```bash
-npm run start:admin
-```
-
-```bash
-npm run start:merchant
+npm run start
 ```
 
 URLs:
 
 - Admin: `http://localhost:3001`
-- Merchant: `http://localhost:3002`
 
 `next start` ไม่ใช้ development HTTPS certificate. ห้ามใช้ production local เป็นข้อพิสูจน์ว่า ingress TLS, OAuth callback หรือ cookie policy บน environment จริงถูกต้อง.
 
@@ -464,13 +417,14 @@ Contract ของ image:
 | Runtime user | `nextjs` |
 | Internal port | `3001` |
 | Protocol | HTTP |
-| Command | `node apps/admin/server.js` |
+| Command | `node server.js` |
 | Application | Admin เท่านั้น |
 | Next rewrites | ว่างใน image ปัจจุบัน |
 
 Image ตั้งใจ build โดยไม่ bake `NEXT_PUBLIC_API_ORIGIN` และไม่ตั้ง `ADMIN_API_ORIGIN`. Production ต้องใช้ reverse proxy ให้ SPA และ API เป็น same-origin.
 
-อย่านำ root image ไปรันเป็น Merchant บน port `3002`; image ไม่มี Merchant standalone server. Merchant deployment image ยังต้องทำเป็นงานแยก.
+Root image เป็น Admin artifact เท่านั้น. Merchant deployment ownership อยู่ที่
+[pol-merchant](https://github.com/metrodiesign/pol-merchant.git).
 
 ## 14. หยุดระบบอย่างปลอดภัย
 
@@ -489,7 +443,6 @@ docker compose down
 
 ```bash
 lsof -nP -iTCP:3001 -sTCP:LISTEN
-lsof -nP -iTCP:3002 -sTCP:LISTEN
 lsof -nP -iTCP:5001 -sTCP:LISTEN
 ```
 
@@ -524,7 +477,6 @@ npm -v
 
 ```bash
 lsof -nP -iTCP:3001 -sTCP:LISTEN
-lsof -nP -iTCP:3002 -sTCP:LISTEN
 lsof -nP -iTCP:5001 -sTCP:LISTEN
 ```
 
@@ -548,16 +500,16 @@ docker compose ps
 ตรวจตามลำดับ:
 
 1. `pol-core` ตอบ `https://localhost:5001/health/live`.
-2. App-local `.env.local` ใช้ `https://localhost:5001`, ไม่ใช่ค่า local API เก่า `http://localhost:5100`.
+2. Root `.env.local` ตั้ง `ADMIN_API_ORIGIN` และ `NEXT_PUBLIC_API_ORIGIN` เป็น `https://localhost:5001`.
 3. Trust ASP.NET Core certificate แล้ว.
 4. Restart frontend หลังแก้ env.
 5. ถ้ายังมี certificate error ให้ใช้ `NODE_OPTIONS=--use-system-ca`.
 
 ### แก้ Root `.env.local` แล้วไม่มีผล
 
-สาเหตุ: npm workspace เปลี่ยน project directory ไป `apps/admin` หรือ `apps/merchant`; Next.js จึงอ่าน env จาก app workspace.
+สาเหตุที่พบบ่อย: dev server ยังใช้ process เดิม หรือแก้ตัวแปร `NEXT_PUBLIC_*` หลัง process/build เริ่มแล้ว.
 
-แก้: ใส่ค่าที่ `apps/admin/.env.local` และ `apps/merchant/.env.local`, แล้ว restart app.
+แก้: ยืนยันว่าไฟล์อยู่ที่ root `.env.local`, หยุด process เจ้าของ port `3001` จาก terminal เดิม แล้วรันใหม่.
 
 ### ทุก route ตอบ 404 แต่ process ยังอยู่
 
@@ -570,15 +522,14 @@ curl -k -i https://localhost:3001/
 ถ้า root และทุก route คืน Next HTML 404 ทั้งที่ route มีจริง ให้หยุด process จาก terminal เดิม แล้วรันใหม่:
 
 ```bash
-npm run dev:admin
+npm run dev
 ```
 
-### Login loop หรือ callback กลับผิด app
+### Login loop หรือ callback กลับผิด host
 
 ตรวจ:
 
 - Admin SPA base URL = `https://localhost:3001`.
-- Merchant SPA base URL = `https://localhost:3002`.
 - OAuth redirect URI ใช้ backend `https://localhost:5001/api/v1/.../callback` ตรง provider.
 - Return path อยู่ใน backend allowlist.
 - Cookie เป็น Secure และ browser ไม่ block ตาม SameSite policy.
@@ -586,15 +537,15 @@ npm run dev:admin
 
 ### Admin `/register` ตอบ 404
 
-เป็น behavior ที่ถูกต้อง. Registration ต้องเปิดผ่าน Merchant `https://localhost:3002/register`.
+เป็น behavior ที่ถูกต้อง. Merchant registration อยู่ใน canonical
+[pol-merchant](https://github.com/metrodiesign/pol-merchant.git).
 
 ### `verify:workspaces` หา manifest ไม่เจอ
 
-Build ทั้งสอง app ก่อน:
+Build Admin ก่อน:
 
 ```bash
-npm run build:admin
-npm run build:merchant
+npm run build
 npm run verify:workspaces
 ```
 
@@ -603,10 +554,8 @@ npm run verify:workspaces
 ตรวจว่า build outputs มีและ ports ว่าง:
 
 ```bash
-test -f apps/admin/.next/BUILD_ID
-test -f apps/merchant/.next/BUILD_ID
+test -f .next/BUILD_ID
 lsof -nP -iTCP:3001 -sTCP:LISTEN
-lsof -nP -iTCP:3002 -sTCP:LISTEN
 ```
 
 Smoke script จะไม่ปิด process ที่มีอยู่ก่อน. หยุด owner เองแล้วรันใหม่.
@@ -620,7 +569,6 @@ Smoke script จะไม่ปิด process ที่มีอยู่ก่�
 | App | Internal protocol/port | TLS | Image status |
 |---|---|---|---|
 | Admin | HTTP `3001` | Reverse proxy | Root Docker image รองรับ |
-| Merchant | HTTP `3002` | Reverse proxy | ยังไม่มี root deployment image |
 
 ### Reverse proxy
 
@@ -634,7 +582,7 @@ Production build ปัจจุบันไม่มี Next rewrites. Reverse 
 
 ระวัง `/admin/*` ใช้ทั้ง UI routes และ shortened API paths:
 
-- UI เช่น `/admin/user/list` ต้องไป Admin/Merchant Next server ตาม host.
+- UI เช่น `/admin/user/list` ต้องไป Admin Next server.
 - API เช่น `/admin/me`, `/admin/auth/*`, `/admin/roles`, `/admin/permissions` ต้องไป BFF.
 - `/producer/*` และ `/api/*` ที่ frontend เรียกต้องไป BFF.
 
@@ -646,11 +594,9 @@ Production build ปัจจุบันไม่มี Next rewrites. Reverse 
 
 1. Anonymous API ตอบ `401` หรือ `403` ตาม contract.
 2. Admin login/callback/logout จบที่ Admin host.
-3. Merchant login/callback/logout จบที่ Merchant host.
-4. Cookie `Secure`, `HttpOnly`, `SameSite`, domain และ path ถูกต้อง.
-5. CSRF ผ่านเฉพาะ request ที่มี cookie/header คู่ถูกต้อง.
-6. Merchant session เข้า Admin mutations ไม่ได้ เว้นแต่ contract อนุญาตชัดเจน.
-7. Registration ticket หมดอายุ, reuse, tamper, rate limit และ file validation ถูกปฏิเสธ.
+3. Cookie `Secure`, `HttpOnly`, `SameSite`, domain และ path ถูกต้อง.
+4. CSRF ผ่านเฉพาะ request ที่มี cookie/header คู่ถูกต้อง.
+5. Admin permission ปฏิเสธ mutation ที่ role ไม่อนุญาต.
 
 Frontend route availability ไม่ใช่หลักฐาน authorization. ต้องตรวจ status และผลข้อมูลจาก backend จริง.
 
@@ -663,27 +609,22 @@ Frontend route availability ไม่ใช่หลักฐาน authorizatio
 5. Smoke `/`, `/dashboard`, `/admin/user/list`, login, logout และ API permission บน staging.
 6. เก็บ image tag เดิมและ proxy config เดิมสำหรับ rollback.
 
-### Merchant deployment checklist
+### Merchant ownership boundary
 
-Merchant public production ยังไม่ควร deploy จนกว่าจะมี:
-
-- Merchant-specific image/deployment definition.
-- Backend authorization negative tests ผ่าน.
-- OAuth/cookie contract ของ Merchant ผ่าน staging.
-- การตัด Admin routes/auth/navigation หรือ explicit acceptance ว่าจะเปิด parity surface ชั่วคราว.
+Merchant frontend ไม่มี build, image, service หรือ deployment definition ใน `pol-admin`.
+ดู source และ runbook ที่ [pol-merchant](https://github.com/metrodiesign/pol-merchant.git).
 
 ### Rollback
 
 Frontend change ไม่มี database migration. Rollback หลักคือ image tag, Service/port และ reverse proxy config.
 
-Registration records ที่ backend รับแล้วไม่ถูกย้อนด้วย frontend rollback. ก่อน rollback Merchant ให้หยุด traffic ใหม่และ reconcile records ที่สร้างระหว่าง release window.
+ข้อมูลที่ backend รับแล้วไม่ถูกย้อนด้วย frontend rollback. ประเมินผลกระทบข้อมูลก่อน rollback ทุกครั้ง.
 
 ## 17. แหล่งอ้างอิง
 
 - [README](../README.md) — quick start และ project overview
-- [Admin env template](../apps/admin/.env.example) — Admin development environment
-- [Merchant env template](../apps/merchant/.env.example) — Merchant development environment
+- [Admin env template](../.env.example) — Admin development environment
 - [Dockerfile](../Dockerfile) — Admin production image contract
 - [Next.js stack profile](../.ai/shared/stack/nextjs.md) — architecture และ runtime conventions
-- [Route parity requirements](../.claude/specs/split-admin-merchant-apps/requirements.md) — approved route/auth contract
+- [pol-merchant](https://github.com/metrodiesign/pol-merchant.git) — canonical Merchant frontend repository
 - [pol-core local development runbook](https://github.com/metrodiesign/pol-core/blob/develop/docs/runbooks/local-dev-run.md) — backend setup source of truth

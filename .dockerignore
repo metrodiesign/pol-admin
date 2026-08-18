@@ -12,8 +12,8 @@ docs
 retrospectives
 scripts
 *.md
-**/.env
-**/.env.*
+.env
+.env.*
 .DS_Store
 **/coverage
 .playwright-mcp

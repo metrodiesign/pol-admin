@@ -1,0 +1,190 @@
+{
+  "schemaVersion": 1,
+  "feature": "restore-root-app-layout",
+  "createdAt": "2026-08-18T00:01:16+07:00",
+  "repository": "/Users/king_developer/Desktop/Project/pol-admin",
+  "head": "79644df1bfa4b9ad9149fdeecedc63cbafda76d6",
+  "device": 16777231,
+  "toolchain": {
+    "node": "22.19.0",
+    "npm": "11.12.1"
+  },
+  "compositeBaseline": {
+    "activeSpecExcluded": ".claude/specs/restore-root-app-layout",
+    "statusRecords": 767,
+    "statusSha256": "3df67314feaa85cb3fa16f0381598b4468e4b047e5d4619c49b394cd9b50071d",
+    "trackedRecords": 763,
+    "trackedManifestSha256": "3c23452a84085e4d9c4f729842e1583f1e3fa9dc4068f1b66a451fe846c6e090",
+    "diffBytes": 9813979,
+    "diffSha256": "a81066bef4106695be9aa93701af193efe5951c25d8324ba198aef1877a6ff42",
+    "previousSpecFiles": 4,
+    "previousSpecSha256": "cbc5ddfa0789c253833558ee4b833b5ff9d368f87bbc1b3515ca6b07e40303a1",
+    "adminTrackedPaths": 748,
+    "adminTrackedBlobMismatches": 0,
+    "adminSourcePaths": 660,
+    "adminPublicPaths": 81,
+    "retainedPackageDrift": 0
+  },
+  "previousCleanup": {
+    "handoff": ".claude/specs/remove-merchant-workspace/handoff.md",
+    "recoveryPath": "/Users/king_developer/.Trash/pol-admin-apps-merchant-79644df1-20260817T222500-01a00fbf",
+    "state": "verified"
+  },
+  "moves": [
+    {
+      "sequence": 1,
+      "source": ".next",
+      "destination": "/Users/king_developer/.Trash/pol-admin-root-next-79644df1-20260818-01a00fbf",
+      "device": 16777231,
+      "inventory": "root generated cache directory",
+      "state": "completed"
+    },
+    {
+      "sequence": 2,
+      "source": "tsconfig.tsbuildinfo",
+      "destination": "/Users/king_developer/.Trash/pol-admin-root-tsbuildinfo-79644df1-20260818-01a00fbf",
+      "device": 16777231,
+      "inventory": "root generated TypeScript cache file",
+      "state": "completed"
+    },
+    {
+      "sequence": 3,
+      "source": "apps/admin/src",
+      "destination": "src",
+      "device": 16777231,
+      "inventory": "660 tracked paths; baseline Git blobs",
+      "state": "completed"
+    },
+    {
+      "sequence": 4,
+      "source": "apps/admin/public",
+      "destination": "public",
+      "device": 16777231,
+      "inventory": "81 tracked paths; baseline Git blobs",
+      "state": "completed"
+    },
+    {
+      "sequence": 5,
+      "source": "apps/admin/.env.example",
+      "destination": ".env.example",
+      "device": 16777231,
+      "inventory": "1 tracked template; baseline Git blob",
+      "state": "completed"
+    },
+    {
+      "sequence": 6,
+      "source": "apps/admin/components.json",
+      "destination": "components.json",
+      "device": 16777231,
+      "inventory": "1 tracked config; baseline Git blob",
+      "state": "completed"
+    },
+    {
+      "sequence": 7,
+      "source": "apps/admin/next.config.ts",
+      "destination": "next.config.ts",
+      "device": 16777231,
+      "inventory": "1 tracked config; approved path-only edit after move",
+      "state": "completed"
+    },
+    {
+      "sequence": 8,
+      "source": "apps/admin/postcss.config.mjs",
+      "destination": "postcss.config.mjs",
+      "device": 16777231,
+      "inventory": "1 tracked config; baseline Git blob",
+      "state": "completed"
+    },
+    {
+      "sequence": 9,
+      "source": "apps/admin/tsconfig.json",
+      "destination": "tsconfig.json",
+      "device": 16777231,
+      "inventory": "1 tracked config; approved root-boundary edit after move",
+      "state": "completed"
+    },
+    {
+      "sequence": 10,
+      "source": "apps/admin/vitest.config.ts",
+      "destination": "vitest.config.ts",
+      "device": 16777231,
+      "inventory": "1 tracked config; baseline Git blob",
+      "state": "completed"
+    },
+    {
+      "sequence": 11,
+      "source": "apps/admin/certificates",
+      "destination": "certificates",
+      "device": 16777231,
+      "inventory": "opaque directory endpoint; content not read",
+      "state": "completed"
+    },
+    {
+      "sequence": 12,
+      "source": "apps/admin/package.json",
+      "destination": "/Users/king_developer/.Trash/pol-admin-admin-package-79644df1-20260818-01a00fbf.json",
+      "device": 16777231,
+      "inventory": "1 tracked manifest; merged into root before acceptance",
+      "state": "completed"
+    },
+    {
+      "sequence": 13,
+      "source": "apps/admin",
+      "destination": "/Users/king_developer/.Trash/pol-admin-admin-residual-79644df1-20260818-01a00fbf",
+      "device": 16777231,
+      "inventory": "ignored residual only; tracked paths must equal zero before rename",
+      "state": "completed"
+    }
+  ],
+  "lockRegeneration": {
+    "baselineCopy": "/tmp/pol-admin-lock-baseline.zS3PR4/package-lock.json",
+    "rejectedAttempts": [
+      {
+        "packageLock": "/tmp/pol-admin-lock-baseline.zS3PR4/failed-generated-package-lock.json",
+        "hiddenLock": "/tmp/pol-admin-lock-baseline.zS3PR4/hidden-package-lock.json",
+        "reason": "npm retained apps/admin as extraneous from the old hidden install lock"
+      },
+      {
+        "packageLock": "/tmp/pol-admin-lock-baseline.zS3PR4/fresh-without-metadata-package-lock.json",
+        "reason": "generation from the populated install tree omitted retained resolved and integrity keys",
+        "state": "completed"
+      }
+    ],
+    "generatedTreeMove": {
+      "source": "node_modules",
+      "destination": "/Users/king_developer/.Trash/pol-admin-root-node_modules-79644df1-20260818-01a00fbf",
+      "inventory": "generated npm install tree; no application source",
+      "state": "completed"
+    },
+    "freshGeneration": {
+      "source": "package-lock.json",
+      "destination": "/tmp/pol-admin-lock-baseline.zS3PR4/baseline-preserving-extraneous-package-lock.json",
+      "precondition": "node_modules absent",
+      "state": "completed",
+      "result": "rejected: 842 records and 261 retained-record drifts"
+    },
+    "pruneGeneration": {
+      "source": "package-lock.json",
+      "destination": "/tmp/pol-admin-lock-baseline.zS3PR4/fresh-absent-tree-package-lock.json",
+      "precondition": "node_modules absent; restore accepted baseline before npm prune --package-lock-only",
+      "state": "completed"
+    },
+    "postPruneCleanup": {
+      "record": "packages[apps/admin]",
+      "reason": "npm 11.12.1 removed the obsolete link but retained this absent workspace as extraneous",
+      "method": "exact JSON record removal after npm prune",
+      "state": "completed"
+    },
+    "acceptedMethod": "restore baseline lock, run npm 11.12.1 prune in lock-only mode, remove npm's orphan extraneous record, then deep-compare every retained record",
+    "acceptedDelta": {
+      "changed": ["packages[root]"],
+      "removed": ["packages[apps/admin]", "packages[node_modules/@pol/admin]"],
+      "retainedCompared": 801
+    }
+  },
+  "rollback": {
+    "order": "reverse completed entries by descending sequence",
+    "overwrite": false,
+    "verification": "reproduce compositeBaseline fingerprint"
+  }
+}

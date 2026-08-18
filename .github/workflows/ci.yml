@@ -11,7 +11,7 @@ permissions:
 
 # Framework guards remain isolated from application verification. Both jobs must pass:
 # guard regressions, secret scan and REQ trace protect the workflow; application gates
-# prove the Admin/Merchant workspaces install, test, build and serve their route contract.
+# prove the root Admin app plus retained packages install, test, build and serve its route contract.
 jobs:
   pr-base-guard:
     # Branch policy: main only ever advances via a release PR from develop. Branch
@@ -89,7 +89,7 @@ jobs:
           exit "$status"
 
   application:
-    name: application workspaces
+    name: Admin application + packages
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -100,7 +100,7 @@ jobs:
           cache: npm
       - name: Pin npm
         run: npm install --global npm@11.12.1
-      - name: Install workspaces
+      - name: Install root app and packages
         run: npm ci
       - name: Audit production dependencies
         run: npm audit --omit=dev --audit-level=high
@@ -110,11 +110,9 @@ jobs:
         run: npm run typecheck
       - name: Test
         run: npm test
-      - name: Build Admin
-        run: npm run build:admin
-      - name: Build Merchant
-        run: npm run build:merchant
-      - name: Verify workspace boundaries and route parity
+      - name: Build root Admin app
+        run: npm run build
+      - name: Verify root app boundaries and routes
         run: npm run verify:workspaces
       - name: Verify smoke signal cleanup
         timeout-minutes: 1

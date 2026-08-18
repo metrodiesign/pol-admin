@@ -1,20 +1,24 @@
-import { fileURLToPath } from "node:url";
+import { existsSync, readFileSync } from "node:fs";
 import { relative, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
 import {
-  assertRequiredRoutes,
-  assertRouteParity,
+  assertAdminRouteIdentity,
+  assertWorkspaceTopology,
+  findActiveReferenceViolations,
   findBoundaryViolations,
   findTestPolicyViolations,
+  readActiveReferenceFiles,
   readCodeFiles,
   readPageRoutes,
 } from "./lib/workspace-verification.mjs";
 
 const repositoryRoot = fileURLToPath(new URL("..", import.meta.url));
 const roots = {
-  admin: resolve(repositoryRoot, "apps/admin"),
-  merchant: resolve(repositoryRoot, "apps/merchant"),
+  appSource: resolve(repositoryRoot, "src"),
   packages: resolve(repositoryRoot, "packages"),
+  removedAdminWorkspace: resolve(repositoryRoot, "apps", "admin"),
+  removedMerchantWorkspace: resolve(repositoryRoot, "apps", "merchant"),
 };
 
 function displayPath(file) {
@@ -27,16 +31,21 @@ function failOnFindings(label, findings, format) {
 }
 
 try {
-  const adminRoutes = readPageRoutes(
-    resolve(roots.admin, ".next/server/app-paths-manifest.json"),
-  );
-  const merchantRoutes = readPageRoutes(
-    resolve(roots.merchant, ".next/server/app-paths-manifest.json"),
-  );
-  assertRouteParity(adminRoutes, merchantRoutes);
-  assertRequiredRoutes(adminRoutes, merchantRoutes);
+  for (const removedPath of [roots.removedAdminWorkspace, roots.removedMerchantWorkspace]) {
+    if (existsSync(removedPath)) throw new Error(`Removed workspace path still exists: ${removedPath}`);
+  }
 
-  const appFiles = [...readCodeFiles(roots.admin), ...readCodeFiles(roots.merchant)];
+  assertWorkspaceTopology(
+    JSON.parse(readFileSync(resolve(repositoryRoot, "package.json"), "utf8")),
+    JSON.parse(readFileSync(resolve(repositoryRoot, "package-lock.json"), "utf8")),
+  );
+
+  const adminRoutes = readPageRoutes(
+    resolve(repositoryRoot, ".next/server/app-paths-manifest.json"),
+  );
+  assertAdminRouteIdentity(adminRoutes);
+
+  const appFiles = readCodeFiles(roots.appSource);
   const packageFiles = readCodeFiles(roots.packages);
   const boundaryViolations = findBoundaryViolations([...appFiles, ...packageFiles], roots);
   failOnFindings(
@@ -53,12 +62,19 @@ try {
     ({ file, line, token }) => `${displayPath(file)}:${line} uses ${token}`,
   );
 
-  console.log(
-    `Workspace verification passed: Admin ${adminRoutes.length} routes, Merchant ${merchantRoutes.length} routes, allowed delta /register`,
+  const activeReferenceFiles = readActiveReferenceFiles(repositoryRoot);
+  const activeReferenceViolations = findActiveReferenceViolations(activeReferenceFiles);
+  failOnFindings(
+    "Active reference scan failed",
+    activeReferenceViolations,
+    ({ file, line, reference }) => `${displayPath(file)}:${line} contains ${reference}`,
   );
+
+  console.log(`Workspace verification passed: root Admin ${adminRoutes.length} routes`);
   console.log(
-    `Dependency/test-policy scan passed: ${appFiles.length + packageFiles.length} workspace code files`,
+    `Dependency/test-policy scan passed: ${appFiles.length + packageFiles.length} application/package code files`,
   );
+  console.log(`Active reference scan passed: ${activeReferenceFiles.length} files`);
 } catch (error) {
   console.error(error instanceof Error ? error.message : error);
   process.exitCode = 1;

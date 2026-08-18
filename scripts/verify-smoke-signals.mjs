@@ -55,8 +55,8 @@ async function verifySignal(signal, expectedCode) {
     if (child.exitCode === null) child.kill("SIGKILL");
   }
 
-  await Promise.all([assertPortAvailable(3001), assertPortAvailable(3002)]);
-  console.log(`${signal}: exit ${expectedCode}, ports released`);
+  await assertPortAvailable(3001);
+  console.log(`${signal}: exit ${expectedCode}, port 3001 released`);
 }
 
 await verifySignal("SIGINT", 130);
