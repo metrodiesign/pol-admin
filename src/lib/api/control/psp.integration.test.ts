@@ -130,6 +130,14 @@ describe("PSP API HTTP contract", () => {
     expect(fetchInits[0]?.credentials).toBe("include");
   });
 
+  it("รักษา 403 จาก PSP List เป็น permission signal", async () => {
+    queue.push({ status: 403, body: { code: "forbidden" } });
+
+    await expect(listPspConnections({ page: 1, limit: 25 })).rejects.toMatchObject({
+      status: 403,
+    });
+  });
+
   it("serialize merchant/approval pagination pathและ mapเฉพาะ safe fields", async () => {
     queue.push(
       {

@@ -7,14 +7,14 @@
     "packages/shared"
   ],
   "engines": {
-    "node": ">=20.9.0"
+    "node": ">=22.19.0"
   },
   "packageManager": "npm@11.12.1",
   "scripts": {
-    "dev": "next dev -p 3001 --experimental-https",
+    "dev": "node --require=./scripts/dev-tls-ca.cjs ./node_modules/next/dist/bin/next dev -p 3001 --experimental-https",
     "dev:clean": "node -e \"const fs=require('node:fs'); for (const path of ['.next','tsconfig.tsbuildinfo']) fs.rmSync(path,{recursive:true,force:true})\" && npm run dev",
     "build": "next build",
-    "start": "next start -p 3001",
+    "start": "node --require=./scripts/dev-tls-ca.cjs ./node_modules/next/dist/bin/next start -p 3001",
     "test": "node --test scripts/lib/workspace-verification.test.mjs && vitest run && npm run test --workspaces --if-present",
     "lint": "eslint src next.config.ts postcss.config.mjs vitest.config.ts && npm run lint --workspaces --if-present",
     "typecheck": "tsc --noEmit && npm run typecheck --workspaces --if-present",

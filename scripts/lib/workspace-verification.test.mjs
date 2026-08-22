@@ -1,8 +1,9 @@
 import assert from "node:assert/strict";
-import { spawn } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import { EventEmitter } from "node:events";
-import { readFile } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { createServer } from "node:net";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
@@ -219,6 +220,81 @@ test("REQ-5.8: CI จำกัด smoke step ไม่เกิน 2 นาท�
     workflow,
     /- name: Smoke production routes\n\s+timeout-minutes: 2\n\s+run: npm run smoke:routes/,
   );
+});
+
+test("F-1, F-5, B-8: Admin dev proxy trusts only configured local certificate", async () => {
+  const manifest = JSON.parse(
+    await readFile(join(repositoryRoot, "package.json"), "utf8"),
+  );
+
+  assert.match(
+    manifest.scripts.dev,
+    /^node --require=\.\/scripts\/dev-tls-ca\.cjs \.\/node_modules\/next\/dist\/bin\/next dev -p 3001 --experimental-https$/,
+  );
+  assert.equal(manifest.engines.node, ">=22.19.0");
+  assert.doesNotMatch(
+    manifest.scripts.dev,
+    /NODE_TLS_REJECT_UNAUTHORIZED|NODE_EXTRA_CA_CERTS=/,
+  );
+});
+
+test("F-1, F-4, F-5: Admin production-local start trusts configured local certificate", async () => {
+  const manifest = JSON.parse(
+    await readFile(join(repositoryRoot, "package.json"), "utf8"),
+  );
+
+  assert.match(
+    manifest.scripts.start,
+    /^node --require=\.\/scripts\/dev-tls-ca\.cjs \.\/node_modules\/next\/dist\/bin\/next start -p 3001$/,
+  );
+  assert.doesNotMatch(
+    manifest.scripts.start,
+    /NODE_TLS_REJECT_UNAUTHORIZED|NODE_EXTRA_CA_CERTS=/,
+  );
+});
+
+test("F-1, F-5, B-8: dev TLS preload appends CA without replacing public roots", async () => {
+  const { getCACertificates } = await import("node:tls");
+  const originalCertificates = getCACertificates("default");
+  const certificate = originalCertificates[0];
+  const temporaryDirectory = await mkdtemp(join(tmpdir(), "pol-admin-dev-tls-ca-"));
+  const certificatePath = join(temporaryDirectory, "fixture.crt");
+  const preloadPath = join(repositoryRoot, "scripts/dev-tls-ca.cjs");
+
+  try {
+    await writeFile(certificatePath, certificate);
+    const probe = spawnSync(
+      process.execPath,
+      [
+        "-e",
+        `
+          const assert = require("node:assert/strict");
+          const { X509Certificate } = require("node:crypto");
+          const { readFileSync } = require("node:fs");
+          const tls = require("node:tls");
+          const [certificatePath, preloadPath] = process.argv.slice(1);
+          const certificate = readFileSync(certificatePath, "utf8");
+          const original = tls.getCACertificates("default");
+          const fingerprint = (value) => new X509Certificate(value).fingerprint256;
+          const targetFingerprint = fingerprint(certificate);
+          tls.setDefaultCACertificates(
+            original.filter((value) => fingerprint(value) !== targetFingerprint),
+          );
+          process.env.ADMIN_API_CA_CERTIFICATE = certificatePath;
+          require(preloadPath);
+          const updated = new Set(tls.getCACertificates("default").map(fingerprint));
+          for (const value of original) assert.ok(updated.has(fingerprint(value)));
+        `,
+        certificatePath,
+        preloadPath,
+      ],
+      { encoding: "utf8" },
+    );
+
+    assert.equal(probe.status, 0, probe.stderr);
+  } finally {
+    await rm(temporaryDirectory, { force: true, recursive: true });
+  }
 });
 
 test("REQ-5.13 ถึง REQ-5.19: smoke จัดการ root Admin port 3001 เท่านั้น", async () => {

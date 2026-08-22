@@ -46,11 +46,12 @@ session, CSRF หรือ API จริง ต้องใช้ full stack.
 
 | เครื่องมือ | เวอร์ชันที่ใช้จริง | ตรวจสอบ |
 |---|---|---|
-| Node.js | `^20.17.0` หรือ `>=22.9.0`; แนะนำ `22.19.0` ตาม CI/Docker | `node -v` |
+| Node.js | `>=22.19.0`; แนะนำ `22.19.0` ตาม CI/Docker | `node -v` |
 | npm | `11.12.1` | `npm -v` |
 | Git | 2.x | `git --version` |
 
-แม้ root `package.json` ยังประกาศ Node `>=20.9.0`, npm `11.12.1` ต้องใช้ Node `^20.17.0` หรือ `>=22.9.0`. ใช้ Node `22.19.0` เพื่อตัด version mismatch.
+Root `package.json`, CI และ Docker ใช้ Node `>=22.19.0`; version นี้รองรับ native TLS CA API
+ที่ development proxy ใช้และรองรับ npm `11.12.1`.
 
 ตรวจ version ก่อนติดตั้ง:
 
@@ -286,10 +287,22 @@ Development มี certificate สองชุด:
 | ASP.NET Core dev certificate | `https://localhost:5001` | `dotnet dev-certs https --trust` |
 | Next.js generated certificate | `https://localhost:3001` | ยืนยัน system prompt ตอนรัน app ครั้งแรก |
 
-ถ้า Next.js proxy ไป `5001` แล้วพบ `self-signed certificate` หรือ `unable to verify the first certificate`, ให้ trust .NET certificate ก่อน. ถ้า Node ยังไม่อ่าน system CA ให้รัน frontend ด้วย:
+หลัง trust .NET certificate บน macOS ให้ export เฉพาะ public certificate จาก keychain ไป path
+ที่ `npm run dev` ใช้เป็น extra CA:
 
 ```bash
-NODE_OPTIONS=--use-system-ca npm run dev
+mkdir -p certificates
+security find-certificate -p -c localhost | \
+  openssl x509 -out certificates/pol-core-localhost.crt
+npm run dev
+```
+
+`certificates/` ถูก ignore และห้าม commit. Dev command ต้องใช้ Node `>=22.19.0` ตาม `package.json`
+เพื่อเพิ่ม certificate เข้า default CA list โดยไม่แทนที่ public roots เดิม. หากใช้ public CA file
+คนละ path ให้ override ตอน start:
+
+```bash
+ADMIN_API_CA_CERTIFICATE=/absolute/path/to/pol-core-localhost.crt npm run dev
 ```
 
 ใช้ `curl -k` เฉพาะ local diagnostic. ห้ามปิด TLS verification ใน source หรือ production.
@@ -467,7 +480,7 @@ node -v
 npm -v
 ```
 
-แก้: ใช้ Node `22.19.0` หรืออย่างน้อย `20.17.0`, แล้วติดตั้ง npm `11.12.1`.
+แก้: ใช้ Node `22.19.0` ขึ้นไป แล้วติดตั้ง npm `11.12.1`.
 
 ### Port ถูกใช้งานแล้ว
 
@@ -503,7 +516,8 @@ docker compose ps
 2. Root `.env.local` ตั้ง `ADMIN_API_ORIGIN` และ `NEXT_PUBLIC_API_ORIGIN` เป็น `https://localhost:5001`.
 3. Trust ASP.NET Core certificate แล้ว.
 4. Restart frontend หลังแก้ env.
-5. ถ้ายังมี certificate error ให้ใช้ `NODE_OPTIONS=--use-system-ca`.
+5. ถ้ายังมี certificate error ให้ export public certificate ไป
+   `certificates/pol-core-localhost.crt` ตามหัวข้อ 8 แล้ว restart frontend.
 
 ### แก้ Root `.env.local` แล้วไม่มีผล
 

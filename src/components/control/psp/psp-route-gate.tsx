@@ -1,9 +1,10 @@
 "use client";
 
-import Link from "next/link";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 import { useAuth } from "@/components/auth/auth-provider";
-import { ErrorCard, errorButtonClass } from "@/components/error/error-screen";
+import type { AdminMe, AuthStatus } from "@/types/auth";
 
 export function hasRequiredPermissions(
   permissions: readonly string[],
@@ -11,6 +12,14 @@ export function hasRequiredPermissions(
 ): boolean {
   const held = new Set(permissions);
   return required.every((permission) => held.has(permission));
+}
+
+export function shouldRedirectToForbidden(
+  status: AuthStatus,
+  me: AdminMe | null,
+  required: readonly string[],
+): boolean {
+  return status === "authed" && me !== null && !hasRequiredPermissions(me.permissions, required);
 }
 
 function LoadingState(): React.JSX.Element {
@@ -31,23 +40,14 @@ export function PspRouteGate({
   requiredPermissions: readonly string[];
   children: React.ReactNode;
 }): React.JSX.Element {
+  const router = useRouter();
   const { me, status } = useAuth();
+  const redirectToForbidden = shouldRedirectToForbidden(status, me, requiredPermissions);
 
-  if (status !== "authed" || !me) return <LoadingState />;
-  if (!hasRequiredPermissions(me.permissions, requiredPermissions)) {
-    return (
-      <div className="flex min-h-[50vh] items-center justify-center">
-        <ErrorCard
-          code="403"
-          title="ไม่มีสิทธิ์เข้าถึง"
-          message="คุณไม่มีสิทธิ์ใช้งานการเชื่อมต่อ PSP"
-        >
-          <Link href="/dashboard" className={errorButtonClass}>
-            กลับหน้าหลัก
-          </Link>
-        </ErrorCard>
-      </div>
-    );
-  }
+  useEffect(() => {
+    if (redirectToForbidden) router.replace("/error/403");
+  }, [redirectToForbidden, router]);
+
+  if (status !== "authed" || !me || redirectToForbidden) return <LoadingState />;
   return <>{children}</>;
 }

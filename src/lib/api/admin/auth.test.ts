@@ -5,6 +5,7 @@ import {
   buildRequestInit,
   getMe,
   isMutation,
+  logout,
   readCookieFrom,
   shouldRedirectToLogin,
 } from "./auth";
@@ -106,6 +107,34 @@ describe("getMe", () => {
   it("map network failure เป็น error ไม่ใช่ anon", async () => {
     vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new TypeError("network down")));
     await expect(getMe()).resolves.toEqual({ status: "error", me: null });
+  });
+});
+
+describe("logout", () => {
+  it("ถือว่า 204 เท่านั้นเป็น local logout สำเร็จ", async () => {
+    vi.stubGlobal("document", { cookie: "adm_csrf=csrf-token" });
+    const fetchMock = vi.fn().mockResolvedValue(new Response(null, { status: 204 }));
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(logout()).resolves.toMatchObject({ status: 204 });
+    expect(fetchMock).toHaveBeenCalledWith(
+      "/admin/auth/logout",
+      expect.objectContaining({ method: "POST", credentials: "include" }),
+    );
+  });
+
+  it.each([401, 403, 500])("ไม่รายงาน logout สำเร็จเมื่อ backend คืน %s", async (status) => {
+    vi.stubGlobal("document", { cookie: "adm_csrf=csrf-token" });
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(null, { status })));
+
+    await expect(logout()).rejects.toThrow("admin-logout-failed");
+  });
+
+  it("ไม่รายงาน logout สำเร็จเมื่อ network ล้มเหลว", async () => {
+    vi.stubGlobal("document", { cookie: "adm_csrf=csrf-token" });
+    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new TypeError("network down")));
+
+    await expect(logout()).rejects.toThrow("network down");
   });
 });
 

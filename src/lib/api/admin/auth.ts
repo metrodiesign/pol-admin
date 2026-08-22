@@ -105,9 +105,14 @@ export function shouldRedirectToLogin(status: AuthStatus): boolean {
   return status === "anon";
 }
 
-/** ออกจากระบบ (device นี้). */
-export function logout(): Promise<Response> {
-  return adminFetch("/admin/auth/logout", { method: "POST", redirectOnUnauthorized: false });
+/** ออกจากระบบ (device นี้); ถือว่า success เฉพาะตาม endpoint contract ที่คืน 204. */
+export async function logout(): Promise<Response> {
+  const response = await adminFetch("/admin/auth/logout", {
+    method: "POST",
+    redirectOnUnauthorized: false,
+  });
+  if (response.status !== 204) throw new Error("admin-logout-failed");
+  return response;
 }
 
 /** ออกจากระบบทุก device. */

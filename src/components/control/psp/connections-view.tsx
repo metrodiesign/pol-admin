@@ -177,6 +177,10 @@ export function PspConnectionsView() {
   const generation = useRef(0);
 
   useEffect(() => {
+    if (list.status === "forbidden") router.replace("/error/403");
+  }, [list.status, router]);
+
+  useEffect(() => {
     const controller = new AbortController();
     const requestGeneration = ++generation.current;
     queueMicrotask(() => {
@@ -359,9 +363,8 @@ export function PspConnectionsView() {
             <p className="text-sm text-grey-600" role="status">กำลังโหลด PSP Connections...</p>
           </div>
         ) : list.status === "forbidden" ? (
-          <div className="min-h-64 px-5 py-12 text-center" role="alert">
-            <h2 className="text-h6 text-foreground">ไม่มีสิทธิ์ดู PSP Connections</h2>
-            <p className="mt-2 text-sm text-grey-600">สิทธิ์อาจเปลี่ยนหลังจากเปิดหน้านี้</p>
+          <div className="flex min-h-64 items-center justify-center px-5 py-12" aria-busy="true">
+            <p className="text-sm text-grey-600" role="status">กำลังเปิดหน้า 403...</p>
           </div>
         ) : list.status === "error" ? (
           <div className="min-h-64 px-5 py-12 text-center" role="alert">
