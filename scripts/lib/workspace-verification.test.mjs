@@ -332,7 +332,7 @@ test("REQ-2.12, REQ-5.3: normalize และ fingerprint root page routes แบ
   ]);
   assert.match(pageRouteFingerprint(routes), /^[0-9a-f]{64}$/);
   assert.notEqual(pageRouteFingerprint(routes), pageRouteFingerprint([...routes].reverse()));
-  assert.throws(() => assertAdminRouteIdentity(routes), /Admin route identity must equal 112 routes/);
+  assert.throws(() => assertAdminRouteIdentity(routes), /Admin route identity must equal 114 routes/);
 });
 
 test("REQ-4.17: manifest ต้องเป็น JSON object", () => {

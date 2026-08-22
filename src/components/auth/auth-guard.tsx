@@ -2,6 +2,8 @@
 
 import React, { useEffect } from "react";
 
+import { ErrorCard, errorButtonClass } from "@/components/error/error-screen";
+import { shouldRedirectToLogin } from "@/lib/api/admin/auth";
 import { useAuth } from "./auth-provider";
 
 /** loading placeholder — กัน flash ของ shell ก่อน /admin/me ตอบ. */
@@ -25,8 +27,39 @@ export function AuthGuard({
   const { status } = useAuth();
 
   useEffect(() => {
-    if (status === "anon") window.location.href = "/login";
+    if (shouldRedirectToLogin(status)) window.location.href = "/login";
   }, [status]);
+
+  if (status === "forbidden") {
+    return (
+      <main className="flex min-h-dvh items-center justify-center bg-grey-100 p-4">
+        <ErrorCard
+          code="403"
+          title="ไม่มีสิทธิ์เข้าถึง"
+          message="บัญชีนี้ไม่มีสิทธิ์เปิดระบบผู้ดูแล ติดต่อผู้ดูแลระบบหากคิดว่าเป็นข้อผิดพลาด"
+        />
+      </main>
+    );
+  }
+
+  if (status === "error") {
+    return (
+      <main className="flex min-h-dvh items-center justify-center bg-grey-100 p-4">
+        <ErrorCard
+          title="ตรวจสอบสถานะไม่สำเร็จ"
+          message="ระบบขัดข้องชั่วคราว กรุณาโหลดหน้าใหม่"
+        >
+          <button
+            type="button"
+            className={errorButtonClass}
+            onClick={() => window.location.reload()}
+          >
+            โหลดหน้าใหม่
+          </button>
+        </ErrorCard>
+      </main>
+    );
+  }
 
   if (status !== "authed") return <AuthPending />;
   return <>{children}</>;

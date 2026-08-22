@@ -1,25 +1,35 @@
 "use client";
 
+import Link from "next/link";
 import type { ColumnDef } from "@tanstack/react-table";
-import { ChevronRight, ShieldCheck } from "lucide-react";
-import type { PspConnection } from "@/types/control/psp-connection";
-import type { MerchantCode } from "@/types/merchant";
-import { MERCHANT_LABEL } from "@/lib/mock/merchant";
-import {
-  PROVIDER_LABEL,
-  HEALTH_LABEL,
-  healthTone,
-} from "@/lib/control/psp";
-import { formatDateTime } from "@/lib/control/format";
-import { StatusSpine } from "@/components/control/shared/status-spine";
+import { Activity, CircleAlert, Clock3, Eye, Hourglass, Power } from "lucide-react";
+
 import { ControlStatusBadge } from "@/components/control/shared/status-badge";
+import { StatusSpine } from "@/components/control/shared/status-spine";
+import { buttonVariants } from "@/components/ui/button";
+import { formatDateTime } from "@/lib/control/format";
+import {
+  APPROVAL_LABEL,
+  HEALTH_LABEL,
+  METHOD_LABEL,
+  PROVIDER_LABEL,
+  approvalTone,
+  enabledLabel,
+  enabledTone,
+  healthTone,
+  lastTestLabel,
+} from "@/lib/control/psp";
+import { cn } from "@/lib/utils";
+import type { ApprovalState, PspConnectionListRow } from "@/types/control/psp-connection";
 import "@/types/table-meta";
 
-function isMerchantCode(v: string | null): v is MerchantCode {
-  return v !== null && v in MERCHANT_LABEL;
+function ApprovalIcon({ state }: { state: ApprovalState }) {
+  if (state === "pending") return <Hourglass className="size-3.5" />;
+  if (state === "unavailable") return <CircleAlert className="size-3.5" />;
+  return <Clock3 className="size-3.5" />;
 }
 
-export const pspColumns: ColumnDef<PspConnection>[] = [
+export const pspColumns: ColumnDef<PspConnectionListRow>[] = [
   {
     id: "spine",
     enableSorting: false,
@@ -32,75 +42,96 @@ export const pspColumns: ColumnDef<PspConnection>[] = [
     ),
   },
   {
+    id: "identity",
+    header: "Connection",
+    enableSorting: false,
+    cell: ({ row }) => (
+      <div className="max-w-44">
+        <p className="text-data truncate text-xs font-semibold text-foreground">
+          {row.original.pspConnectionId}
+        </p>
+        <p className="mt-0.5 truncate text-xs text-grey-500">{row.original.merchantName}</p>
+      </div>
+    ),
+  },
+  {
     accessorKey: "psp",
     header: "PSP",
-    enableSorting: true,
-    cell: ({ row }) => (
-      <span className="text-sm font-semibold text-foreground">
-        {PROVIDER_LABEL[row.original.psp]}
-      </span>
-    ),
-  },
-  {
-    id: "redirect",
-    header: "โหมด",
     enableSorting: false,
-    cell: () => (
-      <span className="inline-flex items-center gap-1 text-xs font-semibold text-grey-700">
-        <ShieldCheck className="size-3.5 text-success" />
-        Redirect-only · SAQ A
-      </span>
-    ),
+    cell: ({ row }) => <span className="font-semibold">{PROVIDER_LABEL[row.original.psp]}</span>,
   },
   {
-    id: "tenant",
-    header: "บริษัท",
-    enableSorting: false,
-    cell: ({ row }) => {
-      const code = row.original.merchantId;
-      return (
-        <span className="text-sm text-foreground">
-          {isMerchantCode(code) ? MERCHANT_LABEL[code] : "—"}
-        </span>
-      );
-    },
-  },
-  {
-    id: "enabledMethods",
-    header: "ช่องทางที่เปิดใช้",
+    id: "methods",
+    header: "ช่องทาง",
     enableSorting: false,
     cell: ({ row }) => (
-      <span className="text-sm text-foreground">
-        {row.original.enabledMethods.join(", ")}
+      <span className="text-sm text-grey-700">
+        {row.original.enabledMethods.map((method) => METHOD_LABEL[method]).join(", ") || "—"}
       </span>
     ),
   },
   {
-    accessorKey: "lastWebhookAt",
-    header: "Webhook ล่าสุด",
-    enableSorting: true,
-    cell: ({ row }) => (
-      <span className="text-data text-xs text-grey-600">
-        {formatDateTime(row.original.lastWebhookAt)}
-      </span>
-    ),
-  },
-  {
-    accessorKey: "health",
-    header: "สถานะ",
-    enableSorting: true,
+    accessorKey: "isEnabled",
+    header: "Enabled",
+    enableSorting: false,
     cell: ({ row }) => (
       <ControlStatusBadge
-        tone={healthTone(row.original.health)}
-        label={HEALTH_LABEL[row.original.health]}
+        tone={enabledTone(row.original.isEnabled)}
+        label={enabledLabel(row.original.isEnabled)}
+        icon={<Power className="size-3.5" />}
       />
     ),
   },
   {
-    id: "chevron",
+    accessorKey: "health",
+    header: "Health",
     enableSorting: false,
-    meta: { headClassName: "w-12", cellClassName: "w-12", ignoreRowClick: true },
-    header: () => null,
-    cell: () => <ChevronRight className="size-4 text-grey-500" />,
+    cell: ({ row }) => (
+      <ControlStatusBadge
+        tone={healthTone(row.original.health)}
+        label={HEALTH_LABEL[row.original.health]}
+        icon={<Activity className="size-3.5" />}
+      />
+    ),
+  },
+  {
+    id: "lastTest",
+    header: "ทดสอบล่าสุด",
+    enableSorting: false,
+    cell: ({ row }) => (
+      <div>
+        <p className="text-xs font-semibold text-grey-700">{lastTestLabel(row.original.lastTestResult)}</p>
+        <p className="text-data mt-0.5 text-xs text-grey-500">
+          {formatDateTime(row.original.lastTestedAt ?? "")}
+        </p>
+      </div>
+    ),
+  },
+  {
+    accessorKey: "approvalState",
+    header: "Approval",
+    enableSorting: false,
+    cell: ({ row }) => (
+      <ControlStatusBadge
+        tone={approvalTone(row.original.approvalState)}
+        label={APPROVAL_LABEL[row.original.approvalState]}
+        icon={<ApprovalIcon state={row.original.approvalState} />}
+      />
+    ),
+  },
+  {
+    id: "view",
+    header: "",
+    enableSorting: false,
+    meta: { headClassName: "w-24", cellClassName: "w-24", ignoreRowClick: true },
+    cell: ({ row }) => (
+      <Link
+        href={`/control/psp/read?id=${encodeURIComponent(row.original.pspConnectionId)}`}
+        className={cn(buttonVariants({ variant: "outline", size: "sm" }), "gap-1")}
+      >
+        <Eye className="size-3.5" />
+        ดูข้อมูล
+      </Link>
+    ),
   },
 ];

@@ -22,6 +22,8 @@ interface TextFieldProps {
   endAdornment?: ReactNode;
   className?: string;
   maxLength?: number;
+  autoComplete?: string;
+  spellCheck?: boolean;
 }
 
 export function TextField({
@@ -43,6 +45,8 @@ export function TextField({
   endAdornment,
   className,
   maxLength,
+  autoComplete,
+  spellCheck,
 }: TextFieldProps) {
   const reactId = useId();
   const fieldId = id ?? reactId;
@@ -102,6 +106,8 @@ export function TextField({
             placeholder={placeholder}
             disabled={disabled}
             maxLength={maxLength}
+            autoComplete={autoComplete}
+            spellCheck={spellCheck}
             aria-invalid={hasError || undefined}
             aria-required={required || undefined}
             aria-describedby={describedBy}
@@ -119,6 +125,8 @@ export function TextField({
             placeholder={placeholder}
             disabled={disabled}
             maxLength={maxLength}
+            autoComplete={autoComplete}
+            spellCheck={spellCheck}
             aria-invalid={hasError || undefined}
             aria-required={required || undefined}
             aria-describedby={describedBy}

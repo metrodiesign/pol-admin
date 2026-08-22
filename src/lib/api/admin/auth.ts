@@ -1,4 +1,4 @@
-import type { AdminMe } from "@/types/auth";
+import type { AdminMe, AuthBootstrapResult, AuthStatus } from "@/types/auth";
 
 // Admin BFF client (auth) — FE ไม่ถือ token; session อยู่ใน httpOnly cookie ที่ backend จัดการ.
 // contract: pol-core/docs/reference/admin-fe-integration.md
@@ -88,12 +88,21 @@ export async function adminFetch(
   return res;
 }
 
-/** GET /admin/me — 200 -> AdminMe, 401 -> null (ไม่เด้ง). throw ถ้า status อื่น. */
-export async function getMe(): Promise<AdminMe | null> {
-  const res = await adminFetch("/admin/me", { redirectOnUnauthorized: false });
-  if (res.status === 401) return null;
-  if (!res.ok) throw new Error(`/admin/me ${res.status}`);
-  return (await res.json()) as AdminMe;
+/** GET /admin/me — แยก auth failure ออกจาก bootstrap/system failure. */
+export async function getMe(): Promise<AuthBootstrapResult> {
+  try {
+    const res = await adminFetch("/admin/me", { redirectOnUnauthorized: false });
+    if (res.status === 401) return { status: "anon", me: null };
+    if (res.status === 403) return { status: "forbidden", me: null };
+    if (!res.ok) return { status: "error", me: null };
+    return { status: "authed", me: (await res.json()) as AdminMe };
+  } catch {
+    return { status: "error", me: null };
+  }
+}
+
+export function shouldRedirectToLogin(status: AuthStatus): boolean {
+  return status === "anon";
 }
 
 /** ออกจากระบบ (device นี้). */

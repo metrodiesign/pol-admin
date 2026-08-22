@@ -1,6 +1,15 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { buildLoginUrl, buildRequestInit, isMutation, readCookieFrom } from "./auth";
+import {
+  buildLoginUrl,
+  buildRequestInit,
+  getMe,
+  isMutation,
+  readCookieFrom,
+  shouldRedirectToLogin,
+} from "./auth";
+
+afterEach(() => vi.unstubAllGlobals());
 
 describe("readCookieFrom", () => {
   it("อ่านค่า cookie ตามชื่อ", () => {
@@ -65,5 +74,46 @@ describe("buildRequestInit", () => {
   it("ไม่ใส่ CSRF บน mutation เมื่อไม่มี token", () => {
     const init = buildRequestInit({ method: "POST" }, null);
     expect(new Headers(init.headers).get("X-CSRF-Token")).toBeNull();
+  });
+});
+
+describe("getMe", () => {
+  it("map 200 พร้อม permissions และ accessibleMerchants เป็น authed", async () => {
+    const me = {
+      adminId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      email: "admin@example.test",
+      tier: "Scoped",
+      accessibleMerchants: {
+        isUnrestricted: false,
+        merchants: [{ id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb", code: null }],
+      },
+      permissions: ["settings.manage", "merchant.view"],
+    };
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify(me), { status: 200 })));
+
+    await expect(getMe()).resolves.toEqual({ status: "authed", me });
+  });
+
+  it.each([
+    [401, "anon"],
+    [403, "forbidden"],
+    [500, "error"],
+  ] as const)("map %s เป็น %s", async (status, expected) => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(null, { status })));
+    await expect(getMe()).resolves.toEqual({ status: expected, me: null });
+  });
+
+  it("map network failure เป็น error ไม่ใช่ anon", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new TypeError("network down")));
+    await expect(getMe()).resolves.toEqual({ status: "error", me: null });
+  });
+});
+
+describe("auth redirect decision", () => {
+  it("redirect loginเฉพาะ anon", () => {
+    expect(shouldRedirectToLogin("anon")).toBe(true);
+    for (const status of ["loading", "authed", "forbidden", "error"] as const) {
+      expect(shouldRedirectToLogin(status)).toBe(false);
+    }
   });
 });

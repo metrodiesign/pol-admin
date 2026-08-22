@@ -1,7 +1,11 @@
 import type { ApiClientStatus } from "@/types/control/api-client";
 import type { Tone } from "@/lib/control/status";
 
-export { maskSecret } from "@/lib/control/psp";
+export function maskSecret(raw: string): string {
+  if (!raw) return "—";
+  if (raw.length <= 10) return "••••••••";
+  return `${raw.slice(0, 6)}••••••••${raw.slice(-4)}`;
+}
 
 export const STATUS_LABEL: Record<ApiClientStatus, string> = {
   active: "ใช้งาน",

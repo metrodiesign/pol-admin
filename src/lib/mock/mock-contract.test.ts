@@ -5,7 +5,6 @@ import { PAYMENT_SESSIONS } from "./transactions";
 import { ORDERS } from "./orders";
 import { MERCHANTS } from "./merchant";
 import { MERCHANT_USERS } from "./merchant/users";
-import { PSP_CONNECTIONS } from "./control/psp-connections";
 import type { MerchantCode } from "@/types/merchant";
 
 const MONEY_AMOUNT_RE = /^\d+\.\d{4}$/;
@@ -21,7 +20,6 @@ const PAYMENT_SESSION_STATUS_VALUES = ["Created", "Redirected", "Paid", "Failed"
 const FORBIDDEN_WORD_ALLOWLIST = [
   "src/lib/mock/merchant/index.ts",
   "src/lib/mock/merchant/users.ts",
-  "src/lib/mock/control/psp-connections.ts",
   "src/lib/mock/control/reconciliation.ts",
   "src/lib/mock/transactions.ts",
   "src/lib/mock/orders.ts",
@@ -147,23 +145,5 @@ describe("Forbidden-word scan (REQ-9.6, 9.6a)", () => {
   it("the scan actually catches an injected forbidden word (meta-test, REQ-9.9)", () => {
     const injected = "export const X = { status: \"disabled\" };".toLowerCase();
     expect(FORBIDDEN_WORDS.some((w) => injected.includes(w.toLowerCase()))).toBe(true);
-  });
-});
-
-describe("No plaintext secrets (REQ-9.7, 5.1)", () => {
-  it("psp-connections.ts has no secretKey/webhookSecret/publicKey field", () => {
-    const content = readFileSync(
-      join(process.cwd(), "src/lib/mock/control/psp-connections.ts"),
-      "utf-8",
-    );
-    expect(content).not.toMatch(/secretKey|webhookSecret|publicKey/i);
-  });
-
-  it("no PSP connection exposes an unmasked secret value", () => {
-    for (const conn of PSP_CONNECTIONS) {
-      for (const value of Object.values(conn.maskedSecrets)) {
-        expect(value).toMatch(/•/);
-      }
-    }
   });
 });

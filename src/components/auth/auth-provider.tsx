@@ -3,11 +3,9 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 import { getMe } from "@/lib/api/admin/auth";
-import type { AdminMe } from "@/types/auth";
+import type { AdminMe, AuthStatus } from "@/types/auth";
 
-type AuthStatus = "loading" | "authed" | "anon";
-
-interface AuthContextValue {
+export interface AuthContextValue {
   me: AdminMe | null;
   status: AuthStatus;
 }
@@ -23,7 +21,8 @@ const MOCK_ME: AdminMe = {
   adminId: "dev-bypass",
   email: "dev@localhost",
   tier: "Super",
-  accessibleTenants: { isUnrestricted: true },
+  accessibleMerchants: { isUnrestricted: true },
+  permissions: ["settings.manage", "merchant.manage", "merchant.view"],
 };
 
 /** identity ปัจจุบันจาก /admin/me. ต้องอยู่ใต้ <AuthProvider>. */
@@ -35,7 +34,7 @@ export function useAuth(): AuthContextValue {
   return ctx;
 }
 
-/** เช็ค session ครั้งเดียวตอน mount ผ่าน GET /admin/me (200 -> authed, 401 -> anon). */
+/** เช็ค sessionครั้งเดียวตอน mount โดยคง auth/bootstrap failureเป็นคนละสถานะ. */
 export function AuthProvider({
   children,
 }: {
@@ -48,15 +47,9 @@ export function AuthProvider({
   useEffect(() => {
     if (SKIP_AUTH) return;
     let active = true;
-    getMe()
-      .then((me) => {
-        if (active) {
-          setState(me ? { me, status: "authed" } : { me: null, status: "anon" });
-        }
-      })
-      .catch(() => {
-        if (active) setState({ me: null, status: "anon" });
-      });
+    getMe().then((result) => {
+      if (active) setState(result);
+    });
     return () => {
       active = false;
     };

@@ -11,6 +11,8 @@ export interface ControlFilter {
   onChange: (v: string) => void;
   options: { value: string; label: string }[];
   widthClass?: string;
+  disabled?: boolean;
+  helperText?: string;
 }
 
 /** ALL sentinel for "no filter". Screens map it back to "" themselves. */
@@ -24,19 +26,21 @@ export function ControlListToolbar({
   search,
   onSearchChange,
   searchPlaceholder,
+  searchLabel = "",
   filters,
   actions,
 }: {
   search: string;
   onSearchChange: (v: string) => void;
   searchPlaceholder: string;
+  searchLabel?: string;
   filters?: ControlFilter[];
   actions?: ReactNode;
 }) {
   return (
     <div className="flex flex-col gap-3 px-5 py-5 lg:flex-row lg:items-end">
       <TextField
-        label=""
+        label={searchLabel}
         className="flex-1"
         placeholder={searchPlaceholder}
         value={search}
@@ -52,6 +56,8 @@ export function ControlListToolbar({
           value={f.value || ALL}
           onChange={(v) => f.onChange(v === ALL ? "" : v)}
           options={[{ value: ALL, label: "ทั้งหมด" }, ...f.options]}
+          disabled={f.disabled}
+          helperText={f.helperText}
         />
       ))}
 
