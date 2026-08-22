@@ -10,7 +10,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { navConfig } from "./nav-config";
+import type { NavGroup } from "./nav-config";
 
 type FlatItem = {
   title: string;
@@ -21,18 +21,6 @@ type FlatItem = {
   Icon?: React.ComponentType<{ className?: string }>;
   description?: string;
 };
-
-const navItems: FlatItem[] = navConfig.flatMap((group) =>
-  group.items.flatMap((item) => [
-    { title: item.title, path: item.path, group: group.subheader, kind: "nav" as const },
-    ...(item.children?.map((child) => ({
-      title: child.title,
-      path: child.path,
-      group: item.title,
-      kind: "nav" as const,
-    })) ?? []),
-  ]),
-);
 
 const actionItems: FlatItem[] = [
   {
@@ -48,9 +36,10 @@ const actionItems: FlatItem[] = [
 interface SearchDialogProps {
   /** "white" = on coloured topbar (default); "grey" = on transparent topbar */
   variant?: "white" | "grey";
+  groups: readonly NavGroup[];
 }
 
-export function SearchDialog({ variant = "white" }: SearchDialogProps) {
+export function SearchDialog({ variant = "white", groups }: SearchDialogProps) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const router = useRouter();
@@ -72,10 +61,26 @@ export function SearchDialog({ variant = "white" }: SearchDialogProps) {
     if (!next) setQuery("");
   };
 
+  const navItems: FlatItem[] = useMemo(
+    () =>
+      groups.flatMap((group) =>
+        group.items.flatMap((item) => [
+          { title: item.title, path: item.path, group: group.subheader, kind: "nav" as const },
+          ...(item.children?.map((child) => ({
+            title: child.title,
+            path: child.path,
+            group: item.title,
+            kind: "nav" as const,
+          })) ?? []),
+        ]),
+      ),
+    [groups],
+  );
+
   // Merge nav + action items; action items always shown first when no query
   const allItems: FlatItem[] = useMemo(
     () => [...actionItems, ...navItems],
-    [],
+    [navItems],
   );
 
   const results = useMemo(() => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
@@ -9,9 +9,10 @@ import { MinimalsTopbar } from "./minimals-topbar";
 import { MinimalsHorizontalNav } from "./minimals-horizontal-nav";
 import { Logo } from "@pol/ui/logo";
 import { minimalsNavConfig } from "./minimals-nav-config";
+import { filterNavGroups } from "./nav-config";
 import { cn } from "@/lib/utils";
 import { useSettings } from "@/components/providers/settings-provider";
-import { AuthProvider } from "@/components/auth/auth-provider";
+import { AuthProvider, useAuth } from "@/components/auth/auth-provider";
 import { AuthGuard } from "@/components/auth/auth-guard";
 
 /**
@@ -34,6 +35,7 @@ export function MinimalsLayout({ children }: { children: React.ReactNode }) {
 }
 
 function MinimalsShell({ children }: { children: React.ReactNode }) {
+  const { me } = useAuth();
   const { settings, setSetting } = useSettings();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [splash, setSplash] = useState(true);
@@ -42,6 +44,10 @@ function MinimalsShell({ children }: { children: React.ReactNode }) {
   // Pages whose live minimals layout uses a fluid (no max-width) container.
   const fullBleed =
     pathname === "/minimals/blank" || pathname === "/minimals/kanban";
+  const visibleNavGroups = useMemo(
+    () => filterNavGroups(minimalsNavConfig, me?.permissions ?? []),
+    [me?.permissions],
+  );
 
   // Nav layout/color are driven by the settings drawer (persisted via provider).
   const isHorizontal = settings.navLayout === "horizontal";
@@ -75,7 +81,7 @@ function MinimalsShell({ children }: { children: React.ReactNode }) {
             apparent && "bg-bg-paper",
           )}
         >
-          <SidebarNav collapsed={collapsed} groups={minimalsNavConfig} />
+          <SidebarNav collapsed={collapsed} groups={visibleNavGroups} />
           {/* Edge collapse toggle */}
           <button
             type="button"
@@ -115,7 +121,7 @@ function MinimalsShell({ children }: { children: React.ReactNode }) {
           <SheetTitle className="sr-only">Navigation</SheetTitle>
           <SidebarNav
             collapsed={false}
-            groups={minimalsNavConfig}
+            groups={visibleNavGroups}
             logoIdPrefix="minimals-drawer-logo"
           />
         </SheetContent>
@@ -129,8 +135,11 @@ function MinimalsShell({ children }: { children: React.ReactNode }) {
           data-minimals-scroll
           className="flex-1 min-h-0 overflow-y-auto"
         >
-          <MinimalsTopbar onMenuClick={() => setDrawerOpen(true)} />
-          {isHorizontal && <MinimalsHorizontalNav />}
+          <MinimalsTopbar
+            onMenuClick={() => setDrawerOpen(true)}
+            navGroups={visibleNavGroups}
+          />
+          {isHorizontal && <MinimalsHorizontalNav groups={visibleNavGroups} />}
           <main
             data-dashboard-main
             className={cn(

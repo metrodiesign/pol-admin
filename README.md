@@ -48,14 +48,14 @@ Admin app เดียว; Merchant frontend อยู่ที่ [pol-merchant
 
 ## Prerequisites
 
-- **Node.js** `^20.17.0` หรือ `>=22.9.0`; แนะนำ 22.19.0 ตาม CI/Docker
+- **Node.js** `>=22.19.0` ตาม CI/Docker และ native TLS CA API ของ dev proxy
 - **npm** 11.12.1
 - ถ้าต้องการต่อ backend จริง: รัน [pol-core](https://github.com/metrodiesign/pol-core) ที่ `https://localhost:5001`
 
 ตรวจสอบเวอร์ชัน:
 
 ```bash
-node -v   # ^20.17.0 หรือ >=22.9.0
+node -v   # >=22.19.0
 npm -v    # 11.12.1
 ```
 
@@ -133,8 +133,9 @@ npm run dev
 ครั้งแรก Next.js จะสร้าง certificate ใต้ `certificates/` และอาจขอสิทธิ์ระบบเพื่อ trust
 local CA. อนุมัติ trust prompt ของระบบก่อนใช้ browser; `curl -k` ใช้ได้เฉพาะ diagnostic local.
 
-เมื่อต่อ `pol-core` ให้รัน `dotnet dev-certs https --trust`. ถ้า Node ยังไม่อ่าน system CA ให้เพิ่ม
-`NODE_OPTIONS=--use-system-ca` ตอนรัน frontend; ดูขั้นตอนเต็มใน [docs/dev-setup.md](docs/dev-setup.md#8-https-และ-certificate).
+เมื่อต่อ `pol-core` ให้รัน `dotnet dev-certs https --trust` แล้ว export เฉพาะ public certificate
+ไป `certificates/pol-core-localhost.crt`; `npm run dev` เพิ่มไฟล์นี้เข้า Node default CA list
+ก่อน Next proxy เริ่มทำงาน. ดูคำสั่งใน [docs/dev-setup.md](docs/dev-setup.md#8-https-และ-certificate).
 
 Next.js 16 ใช้ **Turbopack** เป็น default (เร็วกว่า Webpack มาก)
 

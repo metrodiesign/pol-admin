@@ -132,14 +132,17 @@
 - Developer คัดลอกเป็น `.env.local` ด้วยมือ; ห้าม auto-copy root env หรือ secret.
 - `ADMIN_API_ORIGIN=https://localhost:5001` เปิด dev rewrites; production เว้นว่างเมื่อ reverse proxy
   ให้ SPA/API เป็น same-origin.
-- Generated HTTPS certificates อยู่ root `certificates/` และถูก ignore.
+- Generated HTTPS certificates และ exported public `pol-core` development certificate อยู่ root
+  `certificates/` และถูก ignore.
 
 ## Tooling
 
 - Root scripts `dev`, `dev:clean`, `build`, `start` เรียก Next.js โดยตรง; `test` รัน verifier,
   root Vitest และ retained package tests; `lint`/`typecheck` ครอบ root app กับ retained packages.
-- Admin dev script ใช้ `next dev --experimental-https` บน 3001. Admin start script ใช้ HTTP
-  บน port เดิม; TLS production เป็นหน้าที่ reverse proxy.
+- Admin dev script ใช้ `next dev --experimental-https` บน 3001 และโหลด
+  `scripts/dev-tls-ca.cjs` ก่อน Next เพื่อเพิ่ม `certificates/pol-core-localhost.crt` เข้า Node default
+  CA list โดย preserve public roots เดิม; `ADMIN_API_CA_CERTIFICATE` override path ได้. Admin start
+  script ใช้ HTTP บน port เดิม; TLS production เป็นหน้าที่ reverse proxy.
 - **test runner = vitest** (`vitest` ^4.1.9, root config: alias `@`→`./src`, `environment: node`,
   include `src/**/*.test.ts`); `@pol/shared` มี validation tests ของตัวเอง.
 - `npm run verify:workspaces` ตรวจ exact topology, Admin route contract, import boundaries และ `.only`/`.skip`.

@@ -99,9 +99,24 @@ export function AccountDrawer({ variant = "white" }: AccountDrawerProps) {
   const [avatarStatus, setAvatarStatus] = useState<
     "idle" | "loading" | "loaded" | "error"
   >("idle");
+  const [logoutPending, setLogoutPending] = useState(false);
+  const [logoutFailed, setLogoutFailed] = useState(false);
   const triggerClass = variant === "grey"
     ? "ml-1 rounded-full ring-2 ring-grey-500/30 transition-shadow hover:ring-grey-500/60"
     : "ml-1 rounded-full ring-2 ring-white/30 transition-shadow hover:ring-white/60";
+
+  const handleLogout = async () => {
+    setLogoutPending(true);
+    setLogoutFailed(false);
+    try {
+      await logout();
+      window.location.href = "/login";
+    } catch {
+      setLogoutFailed(true);
+    } finally {
+      setLogoutPending(false);
+    }
+  };
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -251,22 +266,24 @@ export function AccountDrawer({ variant = "white" }: AccountDrawerProps) {
             />
           </div>
 
-          {/* Logout — ยิง BFF logout ตรง (POST /admin/auth/logout + CSRF) แล้วเด้ง /login.
-              .finally -> logout fail ก็ยังกลับ /login (guard เด้งไป SSO ต่อถ้า session ยังอยู่). */}
+          {/* Logout — navigate only after BFF confirms 204; keep drawer open on failure. */}
+          {logoutFailed && (
+            <p role="alert" className="mb-2 text-center text-xs font-semibold text-error">
+              ออกจากระบบไม่สำเร็จ กรุณาลองอีกครั้ง
+            </p>
+          )}
           <button
             type="button"
-            onClick={() => {
-              logout().finally(() => {
-                window.location.href = "/login";
-              });
-            }}
+            onClick={() => void handleLogout()}
+            disabled={logoutPending}
+            aria-busy={logoutPending}
             className="mt-3 w-full rounded-lg py-2 text-sm font-bold transition-colors hover:opacity-90"
             style={{
               background: "rgba(255, 86, 48, 0.16)",
               color: "rgb(183, 29, 24)",
             }}
           >
-            Logout
+            {logoutPending ? "กำลังออกจากระบบ..." : logoutFailed ? "ลองออกจากระบบอีกครั้ง" : "Logout"}
           </button>
         </div>
         </div>

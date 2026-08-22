@@ -9,9 +9,11 @@ import { ContactsPopover } from "./contacts-popover";
 import { SettingsDrawer } from "./settings-drawer";
 import { AccountDrawer } from "./account-drawer";
 import { cn } from "@/lib/utils";
+import type { NavGroup } from "./nav-config";
 
 interface MinimalsTopbarProps {
   onMenuClick?: () => void;
+  navGroups: readonly NavGroup[];
 }
 
 /**
@@ -25,7 +27,7 @@ interface MinimalsTopbarProps {
  * - Icons/buttons are GREY (text-grey-600/700), NOT white, NOT on a coloured bar.
  * - Reuses all existing child components via the "grey" variant prop.
  */
-export function MinimalsTopbar({ onMenuClick }: MinimalsTopbarProps) {
+export function MinimalsTopbar({ onMenuClick, navGroups }: MinimalsTopbarProps) {
   return (
     <header
       data-topbar
@@ -46,7 +48,7 @@ export function MinimalsTopbar({ onMenuClick }: MinimalsTopbarProps) {
       <WorkspaceSwitcher variant="grey" />
 
       <div className="ml-auto flex items-center gap-1">
-        <SearchDialog variant="grey" />
+        <SearchDialog variant="grey" groups={navGroups} />
         <LanguagePopover variant="grey" />
         <NotificationsDrawer variant="grey" />
         <ContactsPopover variant="grey" />

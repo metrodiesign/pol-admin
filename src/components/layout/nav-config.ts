@@ -7,6 +7,8 @@ export interface NavItem {
   badge?: string;
   caption?: string;
   disabled?: boolean;
+  /** ซ่อน item และ descendants เมื่อ effective permission ไม่มี key นี้. */
+  requiredPermission?: string;
   /** When true, the item is considered active on its path AND any sub-paths. */
   deepMatch?: boolean;
   /**
@@ -31,6 +33,27 @@ export interface NavItem {
 export interface NavGroup {
   subheader: string;
   items: NavItem[];
+}
+
+/** คืน configใหม่โดยตัด item/parent/groupที่ผู้ใช้ไม่มีสิทธิ์; ไม่แก้ input. */
+export function filterNavGroups(
+  groups: readonly NavGroup[],
+  permissions: readonly string[],
+): NavGroup[] {
+  const allowed = new Set(permissions);
+
+  const filterItems = (items: readonly NavItem[]): NavItem[] =>
+    items.flatMap((item) => {
+      if (item.requiredPermission && !allowed.has(item.requiredPermission)) return [];
+      const children = item.children ? filterItems(item.children) : undefined;
+      if (item.children && children?.length === 0) return [];
+      return [{ ...item, ...(children ? { children } : {}) }];
+    });
+
+  return groups.flatMap((group) => {
+    const items = filterItems(group.items);
+    return items.length ? [{ ...group, items }] : [];
+  });
 }
 
 export const navConfig: NavGroup[] = [
@@ -138,7 +161,7 @@ export const navConfig: NavGroup[] = [
   {
     subheader: "Control plane · การเชื่อมต่อ",
     items: [
-      { title: "การเชื่อมต่อ PSP", path: "/control/psp/list", icon: "banking", match: "/control/psp" },
+      { title: "การเชื่อมต่อ PSP", path: "/control/psp/list", icon: "banking", match: "/control/psp", requiredPermission: "settings.manage" },
       { title: "กฎการกำหนดเส้นทาง", path: "/control/routing", icon: "analytics", match: "/control/routing" },
       { title: "ไคลเอนต์ API", path: "/control/api-clients", icon: "lock", match: "/control/api-clients" },
       { title: "Webhooks และเหตุการณ์", path: "/control/webhooks", icon: "folder", match: "/control/webhooks" },

@@ -1,10 +1,10 @@
 /** ระดับสิทธิ์ของ admin จาก backend (GET /admin/me). */
 export type AdminTier = "Super" | "Scoped";
 
-/** tenant ที่ admin เข้าถึงได้ — Super = unrestricted; Scoped = รายการ tenant ที่ถูก assign. */
-export interface AccessibleTenants {
+/** merchant ที่ admin เข้าถึงได้ — backend ยังเป็น authorization source of truth. */
+export interface AccessibleMerchants {
   isUnrestricted: boolean;
-  tenants?: { id: string; code: string }[];
+  merchants?: { id: string; code: string | null }[];
 }
 
 /**
@@ -15,5 +15,12 @@ export interface AdminMe {
   adminId: string;
   email: string;
   tier: AdminTier;
-  accessibleTenants: AccessibleTenants;
+  accessibleMerchants: AccessibleMerchants;
+  permissions: string[];
 }
+
+export type AuthStatus = "loading" | "authed" | "anon" | "forbidden" | "error";
+
+export type AuthBootstrapResult =
+  | { status: "authed"; me: AdminMe }
+  | { status: "anon" | "forbidden" | "error"; me: null };

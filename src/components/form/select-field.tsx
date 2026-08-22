@@ -24,6 +24,10 @@ interface SelectFieldProps {
   placeholder?: string;
   className?: string;
   clearable?: boolean;
+  disabled?: boolean;
+  required?: boolean;
+  error?: string;
+  helperText?: string;
 }
 
 /**
@@ -39,9 +43,15 @@ export function SelectField({
   placeholder,
   className,
   clearable = false,
+  disabled = false,
+  required = false,
+  error,
+  helperText,
 }: SelectFieldProps) {
   const id = useId();
+  const descId = `${id}-desc`;
   const selected = options.find((o) => o.value === value) ?? null;
+  const hasError = Boolean(error);
 
   return (
     <Combobox
@@ -49,21 +59,35 @@ export function SelectField({
       value={selected}
       onValueChange={(v) => onChange(v?.value ?? "")}
       isItemEqualToValue={(a, b) => a.value === b.value}
+      disabled={disabled}
     >
       <div className={cn("flex w-full flex-col gap-1.5", className)}>
-        <label id={id} className="text-sm font-medium text-grey-800">
+        <label id={id} className={cn("text-sm font-medium", hasError ? "text-error" : "text-grey-800")}>
           {label}
+          {required ? <span className="text-error"> *</span> : null}
         </label>
         <ComboboxInput
           aria-labelledby={id}
+          aria-describedby={error || helperText ? descId : undefined}
+          aria-invalid={hasError || undefined}
+          aria-required={required || undefined}
+          disabled={disabled}
           placeholder={placeholder}
           showClear={clearable}
           className={cn(
             "h-12 rounded-control border-[var(--divider)] text-sm",
-            "focus-within:border-primary focus-within:ring-1 focus-within:ring-inset focus-within:ring-primary",
+            hasError
+              ? "border-error ring-1 ring-inset ring-error"
+              : "focus-within:border-primary focus-within:ring-1 focus-within:ring-inset focus-within:ring-primary",
+            disabled && "pointer-events-none opacity-60",
             "[&_[data-slot=input-group-control]]:pl-3.5 [&_[data-slot=input-group-control]]:text-sm",
           )}
         />
+        {error || helperText ? (
+          <p id={descId} className={cn("text-xs", hasError ? "text-error" : "text-grey-600")}>
+            {error || helperText}
+          </p>
+        ) : null}
       </div>
       <ComboboxContent>
         <ComboboxEmpty>No results</ComboboxEmpty>

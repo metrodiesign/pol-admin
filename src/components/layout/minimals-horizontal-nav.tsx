@@ -4,8 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import { NavIcon } from "./nav-icon";
-import { minimalsNavConfig } from "./minimals-nav-config";
-import type { NavItem } from "./nav-config";
+import type { NavGroup, NavItem } from "./nav-config";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -46,8 +45,6 @@ function itemActive(pathname: string, item: NavItem): boolean {
   if (isActive(pathname, item.path)) return true;
   return (item.children ?? []).some((c) => itemActive(pathname, c));
 }
-
-const ENTRIES: NavItem[] = minimalsNavConfig.flatMap((g) => g.items);
 
 function Badge({ children }: { children: React.ReactNode }) {
   return (
@@ -109,14 +106,15 @@ function ChildItems({
   );
 }
 
-export function MinimalsHorizontalNav() {
+export function MinimalsHorizontalNav({ groups }: { groups: readonly NavGroup[] }) {
   const pathname = usePathname();
   const router = useRouter();
+  const entries = groups.flatMap((group) => group.items);
 
   return (
     <nav data-hnav className="hidden border-b border-white/10 bg-bg lg:block">
       <ul className="mx-auto flex max-w-[1200px] items-center gap-1 overflow-x-auto px-4 py-2 sm:px-6 mlg:px-10">
-        {ENTRIES.map((item) => {
+        {entries.map((item) => {
           const active = itemActive(pathname, item);
           const base =
             "flex shrink-0 items-center gap-1.5 rounded-lg px-2 py-1.5 text-sm font-medium transition-colors outline-none";
