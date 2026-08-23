@@ -89,7 +89,6 @@ cp .env.example .env.local
 |--------|---------|----------|----------|
 | `ADMIN_API_ORIGIN` | `https://localhost:5001` | ว่าง (ไม่ตั้ง) | BFF origin สำหรับ rewrites `/admin/*`, `/producer/*`, `/api/*` ใน dev |
 | `NEXT_PUBLIC_API_ORIGIN` | `https://localhost:5001` | build-time ตาม deployment | Origin สำหรับ full-page OIDC login navigation |
-| `NEXT_PUBLIC_SKIP_AUTH` | ไม่ตั้ง | ห้ามตั้ง | ข้าม auth เฉพาะ frontend-only development |
 
 **Dev (ต่อ backend จริง):**
 
@@ -97,15 +96,6 @@ cp .env.example .env.local
 ADMIN_API_ORIGIN=https://localhost:5001
 NEXT_PUBLIC_API_ORIGIN=https://localhost:5001
 ```
-
-**Dev (mock-only, ไม่ต้อง backend):**
-
-```env
-NEXT_PUBLIC_SKIP_AUTH=true
-# ไม่ตั้ง ADMIN_API_ORIGIN และ NEXT_PUBLIC_API_ORIGIN
-```
-
-`NEXT_PUBLIC_SKIP_AUTH` ใช้ได้เฉพาะ development; production guard บังคับปิด.
 
 **Production:**
 

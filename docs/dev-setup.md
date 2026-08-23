@@ -32,13 +32,11 @@ Application/package topology กำหนดแบบ explicit:
 
 | ต้องการ | Backend/DB | Frontend environment | คำสั่งหลัก |
 |---|---:|---|---|
-| ดู UI และ mock data | ไม่ต้อง | `NEXT_PUBLIC_SKIP_AUTH=true` | `npm run dev` |
 | ทดสอบ auth/API จริง | ต้องรัน | API origin = `https://localhost:5001` | รัน `pol-core` แล้วรัน Admin |
 | ตรวจ production bundle | ไม่จำเป็นสำหรับ route smoke | Build Admin | `npm run build` |
 | ทดสอบ Admin container | ไม่จำเป็นสำหรับ root route | Same-origin production contract | `docker build` แล้ว `docker run` |
 
-ถ้าเริ่มครั้งแรกและต้องการเห็นหน้าจอเร็วสุด ให้เริ่มจาก frontend-only. ถ้าต้องทดสอบ login,
-session, CSRF หรือ API จริง ต้องใช้ full stack.
+หน้าที่ต้องยืนยันตัวตนต้องใช้ full stack; frontend ไม่รองรับ mock auth bypass.
 
 ## 3. Prerequisites
 
@@ -129,29 +127,18 @@ ADMIN_API_ORIGIN=https://localhost:5001
 NEXT_PUBLIC_API_ORIGIN=https://localhost:5001
 ```
 
-### โหมด Frontend-only
-
-ใช้ `.env.local` ที่มีเฉพาะ:
-
-```env
-NEXT_PUBLIC_SKIP_AUTH=true
-```
-
-โหมดนี้ใช้ได้เฉพาะ development. Production code บังคับ `NODE_ENV === "production"` ให้ bypass ใช้งานไม่ได้ แม้ตัวแปรหลุดเข้า environment.
-
 ### ความหมายของตัวแปร
 
 | ตัวแปร | อ่านที่ไหน | ผล |
 |---|---|---|
 | `ADMIN_API_ORIGIN` | Next.js server/config | เปิด rewrites ไป BFF สำหรับ `/admin/*`, `/producer/*`, `/api/*` |
 | `NEXT_PUBLIC_API_ORIGIN` | Browser bundle | กำหนด origin สำหรับ full-page OIDC login navigation |
-| `NEXT_PUBLIC_SKIP_AUTH` | Browser bundle | ข้าม `getMe` เฉพาะ development เพื่อดู mock UI |
 
 หลังแก้ `.env.local` ต้อง restart dev server. ตัวแปร `NEXT_PUBLIC_*` ถูก inline ตอน build; เปลี่ยนเฉพาะ runtime environment หลัง build แล้วไม่มีผลต่อ browser bundle.
 
 ห้ามใส่ credential, token, client secret หรือ connection string ใน frontend env. Frontend ใช้ BFF cookie และไม่ถือ OAuth token.
 
-## 6. รัน Frontend-only
+## 6. รัน Frontend
 
 รันจาก `pol-admin` root:
 

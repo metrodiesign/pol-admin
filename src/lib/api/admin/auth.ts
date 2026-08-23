@@ -6,7 +6,6 @@ import type { AdminMe, AuthBootstrapResult, AuthStatus } from "@/types/auth";
 // login เป็น top-level navigation ตรงไป backend origin (callback ลงทะเบียนที่ backend host จริง) —
 // ไม่ผ่าน Next rewrite proxy เพราะ redirect_uri ที่ ASP.NET OIDC handler สร้างต้องตรง host ที่ browser navigate ไปเป๊ะ.
 const API_ORIGIN = process.env.NEXT_PUBLIC_API_ORIGIN ?? "";
-const LOGIN_PATH = `${API_ORIGIN}/api/v1/admins/auth/google/login`;
 const MICROSOFT_LOGIN_PATH = `${API_ORIGIN}/api/v1/admins/auth/microsoft/login`;
 const CSRF_COOKIE = "adm_csrf";
 const CSRF_HEADER = "X-CSRF-Token";
@@ -35,11 +34,6 @@ function clampReturnTo(returnTo: string): string {
   return RETURN_TO_ALLOWLIST.includes(returnTo) ? returnTo : DEFAULT_RETURN_TO;
 }
 
-/** สร้าง URL เริ่ม SSO: `/admin/auth/google/login?returnTo=<encoded,clamped>`. */
-export function buildLoginUrl(returnTo: string): string {
-  return `${LOGIN_PATH}?returnTo=${encodeURIComponent(clampReturnTo(returnTo))}`;
-}
-
 /** สร้าง URL เริ่ม SSO ผ่าน Microsoft/Entra: `/admin/auth/microsoft/login?returnTo=<encoded,clamped>`. */
 export function buildMicrosoftLoginUrl(returnTo: string): string {
   return `${MICROSOFT_LOGIN_PATH}?returnTo=${encodeURIComponent(clampReturnTo(returnTo))}`;
@@ -57,11 +51,6 @@ export function buildRequestInit(opts: RequestInit, csrf: string | null): Reques
 /** อ่าน cookie จาก document.cookie. */
 export function cookie(name: string): string | null {
   return readCookieFrom(document.cookie, name);
-}
-
-/** เริ่ม SSO ด้วย full-page navigate (ไม่ใช่ fetch — flow เด้งออกไป Google แล้วกลับมาที่ returnTo). */
-export function login(returnTo: string = DEFAULT_RETURN_TO): void {
-  window.location.href = buildLoginUrl(returnTo);
 }
 
 /** เริ่ม SSO ผ่าน Microsoft/Entra ด้วย full-page navigate. */
@@ -103,6 +92,11 @@ export async function getMe(): Promise<AuthBootstrapResult> {
 
 export function shouldRedirectToLogin(status: AuthStatus): boolean {
   return status === "anon";
+}
+
+/** authenticated session ที่ไม่มี effective permission ต้องใช้หน้า 403 เดิม ไม่แสดง protected shell. */
+export function shouldShowForbidden(status: AuthStatus, me: AdminMe | null): boolean {
+  return status === "forbidden" || (status === "authed" && me !== null && me.permissions.length === 0);
 }
 
 /** ออกจากระบบ (device นี้); ถือว่า success เฉพาะตาม endpoint contract ที่คืน 204. */
