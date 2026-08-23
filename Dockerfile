@@ -27,7 +27,6 @@ COPY . .
 # ตอน build เท่านั้น) — NEXT_PUBLIC_API_ORIGIN ตั้งใจไม่ ARG/ENV ที่นี่: ปล่อยว่าง = "" ตอน build,
 # login()/microsoftLogin() จึง navigate ด้วย relative path (same-origin, ตรงกับที่ reverse proxy
 # เสิร์ฟ SPA+API origin เดียวกันใน prod). NEXT_PUBLIC_GOOGLE_CLIENT_ID_* เป็นของเก่าที่ dead แล้ว.
-# NEXT_PUBLIC_SKIP_AUTH: ตั้งใจไม่ ARG/ENV ที่นี่ — prod build ต้องไม่ bake flag นี้เข้าไปเลย
 ENV NODE_ENV=production
 RUN npm run build
 

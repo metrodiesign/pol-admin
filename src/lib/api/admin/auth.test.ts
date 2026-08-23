@@ -1,13 +1,14 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
-  buildLoginUrl,
+  buildMicrosoftLoginUrl,
   buildRequestInit,
   getMe,
   isMutation,
   logout,
   readCookieFrom,
   shouldRedirectToLogin,
+  shouldShowForbidden,
 } from "./auth";
 
 afterEach(() => vi.unstubAllGlobals());
@@ -45,18 +46,24 @@ describe("isMutation", () => {
   });
 });
 
-describe("buildLoginUrl", () => {
+describe("buildMicrosoftLoginUrl", () => {
   it("encode returnTo ที่อยู่ใน allowlist", () => {
-    expect(buildLoginUrl("/minimals")).toBe("/api/v1/admins/auth/google/login?returnTo=%2Fminimals");
+    expect(buildMicrosoftLoginUrl("/minimals")).toBe(
+      "/api/v1/admins/auth/microsoft/login?returnTo=%2Fminimals",
+    );
   });
   it("allow '/'", () => {
-    expect(buildLoginUrl("/")).toBe("/api/v1/admins/auth/google/login?returnTo=%2F");
+    expect(buildMicrosoftLoginUrl("/")).toBe("/api/v1/admins/auth/microsoft/login?returnTo=%2F");
   });
   it("allow /dashboard", () => {
-    expect(buildLoginUrl("/dashboard")).toBe("/api/v1/admins/auth/google/login?returnTo=%2Fdashboard");
+    expect(buildMicrosoftLoginUrl("/dashboard")).toBe(
+      "/api/v1/admins/auth/microsoft/login?returnTo=%2Fdashboard",
+    );
   });
   it("clamp path นอก allowlist -> /dashboard (default)", () => {
-    expect(buildLoginUrl("/transaction")).toBe("/api/v1/admins/auth/google/login?returnTo=%2Fdashboard");
+    expect(buildMicrosoftLoginUrl("/transaction")).toBe(
+      "/api/v1/admins/auth/microsoft/login?returnTo=%2Fdashboard",
+    );
   });
 });
 
@@ -89,6 +96,19 @@ describe("getMe", () => {
         merchants: [{ id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb", code: null }],
       },
       permissions: ["settings.manage", "merchant.view"],
+    };
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify(me), { status: 200 })));
+
+    await expect(getMe()).resolves.toEqual({ status: "authed", me });
+  });
+
+  it("คงสถานะ authed เมื่อ backend คืน permissions ว่าง", async () => {
+    const me = {
+      adminId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      email: "employee@viriyah.co.th",
+      tier: "Scoped",
+      accessibleMerchants: { isUnrestricted: false, merchants: [] },
+      permissions: [],
     };
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify(me), { status: 200 })));
 
@@ -144,5 +164,20 @@ describe("auth redirect decision", () => {
     for (const status of ["loading", "authed", "forbidden", "error"] as const) {
       expect(shouldRedirectToLogin(status)).toBe(false);
     }
+  });
+
+  it("แสดง 403 สำหรับ authenticated account ที่ไม่มี permission", () => {
+    const me = {
+      adminId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      email: "employee@viriyah.co.th",
+      tier: "Scoped" as const,
+      accessibleMerchants: { isUnrestricted: false, merchants: [] },
+      permissions: [],
+    };
+
+    expect(shouldShowForbidden("authed", me)).toBe(true);
+    expect(shouldShowForbidden("authed", { ...me, permissions: ["dashboard.view"] })).toBe(false);
+    expect(shouldShowForbidden("forbidden", null)).toBe(true);
+    expect(shouldShowForbidden("anon", null)).toBe(false);
   });
 });

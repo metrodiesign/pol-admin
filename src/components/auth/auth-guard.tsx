@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 
 import { ErrorCard, errorButtonClass } from "@/components/error/error-screen";
-import { shouldRedirectToLogin } from "@/lib/api/admin/auth";
+import { shouldRedirectToLogin, shouldShowForbidden } from "@/lib/api/admin/auth";
 import { useAuth } from "./auth-provider";
 
 /** loading placeholder — กัน flash ของ shell ก่อน /admin/me ตอบ. */
@@ -24,13 +24,13 @@ export function AuthGuard({
 }: {
   children: React.ReactNode;
 }): React.JSX.Element {
-  const { status } = useAuth();
+  const { me, status } = useAuth();
 
   useEffect(() => {
     if (shouldRedirectToLogin(status)) window.location.href = "/login";
   }, [status]);
 
-  if (status === "forbidden") {
+  if (shouldShowForbidden(status, me)) {
     return (
       <main className="flex min-h-dvh items-center justify-center bg-grey-100 p-4">
         <ErrorCard

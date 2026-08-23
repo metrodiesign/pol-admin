@@ -3,7 +3,7 @@
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
-import { login, microsoftLogin } from "@/lib/api/admin/auth";
+import { microsoftLogin } from "@/lib/api/admin/auth";
 import { merchantUserLogin, merchantUserMicrosoftLogin } from "@/lib/api/merchant/user";
 
 // landing หลัง login = /dashboard (admin landing จริง). backend ต้องมี /dashboard ใน AdminSession:ReturnUrlAllowlist
@@ -50,7 +50,7 @@ function MicrosoftIcon() {
 const SSO_BUTTON_CLASS =
   "h-12 w-full justify-center gap-2 bg-white text-crop-blue hover:bg-white/90 hover:text-crop-blue";
 
-// server-side OIDC BFF: login = full-page navigate ไป backend แล้วกลับมาที่ returnTo (ไม่ใช่ fetch).
+// server-side OIDC BFF: full-page navigate ไป backend แล้วกลับมาที่ returnTo (ไม่ใช่ fetch).
 export function LoginView() {
   return (
     <main className="flex min-h-dvh flex-col bg-white">
@@ -100,15 +100,6 @@ export function LoginView() {
               type="button"
               size="lg"
               className={`mt-8 ${SSO_BUTTON_CLASS}`}
-              onClick={() => login(RETURN_TO)}
-            >
-              <GoogleIcon />
-              เข้าสู่ระบบด้วย Google
-            </Button>
-            <Button
-              type="button"
-              size="lg"
-              className={`mt-3 ${SSO_BUTTON_CLASS}`}
               onClick={() => microsoftLogin(RETURN_TO)}
             >
               <MicrosoftIcon />
