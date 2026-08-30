@@ -5,8 +5,13 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { Activity, CircleAlert, Clock3, Eye, Hourglass, Power } from "lucide-react";
 
 import { ControlStatusBadge } from "@/components/control/shared/status-badge";
-import { StatusSpine } from "@/components/control/shared/status-spine";
-import { buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { formatDateTime } from "@/lib/control/format";
 import {
   APPROVAL_LABEL,
@@ -19,7 +24,6 @@ import {
   healthTone,
   lastTestLabel,
 } from "@/lib/control/psp";
-import { cn } from "@/lib/utils";
 import type { ApprovalState, PspConnectionListRow } from "@/types/control/psp-connection";
 import "@/types/table-meta";
 
@@ -31,26 +35,17 @@ function ApprovalIcon({ state }: { state: ApprovalState }) {
 
 export const pspColumns: ColumnDef<PspConnectionListRow>[] = [
   {
-    id: "spine",
-    enableSorting: false,
-    meta: { headClassName: "w-1.5 p-0", cellClassName: "w-1.5 p-0" },
-    header: () => null,
-    cell: ({ row }) => (
-      <div className="flex h-full items-stretch pl-1.5">
-        <StatusSpine tone={healthTone(row.original.health)} />
-      </div>
-    ),
-  },
-  {
     id: "identity",
     header: "Connection",
     enableSorting: false,
     cell: ({ row }) => (
-      <div className="max-w-44">
-        <p className="text-data truncate text-xs font-semibold text-foreground">
+      <div className="min-w-0">
+        <span className="block truncate text-sm font-semibold leading-[22px] text-foreground">
+          {row.original.merchantName}
+        </span>
+        <span className="text-data block truncate text-sm leading-[22px] text-grey-500">
           {row.original.pspConnectionId}
-        </p>
-        <p className="mt-0.5 truncate text-xs text-grey-500">{row.original.merchantName}</p>
+        </span>
       </div>
     ),
   },
@@ -58,15 +53,18 @@ export const pspColumns: ColumnDef<PspConnectionListRow>[] = [
     accessorKey: "psp",
     header: "PSP",
     enableSorting: false,
-    cell: ({ row }) => <span className="font-semibold">{PROVIDER_LABEL[row.original.psp]}</span>,
+    meta: { headClassName: "w-[120px]", cellClassName: "w-[120px]" },
+    cell: ({ row }) => (
+      <span className="text-sm font-semibold text-foreground">{PROVIDER_LABEL[row.original.psp]}</span>
+    ),
   },
   {
     id: "methods",
     header: "ช่องทาง",
     enableSorting: false,
     cell: ({ row }) => (
-      <span className="text-sm text-grey-700">
-        {row.original.enabledMethods.map((method) => METHOD_LABEL[method]).join(", ") || "—"}
+      <span className="text-sm text-foreground">
+        {row.original.enabledMethods.map((method) => METHOD_LABEL[method]).join(", ") || "-"}
       </span>
     ),
   },
@@ -74,6 +72,7 @@ export const pspColumns: ColumnDef<PspConnectionListRow>[] = [
     accessorKey: "isEnabled",
     header: "Enabled",
     enableSorting: false,
+    meta: { headClassName: "w-[120px]", cellClassName: "w-[120px]" },
     cell: ({ row }) => (
       <ControlStatusBadge
         tone={enabledTone(row.original.isEnabled)}
@@ -86,6 +85,7 @@ export const pspColumns: ColumnDef<PspConnectionListRow>[] = [
     accessorKey: "health",
     header: "Health",
     enableSorting: false,
+    meta: { headClassName: "w-[120px]", cellClassName: "w-[120px]" },
     cell: ({ row }) => (
       <ControlStatusBadge
         tone={healthTone(row.original.health)}
@@ -98,12 +98,13 @@ export const pspColumns: ColumnDef<PspConnectionListRow>[] = [
     id: "lastTest",
     header: "ทดสอบล่าสุด",
     enableSorting: false,
+    meta: { headClassName: "w-[180px]", cellClassName: "w-[180px]" },
     cell: ({ row }) => (
       <div>
-        <p className="text-xs font-semibold text-grey-700">{lastTestLabel(row.original.lastTestResult)}</p>
-        <p className="text-data mt-0.5 text-xs text-grey-500">
+        <span className="block text-sm text-foreground">{lastTestLabel(row.original.lastTestResult)}</span>
+        <span className="text-data block text-sm text-grey-500">
           {formatDateTime(row.original.lastTestedAt ?? "")}
-        </p>
+        </span>
       </div>
     ),
   },
@@ -111,6 +112,7 @@ export const pspColumns: ColumnDef<PspConnectionListRow>[] = [
     accessorKey: "approvalState",
     header: "Approval",
     enableSorting: false,
+    meta: { headClassName: "w-[140px]", cellClassName: "w-[140px]" },
     cell: ({ row }) => (
       <ControlStatusBadge
         tone={approvalTone(row.original.approvalState)}
@@ -120,18 +122,34 @@ export const pspColumns: ColumnDef<PspConnectionListRow>[] = [
     ),
   },
   {
-    id: "view",
-    header: "",
+    id: "actions",
     enableSorting: false,
-    meta: { headClassName: "w-24", cellClassName: "w-24", ignoreRowClick: true },
+    meta: { headClassName: "w-20", cellClassName: "w-20", ignoreRowClick: true },
+    header: () => null,
     cell: ({ row }) => (
-      <Link
-        href={`/control/psp/read?id=${encodeURIComponent(row.original.pspConnectionId)}`}
-        className={cn(buttonVariants({ variant: "outline", size: "sm" }), "gap-1")}
-      >
-        <Eye className="size-3.5" />
-        ดูข้อมูล
-      </Link>
+      <TooltipProvider>
+        <div className="flex items-center justify-end gap-1.5">
+          <Tooltip>
+            <TooltipTrigger render={<span className="inline-flex" />}>
+              <Button
+                render={
+                  <Link
+                    href={`/control/psp/read?id=${encodeURIComponent(row.original.pspConnectionId)}`}
+                  />
+                }
+                nativeButton={false}
+                variant="ghost"
+                size="icon-lg"
+                className="size-10 cursor-pointer bg-grey-600/8 text-grey-700 hover:bg-grey-800 hover:text-white focus-visible:bg-grey-800 focus-visible:text-white"
+                aria-label={`ดูรายละเอียด ${row.original.pspConnectionId}`}
+              >
+                <Eye className="size-5" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>ดูรายละเอียด</TooltipContent>
+          </Tooltip>
+        </div>
+      </TooltipProvider>
     ),
   },
 ];

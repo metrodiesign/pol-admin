@@ -29,14 +29,15 @@ import type {
   CredentialChangeAccepted,
   PspMethod,
 } from "@/types/control/psp-connection";
-import { ConnectionHeader } from "./connection-header";
 import { CredentialChangeDialog } from "./credential-change-dialog";
+import { ConnectionIdentity } from "./detail-view";
 import { PspMethodFields } from "./form-fields";
 import {
   useConnectionResource,
   useMerchantCatalog,
   usePendingApprovals,
 } from "./resource-hooks";
+import { cancelClass, cardStyle, primaryClass } from "./styles";
 
 function Header({ id }: { id: string }) {
   return (
@@ -44,8 +45,7 @@ function Header({ id }: { id: string }) {
       title="แก้ไข PSP Connection"
       backHref={`/control/psp/read?id=${encodeURIComponent(id)}`}
       breadcrumbs={[
-        { label: "Control plane" },
-        { label: "PSP Connections", href: "/control/psp/list" },
+        { label: "การเชื่อมต่อ PSP", href: "/control/psp/list" },
         { label: id },
       ]}
     />
@@ -62,7 +62,7 @@ function BlockingState({
   onRetry?: () => void;
 }) {
   return (
-    <div className="rounded-2xl bg-card px-5 py-12 text-center shadow-card" role="alert">
+    <div className="rounded-card bg-card px-5 py-12 text-center" style={cardStyle} role="alert">
       <h1 className="text-h6 text-foreground">{title}</h1>
       <p className="mt-2 text-sm text-grey-600">{message}</p>
       {onRetry ? (
@@ -215,46 +215,33 @@ function PspEditForm({
         backHref={`/control/psp/read?id=${encodeURIComponent(connection.pspConnectionId)}`}
         onBack={requestLeave}
         breadcrumbs={[
-          { label: "Control plane" },
-          { label: "PSP Connections", href: "/control/psp/list" },
+          { label: "การเชื่อมต่อ PSP", href: "/control/psp/list" },
           { label: connection.pspConnectionId },
         ]}
         actions={
-          <div className="flex w-full gap-2 sm:w-auto">
-            <Button
+          <div className="flex items-center gap-2">
+            <button
               type="button"
-              variant="outline"
-              size="lg"
-              className="min-w-0 flex-1 sm:min-w-28"
               onClick={requestLeave}
               disabled={submitting}
+              className={cancelClass}
             >
               ยกเลิก
-            </Button>
-            <Button
+            </button>
+            <button
               type="submit"
               form="psp-edit-form"
-              size="lg"
-              className="min-w-0 flex-1 sm:min-w-44"
               disabled={!dirty || submitting || operationInProgress}
+              className={primaryClass}
             >
               {submitting ? <Loader2 className="size-4 animate-spin" /> : null}
               {submitLabel}
-            </Button>
+            </button>
           </div>
         }
       />
 
       <div className="flex flex-col gap-5">
-        <ConnectionHeader
-          connectionId={connection.pspConnectionId}
-          provider={connection.psp}
-          merchantName={merchantName}
-          enabled={enabled}
-          health={connection.health}
-          approvalState="clear"
-        />
-
         {merchantWarning ? (
           <div className="flex flex-col gap-3 rounded-xl border border-warning/30 bg-warning/8 px-4 py-3 text-sm text-grey-700 sm:flex-row sm:items-center sm:justify-between" role="status">
             <span>โหลดชื่อ Merchant ไม่ครบ; แสดง Merchant ID โดยไม่บล็อก Edit</span>
@@ -274,12 +261,20 @@ function PspEditForm({
 
         <form
           id="psp-edit-form"
-          className="rounded-2xl bg-card p-5 shadow-card sm:p-6"
+          className="overflow-hidden rounded-card bg-card"
+          style={cardStyle}
           onSubmit={submit}
           aria-busy={submitting}
           noValidate
         >
-          <h1 className="text-h5 text-foreground">การตั้งค่า</h1>
+          <ConnectionIdentity
+            connection={connection}
+            merchantName={merchantName}
+            enabled={enabled}
+            approvalState="clear"
+          />
+          <div className="p-6">
+          <h2 className="text-sm font-semibold text-foreground">การตั้งค่า</h2>
           <p className="mt-1 text-sm text-grey-600">
             แก้เฉพาะช่องทางและ Enabled; Credential เปลี่ยนผ่าน approval flow แยกต่างหาก
           </p>
@@ -369,6 +364,7 @@ function PspEditForm({
               ) : null}
             </div>
           ) : null}
+          </div>
         </form>
       </div>
 
@@ -477,14 +473,6 @@ export function PspEditView({ id }: { id: string }) {
       <>
         <Header id={id} />
         <div className="flex flex-col gap-5">
-          <ConnectionHeader
-            connectionId={connection.pspConnectionId}
-            provider={connection.psp}
-            merchantName={merchantName}
-            enabled={connection.isEnabled}
-            health={connection.health}
-            approvalState={approvalState}
-          />
           <BlockingState
             title="ยังเปิด Edit form ไม่ได้"
             message={gate.reason ?? "สถานะ connection ยังไม่พร้อมสำหรับแก้ไข"}

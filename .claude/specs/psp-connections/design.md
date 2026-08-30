@@ -136,7 +136,7 @@ Enabled `เปิดใช้งาน`, Health `Unknown`, Approval `ไม่�
 Barlow สำหรับ heading, Public Sans/Noto Sans Thai สำหรับข้อความ, IBM Plex Mono ผ่าน `text-data` สำหรับ ID/เวลา.
 ไม่เพิ่ม theme, gradient, animation ตกแต่ง หรือ stat-card row. Loading spinner/skeleton ใช้เฉพาะระหว่าง request.
 
-Layout:
+Layout (superseded 2026-08-30 โดย `.claude/specs/psp-ui-parity/`: List ใช้ `DataTable` ทุก viewport, ไม่มี mobile cards/StatusSpine/ConnectionHeader; header/card/action pattern ตาม merchant user/role):
 
 - 375 px: content/form/status cells เรียงหนึ่งคอลัมน์; primary action กว้างเต็ม; List ใช้ cards.
 - 768 px: form ใช้ 1-2 คอลัมน์ตามพื้นที่; ไม่มี page-level horizontal overflow; List ยังใช้ cards.

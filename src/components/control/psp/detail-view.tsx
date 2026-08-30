@@ -4,23 +4,35 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
+  Activity,
+  CircleAlert,
+  Clock3,
   FlaskConical,
+  Hourglass,
   KeyRound,
   Loader2,
   Pencil,
+  Power,
   RefreshCw,
-  Settings2,
-  ShieldCheck,
 } from "lucide-react";
 
 import { useAuth } from "@/components/auth/auth-provider";
 import { ReadField } from "@/components/control/shared/read-field";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { ControlStatusBadge } from "@/components/control/shared/status-badge";
+import { EditPageHeader } from "@/components/shared/edit-page-header";
+import { Button } from "@/components/ui/button";
 import { PspApiError, testPspConnection } from "@/lib/api/control/psp";
 import { formatDateTime } from "@/lib/control/format";
 import {
+  APPROVAL_LABEL,
+  HEALTH_LABEL,
+  PROVIDER_LABEL,
+  approvalTone,
   beginIdempotencyIntent,
   connectionActionGate,
+  enabledLabel,
+  enabledTone,
+  healthTone,
   lastTestLabel,
   mapPspProblem,
   resolveApprovalState,
@@ -29,32 +41,85 @@ import {
   type IdempotencyIntent,
 } from "@/lib/control/psp";
 import { cn } from "@/lib/utils";
-import type { ApprovalState, CredentialChangeAccepted } from "@/types/control/psp-connection";
-import { ConnectionHeader } from "./connection-header";
+import type {
+  ApprovalState,
+  CredentialChangeAccepted,
+  PspConnection,
+} from "@/types/control/psp-connection";
 import { CredentialChangeDialog } from "./credential-change-dialog";
 import {
   useConnectionResource,
   useMerchantCatalog,
   usePendingApprovals,
 } from "./resource-hooks";
+import { cancelClass, cardStyle, primaryClass } from "./styles";
 
-function DetailCard({
-  title,
-  icon,
-  children,
+function ApprovalIcon({ state }: { state: ApprovalState }) {
+  if (state === "pending") return <Hourglass className="size-3.5" />;
+  if (state === "unavailable") return <CircleAlert className="size-3.5" />;
+  return <Clock3 className="size-3.5" />;
+}
+
+/** Identity band at the top of a PSP card: provider, merchant, id + the three status badges. */
+export function ConnectionIdentity({
+  connection,
+  merchantName,
+  enabled,
+  approvalState,
 }: {
-  title: string;
-  icon: React.ReactNode;
-  children: React.ReactNode;
+  connection: Pick<PspConnection, "pspConnectionId" | "psp" | "health">;
+  merchantName: string;
+  enabled: boolean;
+  approvalState: ApprovalState;
 }) {
   return (
-    <section className="rounded-2xl bg-card p-5 shadow-card sm:p-6">
-      <h2 className="mb-5 flex items-center gap-2 text-h6 text-foreground">
-        {icon}
-        {title}
-      </h2>
-      {children}
+    <div className="flex flex-col gap-4 border-b border-[var(--divider)] p-6 sm:flex-row sm:items-start sm:justify-between">
+      <div className="min-w-0">
+        <h2 className="text-lg font-bold leading-7 text-foreground">{PROVIDER_LABEL[connection.psp]}</h2>
+        <p className="mt-0.5 truncate text-sm text-grey-600">{merchantName}</p>
+        <p className="text-data mt-1 break-all text-xs text-grey-500">{connection.pspConnectionId}</p>
+      </div>
+      <div className="flex flex-wrap items-center gap-2">
+        <ControlStatusBadge
+          tone={enabledTone(enabled)}
+          label={enabledLabel(enabled)}
+          icon={<Power className="size-3.5" />}
+        />
+        <ControlStatusBadge
+          tone={healthTone(connection.health)}
+          label={HEALTH_LABEL[connection.health]}
+          icon={<Activity className="size-3.5" />}
+        />
+        <ControlStatusBadge
+          tone={approvalTone(approvalState)}
+          label={APPROVAL_LABEL[approvalState]}
+          icon={<ApprovalIcon state={approvalState} />}
+        />
+      </div>
+    </div>
+  );
+}
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="border-b border-[var(--divider)] p-6 last:border-b-0">
+      <h3 className="text-sm font-semibold text-foreground">{title}</h3>
+      <div className="mt-4">{children}</div>
     </section>
+  );
+}
+
+function Header({ id, actions }: { id: string; actions?: React.ReactNode }) {
+  return (
+    <EditPageHeader
+      title="รายละเอียด PSP Connection"
+      backHref="/control/psp/list"
+      breadcrumbs={[
+        { label: "การเชื่อมต่อ PSP", href: "/control/psp/list" },
+        { label: id },
+      ]}
+      actions={actions}
+    />
   );
 }
 
@@ -76,7 +141,7 @@ function BlockingState({
   onRetry?: () => void;
 }) {
   return (
-    <div className="rounded-2xl bg-card px-5 py-12 text-center shadow-card" role="alert">
+    <div className="rounded-card bg-card px-5 py-12 text-center" style={cardStyle} role="alert">
       <h1 className="text-h6 text-foreground">{title}</h1>
       <p className="mt-2 text-sm text-grey-600">{message}</p>
       {onRetry ? (
@@ -150,28 +215,43 @@ export function PspDetailView({
     [merchants.items],
   );
 
-  if (resourceState.status === "loading") return <LoadingState />;
+  if (resourceState.status === "loading") {
+    return <><Header id={id} /><LoadingState /></>;
+  }
   if (resourceState.status === "not-found") {
     return (
-      <BlockingState
-        title="ไม่พบ PSP Connection"
-        message="รายการนี้อาจไม่มีอยู่หรือคุณอาจเข้าถึงไม่ได้"
-      />
+      <>
+        <Header id={id} />
+        <BlockingState
+          title="ไม่พบ PSP Connection"
+          message="รายการนี้อาจไม่มีอยู่หรือคุณอาจเข้าถึงไม่ได้"
+        />
+      </>
     );
   }
   if (resourceState.status === "forbidden") {
-    return <BlockingState title="ไม่มีสิทธิ์เข้าถึง" message="คุณไม่มีสิทธิ์ดู PSP Connection นี้" />;
+    return (
+      <>
+        <Header id={id} />
+        <BlockingState title="ไม่มีสิทธิ์เข้าถึง" message="คุณไม่มีสิทธิ์ดู PSP Connection นี้" />
+      </>
+    );
   }
   if (resourceState.status === "error") {
     return (
-      <BlockingState
-        title="โหลด PSP Connection ไม่สำเร็จ"
-        message="กรุณาลองใหม่อีกครั้ง"
-        onRetry={resourceState.refetch}
-      />
+      <>
+        <Header id={id} />
+        <BlockingState
+          title="โหลด PSP Connection ไม่สำเร็จ"
+          message="กรุณาลองใหม่อีกครั้ง"
+          onRetry={resourceState.refetch}
+        />
+      </>
     );
   }
-  if (!resourceState.resource) return <LoadingState />;
+  if (!resourceState.resource) {
+    return <><Header id={id} /><LoadingState /></>;
+  }
 
   const resource = resourceState.resource;
   const connection = resource.connection;
@@ -249,102 +329,102 @@ export function PspDetailView({
   };
 
   const disabledReasons = [...new Set([editGate.reason, testGate.reason, credentialGate.reason].filter(Boolean))];
+  const editHref = `/control/psp/edit?id=${encodeURIComponent(connection.pspConnectionId)}`;
 
   return (
-    <div className="flex flex-col gap-5">
-      <ConnectionHeader
-        connectionId={connection.pspConnectionId}
-        provider={connection.psp}
-        merchantName={merchantName}
-        enabled={connection.isEnabled}
-        health={connection.health}
-        approvalState={approvalState}
+    <>
+      <Header
+        id={connection.pspConnectionId}
+        actions={
+          <div className="flex items-center gap-2">
+            <Link href="/control/psp/list" className={cancelClass}>
+              ยกเลิก
+            </Link>
+            {showEdit ? (
+              editGate.allowed ? (
+                <Link href={editHref} className={primaryClass}>
+                  <Pencil className="size-4" />
+                  แก้ไข
+                </Link>
+              ) : (
+                <button type="button" className={primaryClass} disabled title={editGate.reason ?? undefined}>
+                  <Pencil className="size-4" />
+                  แก้ไข
+                </button>
+              )
+            ) : null}
+          </div>
+        }
       />
 
-      {notice ? <Notice tone={notice.tone}>{notice.text}</Notice> : null}
-      {!resource.etag ? (
-        <Notice tone="error">
-          Response ไม่มี ETag จึงปิด mutation ทั้งหมด กรุณาโหลดข้อมูลใหม่
-          <Button type="button" variant="outline" className="ml-3" onClick={resourceState.refetch}>
-            โหลดใหม่
-          </Button>
-        </Notice>
-      ) : null}
-      {approvals.status === "unavailable" ? (
-        <Notice tone="error">
-          ตรวจสถานะอนุมัติไม่ได้ จึงปิด Edit, Test และ credential change
-          <Button type="button" variant="outline" className="ml-3" onClick={approvals.retry}>
-            ลองใหม่
-          </Button>
-        </Notice>
-      ) : null}
-      {merchants.status === "partial" || merchants.status === "error" ? (
-        <Notice tone="warning">
-          โหลดชื่อ Merchant ไม่ครบ; แสดง Merchant ID แทนเมื่อ resolveไม่ได้
-          <Button type="button" variant="outline" className="ml-3" onClick={merchants.retry}>
-            ลองใหม่
-          </Button>
-        </Notice>
-      ) : null}
+      <div className="flex flex-col gap-5">
+        {notice ? <Notice tone={notice.tone}>{notice.text}</Notice> : null}
+        {!resource.etag ? (
+          <Notice tone="error">
+            Response ไม่มี ETag จึงปิด mutation ทั้งหมด กรุณาโหลดข้อมูลใหม่
+            <Button type="button" variant="outline" className="ml-3" onClick={resourceState.refetch}>
+              โหลดใหม่
+            </Button>
+          </Notice>
+        ) : null}
+        {approvals.status === "unavailable" ? (
+          <Notice tone="error">
+            ตรวจสถานะอนุมัติไม่ได้ จึงปิด Edit, Test และ credential change
+            <Button type="button" variant="outline" className="ml-3" onClick={approvals.retry}>
+              ลองใหม่
+            </Button>
+          </Notice>
+        ) : null}
+        {merchants.status === "partial" || merchants.status === "error" ? (
+          <Notice tone="warning">
+            โหลดชื่อ Merchant ไม่ครบ; แสดง Merchant ID แทนเมื่อ resolveไม่ได้
+            <Button type="button" variant="outline" className="ml-3" onClick={merchants.retry}>
+              ลองใหม่
+            </Button>
+          </Notice>
+        ) : null}
 
-      <div className="grid grid-cols-1 gap-5 mmd:grid-cols-12">
-        <div className="flex flex-col gap-5 mmd:col-span-8">
-          <DetailCard title="ข้อมูลการเชื่อมต่อ" icon={<Settings2 className="size-5 text-grey-600" />}>
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <div className="overflow-hidden rounded-card bg-card" style={cardStyle}>
+          <ConnectionIdentity
+            connection={connection}
+            merchantName={merchantName}
+            enabled={connection.isEnabled}
+            approvalState={approvalState}
+          />
+
+          <Section title="ข้อมูลการเชื่อมต่อ">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               <ReadField label="Merchant" value={merchantName} />
-              <ReadField label="Provider" value={connection.psp === "2c2p" ? "2C2P" : "Omise"} />
-              <ReadField
-                label="Enabled methods"
-                value={connection.enabledMethods.join(", ") || "—"}
-                className="sm:col-span-2"
-              />
+              <ReadField label="Provider" value={PROVIDER_LABEL[connection.psp]} />
+              <ReadField label="Enabled methods" value={connection.enabledMethods.join(", ") || "-"} />
               <ReadField label="ทดสอบล่าสุด" value={formatDateTime(connection.lastTestedAt ?? "")} mono />
               <ReadField label="ผลทดสอบล่าสุด" value={lastTestLabel(connection.lastTestResult)} />
               <ReadField label="สร้างเมื่อ" value={formatDateTime(connection.createdAt)} mono />
               <ReadField label="Version" value={String(connection.version)} mono />
             </div>
-          </DetailCard>
+          </Section>
 
-          <DetailCard title="Config" icon={<ShieldCheck className="size-5 text-grey-600" />}>
+          <Section title="Config">
             {configFields.length ? (
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {configFields.map(([label, value]) => <ReadField key={label} label={label} value={value} />)}
               </div>
             ) : (
               <p className="text-sm text-grey-600">ไม่มี config ที่รองรับสำหรับแสดงผล</p>
             )}
-          </DetailCard>
+          </Section>
 
-          <DetailCard title="Credential ที่ใช้งานอยู่" icon={<KeyRound className="size-5 text-grey-600" />}>
-            <ReadField label="secretKey" value={connection.maskedSecrets.secretKey ?? "—"} mono />
+          <Section title="Credential ที่ใช้งานอยู่">
+            <ReadField label="secretKey" value={connection.maskedSecrets.secretKey ?? "-"} mono />
             {connection.psp === "2c2p" ? (
               <p className="mt-4 text-sm text-grey-600">
                 2C2P Merchant ID เป็น write-only และอ่านกลับจาก backend ไม่ได้
               </p>
             ) : null}
-          </DetailCard>
-        </div>
+          </Section>
 
-        <aside className="mmd:col-span-4">
-          <div className="rounded-2xl bg-card p-5 shadow-card sm:p-6">
-            <h2 className="text-h6 text-foreground">การดำเนินการ</h2>
-            <div className="mt-5 flex flex-col gap-3">
-              {showEdit ? (
-                editGate.allowed ? (
-                  <Link
-                    href={`/control/psp/edit?id=${encodeURIComponent(connection.pspConnectionId)}`}
-                    className={cn(buttonVariants({ variant: "outline", size: "lg" }), "w-full")}
-                  >
-                    <Pencil className="size-4" />
-                    แก้ไขการตั้งค่า
-                  </Link>
-                ) : (
-                  <Button type="button" variant="outline" size="lg" disabled>
-                    <Pencil className="size-4" />
-                    แก้ไขการตั้งค่า
-                  </Button>
-                )
-              ) : null}
+          <div className="flex flex-col gap-4 border-t border-[var(--divider)] p-6">
+            <div className="flex flex-wrap gap-2">
               {connection.capabilities.test === true ? (
                 <Button
                   type="button"
@@ -369,12 +449,12 @@ export function PspDetailView({
               </Button>
             </div>
             {disabledReasons.length ? (
-              <ul className="mt-4 list-disc space-y-1 pl-5 text-xs text-grey-600">
+              <ul className="list-disc space-y-1 pl-5 text-xs text-grey-600">
                 {disabledReasons.map((reason) => <li key={reason}>{reason}</li>)}
               </ul>
             ) : null}
           </div>
-        </aside>
+        </div>
       </div>
 
       <CredentialChangeDialog
@@ -401,6 +481,6 @@ export function PspDetailView({
           resourceState.refetch();
         }}
       />
-    </div>
+    </>
   );
 }
