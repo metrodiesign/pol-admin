@@ -26,15 +26,13 @@ import {
 } from "@/lib/control/notification";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";
-import { ControlListToolbar } from "@/components/control/shared/list-toolbar";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { ControlToolbar } from "@/components/control/shared/toolbar";
 import { buildNotificationRuleColumns } from "./rule-columns";
 import { notificationLogColumns } from "./log-columns";
+import { NotificationTabs, type NotificationTab } from "./tabs";
 import "@/types/table-meta";
 
-function RulesTab() {
-  const rules = useControlStore(notificationRulesStore);
-
+function RulesTab({ rules }: { rules: NotificationRule[] }) {
   const columns = useMemo(
     () =>
       buildNotificationRuleColumns((id, current) => {
@@ -60,14 +58,7 @@ function RulesTab() {
     },
   });
 
-  return (
-    <div
-      className="overflow-hidden rounded-2xl bg-card"
-      style={{ boxShadow: "var(--shadow-card)" }}
-    >
-      <DataTable table={table} hidePagination showSelectionAction={false} />
-    </div>
-  );
+  return <DataTable table={table} hidePagination showSelectionAction={false} />;
 }
 
 function LogTab() {
@@ -122,17 +113,16 @@ function LogTab() {
   const resetPage = () => table.setPageIndex(0);
 
   return (
-    <div
-      className="overflow-hidden rounded-2xl bg-card"
-      style={{ boxShadow: "var(--shadow-card)" }}
-    >
-      <ControlListToolbar
-        search={search}
-        onSearchChange={(v) => {
-          setSearch(v);
-          resetPage();
+    <>
+      <ControlToolbar
+        search={{
+          value: search,
+          onChange: (v) => {
+            setSearch(v);
+            resetPage();
+          },
+          placeholder: "ค้นหาเหตุการณ์, ปลายทาง...",
         }}
-        searchPlaceholder="ค้นหาเหตุการณ์, ปลายทาง..."
         filters={[
           {
             label: "ช่องทาง",
@@ -159,6 +149,14 @@ function LogTab() {
             })),
           },
         ]}
+        rowsPerPage={{
+          value: table.getState().pagination.pageSize,
+          onChange: (n) => {
+            table.setPageSize(n);
+            resetPage();
+          },
+          options: [10, 25, 50],
+        }}
       />
       <DataTable
         table={table}
@@ -169,24 +167,28 @@ function LogTab() {
         searchQuery={search}
         showSelectionAction={false}
       />
-    </div>
+    </>
   );
 }
 
 export function NotificationsView() {
-  return (
-    <Tabs defaultValue="rules" className="flex flex-col gap-6">
-      <TabsList className="w-fit">
-        <TabsTrigger value="rules">กฎการแจ้งเตือน</TabsTrigger>
-        <TabsTrigger value="log">ประวัติการส่ง</TabsTrigger>
-      </TabsList>
+  const rules = useControlStore(notificationRulesStore);
+  const [tab, setTab] = useState<NotificationTab>("rules");
 
-      <TabsContent value="rules">
-        <RulesTab />
-      </TabsContent>
-      <TabsContent value="log">
-        <LogTab />
-      </TabsContent>
-    </Tabs>
+  return (
+    <div
+      className="overflow-hidden rounded-2xl bg-card"
+      style={{ boxShadow: "var(--shadow-card)" }}
+    >
+      <NotificationTabs
+        tabs={[
+          { label: "กฎการแจ้งเตือน", value: "rules", count: rules.length },
+          { label: "ประวัติการส่ง", value: "log", count: NOTIFICATION_LOG.length },
+        ]}
+        active={tab}
+        onChange={setTab}
+      />
+      {tab === "rules" ? <RulesTab rules={rules} /> : <LogTab />}
+    </div>
   );
 }

@@ -10,8 +10,10 @@ export default function AuditLogPage() {
     <>
       <PageHeader
         title="บันทึกการตรวจสอบ"
-        description="บันทึกการกระทำสำคัญทั้งหมดในระบบ — อ่านอย่างเดียว แก้ไขหรือลบไม่ได้"
-        breadcrumbs={[{ label: "Control plane" }, { label: "บันทึกการตรวจสอบ" }]}
+        breadcrumbs={[
+          { label: "บันทึกการตรวจสอบ", href: "/control/audit" },
+          { label: "รายชื่อ" },
+        ]}
       />
       <AuditLogView />
     </>
