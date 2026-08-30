@@ -14,7 +14,7 @@ import { TYPE_LABEL } from "@/lib/control/originator";
 import { MERCHANT_LABEL } from "@/lib/mock/merchant";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";
-import { ControlListToolbar } from "@/components/control/shared/list-toolbar";
+import { ControlToolbar } from "@/components/control/shared/toolbar";
 import { originatorColumns } from "./columns";
 import "@/types/table-meta";
 
@@ -74,13 +74,15 @@ export function OriginatorsView() {
         className="overflow-hidden rounded-2xl bg-card"
         style={{ boxShadow: "var(--shadow-card)" }}
       >
-        <ControlListToolbar
-          search={search}
-          onSearchChange={(v) => {
-            setSearch(v);
-            resetPage();
+        <ControlToolbar
+          search={{
+            value: search,
+            onChange: (v) => {
+              setSearch(v);
+              resetPage();
+            },
+            placeholder: "ค้นหา code, ชื่อ originator...",
           }}
-          searchPlaceholder="ค้นหา code, ชื่อ originator..."
           filters={[
             {
               label: "บริษัท",
@@ -107,6 +109,14 @@ export function OriginatorsView() {
               })),
             },
           ]}
+          rowsPerPage={{
+            value: table.getState().pagination.pageSize,
+            onChange: (n) => {
+              table.setPageSize(n);
+              resetPage();
+            },
+            options: [10, 25, 50],
+          }}
         />
         <DataTable
           table={table}

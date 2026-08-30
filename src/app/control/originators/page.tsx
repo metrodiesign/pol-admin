@@ -10,8 +10,10 @@ export default function OriginatorsPage() {
     <>
       <PageHeader
         title="ต้นทางคำสั่ง"
-        description="แหล่งที่เริ่มรายการชำระเงิน เช่น สาขา แอปเชื่อมต่อ หรือตัวแทน"
-        breadcrumbs={[{ label: "Control plane" }, { label: "ต้นทางคำสั่ง" }]}
+        breadcrumbs={[
+          { label: "Originators", href: "/control/originators" },
+          { label: "รายชื่อ" },
+        ]}
       />
       <OriginatorsView />
     </>

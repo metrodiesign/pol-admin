@@ -1,27 +1,16 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import { ChevronRight } from "lucide-react";
+import { Eye } from "lucide-react";
 import type { Originator } from "@/types/control/originator";
 import { MERCHANT_LABEL } from "@/lib/mock/merchant";
 import { TYPE_LABEL, STATUS_LABEL, statusTone } from "@/lib/control/originator";
-import { StatusSpine } from "@/components/control/shared/status-spine";
 import { ControlStatusBadge } from "@/components/control/shared/status-badge";
+import { RowActionLink, RowActions } from "@/components/control/shared/row-action";
 import { Badge } from "@/components/ui/badge";
 import "@/types/table-meta";
 
 export const originatorColumns: ColumnDef<Originator>[] = [
-  {
-    id: "spine",
-    enableSorting: false,
-    meta: { headClassName: "w-1.5 p-0", cellClassName: "w-1.5 p-0" },
-    header: () => null,
-    cell: ({ row }) => (
-      <div className="flex h-full items-stretch pl-1.5">
-        <StatusSpine tone={statusTone(row.original.status)} />
-      </div>
-    ),
-  },
   {
     accessorKey: "code",
     header: "ต้นทาง",
@@ -30,11 +19,11 @@ export const originatorColumns: ColumnDef<Originator>[] = [
       const o = row.original;
       return (
         <div className="flex flex-col gap-0.5">
-          <span className="text-data text-xs font-medium text-grey-700">
-            {o.code}
-          </span>
           <span className="text-sm font-semibold text-foreground">
             {o.name}
+          </span>
+          <span className="text-data text-xs font-medium text-grey-700">
+            {o.code}
           </span>
         </div>
       );
@@ -80,10 +69,18 @@ export const originatorColumns: ColumnDef<Originator>[] = [
     ),
   },
   {
-    id: "chevron",
+    id: "actions",
     enableSorting: false,
-    meta: { headClassName: "w-12", cellClassName: "w-12", ignoreRowClick: true },
+    meta: { headClassName: "w-20", cellClassName: "w-20", ignoreRowClick: true },
     header: () => null,
-    cell: () => <ChevronRight className="size-4 text-grey-500" />,
+    cell: ({ row }) => (
+      <RowActions>
+        <RowActionLink
+          href={`/control/originators/read?id=${row.original.id}`}
+          label="ดูรายละเอียด"
+          icon={<Eye className="size-5" />}
+        />
+      </RowActions>
+    ),
   },
 ];
