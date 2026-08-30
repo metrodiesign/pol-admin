@@ -1,7 +1,7 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import { ChevronRight, Loader2, RotateCw, ShieldAlert, ShieldCheck } from "lucide-react";
+import { Eye, Loader2, RotateCw, ShieldAlert, ShieldCheck } from "lucide-react";
 import type { WebhookEvent } from "@/types/control/webhook-event";
 import { MERCHANT_LABEL } from "@/lib/mock/merchant";
 import {
@@ -10,10 +10,13 @@ import {
   deliveryTone,
 } from "@/lib/control/webhook";
 import { formatDateTime } from "@/lib/control/format";
-import { StatusSpine } from "@/components/control/shared/status-spine";
 import { ControlStatusBadge } from "@/components/control/shared/status-badge";
+import {
+  RowActionButton,
+  RowActionLink,
+  RowActions,
+} from "@/components/control/shared/row-action";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import "@/types/table-meta";
 
 /**
@@ -30,27 +33,16 @@ export function webhookColumns({
 }): ColumnDef<WebhookEvent>[] {
   return [
     {
-      id: "spine",
-      enableSorting: false,
-      meta: { headClassName: "w-1.5 p-0", cellClassName: "w-1.5 p-0" },
-      header: () => null,
-      cell: ({ row }) => (
-        <div className="flex h-full items-stretch pl-1.5">
-          <StatusSpine tone={deliveryTone(row.original.deliveryStatus)} />
-        </div>
-      ),
-    },
-    {
       accessorKey: "id",
       header: "เหตุการณ์",
       enableSorting: false,
       cell: ({ row }) => (
         <div className="flex flex-col gap-0.5">
-          <span className="text-data text-xs text-grey-700">
-            {row.original.id}
-          </span>
           <span className="text-sm font-semibold text-foreground">
             {row.original.eventType}
+          </span>
+          <span className="text-data text-xs text-grey-700">
+            {row.original.id}
           </span>
         </div>
       ),
@@ -130,8 +122,8 @@ export function webhookColumns({
       ),
     },
     {
-      id: "replay",
-      header: "",
+      id: "actions",
+      header: () => null,
       enableSorting: false,
       meta: { headClassName: "w-28", cellClassName: "w-28", ignoreRowClick: true },
       cell: ({ row }) => {
@@ -139,33 +131,28 @@ export function webhookColumns({
         const inFlight = replaying.has(e.id);
         const isDelivered = e.deliveryStatus === "delivered";
         return (
-          <Button
-            variant="outline"
-            size="sm"
-            disabled={isDelivered || inFlight}
-            onClick={() => onReplay(e)}
-          >
-            {inFlight ? (
-              <>
-                <Loader2 className="size-3.5 animate-spin" />
-                กำลังส่ง...
-              </>
-            ) : (
-              <>
-                <RotateCw className="size-3.5" />
-                ส่งซ้ำ
-              </>
-            )}
-          </Button>
+          <RowActions>
+            <RowActionButton
+              label={inFlight ? "กำลังส่ง..." : "ส่งซ้ำ"}
+              tooltip={isDelivered ? "ส่งสำเร็จแล้ว ไม่ต้องส่งซ้ำ" : undefined}
+              icon={
+                inFlight ? (
+                  <Loader2 className="size-5 animate-spin" />
+                ) : (
+                  <RotateCw className="size-5" />
+                )
+              }
+              disabled={isDelivered || inFlight}
+              onClick={() => onReplay(e)}
+            />
+            <RowActionLink
+              href={`/control/webhooks/read?id=${e.id}`}
+              label="ดูรายละเอียด"
+              icon={<Eye className="size-5" />}
+            />
+          </RowActions>
         );
       },
-    },
-    {
-      id: "chevron",
-      enableSorting: false,
-      meta: { headClassName: "w-12", cellClassName: "w-12", ignoreRowClick: true },
-      header: () => null,
-      cell: () => <ChevronRight className="size-4 text-grey-500" />,
     },
   ];
 }

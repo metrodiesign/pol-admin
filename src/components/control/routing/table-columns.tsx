@@ -1,12 +1,17 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import { ArrowUp, ArrowDown, ArrowRight } from "lucide-react";
+import { ArrowUp, ArrowDown, ArrowRight, Eye } from "lucide-react";
 import type { RoutingRule } from "@/types/control/routing-rule";
 import { MERCHANT_LABEL } from "@/lib/mock/merchant";
 import { CHANNEL_LABEL, PSP_LABEL, enabledTone } from "@/lib/control/routing";
 import { formatTHB } from "@/lib/utils";
 import { ControlStatusBadge } from "@/components/control/shared/status-badge";
+import {
+  RowActionButton,
+  RowActionLink,
+  RowActions,
+} from "@/components/control/shared/row-action";
 import { Switch } from "@/components/ui/switch";
 import "@/types/table-meta";
 
@@ -118,29 +123,28 @@ export function routingColumns({
       },
     },
     {
-      id: "reorder",
+      id: "actions",
       header: () => null,
       enableSorting: false,
-      meta: { headClassName: "w-20", cellClassName: "w-20", ignoreRowClick: true },
+      meta: { headClassName: "w-40", cellClassName: "w-40", ignoreRowClick: true },
       cell: ({ row }) => (
-        <div className="flex items-center gap-1">
-          <button
-            type="button"
-            aria-label="เลื่อนลำดับขึ้น"
+        <RowActions>
+          <RowActionButton
+            label="เลื่อนลำดับขึ้น"
+            icon={<ArrowUp className="size-5" />}
             onClick={() => onMoveUp(row.original)}
-            className="inline-flex size-7 items-center justify-center rounded-lg text-grey-600 transition-colors hover:bg-[var(--action-hover)] hover:text-foreground"
-          >
-            <ArrowUp className="size-4" />
-          </button>
-          <button
-            type="button"
-            aria-label="เลื่อนลำดับลง"
+          />
+          <RowActionButton
+            label="เลื่อนลำดับลง"
+            icon={<ArrowDown className="size-5" />}
             onClick={() => onMoveDown(row.original)}
-            className="inline-flex size-7 items-center justify-center rounded-lg text-grey-600 transition-colors hover:bg-[var(--action-hover)] hover:text-foreground"
-          >
-            <ArrowDown className="size-4" />
-          </button>
-        </div>
+          />
+          <RowActionLink
+            href={`/control/routing/read?id=${row.original.id}`}
+            label="ดูรายละเอียด"
+            icon={<Eye className="size-5" />}
+          />
+        </RowActions>
       ),
     },
   ];

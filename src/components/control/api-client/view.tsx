@@ -14,7 +14,7 @@ import { apiClientsStore } from "@/lib/control/api-clients-store";
 import { MERCHANT_LABEL } from "@/lib/mock/merchant";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";
-import { ControlListToolbar } from "@/components/control/shared/list-toolbar";
+import { ControlToolbar } from "@/components/control/shared/toolbar";
 import { ApiClientStatCards } from "./stat-cards";
 import { apiClientColumns } from "./columns";
 import "@/types/table-meta";
@@ -78,13 +78,15 @@ export function ApiClientsView() {
         className="overflow-hidden rounded-2xl bg-card"
         style={{ boxShadow: "var(--shadow-card)" }}
       >
-        <ControlListToolbar
-          search={search}
-          onSearchChange={(v) => {
-            setSearch(v);
-            resetPage();
+        <ControlToolbar
+          search={{
+            value: search,
+            onChange: (v) => {
+              setSearch(v);
+              resetPage();
+            },
+            placeholder: "ค้นหาชื่อ, client ID...",
           }}
-          searchPlaceholder="ค้นหาชื่อ, client ID..."
           filters={[
             {
               label: "บริษัท",
@@ -111,6 +113,14 @@ export function ApiClientsView() {
               ],
             },
           ]}
+          rowsPerPage={{
+            value: table.getState().pagination.pageSize,
+            onChange: (n) => {
+              table.setPageSize(n);
+              resetPage();
+            },
+            options: [10, 25, 50],
+          }}
         />
         <DataTable
           table={table}

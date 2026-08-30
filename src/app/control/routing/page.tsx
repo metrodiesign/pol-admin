@@ -10,8 +10,10 @@ export default function RoutingRulesPage() {
     <>
       <PageHeader
         title="กฎการกำหนดเส้นทาง"
-        description="กำหนดว่าการชำระเงินแต่ละแบบจะส่งไปยัง PSP รายใด พร้อมลำดับความสำคัญและตัวสำรอง"
-        breadcrumbs={[{ label: "Control plane" }, { label: "กฎการกำหนดเส้นทาง" }]}
+        breadcrumbs={[
+          { label: "กฎการกำหนดเส้นทาง", href: "/control/routing" },
+          { label: "รายชื่อ" },
+        ]}
       />
       <RoutingRulesView />
     </>
