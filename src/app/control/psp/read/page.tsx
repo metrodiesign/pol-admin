@@ -1,4 +1,3 @@
-import { EditPageHeader } from "@/components/shared/edit-page-header";
 import { PspDetailView } from "@/components/control/psp/detail-view";
 import { PspRouteGate } from "@/components/control/psp/psp-route-gate";
 import { normalizePspConnectionId } from "@/lib/control/psp";
@@ -18,23 +17,12 @@ export default async function PspReadPage({
   if (!connectionId) notFound();
 
   return (
-    <>
-      <EditPageHeader
-        title="รายละเอียด PSP Connection"
-        backHref="/control/psp/list"
-        breadcrumbs={[
-          { label: "Control plane" },
-          { label: "PSP Connections", href: "/control/psp/list" },
-          { label: connectionId },
-        ]}
+    <PspRouteGate requiredPermissions={["settings.manage"]}>
+      <PspDetailView
+        key={connectionId}
+        id={connectionId}
+        credentialRequested={notice === "credential-requested"}
       />
-      <PspRouteGate requiredPermissions={["settings.manage"]}>
-        <PspDetailView
-          key={connectionId}
-          id={connectionId}
-          credentialRequested={notice === "credential-requested"}
-        />
-      </PspRouteGate>
-    </>
+    </PspRouteGate>
   );
 }

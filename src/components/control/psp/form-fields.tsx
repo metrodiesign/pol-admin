@@ -7,6 +7,26 @@ import { METHOD_LABEL, supportedMethods, type PspValidationErrors } from "@/lib/
 import { cn } from "@/lib/utils";
 import type { PspMethod, PspProvider } from "@/types/control/psp-connection";
 
+// Mirrors the checkout channel cards (src/components/policy/checkout-channel-card.tsx)
+// without importing across modules; same public/payment assets and copy.
+const METHOD_CARD: Record<PspMethod, { title: string; caption: string; image: string }> = {
+  card: {
+    title: "บัตรเครดิต / เดบิต",
+    caption: "Visa, Mastercard, JCB, UnionPay",
+    image: "/payment/credit-card-v2.png",
+  },
+  promptpay: {
+    title: "PromptPay QR",
+    caption: "สแกน QR จ่ายผ่านแอปธนาคาร",
+    image: "/payment/promptpay-qr-v2.png",
+  },
+  installment: {
+    title: "ผ่อนชำระ",
+    caption: "KBank, KTC, BBL, BAY",
+    image: "/payment/installment-v2.png",
+  },
+};
+
 export function PspMethodFields({
   provider,
   value,
@@ -34,27 +54,37 @@ export function PspMethodFields({
         ช่องทางที่เปิดใช้ <span className="text-error">*</span>
       </legend>
       {provider ? (
-        <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-3">
-          {methods.map((method) => (
-            <label
-              key={method}
-              className="flex min-h-12 cursor-pointer items-center gap-3 rounded-control border border-[var(--divider)] px-4 text-sm text-foreground transition hover:border-grey-500 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/30"
-            >
-              <input
-                type="checkbox"
-                className="size-4 accent-primary"
-                checked={value.includes(method)}
-                onChange={(event) =>
-                  onChange(
-                    event.target.checked
-                      ? [...value, method]
-                      : value.filter((candidate) => candidate !== method),
-                  )
-                }
-              />
-              {METHOD_LABEL[method]}
-            </label>
-          ))}
+        <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-3">
+          {methods.map((method) => {
+            const card = METHOD_CARD[method];
+            return (
+              <label
+                key={method}
+                className="group flex cursor-pointer items-center gap-2.5 rounded-xl border border-[var(--divider)] p-3.5 transition-colors hover:bg-grey-100 has-[:checked]:border-secondary has-[:checked]:bg-secondary/4"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={card.image} alt={METHOD_LABEL[method]} className="h-20 w-20 shrink-0 object-contain" />
+                <span className="flex min-w-0 flex-1 flex-col gap-1">
+                  <span className="text-sm font-bold text-foreground group-has-[:checked]:text-secondary">
+                    {card.title}
+                  </span>
+                  <span className="text-xs leading-relaxed text-grey-500">{card.caption}</span>
+                </span>
+                <input
+                  type="checkbox"
+                  className="sr-only"
+                  checked={value.includes(method)}
+                  onChange={(event) =>
+                    onChange(
+                      event.target.checked
+                        ? [...value, method]
+                        : value.filter((candidate) => candidate !== method),
+                    )
+                  }
+                />
+              </label>
+            );
+          })}
         </div>
       ) : (
         <p className="mt-2 text-sm text-grey-600">เลือก PSP ก่อนเลือกช่องทาง</p>

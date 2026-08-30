@@ -6,7 +6,7 @@ import { Loader2, RefreshCw } from "lucide-react";
 
 import { SelectField } from "@/components/form/select-field";
 import { ConfirmDialog } from "@/components/policy/confirm-dialog";
-import { EditPageHeader } from "@/components/shared/edit-page-header";
+import { PageHeader } from "@/components/shared/page-header";
 import { Button } from "@/components/ui/button";
 import { PspApiError, createPspConnection } from "@/lib/api/control/psp";
 import {
@@ -19,9 +19,9 @@ import {
   type PspValidationErrors,
 } from "@/lib/control/psp";
 import type { PspMethod, PspProvider } from "@/types/control/psp-connection";
-import { ConnectionHeader } from "./connection-header";
 import { PspCredentialFields, PspMethodFields } from "./form-fields";
 import { useMerchantCatalog } from "./resource-hooks";
+import { cancelClass, cardStyle, primaryClass } from "./styles";
 
 interface CreateDraft {
   merchantId: string;
@@ -167,50 +167,36 @@ export function PspCreateView() {
 
   return (
     <>
-      <EditPageHeader
+      <PageHeader
         title="เพิ่ม PSP Connection"
-        backHref="/control/psp/list"
-        onBack={requestLeave}
         breadcrumbs={[
-          { label: "Control plane" },
-          { label: "PSP Connections", href: "/control/psp/list" },
+          { label: "การเชื่อมต่อ PSP", href: "/control/psp/list" },
           { label: "เพิ่มการเชื่อมต่อ" },
         ]}
         actions={
-          <div className="flex w-full gap-2 sm:w-auto">
-            <Button
+          <div className="flex items-center gap-2">
+            <button
               type="button"
-              variant="outline"
-              size="lg"
-              className="min-w-0 flex-1 sm:min-w-28"
               onClick={requestLeave}
               disabled={submitting}
+              className={cancelClass}
             >
               ยกเลิก
-            </Button>
-            <Button
+            </button>
+            <button
               type="submit"
               form="psp-create-form"
-              size="lg"
-              className="min-w-0 flex-1 sm:min-w-40"
               disabled={submitting || operationInProgress || !catalogReady}
+              className={primaryClass}
             >
               {submitting ? <Loader2 className="size-4 animate-spin" /> : null}
               {submitLabel}
-            </Button>
+            </button>
           </div>
         }
       />
 
       <div className="flex flex-col gap-5">
-        <ConnectionHeader
-          provider={draft.provider || null}
-          merchantName={merchant?.name ?? null}
-          enabled
-          health="unknown"
-          approvalState="clear"
-        />
-
         {merchants.status === "loading" ? (
           <p className="rounded-xl border border-[var(--divider)] bg-card px-4 py-3 text-sm text-grey-600" role="status">
             กำลังโหลด Merchant catalog...
@@ -233,14 +219,17 @@ export function PspCreateView() {
 
         <form
           id="psp-create-form"
-          className="rounded-2xl bg-card p-5 shadow-card sm:p-6"
+          className="rounded-card bg-card p-6"
+          style={cardStyle}
           onSubmit={submit}
           aria-busy={submitting}
           noValidate
         >
-          <h1 className="text-h5 text-foreground">ข้อมูลการเชื่อมต่อ</h1>
+          <h2 className="text-lg font-bold leading-7 text-foreground">
+            {draft.provider ? PROVIDER_OPTIONS.find((o) => o.value === draft.provider)?.label : "ข้อมูลการเชื่อมต่อ"}
+          </h2>
           <p className="mt-1 text-sm text-grey-600">
-            เลือก Merchant และ PSP แล้วกำหนด Credential เริ่มต้นแบบ write-only
+            {merchant?.name ?? "เลือก Merchant และ PSP แล้วกำหนด Credential เริ่มต้นแบบ write-only"}
           </p>
 
           <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2">
