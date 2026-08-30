@@ -1,4 +1,5 @@
 import { Sparkline } from "@/components/charts/sparkline";
+import { StatCard } from "@/components/control/shared/stat-card";
 import type { AccentColor } from "@/lib/mock/dashboard";
 import { formatTHB } from "@/lib/utils";
 
@@ -43,19 +44,12 @@ export function ReportKpiCards({
   return (
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
       {cards.map((c) => (
-        <div
+        <StatCard
           key={c.label}
-          className="flex items-center justify-between gap-4 rounded-2xl bg-card p-6"
-          style={{ boxShadow: "var(--shadow-card)" }}
-        >
-          <div>
-            <p className="text-sm font-semibold text-grey-600">{c.label}</p>
-            <p className="mt-2 text-2xl font-bold text-foreground md:text-3xl">
-              {c.value}
-            </p>
-          </div>
-          <Sparkline data={c.trend} color={c.color} width={72} height={48} />
-        </div>
+          label={c.label}
+          value={c.value}
+          trailing={<Sparkline data={c.trend} color={c.color} width={72} height={48} />}
+        />
       ))}
     </div>
   );

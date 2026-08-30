@@ -12,23 +12,11 @@ import { ORDER_STATUS_LABEL } from "@/lib/order";
 import { formatTHB } from "@/lib/utils";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";
-import { ControlListToolbar } from "@/components/control/shared/list-toolbar";
+import { StatCard } from "@/components/control/shared/stat-card";
+import { cardStyle } from "@/components/control/shared/styles";
+import { ControlToolbar } from "@/components/control/shared/toolbar";
 import { reconciliationColumns } from "./columns";
 import "@/types/table-meta";
-
-function StatCard({ label, value }: { label: string; value: string }) {
-  return (
-    <div
-      className="rounded-2xl bg-card p-6"
-      style={{ boxShadow: "var(--shadow-card)" }}
-    >
-      <p className="text-sm font-semibold text-grey-600">{label}</p>
-      <p className="mt-2 text-2xl font-bold text-foreground md:text-3xl">
-        {value}
-      </p>
-    </div>
-  );
-}
 
 export function ReconciliationView() {
   const lines = RECONCILIATION_LINES;
@@ -76,10 +64,7 @@ export function ReconciliationView() {
         <StatCard label="ยอดรวม" value={formatTHB(totalAmount, 2)} />
       </div>
 
-      <div
-        className="rounded-2xl bg-card p-6"
-        style={{ boxShadow: "var(--shadow-card)" }}
-      >
+      <div className="rounded-card bg-card p-6" style={cardStyle}>
         <p className="text-xs text-grey-600">
           เงินจาก PSP เข้าบัญชีบริษัทโดยตรง — แพลตฟอร์มติดตามสถานะออเดอร์
           ไม่ถือเงิน สรุปนี้จัดกลุ่มตามสถานะและสกุลเงิน
@@ -90,13 +75,15 @@ export function ReconciliationView() {
         className="overflow-hidden rounded-2xl bg-card"
         style={{ boxShadow: "var(--shadow-card)" }}
       >
-        <ControlListToolbar
-          search={search}
-          onSearchChange={(v) => {
-            setSearch(v);
-            resetPage();
+        <ControlToolbar
+          search={{
+            value: search,
+            onChange: (v) => {
+              setSearch(v);
+              resetPage();
+            },
+            placeholder: "ค้นหาสกุลเงิน...",
           }}
-          searchPlaceholder="ค้นหาสกุลเงิน..."
           filters={[
             {
               label: "สถานะ",
@@ -110,6 +97,14 @@ export function ReconciliationView() {
               ),
             },
           ]}
+          rowsPerPage={{
+            value: table.getState().pagination.pageSize,
+            onChange: (n) => {
+              table.setPageSize(n);
+              resetPage();
+            },
+            options: [10, 25, 50],
+          }}
         />
         <DataTable
           table={table}

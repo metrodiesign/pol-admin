@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ControlListToolbar } from "@/components/control/shared/list-toolbar";
+import { cardStyle } from "@/components/control/shared/styles";
+import { ControlToolbar } from "@/components/control/shared/toolbar";
 import { DonutChart, DonutLegend } from "@/components/charts/donut-chart";
 import { StackedBarChart } from "@/components/charts/stacked-bar-chart";
 import { CATEGORICAL } from "@/components/charts/chart-colors";
@@ -25,10 +26,7 @@ function ChartCard({
   children: React.ReactNode;
 }) {
   return (
-    <div
-      className="flex flex-col gap-5 rounded-2xl bg-card p-6"
-      style={{ boxShadow: "var(--shadow-card)" }}
-    >
+    <div className="flex flex-col gap-5 rounded-card bg-card p-6" style={cardStyle}>
       <h6 className="text-lg font-semibold text-grey-800">{title}</h6>
       {children}
     </div>
@@ -57,10 +55,7 @@ export function ReportsView() {
         className="overflow-hidden rounded-2xl bg-card"
         style={{ boxShadow: "var(--shadow-card)" }}
       >
-        <ControlListToolbar
-          search=""
-          onSearchChange={() => {}}
-          searchPlaceholder=""
+        <ControlToolbar
           filters={[
             {
               label: "บริษัท",
