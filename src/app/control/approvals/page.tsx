@@ -10,8 +10,10 @@ export default function ApprovalsPage() {
     <>
       <PageHeader
         title="การอนุมัติ"
-        description="คำขอที่ต้องให้ผู้ตรวจสอบคนที่สองอนุมัติก่อนดำเนินการ (maker-checker) — ผู้ขอไม่สามารถอนุมัติคำขอของตนเองได้"
-        breadcrumbs={[{ label: "Control plane" }, { label: "การอนุมัติ" }]}
+        breadcrumbs={[
+          { label: "การอนุมัติ", href: "/control/approvals" },
+          { label: "รายชื่อ" },
+        ]}
       />
       <ApprovalsView />
     </>

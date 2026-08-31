@@ -19,7 +19,7 @@ import {
 import { MERCHANT_LABEL } from "@/lib/mock/merchant";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";
-import { ControlListToolbar } from "@/components/control/shared/list-toolbar";
+import { ControlToolbar } from "@/components/control/shared/toolbar";
 import { auditColumns } from "./columns";
 import "@/types/table-meta";
 
@@ -86,13 +86,15 @@ export function AuditLogView() {
         className="overflow-hidden rounded-2xl bg-card"
         style={{ boxShadow: "var(--shadow-card)" }}
       >
-        <ControlListToolbar
-          search={search}
-          onSearchChange={(v) => {
-            setSearch(v);
-            resetPage();
+        <ControlToolbar
+          search={{
+            value: search,
+            onChange: (v) => {
+              setSearch(v);
+              resetPage();
+            },
+            placeholder: "ค้นหาผู้กระทำ, การกระทำ, ทรัพยากร...",
           }}
-          searchPlaceholder="ค้นหาผู้กระทำ, การกระทำ, ทรัพยากร..."
           filters={[
             {
               label: "ผู้กระทำ",
@@ -105,7 +107,6 @@ export function AuditLogView() {
                 value: a,
                 label: a,
               })),
-              widthClass: "w-full lg:w-[220px]",
             },
             {
               label: "การกระทำ",
@@ -118,7 +119,6 @@ export function AuditLogView() {
                 value: a,
                 label: actionLabel(a),
               })),
-              widthClass: "w-full lg:w-[200px]",
             },
             {
               label: "บริษัท",
@@ -133,6 +133,14 @@ export function AuditLogView() {
               })),
             },
           ]}
+          rowsPerPage={{
+            value: table.getState().pagination.pageSize,
+            onChange: (n) => {
+              table.setPageSize(n);
+              resetPage();
+            },
+            options: [10, 25, 50],
+          }}
         />
 
         <p className="flex items-center gap-1.5 border-t border-[var(--divider)] px-5 py-3 text-xs text-grey-600">

@@ -5,6 +5,8 @@
 
 > Status: approved 2026-08-22
 
+> Scope reconciliation: account-level `permissions: []` remains Inline 403; this is distinct from route-level missing `settings.manage` and PSP list API `403`, which use `/error/403`. Current evidence work is tracked in `.claude/specs/bugfix-psp-rbac-contract/`.
+
 ## Current Behavior (Defect)
 
 เมื่อผู้ใช้เปิด `/control/psp/list` ด้วยบัญชีที่ไม่มี `settings.manage` หรือเมื่อ PSP list API จาก `pol-core` คืน `403`:

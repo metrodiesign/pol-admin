@@ -10,10 +10,9 @@ export default function TenantsPage() {
     <>
       <PageHeader
         title="ผู้เช่าและพื้นที่ทำงาน"
-        description="บริษัทในเครือที่ใช้แพลตฟอร์ม — แต่ละบริษัทเป็นนิติบุคคลแยก จัดการได้เฉพาะผู้ดูแลระดับ Super"
         breadcrumbs={[
-          { label: "Control plane" },
-          { label: "ผู้เช่าและพื้นที่ทำงาน" },
+          { label: "Tenants & Workspaces", href: "/control/tenants" },
+          { label: "รายชื่อ" },
         ]}
       />
       <TenantsView />

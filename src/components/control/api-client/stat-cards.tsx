@@ -1,18 +1,5 @@
 import type { ApiClient } from "@/types/control/api-client";
-
-function StatCard({ label, value }: { label: string; value: string }) {
-  return (
-    <div
-      className="rounded-2xl bg-card p-6"
-      style={{ boxShadow: "var(--shadow-card)" }}
-    >
-      <p className="text-sm font-semibold text-grey-600">{label}</p>
-      <p className="mt-2 text-2xl font-bold text-foreground md:text-3xl">
-        {value}
-      </p>
-    </div>
-  );
-}
+import { StatCard } from "@/components/control/shared/stat-card";
 
 /** Summary row for API clients: total · active · revoked. */
 export function ApiClientStatCards({ rows }: { rows: ApiClient[] }) {

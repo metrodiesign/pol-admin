@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import {
   signalExitCode,
   stopManagedServer,
+  trackManagedProcessTree,
   waitForManagedServer,
 } from "./lib/workspace-process.mjs";
 import { assertPortAvailable } from "./lib/workspace-verification.mjs";
@@ -36,6 +37,8 @@ function startServer(name, script, port) {
       resolveClose(result);
     });
   });
+  servers.push(server);
+  trackManagedProcessTree(server);
   const capture = (chunk) => {
     server.output = `${server.output}${chunk}`.slice(-20_000);
   };
@@ -44,7 +47,6 @@ function startServer(name, script, port) {
   child.on("error", (error) => {
     server.spawnError = error;
   });
-  servers.push(server);
   return server;
 }
 

@@ -339,8 +339,7 @@ admin-fe-integration.md` (+ `admin-google-sso.md`, generated 2026-06-24 จา�
 2. Scope = auth integration + เริ่ม data layer (wire `/admin/me` จริง; domain อื่นคง mock).
 
 **Backend contract (ยืนยันจาก source):**
-- endpoints: `GET /admin/auth/login?returnTo=`, `POST /admin/auth/logout`, `POST /admin/auth/logout-all`,
-  `GET /admin/me`, `POST/GET /admin/tenants[/{code}]`, `/admin/admins/*`.
+- Microsoft login เริ่มด้วย top-level navigation ไป `GET {NEXT_PUBLIC_API_ORIGIN}/api/v1/admins/auth/microsoft/login?returnTo=`; session operations ใช้ same-origin `POST /admin/auth/logout`, `POST /admin/auth/logout-all`, `GET /admin/me`, `POST/GET /admin/tenants[/{code}]` และ `/admin/admins/*`.
 - `GET /admin/me` 200 = `{ adminId, email, tier: "Super"|"Scoped", accessibleTenants: { isUnrestricted,
   tenants?: [{id,code}] } }` — **ไม่มี name/picture**. 401 = ยังไม่ login.
 - cookie (dev http): session `adm_session` (httpOnly), CSRF `adm_csrf` (JS อ่านได้). prod = `__Host-adm_session`
@@ -349,16 +348,15 @@ admin-fe-integration.md` (+ `admin-google-sso.md`, generated 2026-06-24 จา�
 - returnTo allowlist = `/`, `/minimals`, `/tenants`. **`/dashboard` ไม่อยู่ใน allowlist** -> coordination item.
 
 **Architecture (BFF):**
-- `src/lib/api/admin-api.ts` — pure helper (`readCookieFrom`, `isMutation`, `buildLoginUrl`,
-  `buildRequestInit`; node-testable) + binding (`cookie`, `login`, `adminFetch`, `getMe`, `logout`,
-  `logoutAll`). `adminFetch` ใส่ CSRF เมื่อ mutation + `credentials:'include'`; 401 -> เด้ง login.
+- `src/lib/api/admin/auth.ts` — pure helper (`readCookieFrom`, `isMutation`, `buildMicrosoftLoginUrl`, `buildRequestInit`; node-testable) + binding (`cookie`, `microsoftLogin`, `adminFetch`, `getMe`, `logout`, `logoutAll`). `adminFetch` ใส่ CSRF เมื่อ mutation + `credentials:'include'`; 401 -> เด้ง `/login`.
 - `src/components/auth/auth-provider.tsx` — `<AuthProvider>` เรียก `getMe()` ตอน mount; `useAuth()` (co-locate
   ตาม pattern settings-provider). `auth-guard.tsx` — loading -> spinner, anon -> `login()`, authed -> children.
 - wrap `<AuthProvider><AuthGuard>` **ภายใน `minimals-layout.tsx`** (`MinimalsShell` = body เดิม) — คุมทุก
   protected group (minimals/dashboard/policy/producer/transaction/user); `/login` `/logout` ไม่ผ่าน -> public.
 - `login-view.tsx` — ปุ่มเดียว `login("/minimals")` (ตัด GIS/next-script/ResizeObserver/dual-card/toast).
-- `logout/page.tsx` — `logout().finally(-> /login)`. `account-drawer.tsx` — ปุ่ม Logout -> `/logout`;
-  header แสดง `me.email` + tier badge (name/avatar คง mock เพราะ backend ไม่ส่ง).
+- `logout/page.tsx` — เรียก `POST /admin/auth/logout` และไป `/login` เฉพาะเมื่อได้ `204`; หากล้มเหลวคงหน้าเดิม
+  พร้อม retry. `account-drawer.tsx` — ปุ่ม Logout ไป `/login` หลังได้ `204` เท่านั้น; หากล้มเหลวคง drawer
+  พร้อม retry; header แสดง `me.email` + tier badge (name/avatar คง mock เพราะ backend ไม่ส่ง).
 - `app/page.tsx` (root "/") — `redirect("/dashboard")`. "/" ไม่มี surface เอง; ครอบการเข้า / ตรง ๆ + กรณี
   backend fall back มา "/" หลัง callback (เมื่อ returnTo ไม่ allowlist) -> ยังลง /dashboard ผ่าน guard. (พบตอน live E2E: "/" 404.)
 - `app/login-error/page.tsx` (public, shell-free) — backend เด้งมาเมื่อ login callback ไม่ผ่าน

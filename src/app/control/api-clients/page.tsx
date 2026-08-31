@@ -10,8 +10,10 @@ export default function ApiClientsPage() {
     <>
       <PageHeader
         title="ไคลเอนต์ API"
-        description="แอปและระบบภายนอกที่เชื่อมต่อผ่าน API — จัดการสิทธิ์การเข้าถึงและการเพิกถอน"
-        breadcrumbs={[{ label: "Control plane" }, { label: "ไคลเอนต์ API" }]}
+        breadcrumbs={[
+          { label: "ไคลเอนต์ API", href: "/control/api-clients" },
+          { label: "รายชื่อ" },
+        ]}
       />
       <ApiClientsView />
     </>

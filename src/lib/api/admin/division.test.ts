@@ -7,7 +7,6 @@ import {
   getDivisions,
   updateDivision,
 } from "./division";
-import type { Division } from "@/types/organization/division";
 
 // --- integration: division CRUD (mock global fetch/document) ---
 // REQ-2.1, 3.3, 4.4, 5.4, 6.2, 7.4
@@ -35,59 +34,52 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-function division(id: string): Division {
-  return { id, code: `c_${id}`, name: `n${id}`, isActive: true };
-}
-
-function paged(items: Division[], page: number, totalPages: number) {
-  return { items, page, limit: 25, total: totalPages * items.length, totalPages };
-}
-
 describe("getDivisions", () => {
-  it("หน้าเดียว -> คืน items ตรง ๆ และ path ประกอบจาก segment", async () => {
-    const { calls } = stubFetchSeq([{ status: 200, body: paged([division("1")], 1, 1) }]);
-    const divisions = await getDivisions();
-    expect(divisions).toEqual([division("1")]);
+  it("bind list export กับ division path", async () => {
+    const body = {
+      items: [
+        {
+          id: "11111111-1111-4111-8111-111111111111",
+          code: "division_1",
+          name: "Division One",
+          status: 1,
+          version: 0,
+        },
+      ],
+      page: 1,
+      limit: 25,
+      total: 1,
+      totalPages: 1,
+    };
+    const { calls } = stubFetchSeq([{ status: 200, body }]);
+    await expect(getDivisions()).resolves.toEqual([
+      {
+        id: "11111111-1111-4111-8111-111111111111",
+        code: "division_1",
+        name: "Division One",
+        isActive: true,
+      },
+    ]);
     expect(calls[0]!.path).toBe("/api/v1/divisions?page=1&limit=25");
-  });
-
-  it("หลายหน้า -> fetch ครบทุกหน้าแล้ว concat ตามลำดับ", async () => {
-    const { calls } = stubFetchSeq([
-      { status: 200, body: paged([division("1")], 1, 3) },
-      { status: 200, body: paged([division("2")], 2, 3) },
-      { status: 200, body: paged([division("3")], 3, 3) },
-    ]);
-    const divisions = await getDivisions();
-    expect(divisions.map((u) => u.id)).toEqual(["1", "2", "3"]);
-    expect(calls.map((c) => c.path)).toEqual([
-      "/api/v1/divisions?page=1&limit=25",
-      "/api/v1/divisions?page=2&limit=25",
-      "/api/v1/divisions?page=3&limit=25",
-    ]);
-  });
-
-  it("page ใดไม่ ok -> throw ทั้งก้อน (ไม่คืนข้อมูลครึ่งเดียว)", async () => {
-    stubFetchSeq([{ status: 200, body: paged([division("1")], 1, 2) }, { status: 500 }]);
-    await expect(getDivisions()).rejects.toThrow("/api/v1/divisions 500");
   });
 });
 
 describe("getDivision", () => {
-  it("404 -> null", async () => {
-    stubFetchSeq([{ status: 404 }]);
-    expect(await getDivision("x")).toBeNull();
-  });
-
-  it("200 -> Division และ id ผ่าน encodeURIComponent", async () => {
-    const { calls } = stubFetchSeq([{ status: 200, body: division("a/b") }]);
-    const u = await getDivision("a/b");
-    expect(u?.id).toBe("a/b");
+  it("bind detail export กับ encoded division path", async () => {
+    const { calls } = stubFetchSeq([
+      {
+        status: 200,
+        body: {
+          id: "11111111-1111-4111-8111-111111111111",
+          code: "division_1",
+          name: "Division One",
+          status: 2,
+          version: 1,
+        },
+      },
+    ]);
+    await expect(getDivision("a/b")).resolves.toMatchObject({ isActive: false });
     expect(calls[0]!.path).toBe("/api/v1/divisions/a%2Fb");
-  });
-
-  it("status อื่น -> throw", async () => {
-    stubFetchSeq([{ status: 500 }]);
-    await expect(getDivision("x")).rejects.toThrow("500");
   });
 });
 

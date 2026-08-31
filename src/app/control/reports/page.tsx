@@ -10,8 +10,10 @@ export default function ReportsPage() {
     <>
       <PageHeader
         title="รายงาน"
-        description="ภาพรวมการชำระเงิน — สัดส่วนตาม PSP ช่องทาง และผู้ส่งงานสูงสุด"
-        breadcrumbs={[{ label: "Control plane" }, { label: "รายงาน" }]}
+        breadcrumbs={[
+          { label: "รายงาน", href: "/control/reports" },
+          { label: "รายชื่อ" },
+        ]}
       />
       <ReportsView />
     </>

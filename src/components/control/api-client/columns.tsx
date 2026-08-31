@@ -1,30 +1,20 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import { ChevronRight } from "lucide-react";
+import { Eye } from "lucide-react";
 import type { ApiClient } from "@/types/control/api-client";
 import { MERCHANT_LABEL } from "@/lib/mock/merchant";
 import { STATUS_LABEL, statusTone, scopeLabel } from "@/lib/control/api-client";
 import { formatDateTime } from "@/lib/control/format";
-import { StatusSpine } from "@/components/control/shared/status-spine";
 import { ControlStatusBadge } from "@/components/control/shared/status-badge";
+import { RowActionLink, RowActions } from "@/components/control/shared/row-action";
+import { controlBadgeClass } from "@/components/control/shared/styles";
 import { Badge } from "@/components/ui/badge";
 import "@/types/table-meta";
 
 const SCOPE_CAP = 3;
 
 export const apiClientColumns: ColumnDef<ApiClient>[] = [
-  {
-    id: "spine",
-    enableSorting: false,
-    meta: { headClassName: "w-1.5 p-0", cellClassName: "w-1.5 p-0" },
-    header: () => null,
-    cell: ({ row }) => (
-      <div className="flex h-full items-stretch pl-1.5">
-        <StatusSpine tone={statusTone(row.original.status)} />
-      </div>
-    ),
-  },
   {
     accessorKey: "name",
     header: "ไคลเอนต์",
@@ -51,12 +41,12 @@ export const apiClientColumns: ColumnDef<ApiClient>[] = [
       return (
         <div className="flex flex-wrap items-center gap-1">
           {shown.map((s) => (
-            <Badge key={s} variant="outline" title={scopeLabel(s)}>
+            <Badge key={s} variant="outline" className={controlBadgeClass} title={scopeLabel(s)}>
               {s}
             </Badge>
           ))}
           {extra > 0 ? (
-            <Badge variant="outline" className="text-grey-600">
+            <Badge variant="outline" className={`${controlBadgeClass} text-grey-600`}>
               +{extra}
             </Badge>
           ) : null}
@@ -96,10 +86,18 @@ export const apiClientColumns: ColumnDef<ApiClient>[] = [
     ),
   },
   {
-    id: "chevron",
+    id: "actions",
     enableSorting: false,
-    meta: { headClassName: "w-12", cellClassName: "w-12", ignoreRowClick: true },
+    meta: { headClassName: "w-20", cellClassName: "w-20", ignoreRowClick: true },
     header: () => null,
-    cell: () => <ChevronRight className="size-4 text-grey-500" />,
+    cell: ({ row }) => (
+      <RowActions>
+        <RowActionLink
+          href={`/control/api-clients/read?id=${row.original.id}`}
+          label="ดูรายละเอียด"
+          icon={<Eye className="size-5" />}
+        />
+      </RowActions>
+    ),
   },
 ];

@@ -27,7 +27,15 @@ export function MinimalsLayout({ children }: { children: React.ReactNode }) {
   // BFF auth gate — ทุก protected route group route ผ่าน MinimalsLayout; /login + /logout ไม่ผ่าน -> public.
   return (
     <AuthProvider>
-      <AuthGuard>
+      <AuthGuard
+        renderForbidden={(content) => (
+          <MinimalsShell>
+            <div className="flex min-h-[60vh] items-center justify-center">
+              {content}
+            </div>
+          </MinimalsShell>
+        )}
+      >
         <MinimalsShell>{children}</MinimalsShell>
       </AuthGuard>
     </AuthProvider>

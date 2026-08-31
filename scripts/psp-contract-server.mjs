@@ -186,6 +186,7 @@ const server = createServer(async (request, response) => {
   }
 
   if (method === "GET" && url.pathname === "/api/v1/payments/psp-connections") {
+    if (scenario === "list-forbidden") return problem(response, 403, "forbidden");
     let filtered = connections;
     for (const name of ["merchantId", "psp", "health"]) {
       const value = url.searchParams.get(name);
@@ -241,6 +242,16 @@ const server = createServer(async (request, response) => {
     });
     if (currentIndex >= 0) connections[currentIndex] = updated;
     return json(response, 200, updated, { ETag: '"v8"' });
+  }
+
+  if (method === "POST" && url.pathname === "/api/v1/admins/auth/logout") {
+    if (scenario === "logout-success") {
+      response.writeHead(204, {
+        "Set-Cookie": ["adm_session=; Max-Age=0; Path=/", "adm_csrf=; Max-Age=0; Path=/"],
+      });
+      return response.end();
+    }
+    return problem(response, 500, "logout_failed");
   }
 
   const testMatch = url.pathname.match(/^\/api\/v1\/payments\/psp-connections\/([0-9a-f-]+)\/test$/i);

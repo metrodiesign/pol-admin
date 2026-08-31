@@ -9,6 +9,8 @@ DataTable) → `*-columns.tsx` (ColumnDef or a factory closing over action handl
 `src/lib/mock/*.ts`, types in `src/types/*.ts`.
 
 ## Signature design language
+
+> Superseded 2026-08-31 โดย `.claude/specs/psp-ui-parity/` และ `.claude/specs/control-plane-ui-parity/`: `StatusSpine`, `ControlListToolbar`, overline และ summary/aside grid ถูกถอดออก ทุก screen ใช้ header/toolbar/card/row-action pattern เดียวกับ merchant user/role ผ่าน `src/components/control/shared/{styles,toolbar,detail-shell,stat-card,row-action}`. Badge/chip geometry เปลี่ยนเป็น merchant pill ตาม REQ-5 ของ control-plane-ui-parity โดยคง tone/icon semantics; `ReadField` และ `text-data` ยังคงใช้.
 - `--font-mono` (IBM Plex Mono) + `@utility text-data` — all machine identifiers.
 - `@utility status-spine` + `<StatusSpine tone>` — leading health bar on rows (decorative;
   state also in a badge).

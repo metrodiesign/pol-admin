@@ -14,7 +14,7 @@ import { routingStore, toggleRule, moveRule } from "@/lib/control/routing-store"
 import { showControlToast } from "@/components/control/shared/toast";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";
-import { ControlListToolbar } from "@/components/control/shared/list-toolbar";
+import { ControlToolbar } from "@/components/control/shared/toolbar";
 import { routingColumns } from "./table-columns";
 import "@/types/table-meta";
 
@@ -81,10 +81,7 @@ export function RoutingRulesView() {
         className="overflow-hidden rounded-2xl bg-card"
         style={{ boxShadow: "var(--shadow-card)" }}
       >
-        <ControlListToolbar
-          search=""
-          onSearchChange={() => {}}
-          searchPlaceholder=""
+        <ControlToolbar
           filters={[
             {
               label: "บริษัท",

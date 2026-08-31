@@ -1,144 +1,100 @@
 "use client";
 
-import { Building2, CreditCard } from "lucide-react";
+import Link from "next/link";
+import { Building2 } from "lucide-react";
 import type { MerchantCode } from "@/types/merchant";
 import { merchantByCode } from "@/lib/mock/merchant";
+import {
+  DetailIdentity,
+  DetailNotFound,
+  DetailSection,
+} from "@/components/control/shared/detail-shell";
 import { ReadField } from "@/components/control/shared/read-field";
-import { StatusSpine } from "@/components/control/shared/status-spine";
+import { cancelClass, cardStyle, controlBadgeClass } from "@/components/control/shared/styles";
+import { EditPageHeader } from "@/components/shared/edit-page-header";
 import { Badge } from "@/components/ui/badge";
 
-function DetailCard({
-  title,
-  icon,
-  children,
-}: {
-  title: string;
-  icon?: React.ReactNode;
-  children: React.ReactNode;
-}) {
+function Header({ id }: { id?: string }) {
   return (
-    <div
-      className="rounded-2xl bg-card p-6"
-      style={{ boxShadow: "var(--shadow-card)" }}
-    >
-      <h2 className="mb-5 flex items-center gap-2 text-h6 text-foreground">
-        {icon}
-        {title}
-      </h2>
-      {children}
-    </div>
-  );
-}
-
-function NotFound() {
-  return (
-    <div
-      className="rounded-2xl bg-card p-10 text-center"
-      style={{ boxShadow: "var(--shadow-card)" }}
-    >
-      <p className="text-h6 text-foreground">ไม่พบบริษัทนี้</p>
-      <p className="mt-1 text-sm text-grey-600">
-        รหัสบริษัทอาจไม่ถูกต้องหรือถูกลบไปแล้ว
-      </p>
-    </div>
+    <EditPageHeader
+      title="รายละเอียด Merchant"
+      backHref="/control/tenants"
+      breadcrumbs={[
+        { label: "Tenants & Workspaces", href: "/control/tenants" },
+        { label: id ?? "รายละเอียด" },
+      ]}
+      actions={
+        <div className="flex items-center gap-2">
+          <Link href="/control/tenants" className={cancelClass}>
+            ยกเลิก
+          </Link>
+        </div>
+      }
+    />
   );
 }
 
 export function TenantDetailView({ id }: { id?: string }) {
   const tenant = merchantByCode(id as MerchantCode);
-  if (!tenant) return <NotFound />;
+  if (!tenant) {
+    return (
+      <>
+        <Header id={id} />
+        <DetailNotFound
+          title="ไม่พบบริษัทนี้"
+          message="รหัสบริษัทอาจไม่ถูกต้องหรือถูกลบไปแล้ว"
+        />
+      </>
+    );
+  }
 
   return (
-    <div className="grid grid-cols-1 gap-6 mmd:grid-cols-12">
-      {/* Summary */}
-      <div className="mmd:col-span-4">
-        <div
-          className="flex flex-col gap-5 rounded-2xl bg-card p-6"
-          style={{ boxShadow: "var(--shadow-card)" }}
-        >
-          <div className="flex items-stretch gap-3">
-            {/* MerchantStatus มีค่าเดียว ("Active") — spine ไม่มีอะไรให้ต่างสี, คง "ok" ตายตัว (REQ-3.3) */}
-            <StatusSpine tone="ok" className="h-auto" />
-            <div className="min-w-0">
-              <span className="text-overline text-grey-500">
-                Control plane · ผู้เช่า
-              </span>
-              <h1 className="text-h5 text-foreground">{tenant.name}</h1>
-              <p className="text-data mt-1 text-xs break-all text-grey-600">
-                {tenant.code}
-              </p>
-            </div>
-          </div>
+    <>
+      <Header id={tenant.code} />
 
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1 rounded-md bg-grey-500/12 px-1.5 py-1 text-xs font-semibold text-grey-700">
+      <div className="overflow-hidden rounded-card bg-card" style={cardStyle}>
+        <DetailIdentity
+          title={tenant.name}
+          subtitle={tenant.legalEntityId}
+          code={tenant.code}
+          badges={
+            <span className={`${controlBadgeClass} bg-grey-500/12 text-grey-700`}>
               <Building2 className="size-3.5" />
               นิติบุคคลแยกต่างหาก
             </span>
-          </div>
+          }
+        />
 
-          <div className="grid grid-cols-2 gap-x-4 gap-y-5 border-t border-[var(--divider)] pt-5">
-            <ReadField label="รหัส" value={tenant.code} mono />
-            <ReadField label="ผู้ดูแล" value={String(tenant.adminCount)} mono />
-          </div>
-
-          <p className="border-t border-[var(--divider)] pt-5 text-xs text-grey-600">
-            เฉพาะผู้ดูแลระดับ Super เท่านั้นที่จัดการได้ — ผู้ดูแลแบบ Scoped
-            เห็นเฉพาะบริษัทของตน (อ่านอย่างเดียว)
-          </p>
-        </div>
-      </div>
-
-      {/* Detail */}
-      <div className="flex flex-col gap-6 mmd:col-span-8">
-        <DetailCard
+        <DetailSection
           title="ข้อมูลนิติบุคคล"
-          icon={<Building2 className="size-5 text-grey-600" />}
+          description="เฉพาะผู้ดูแลระดับ Super เท่านั้นที่จัดการได้ — ผู้ดูแลแบบ Scoped เห็นเฉพาะบริษัทของตน (อ่านอย่างเดียว)"
         >
-          <div className="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
-            <ReadField
-              label="นิติบุคคล"
-              value={tenant.legalEntityId}
-              className="sm:col-span-2"
-            />
-            <ReadField
-              label="ขอบเขต SAQ"
-              value={tenant.saqScope}
-              className="sm:col-span-2"
-            />
-          </div>
-        </DetailCard>
-
-        <DetailCard
-          title="การชำระเงิน"
-          icon={<CreditCard className="size-5 text-grey-600" />}
-        >
-          <div className="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
-            <ReadField
-              label="PSP ที่เปิดใช้"
-              value={
-                <span className="flex flex-wrap gap-1">
-                  {tenant.enabledPsps.map((p) => (
-                    <Badge
-                      key={p}
-                      variant="secondary"
-                      className="text-xs uppercase"
-                    >
-                      {p}
-                    </Badge>
-                  ))}
-                </span>
-              }
-              className="sm:col-span-2"
-            />
+          <div className="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
+            <ReadField label="รหัส" value={tenant.code} mono />
+            <ReadField label="นิติบุคคล" value={tenant.legalEntityId} />
+            <ReadField label="ขอบเขต SAQ" value={tenant.saqScope} />
             <ReadField label="ผู้ดูแล" value={String(tenant.adminCount)} mono />
           </div>
-          <p className="mt-5 border-t border-[var(--divider)] pt-5 text-sm text-grey-600">
-            เงินจากผู้ให้บริการชำระเงิน (PSP) settle เข้าสู่นิติบุคคลนี้โดยตรง
-            — แพลตฟอร์มทำหน้าที่ orchestrate เท่านั้น
-          </p>
-        </DetailCard>
+        </DetailSection>
+
+        <DetailSection
+          title="การชำระเงิน"
+          description="เงินจากผู้ให้บริการชำระเงิน (PSP) settle เข้าสู่นิติบุคคลนี้โดยตรง — แพลตฟอร์มทำหน้าที่ orchestrate เท่านั้น"
+        >
+          <ReadField
+            label="PSP ที่เปิดใช้"
+            value={
+              <span className="flex flex-wrap gap-1">
+                {tenant.enabledPsps.map((p) => (
+                  <Badge key={p} variant="secondary" className={`${controlBadgeClass} uppercase`}>
+                    {p}
+                  </Badge>
+                ))}
+              </span>
+            }
+          />
+        </DetailSection>
       </div>
-    </div>
+    </>
   );
 }

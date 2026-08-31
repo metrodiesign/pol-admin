@@ -1,4 +1,3 @@
-import { EditPageHeader } from "@/components/shared/edit-page-header";
 import { ApprovalDetailView } from "@/components/control/approval/detail-view";
 
 export const metadata = {
@@ -11,19 +10,5 @@ export default async function ApprovalReadPage({
   searchParams: Promise<{ id?: string }>;
 }) {
   const { id } = await searchParams;
-
-  return (
-    <>
-      <EditPageHeader
-        title="รายละเอียดคำขออนุมัติ"
-        backHref="/control/approvals"
-        breadcrumbs={[
-          { label: "Control plane" },
-          { label: "Approvals", href: "/control/approvals" },
-          { label: id ?? "รายละเอียด" },
-        ]}
-      />
-      <ApprovalDetailView id={id} />
-    </>
-  );
+  return <ApprovalDetailView id={id} />;
 }

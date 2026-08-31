@@ -10,10 +10,9 @@ export default function ReconciliationPage() {
     <>
       <PageHeader
         title="การกระทบยอด"
-        description="สรุปออเดอร์แยกตามสถานะและสกุลเงิน — เงินจาก PSP เข้าบัญชีบริษัทโดยตรง แพลตฟอร์มติดตามสถานะเท่านั้น"
         breadcrumbs={[
-          { label: "Control plane" },
-          { label: "การกระทบยอด" },
+          { label: "การกระทบยอด", href: "/control/reconciliation" },
+          { label: "รายชื่อ" },
         ]}
       />
       <ReconciliationView />

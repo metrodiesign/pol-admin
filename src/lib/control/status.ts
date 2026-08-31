@@ -13,12 +13,3 @@ export const TONE_STYLE: Record<Tone, string> = {
   info: "bg-info/16 text-info-dark",
   muted: "bg-grey-500/16 text-grey-600",
 };
-
-/** Solid dot color inside the pill / for the health spine. */
-export const TONE_SOLID: Record<Tone, string> = {
-  ok: "bg-success",
-  warn: "bg-warning",
-  error: "bg-error",
-  info: "bg-info",
-  muted: "bg-grey-400",
-};

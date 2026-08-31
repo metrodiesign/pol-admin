@@ -1,10 +1,11 @@
 import { cn } from "@/lib/utils";
-import { TONE_STYLE, TONE_SOLID, type Tone } from "@/lib/control/status";
+import { TONE_STYLE, type Tone } from "@/lib/control/status";
+import { controlBadgeClass } from "@/components/control/shared/styles";
 import type { ReactNode } from "react";
 
 /**
- * Generic control-plane status pill: dot + label. Status is never color-only —
- * the label text carries the meaning (a11y). Reused by every control screen.
+ * Generic control-plane status pill. Status is never color-only — the label text
+ * carries the meaning (a11y); domain-specific icons remain optional.
  */
 export function ControlStatusBadge({
   tone,
@@ -19,13 +20,9 @@ export function ControlStatusBadge({
 }) {
   return (
     <span
-      className={cn(
-        "inline-flex h-6 items-center gap-1.5 rounded-md px-1.5 text-xs font-bold",
-        TONE_STYLE[tone],
-        className,
-      )}
+      className={cn(controlBadgeClass, TONE_STYLE[tone], className)}
     >
-      {icon ?? <span className={cn("size-1.5 rounded-full", TONE_SOLID[tone])} />}
+      {icon}
       {label}
     </span>
   );

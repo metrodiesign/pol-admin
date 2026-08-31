@@ -2,6 +2,8 @@
 
 > Status: approved 2026-08-17
 
+> Scope note: current smoke acceptance is Admin-only on port `3001`; Merchant/`3002` evidence below records the historical run before the workspace architecture split and is superseded by the current hardening spec.
+
 Task เดียวครอบ regression seam, process lifecycle, CI backstop และ acceptance เพื่อให้ observable
 shutdown behavior ถูกแก้และพิสูจน์พร้อมกัน.
 

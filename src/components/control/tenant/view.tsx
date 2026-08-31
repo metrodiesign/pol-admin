@@ -13,7 +13,7 @@ import type { Merchant } from "@/types/merchant";
 import { MERCHANTS } from "@/lib/mock/merchant";
 import { useDataTable } from "@/hooks/use-data-table";
 import { DataTable } from "@/components/table/data-table";
-import { ControlListToolbar } from "@/components/control/shared/list-toolbar";
+import { ControlToolbar } from "@/components/control/shared/toolbar";
 import { tenantColumns } from "./columns";
 import "@/types/table-meta";
 
@@ -72,14 +72,23 @@ export function TenantsView() {
         className="overflow-hidden rounded-2xl bg-card"
         style={{ boxShadow: "var(--shadow-card)" }}
       >
-        <ControlListToolbar
-          search={search}
-          onSearchChange={(v) => {
-            setSearch(v);
-            resetPage();
+        <ControlToolbar
+          search={{
+            value: search,
+            onChange: (v) => {
+              setSearch(v);
+              resetPage();
+            },
+            placeholder: "ค้นหารหัส, ชื่อบริษัท...",
           }}
-          searchPlaceholder="ค้นหารหัส, ชื่อบริษัท..."
-          filters={[]}
+          rowsPerPage={{
+            value: table.getState().pagination.pageSize,
+            onChange: (n) => {
+              table.setPageSize(n);
+              resetPage();
+            },
+            options: [10, 25, 50],
+          }}
         />
         <DataTable
           table={table}

@@ -10,10 +10,9 @@ export default function NotificationsPage() {
     <>
       <PageHeader
         title="การแจ้งเตือน"
-        description="ตั้งกฎแจ้งเตือนเหตุการณ์สำคัญ และดูประวัติการส่งแจ้งเตือน"
         breadcrumbs={[
-          { label: "Control plane" },
-          { label: "การแจ้งเตือน" },
+          { label: "การแจ้งเตือน", href: "/control/notifications" },
+          { label: "รายชื่อ" },
         ]}
       />
       <NotificationsView />

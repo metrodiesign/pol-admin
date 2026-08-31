@@ -10,10 +10,9 @@ export default function WebhooksPage() {
     <>
       <PageHeader
         title="Webhooks และเหตุการณ์"
-        description="เหตุการณ์ที่ PSP ส่งกลับมายืนยันสถานะการชำระเงิน — แหล่งความจริงของสถานะ ส่งซ้ำได้เมื่อส่งไม่สำเร็จ"
         breadcrumbs={[
-          { label: "Control plane" },
-          { label: "Webhooks และเหตุการณ์" },
+          { label: "Webhooks และเหตุการณ์", href: "/control/webhooks" },
+          { label: "รายชื่อ" },
         ]}
       />
       <WebhooksView />

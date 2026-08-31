@@ -306,13 +306,16 @@ Production local ของ Next.js ใช้ HTTP บน port `3001`; TLS produc
 - Mutation แนบ `X-CSRF-Token` จาก cookie `adm_csrf`.
 - `401` ทำให้ client กลับ `/login`.
 
-Admin Google login เริ่มที่:
+Admin Microsoft login เริ่มที่:
 
 ```text
-GET https://localhost:5001/api/v1/admins/auth/google/login?returnTo=/dashboard
+GET https://localhost:5001/api/v1/admins/auth/microsoft/login?returnTo=/dashboard
 ```
 
-Microsoft เปลี่ยน provider segment จาก `google` เป็น `microsoft`.
+Authorization request ของ Admin ต้องมี `prompt=select_account`, `response_type=code`, scope
+`openid email profile`, PKCE S256, `state` และ `nonce`.
+
+Google login เป็นเฉพาะ Merchant-facing flow ของ `pol-merchant`; ไม่ใช่ Admin login.
 
 Backend development config ต้องมี:
 

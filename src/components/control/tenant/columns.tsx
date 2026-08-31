@@ -1,25 +1,14 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import { ChevronRight } from "lucide-react";
+import { Eye } from "lucide-react";
 import type { Merchant } from "@/types/merchant";
-import { StatusSpine } from "@/components/control/shared/status-spine";
+import { RowActionLink, RowActions } from "@/components/control/shared/row-action";
+import { controlBadgeClass } from "@/components/control/shared/styles";
 import { Badge } from "@/components/ui/badge";
 import "@/types/table-meta";
 
 export const tenantColumns: ColumnDef<Merchant>[] = [
-  {
-    id: "spine",
-    enableSorting: false,
-    meta: { headClassName: "w-1.5 p-0", cellClassName: "w-1.5 p-0" },
-    header: () => null,
-    cell: () => (
-      <div className="flex h-full items-stretch pl-1.5">
-        {/* MerchantStatus มีค่าเดียว ("Active") — spine ไม่มีอะไรให้ต่างสี, คง "ok" ตายตัว (REQ-3.3) */}
-        <StatusSpine tone="ok" />
-      </div>
-    ),
-  },
   {
     accessorKey: "code",
     header: "บริษัท",
@@ -28,11 +17,11 @@ export const tenantColumns: ColumnDef<Merchant>[] = [
       const t = row.original;
       return (
         <div className="flex flex-col gap-0.5">
-          <span className="text-data text-xs font-semibold text-grey-600">
-            {t.code}
-          </span>
           <span className="text-sm font-semibold text-foreground">
             {t.name}
+          </span>
+          <span className="text-data text-xs font-semibold text-grey-600">
+            {t.code}
           </span>
         </div>
       );
@@ -51,7 +40,7 @@ export const tenantColumns: ColumnDef<Merchant>[] = [
     header: "ขอบเขต SAQ",
     enableSorting: false,
     cell: ({ row }) => (
-      <Badge variant="outline" className="text-xs">
+      <Badge variant="outline" className={controlBadgeClass}>
         {row.original.saqScope}
       </Badge>
     ),
@@ -63,7 +52,7 @@ export const tenantColumns: ColumnDef<Merchant>[] = [
     cell: ({ row }) => (
       <div className="flex flex-wrap gap-1">
         {row.original.enabledPsps.map((p) => (
-          <Badge key={p} variant="secondary" className="text-xs uppercase">
+          <Badge key={p} variant="secondary" className={`${controlBadgeClass} uppercase`}>
             {p}
           </Badge>
         ))}
@@ -81,10 +70,18 @@ export const tenantColumns: ColumnDef<Merchant>[] = [
     ),
   },
   {
-    id: "chevron",
+    id: "actions",
     enableSorting: false,
-    meta: { headClassName: "w-12", cellClassName: "w-12", ignoreRowClick: true },
+    meta: { headClassName: "w-20", cellClassName: "w-20", ignoreRowClick: true },
     header: () => null,
-    cell: () => <ChevronRight className="size-4 text-grey-500" />,
+    cell: ({ row }) => (
+      <RowActions>
+        <RowActionLink
+          href={`/control/tenants/read?id=${row.original.code}`}
+          label="ดูรายละเอียด"
+          icon={<Eye className="size-5" />}
+        />
+      </RowActions>
+    ),
   },
 ];
