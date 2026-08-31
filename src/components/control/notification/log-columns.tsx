@@ -12,6 +12,7 @@ import {
 import { formatDateTime } from "@/lib/control/format";
 import { ControlStatusBadge } from "@/components/control/shared/status-badge";
 import { RowActionLink, RowActions } from "@/components/control/shared/row-action";
+import { controlBadgeClass } from "@/components/control/shared/styles";
 import { Badge } from "@/components/ui/badge";
 import "@/types/table-meta";
 
@@ -31,7 +32,7 @@ export const notificationLogColumns: ColumnDef<NotificationLogEntry>[] = [
     header: "ช่องทาง",
     enableSorting: false,
     cell: ({ row }) => (
-      <Badge variant="secondary">{CHANNEL_LABEL[row.original.channel]}</Badge>
+      <Badge variant="secondary" className={controlBadgeClass}>{CHANNEL_LABEL[row.original.channel]}</Badge>
     ),
   },
   {

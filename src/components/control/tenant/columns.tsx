@@ -4,6 +4,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { Eye } from "lucide-react";
 import type { Merchant } from "@/types/merchant";
 import { RowActionLink, RowActions } from "@/components/control/shared/row-action";
+import { controlBadgeClass } from "@/components/control/shared/styles";
 import { Badge } from "@/components/ui/badge";
 import "@/types/table-meta";
 
@@ -39,7 +40,7 @@ export const tenantColumns: ColumnDef<Merchant>[] = [
     header: "ขอบเขต SAQ",
     enableSorting: false,
     cell: ({ row }) => (
-      <Badge variant="outline" className="text-xs">
+      <Badge variant="outline" className={controlBadgeClass}>
         {row.original.saqScope}
       </Badge>
     ),
@@ -51,7 +52,7 @@ export const tenantColumns: ColumnDef<Merchant>[] = [
     cell: ({ row }) => (
       <div className="flex flex-wrap gap-1">
         {row.original.enabledPsps.map((p) => (
-          <Badge key={p} variant="secondary" className="text-xs uppercase">
+          <Badge key={p} variant="secondary" className={`${controlBadgeClass} uppercase`}>
             {p}
           </Badge>
         ))}

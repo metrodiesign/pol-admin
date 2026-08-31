@@ -3,6 +3,7 @@ import { spawn, spawnSync } from "node:child_process";
 import { EventEmitter } from "node:events";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { createServer } from "node:net";
+import { createServer as createHttpsServer } from "node:https";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
@@ -11,6 +12,7 @@ import { fileURLToPath } from "node:url";
 import {
   signalExitCode,
   stopManagedServer,
+  trackManagedProcessTree,
   waitForManagedServer,
 } from "./workspace-process.mjs";
 
@@ -142,6 +144,33 @@ test("REQ-4.14: cleanup timeout คืน error พร้อม server, PID แ�
   assert.equal(destroyedStreams, 2);
 });
 
+test("F-2, F-3: process-tree tracking failure ต้องไม่รายงาน cleanup success", async () => {
+  let destroyedStreams = 0;
+  const trackingError = new Error("ps unavailable");
+  const child = {
+    exitCode: 0,
+    pid: 42,
+    stderr: { destroy: () => destroyedStreams++ },
+    stdout: { destroy: () => destroyedStreams++ },
+  };
+
+  await assert.rejects(
+    () =>
+      stopManagedServer({
+        child,
+        didClose: true,
+        name: "tracking fixture",
+        processTreeTrackingError: trackingError,
+      }),
+    (error) => {
+      assert.match(error.message, /tracking fixture cleanup failed .*phase process-tree/);
+      assert.equal(error.cause, trackingError);
+      return true;
+    },
+  );
+  assert.equal(destroyedStreams, 2);
+});
+
 test("REQ-4.14: cleanup ปิด managed process group แม้ leader ปิดไปก่อน", async () => {
   if (process.platform === "win32") return;
 
@@ -187,6 +216,86 @@ test("REQ-4.14: cleanup ปิด managed process group แม้ leader ปิ�
       (error) => error?.code === "ESRCH",
     );
   } finally {
+    try {
+      process.kill(-child.pid, "SIGKILL");
+    } catch (error) {
+      if (error?.code !== "ESRCH") throw error;
+    }
+  }
+});
+
+test("F-2, F-4, F-6: cleanup closes detached descendant after leader exits", async () => {
+  if (process.platform === "win32") return;
+
+  const descendantSource = `
+    process.on("SIGTERM", () => process.exit(0));
+    console.log("ready");
+    setInterval(() => {}, 1_000);
+  `;
+  const leaderSource = `
+    const { spawn } = require("node:child_process");
+    const descendant = spawn(process.execPath, ["-e", ${JSON.stringify(descendantSource)}], {
+      detached: true,
+      stdio: ["ignore", "pipe", "ignore"],
+    });
+    descendant.stdout.once("data", () => {
+      console.log(descendant.pid);
+      descendant.stdout.destroy();
+      descendant.unref();
+      setTimeout(() => process.exit(0), 150);
+    });
+  `;
+  const child = spawn(process.execPath, ["-e", leaderSource], {
+    detached: true,
+    stdio: ["ignore", "pipe", "pipe"],
+  });
+  let descendantPid = null;
+  let resolveDescendantReady;
+  const descendantReady = new Promise((resolveReady) => {
+    resolveDescendantReady = resolveReady;
+  });
+  child.stdout.on("data", (chunk) => {
+    const match = String(chunk).match(/(\d+)/);
+    if (match) {
+      descendantPid = Number(match[1]);
+      resolveDescendantReady(descendantPid);
+    }
+  });
+  const server = {
+    child,
+    didClose: false,
+    name: "detached descendant fixture",
+    processGroupId: child.pid,
+    processGroupIds: new Set([child.pid]),
+  };
+  server.closedPromise = new Promise((resolveClose) => {
+    child.once("close", (...result) => {
+      server.didClose = true;
+      resolveClose(result);
+    });
+  });
+  const stopTracking = trackManagedProcessTree(server, 5);
+
+  try {
+    await descendantReady;
+    assert.ok(descendantPid);
+    await server.closedPromise;
+    assert.equal(server.didClose, true);
+    assert.doesNotThrow(() => process.kill(descendantPid, 0));
+    await stopManagedServer(server, { forceTimeoutMs: 1_000, gracefulTimeoutMs: 20 });
+    assert.throws(
+      () => process.kill(descendantPid, 0),
+      (error) => error?.code === "ESRCH",
+    );
+  } finally {
+    stopTracking();
+    if (descendantPid) {
+      try {
+        process.kill(descendantPid, "SIGKILL");
+      } catch (error) {
+        if (error?.code !== "ESRCH") throw error;
+      }
+    }
     try {
       process.kill(-child.pid, "SIGKILL");
     } catch (error) {
@@ -280,6 +389,7 @@ test("F-1, F-5, B-8: dev TLS preload appends CA without replacing public roots",
           tls.setDefaultCACertificates(
             original.filter((value) => fingerprint(value) !== targetFingerprint),
           );
+          process.env.ADMIN_API_ORIGIN = "https://localhost:5001";
           process.env.ADMIN_API_CA_CERTIFICATE = certificatePath;
           require(preloadPath);
           const updated = new Set(tls.getCACertificates("default").map(fingerprint));
@@ -294,6 +404,374 @@ test("F-1, F-5, B-8: dev TLS preload appends CA without replacing public roots",
     assert.equal(probe.status, 0, probe.stderr);
   } finally {
     await rm(temporaryDirectory, { force: true, recursive: true });
+  }
+});
+
+const PROXY_INTEGRATION_PATHS = [
+  "/api/v1/merchants?page=1&limit=100",
+  "/api/v1/approvals?page=1&limit=100&action=psp.credential.change&status=pending",
+  "/api/v1/payments/psp-connections?page=1&limit=25",
+];
+
+function sleep(milliseconds) {
+  return new Promise((resolveSleep) => setTimeout(resolveSleep, milliseconds));
+}
+
+async function reservePort() {
+  const probe = createServer();
+  await new Promise((resolveListen, rejectListen) => {
+    probe.once("error", rejectListen);
+    probe.listen(0, "127.0.0.1", resolveListen);
+  });
+  const address = probe.address();
+  assert(address && typeof address === "object");
+  await new Promise((resolveClose) => probe.close(resolveClose));
+  return address.port;
+}
+
+async function createProxyCertificate() {
+  const directory = await mkdtemp(join(tmpdir(), "pol-admin-proxy-cert-"));
+  const certificatePath = join(directory, "localhost.crt");
+  const keyPath = join(directory, "localhost.key");
+  const result = spawnSync(
+    "openssl",
+    [
+      "req",
+      "-x509",
+      "-newkey",
+      "rsa:2048",
+      "-nodes",
+      "-keyout",
+      keyPath,
+      "-out",
+      certificatePath,
+      "-subj",
+      "/CN=localhost",
+      "-days",
+      "1",
+      "-addext",
+      "subjectAltName=DNS:localhost",
+    ],
+    { encoding: "utf8" },
+  );
+  assert.equal(result.status, 0, result.stderr);
+  return { certificatePath, directory, keyPath };
+}
+
+async function runProxyIntegrationProbe(preload, certificatePath, keyPath) {
+  const upstreamRequests = [];
+  const upstream = createHttpsServer(
+    {
+      cert: await readFile(certificatePath),
+      key: await readFile(keyPath),
+    },
+    (request, response) => {
+      upstreamRequests.push({ method: request.method, url: request.url });
+      response.writeHead(207, {
+        "Content-Type": "application/problem+json; charset=utf-8",
+        "X-Correlation-ID": "proxy-fixture-correlation",
+      });
+      response.end(JSON.stringify({ marker: "proxy-fixture", path: request.url }));
+    },
+  );
+  await new Promise((resolveListen, rejectListen) => {
+    upstream.once("error", rejectListen);
+    upstream.listen(0, "::", resolveListen);
+  });
+  const upstreamAddress = upstream.address();
+  assert(upstreamAddress && typeof upstreamAddress === "object");
+
+  const nextPort = await reservePort();
+  const nextArgs = preload ? ["--require", "./scripts/dev-tls-ca.cjs"] : [];
+  nextArgs.push("./node_modules/next/dist/bin/next", "dev", "-p", String(nextPort));
+  const next = spawn(process.execPath, nextArgs, {
+    cwd: repositoryRoot,
+    env: {
+      ...process.env,
+      ADMIN_API_CA_CERTIFICATE: certificatePath,
+      ADMIN_API_ORIGIN: `https://localhost:${upstreamAddress.port}`,
+      NEXT_TELEMETRY_DISABLED: "1",
+    },
+    stdio: ["ignore", "pipe", "pipe"],
+  });
+  let output = "";
+  const capture = (chunk) => {
+    output = `${output}${chunk}`.slice(-20_000);
+  };
+  next.stdout.on("data", capture);
+  next.stderr.on("data", capture);
+  const closed = new Promise((resolveClose) => next.once("close", resolveClose));
+
+  try {
+    const deadline = Date.now() + 60_000;
+    let ready = false;
+    while (Date.now() < deadline) {
+      if (next.exitCode !== null) {
+        throw new Error(`Next proxy exited before ready (${next.exitCode})\\n${output}`);
+      }
+      try {
+        const response = await fetch(`http://127.0.0.1:${nextPort}/login`);
+        await response.text();
+        ready = true;
+        break;
+      } catch {
+        await sleep(100);
+      }
+    }
+    if (!ready) throw new Error(`Next proxy did not become ready\\n${output}`);
+
+    const results = [];
+    for (const path of PROXY_INTEGRATION_PATHS) {
+      const response = await fetch(`http://127.0.0.1:${nextPort}${path}`);
+      results.push({
+        body: await response.text(),
+        contentType: response.headers.get("content-type"),
+        correlationId: response.headers.get("x-correlation-id"),
+        status: response.status,
+      });
+    }
+    return { output, results, upstreamRequests };
+  } finally {
+    if (next.exitCode === null) next.kill("SIGTERM");
+    await Promise.race([
+      closed,
+      sleep(5_000).then(() => {
+        if (next.exitCode === null) next.kill("SIGKILL");
+        return closed;
+      }),
+    ]);
+    if (upstream.listening) {
+      upstream.closeAllConnections?.();
+      await new Promise((resolveClose) => upstream.close(resolveClose));
+    }
+  }
+}
+
+test("F-1, F-2, F-6: Next proxy forwards response after local CA preload", async () => {
+  const certificate = await createProxyCertificate();
+
+  try {
+    const withoutPreload = await runProxyIntegrationProbe(
+      false,
+      certificate.certificatePath,
+      certificate.keyPath,
+    );
+    assert.equal(withoutPreload.upstreamRequests.length, 0);
+    assert.ok(withoutPreload.results.every(({ status }) => status >= 500));
+
+    const withPreload = await runProxyIntegrationProbe(
+      true,
+      certificate.certificatePath,
+      certificate.keyPath,
+    );
+  assert.deepEqual(
+    withPreload.results.map(({ status }) => status),
+    [207, 207, 207],
+    `${withPreload.output}\\n${JSON.stringify(withPreload.results)}\\n${JSON.stringify(withPreload.upstreamRequests)}`,
+  );
+  assert.deepEqual(
+    withPreload.results.map(({ contentType, correlationId }) => ({ contentType, correlationId })),
+    PROXY_INTEGRATION_PATHS.map(() => ({
+      contentType: "application/problem+json; charset=utf-8",
+      correlationId: "proxy-fixture-correlation",
+    })),
+  );
+  assert.deepEqual(
+    withPreload.results.map(({ body }) => JSON.parse(body)),
+    PROXY_INTEGRATION_PATHS.map((path) => ({ marker: "proxy-fixture", path })),
+  );
+    assert.deepEqual(
+      withPreload.upstreamRequests.map(({ method, url }) => ({ method, url })),
+      PROXY_INTEGRATION_PATHS.map((url) => ({ method: "GET", url })),
+    );
+  } finally {
+    await rm(certificate.directory, { force: true, recursive: true });
+  }
+});
+
+test("F-5: dev TLS preload ignores CA for non-local upstream", async () => {
+  const { getCACertificates } = await import("node:tls");
+  const originalCertificates = getCACertificates("default");
+  const certificate = originalCertificates[0];
+  const temporaryDirectory = await mkdtemp(join(tmpdir(), "pol-admin-dev-tls-scope-"));
+  const certificatePath = join(temporaryDirectory, "fixture.crt");
+  const preloadPath = join(repositoryRoot, "scripts/dev-tls-ca.cjs");
+
+  try {
+    await writeFile(certificatePath, certificate);
+    const probe = spawnSync(
+      process.execPath,
+      [
+        "-e",
+        `
+          const assert = require("node:assert/strict");
+          const { X509Certificate } = require("node:crypto");
+          const { readFileSync } = require("node:fs");
+          const tls = require("node:tls");
+          const [certificatePath, preloadPath] = process.argv.slice(1);
+          const certificate = readFileSync(certificatePath, "utf8");
+          const fingerprint = (value) => new X509Certificate(value).fingerprint256;
+          const targetFingerprint = fingerprint(certificate);
+          tls.setDefaultCACertificates(
+            tls.getCACertificates("default").filter((value) => fingerprint(value) !== targetFingerprint),
+          );
+          process.env.ADMIN_API_ORIGIN = "https://example.test:5001";
+          process.env.ADMIN_API_CA_CERTIFICATE = certificatePath;
+          require(preloadPath);
+          const updated = new Set(tls.getCACertificates("default").map(fingerprint));
+          assert.equal(updated.has(targetFingerprint), false);
+        `,
+        certificatePath,
+        preloadPath,
+      ],
+      { encoding: "utf8" },
+    );
+
+    assert.equal(probe.status, 0, probe.stderr);
+  } finally {
+    await rm(temporaryDirectory, { force: true, recursive: true });
+  }
+});
+
+test("F-3: process restart loads latest local CA configuration", async () => {
+  let first;
+  let second;
+
+  try {
+    first = await createProxyCertificate();
+    second = await createProxyCertificate();
+    const preloadPath = join(repositoryRoot, "scripts/dev-tls-ca.cjs");
+    const probeSource = `
+      const assert = require("node:assert/strict");
+      const { X509Certificate } = require("node:crypto");
+      const { readFileSync } = require("node:fs");
+      const tls = require("node:tls");
+      const [expectedPath, previousPath, preloadPath] = process.argv.slice(1);
+      const fingerprint = (value) => new X509Certificate(value).fingerprint256;
+      const expectedFingerprint = fingerprint(readFileSync(expectedPath, "utf8"));
+      const previousFingerprint = fingerprint(readFileSync(previousPath, "utf8"));
+      process.env.ADMIN_API_ORIGIN = "https://localhost:5001";
+      process.env.ADMIN_API_CA_CERTIFICATE = expectedPath;
+      tls.setDefaultCACertificates(
+        tls.getCACertificates("default").filter((value) => fingerprint(value) !== expectedFingerprint),
+      );
+      require(preloadPath);
+      const updated = new Set(tls.getCACertificates("default").map(fingerprint));
+      assert.equal(updated.has(expectedFingerprint), true);
+      assert.equal(updated.has(previousFingerprint), false);
+    `;
+
+    for (const [expected, previous] of [
+      [first.certificatePath, second.certificatePath],
+      [second.certificatePath, first.certificatePath],
+    ]) {
+      const probe = spawnSync(
+        process.execPath,
+        ["-e", probeSource, expected, previous, preloadPath],
+        { encoding: "utf8" },
+      );
+      assert.equal(probe.status, 0, probe.stderr);
+    }
+  } finally {
+    await Promise.all(
+      [first?.directory, second?.directory]
+        .filter((directory) => directory !== undefined)
+        .map((directory) => rm(directory, { force: true, recursive: true })),
+    );
+  }
+});
+
+test("F-2, F-3, F-6: production build succeeds with Google Fonts network blocked", async () => {
+  const temporaryDirectory = await mkdtemp(join(tmpdir(), "pol-admin-font-offline-"));
+  const guardPath = join(temporaryDirectory, "block-remote-fonts.cjs");
+  const guardSource = `
+    "use strict";
+    const blockedHosts = ["fonts.googleapis.com", "fonts.gstatic.com"];
+    function requestUrl(input) {
+      if (typeof input === "string") return input;
+      if (input instanceof URL) return input.href;
+      if (input && typeof input === "object") {
+        if (typeof input.href === "string") return input.href;
+        return String(input.protocol || "") + "//" + String(input.hostname || input.host || "") + String(input.path || "");
+      }
+      return "";
+    }
+    function assertNotFontRequest(input) {
+      const url = requestUrl(input);
+      if (blockedHosts.some((host) => url.includes(host))) {
+        throw new Error("Blocked remote font request");
+      }
+    }
+    const https = require("node:https");
+    for (const method of ["request", "get"]) {
+      const original = https[method];
+      https[method] = function (input, ...args) {
+        assertNotFontRequest(input);
+        return original.call(this, input, ...args);
+      };
+    }
+    if (typeof globalThis.fetch === "function") {
+      const originalFetch = globalThis.fetch;
+      globalThis.fetch = function (input, ...args) {
+        assertNotFontRequest(input);
+        return originalFetch.call(this, input, ...args);
+      };
+    }
+  `;
+
+  try {
+    await rm(join(repositoryRoot, ".next/cache/turbopack"), { force: true, recursive: true });
+    await writeFile(guardPath, guardSource);
+    const result = spawnSync(
+      process.execPath,
+      ["--require", guardPath, "./node_modules/next/dist/bin/next", "build"],
+      {
+        cwd: repositoryRoot,
+        encoding: "utf8",
+        env: { ...process.env, NEXT_TELEMETRY_DISABLED: "1" },
+      },
+    );
+    assert.equal(result.status, 0, `${result.stdout}\\n${result.stderr}`);
+
+    const manifest = await readFile(join(repositoryRoot, ".next/server/next-font-manifest.json"), "utf8");
+    assert.doesNotMatch(manifest, /fonts\.googleapis|fonts\.gstatic|internal\/font\/google/);
+  } finally {
+    await rm(temporaryDirectory, { force: true, recursive: true });
+  }
+});
+
+test("F-1, F-2, F-4, F-5, F-6: Admin fonts use repository-local assets", async () => {
+  const layout = await readFile(join(repositoryRoot, "src/app/layout.tsx"), "utf8");
+  assert.doesNotMatch(layout, /next\/font\/google/);
+  assert.match(layout, /next\/font\/local/);
+
+  for (const asset of [
+    "barlow-600.ttf",
+    "barlow-700.ttf",
+    "barlow-800.ttf",
+    "dm-sans-variable.ttf",
+    "ibm-plex-mono-400.ttf",
+    "ibm-plex-mono-500.ttf",
+    "ibm-plex-mono-600.ttf",
+    "inter-variable.ttf",
+    "noto-sans-thai-variable.ttf",
+    "nunito-sans-variable.ttf",
+    "public-sans-variable.ttf",
+  ]) {
+    await assert.doesNotReject(() => readFile(join(repositoryRoot, "src/app/fonts", asset)));
+  }
+
+  for (const license of [
+    "LICENSE-barlow.txt",
+    "LICENSE-dmsans.txt",
+    "LICENSE-ibmplexmono.txt",
+    "LICENSE-inter.txt",
+    "LICENSE-notosansthai.txt",
+    "LICENSE-nunitosans.txt",
+    "LICENSE-publicsans.txt",
+  ]) {
+    const text = await readFile(join(repositoryRoot, "src/app/fonts", license), "utf8");
+    assert.match(text, /SIL Open Font License, Version 1\.1/);
   }
 });
 
@@ -386,6 +864,77 @@ test("REQ-4.16: runtime smoke ปฏิเสธ port ที่มี owner อ�
   }
 
   await assert.doesNotReject(() => assertPortAvailable(address.port));
+});
+
+test("F-1: runtime smoke ปฏิเสธ IPv6 owner โดยไม่ปิด owner", async () => {
+  const owner = createServer();
+  await new Promise((resolveListen, rejectListen) => {
+    owner.once("error", rejectListen);
+    owner.listen(0, "::1", resolveListen);
+  });
+  const address = owner.address();
+  assert(address && typeof address === "object");
+
+  try {
+    await assert.rejects(() => assertPortAvailable(address.port), /already in use/);
+    assert.equal(owner.listening, true);
+  } finally {
+    if (owner.listening) await new Promise((resolveClose) => owner.close(resolveClose));
+  }
+
+  await assert.doesNotReject(() => assertPortAvailable(address.port));
+});
+
+test("F-1: runtime smoke ปฏิเสธ IPv6 wildcard owner โดยไม่ปิด owner", async () => {
+  const owner = createServer();
+  await new Promise((resolveListen, rejectListen) => {
+    owner.once("error", rejectListen);
+    owner.listen(0, "::", resolveListen);
+  });
+  const address = owner.address();
+  assert(address && typeof address === "object");
+
+  try {
+    await assert.rejects(() => assertPortAvailable(address.port), /already in use/);
+    assert.equal(owner.listening, true);
+  } finally {
+    if (owner.listening) await new Promise((resolveClose) => owner.close(resolveClose));
+  }
+
+  await assert.doesNotReject(() => assertPortAvailable(address.port));
+});
+
+test("F-1: runtime smoke ข้าม unsupported IPv6 loopback และ wildcard probes", async () => {
+  const hosts = [];
+  const createProbe = () => {
+    let onError;
+    return {
+      listening: false,
+      once(event, handler) {
+        if (event === "error") onError = handler;
+        return this;
+      },
+      listen(_port, host, onListening) {
+        hosts.push(host);
+        queueMicrotask(() => {
+          if (host === "127.0.0.1") {
+            this.listening = true;
+            onListening();
+            return;
+          }
+          onError(Object.assign(new Error("IPv6 unsupported"), { code: "EAFNOSUPPORT" }));
+        });
+        return this;
+      },
+      close(onClose) {
+        this.listening = false;
+        queueMicrotask(onClose);
+      },
+    };
+  };
+
+  await assert.doesNotReject(() => assertPortAvailable(3001, createProbe));
+  assert.deepEqual(hosts, ["127.0.0.1", "::1", "::"]);
 });
 
 test("REQ-2.12, REQ-5.3: normalize และ fingerprint root page routes แบบ deterministic", () => {

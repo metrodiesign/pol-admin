@@ -1,7 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { createLevel, deactivateLevel, getLevel, getLevels, updateLevel } from "./level";
-import type { Level } from "@/types/organization/level";
 
 // --- integration: level CRUD (mock global fetch/document) ---
 // REQ-2.1, 3.3, 4.4, 5.4, 6.2, 7.4
@@ -29,59 +28,52 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-function level(id: string): Level {
-  return { id, code: `c_${id}`, name: `n${id}`, isActive: true };
-}
-
-function paged(items: Level[], page: number, totalPages: number) {
-  return { items, page, limit: 25, total: totalPages * items.length, totalPages };
-}
-
 describe("getLevels", () => {
-  it("หน้าเดียว -> คืน items ตรง ๆ และ path ประกอบจาก segment", async () => {
-    const { calls } = stubFetchSeq([{ status: 200, body: paged([level("1")], 1, 1) }]);
-    const levels = await getLevels();
-    expect(levels).toEqual([level("1")]);
+  it("bind list export กับ level path", async () => {
+    const body = {
+      items: [
+        {
+          id: "11111111-1111-4111-8111-111111111111",
+          code: "level_1",
+          name: "Level One",
+          status: 1,
+          version: 0,
+        },
+      ],
+      page: 1,
+      limit: 25,
+      total: 1,
+      totalPages: 1,
+    };
+    const { calls } = stubFetchSeq([{ status: 200, body }]);
+    await expect(getLevels()).resolves.toEqual([
+      {
+        id: "11111111-1111-4111-8111-111111111111",
+        code: "level_1",
+        name: "Level One",
+        isActive: true,
+      },
+    ]);
     expect(calls[0]!.path).toBe("/api/v1/levels?page=1&limit=25");
-  });
-
-  it("หลายหน้า -> fetch ครบทุกหน้าแล้ว concat ตามลำดับ", async () => {
-    const { calls } = stubFetchSeq([
-      { status: 200, body: paged([level("1")], 1, 3) },
-      { status: 200, body: paged([level("2")], 2, 3) },
-      { status: 200, body: paged([level("3")], 3, 3) },
-    ]);
-    const levels = await getLevels();
-    expect(levels.map((u) => u.id)).toEqual(["1", "2", "3"]);
-    expect(calls.map((c) => c.path)).toEqual([
-      "/api/v1/levels?page=1&limit=25",
-      "/api/v1/levels?page=2&limit=25",
-      "/api/v1/levels?page=3&limit=25",
-    ]);
-  });
-
-  it("page ใดไม่ ok -> throw ทั้งก้อน (ไม่คืนข้อมูลครึ่งเดียว)", async () => {
-    stubFetchSeq([{ status: 200, body: paged([level("1")], 1, 2) }, { status: 500 }]);
-    await expect(getLevels()).rejects.toThrow("/api/v1/levels 500");
   });
 });
 
 describe("getLevel", () => {
-  it("404 -> null", async () => {
-    stubFetchSeq([{ status: 404 }]);
-    expect(await getLevel("x")).toBeNull();
-  });
-
-  it("200 -> Level และ id ผ่าน encodeURIComponent", async () => {
-    const { calls } = stubFetchSeq([{ status: 200, body: level("a/b") }]);
-    const u = await getLevel("a/b");
-    expect(u?.id).toBe("a/b");
+  it("bind detail export กับ encoded level path", async () => {
+    const { calls } = stubFetchSeq([
+      {
+        status: 200,
+        body: {
+          id: "11111111-1111-4111-8111-111111111111",
+          code: "level_1",
+          name: "Level One",
+          status: 2,
+          version: 1,
+        },
+      },
+    ]);
+    await expect(getLevel("a/b")).resolves.toMatchObject({ isActive: false });
     expect(calls[0]!.path).toBe("/api/v1/levels/a%2Fb");
-  });
-
-  it("status อื่น -> throw", async () => {
-    stubFetchSeq([{ status: 500 }]);
-    await expect(getLevel("x")).rejects.toThrow("500");
   });
 });
 

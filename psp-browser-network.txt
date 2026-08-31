@@ -1,0 +1,3 @@
+39. [GET] http://127.0.0.1:3001/admin/me => [401] Unauthorized
+
+Note: 68 static requests not shown, run with "static" option to see them.

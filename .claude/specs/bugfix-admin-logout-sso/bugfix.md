@@ -2,6 +2,8 @@
 
 > Status: approved 2026-08-22
 
+> Evidence reconciliation: current callers navigate only after `logout()` resolves with `204`; failure remains on the page or in the drawer with retry. Current evidence is tracked in `.claude/specs/bugfix-auth-evidence-and-docs/`.
+
 แก้ false-success ของ Admin logout และทำให้ Microsoft login ขอเลือกบัญชีอย่างชัดเจน โดยคง BFF session,
 OIDC security และ local-only logout ตาม contract เดิม.
 

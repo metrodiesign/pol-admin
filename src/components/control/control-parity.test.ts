@@ -24,6 +24,7 @@ import { TenantsView } from "@/components/control/tenant/view";
 import { TenantDetailView } from "@/components/control/tenant/detail-view";
 import { OriginatorsView } from "@/components/control/originator/view";
 import { OriginatorDetailView } from "@/components/control/originator/detail-view";
+import { ControlStatusBadge } from "@/components/control/shared/status-badge";
 
 import { routingStore } from "@/lib/control/routing-store";
 import { apiClientsStore } from "@/lib/control/api-clients-store";
@@ -36,6 +37,54 @@ import { ORIGINATORS } from "@/lib/mock/control/originators";
 
 const render = (component: ComponentType<{ id?: string }>, props: { id?: string } = {}) =>
   renderToStaticMarkup(createElement(component, props));
+
+const MERCHANT_PILL_CLASSES = [
+  "rounded-full",
+  "px-4",
+  "py-1",
+  "text-sm",
+  "font-semibold",
+];
+
+function assertPillText(markup: string, text: string) {
+  const escapedText = text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const classLookaheads = MERCHANT_PILL_CLASSES.map((className) => {
+    const escapedClass = className.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    return `(?=[^>]*\\b${escapedClass}\\b)`;
+  }).join("");
+
+  assert.match(
+    markup,
+    new RegExp(
+      `<span${classLookaheads}[^>]*>(?:(?!<\\/span>)[\\s\\S])*?${escapedText}(?:(?!<\\/span>)[\\s\\S])*?<\\/span>`,
+    ),
+  );
+}
+
+describe("control plane badges mirror merchant pills", () => {
+  test("status badge uses merchant geometry without a default dot", () => {
+    const markup = renderToStaticMarkup(
+      createElement(ControlStatusBadge, { tone: "ok", label: "ใช้งาน" }),
+    );
+
+    for (const className of MERCHANT_PILL_CLASSES) {
+      assert.match(markup, new RegExp(className.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+    }
+    assert.doesNotMatch(markup, /size-1\.5 rounded-full/);
+  });
+
+  test("status badge preserves an explicit semantic icon", () => {
+    const markup = renderToStaticMarkup(
+      createElement(ControlStatusBadge, {
+        tone: "warn",
+        label: "รออนุมัติ",
+        icon: createElement("svg", { "data-status-icon": true }),
+      }),
+    );
+
+    assert.match(markup, /data-status-icon="true"/);
+  });
+});
 
 // Notifications defaults to the rules tab (no pagination); reports has no table. Both are
 // covered by the "no legacy pattern" sweep below rather than the toolbar assertions.
@@ -61,6 +110,20 @@ const DETAIL_VIEWS: [string, ComponentType<{ id?: string }>, string][] = [
   ["originator", OriginatorDetailView, ORIGINATORS[0]!.id],
 ];
 
+const DOMAIN_CHIP_VIEWS: [string, ComponentType, string][] = [
+  ["api-client scopes", ApiClientsView, "payments:create"],
+  ["notification channels", NotificationsView, "อีเมล"],
+  ["originator types", OriginatorsView, "สาขา"],
+  ["tenant SAQ", TenantsView, "SAQ A — redirect-only"],
+  ["webhook signature", WebhooksView, "ยืนยันแล้ว"],
+];
+
+describe("control plane domain chips mirror merchant pills", () => {
+  test.each(DOMAIN_CHIP_VIEWS)("%s", (_name, View, text) => {
+    assertPillText(render(View), text);
+  });
+});
+
 describe("control plane list views mirror merchant user list", () => {
   test.each(LIST_VIEWS)("%s", (_name, View, paginated) => {
     const markup = render(View);
@@ -75,6 +138,31 @@ describe("control plane list views mirror merchant user list", () => {
     assert.match(markup, /bg-grey-200 p-2/);
     assert.match(markup, /กฎการแจ้งเตือน/);
     assert.doesNotMatch(markup, /status-spine/);
+  });
+});
+
+const SEMANTIC_MARKER_DETAILS: [
+  string,
+  ComponentType<{ id?: string }>,
+  string,
+  string,
+][] = [
+  ["oauth", ApiClientDetailView, apiClientsStore.get()[0]!.id, "OAuth2 · client-credentials"],
+  ["maker-checker", ApprovalDetailView, approvalsStore.get()[0]!.id, "Maker-checker"],
+  ["read-only", AuditDetailView, AUDIT_LOG[0]!.id, "อ่านอย่างเดียว · เพิ่มต่อท้ายเท่านั้น"],
+  ["legal entity", TenantDetailView, MERCHANTS[0]!.code, "นิติบุคคลแยกต่างหาก"],
+  ["signature", WebhookDetailView, webhookStore.get()[0]!.id, "Signature ยืนยันแล้ว"],
+];
+
+describe("control plane semantic markers mirror merchant pills", () => {
+  test.each(SEMANTIC_MARKER_DETAILS)("%s", (_name, View, id, text) => {
+    assertPillText(render(View, { id }), text);
+  });
+
+  test("notification tab counts stay compact", () => {
+    const markup = render(NotificationsView);
+    assert.match(markup, /h-5 min-w-5/);
+    assert.match(markup, /rounded px-1 text-xs font-bold/);
   });
 });
 

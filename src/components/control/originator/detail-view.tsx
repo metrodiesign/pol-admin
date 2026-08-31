@@ -12,7 +12,7 @@ import {
 } from "@/components/control/shared/detail-shell";
 import { ReadField } from "@/components/control/shared/read-field";
 import { ControlStatusBadge } from "@/components/control/shared/status-badge";
-import { cancelClass, cardStyle } from "@/components/control/shared/styles";
+import { cancelClass, cardStyle, controlBadgeClass } from "@/components/control/shared/styles";
 import { EditPageHeader } from "@/components/shared/edit-page-header";
 import { Badge } from "@/components/ui/badge";
 
@@ -66,7 +66,7 @@ export function OriginatorDetailView({ id }: { id?: string }) {
           badges={
             <>
               <ControlStatusBadge tone={tone} label={STATUS_LABEL[originator.status]} />
-              <Badge variant="outline">{TYPE_LABEL[originator.type]}</Badge>
+              <Badge variant="outline" className={controlBadgeClass}>{TYPE_LABEL[originator.type]}</Badge>
             </>
           }
         />

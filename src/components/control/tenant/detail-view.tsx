@@ -10,7 +10,7 @@ import {
   DetailSection,
 } from "@/components/control/shared/detail-shell";
 import { ReadField } from "@/components/control/shared/read-field";
-import { cancelClass, cardStyle } from "@/components/control/shared/styles";
+import { cancelClass, cardStyle, controlBadgeClass } from "@/components/control/shared/styles";
 import { EditPageHeader } from "@/components/shared/edit-page-header";
 import { Badge } from "@/components/ui/badge";
 
@@ -58,7 +58,7 @@ export function TenantDetailView({ id }: { id?: string }) {
           subtitle={tenant.legalEntityId}
           code={tenant.code}
           badges={
-            <span className="inline-flex items-center gap-1 rounded-md bg-grey-500/12 px-1.5 py-1 text-xs font-semibold text-grey-700">
+            <span className={`${controlBadgeClass} bg-grey-500/12 text-grey-700`}>
               <Building2 className="size-3.5" />
               นิติบุคคลแยกต่างหาก
             </span>
@@ -86,7 +86,7 @@ export function TenantDetailView({ id }: { id?: string }) {
             value={
               <span className="flex flex-wrap gap-1">
                 {tenant.enabledPsps.map((p) => (
-                  <Badge key={p} variant="secondary" className="text-xs uppercase">
+                  <Badge key={p} variant="secondary" className={`${controlBadgeClass} uppercase`}>
                     {p}
                   </Badge>
                 ))}

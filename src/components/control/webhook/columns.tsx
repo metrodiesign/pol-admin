@@ -16,6 +16,7 @@ import {
   RowActionLink,
   RowActions,
 } from "@/components/control/shared/row-action";
+import { controlBadgeClass } from "@/components/control/shared/styles";
 import { Badge } from "@/components/ui/badge";
 import "@/types/table-meta";
 
@@ -85,7 +86,7 @@ export function webhookColumns({
         row.original.signatureVerified ? (
           <Badge
             variant="outline"
-            className="border-success/40 text-success-dark"
+            className={`${controlBadgeClass} border-success/40 text-success-dark`}
           >
             <ShieldCheck className="size-3 text-success" />
             ยืนยันแล้ว
@@ -93,7 +94,7 @@ export function webhookColumns({
         ) : (
           <Badge
             variant="outline"
-            className="border-warning/40 text-warning-dark"
+            className={`${controlBadgeClass} border-warning/40 text-warning-dark`}
           >
             <ShieldAlert className="size-3 text-warning" />
             ไม่ผ่าน

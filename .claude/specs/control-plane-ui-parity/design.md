@@ -1,6 +1,6 @@
 # Design: Control Plane UI Parity
 
-> Status: approved 2026-08-31 (quick, no gates)
+> Status: approved 2026-08-31 (quick, no gates); badge parity amendment approved 2026-08-31
 
 ## แนวทาง
 
@@ -11,7 +11,7 @@ Presentation-only refactor ต่อยอดจาก `psp-ui-parity`: ดึ�
 
 | ไฟล์ | export | หน้าที่ |
 |---|---|---|
-| `shared/styles.ts` | `cancelClass`, `primaryClass`, `warningClass`, `cardStyle` | class ลอก verbatim จาก merchant role/user |
+| `shared/styles.ts` | `cancelClass`, `primaryClass`, `warningClass`, `cardStyle`, `controlBadgeClass` | shared visual tokens จาก merchant role/user |
 | `shared/toolbar.tsx` | `ControlToolbar` | grid toolbar: `search?`, `filters?` (SelectField clearable), `rowsPerPage?` |
 | `shared/detail-shell.tsx` | `DetailIdentity`, `DetailSection`, `DetailNotFound` | identity band / section / not-found ใน card เดียว |
 | `shared/stat-card.tsx` | `StatCard` | `rounded-card bg-card p-6` + `cardStyle`, รับ `trailing` สำหรับ sparkline |
@@ -49,9 +49,24 @@ Detail actions per screen:
 
 Notifications tabs: local `notification/tabs.tsx` (ลอก strip จาก merchant user list-tabs) ควบ state `tab` ใน `NotificationsView`; RulesTab/LogTab render ใต้ strip ใน card เดียว
 
+## Badge parity amendment
+
+`controlBadgeClass` กำหนด geometry กลางเป็น `inline-flex items-center rounded-full px-4 py-1 text-sm font-semibold` โดย consumer ยังคง semantic color, variant และ icon ของ domain เดิม
+
+| กลุ่ม | แนวทาง |
+|---|---|
+| Lifecycle status | `ControlStatusBadge` ใช้ pill geometry และไม่ render default dot |
+| PSP status | ใช้ pill geometry แต่คง Enabled/Health/Approval icon และ label แยกกัน |
+| Scope/channel/type/SAQ/PSP | เพิ่ม `controlBadgeClass` ให้ `Badge` ที่ consumer โดยไม่แก้ global primitive |
+| Signature/protocol/auth/read-only/legal | เปลี่ยน raw marker เป็น pill geometry และคง icon/tone/text เดิม |
+| Notification tab count | คง compact geometry จาก merchant user tabs |
+
+Regression coverage เพิ่มใน `control-parity.test.ts`: shared geometry, no default dot, semantic icon preservation และ compact tab count จาก SSR markup
+
 ## ไฟล์ที่แตะ
 
-- shared: `styles.ts` (ใหม่), `toolbar.tsx` (ใหม่), `detail-shell.tsx` (ใหม่), `stat-card.tsx` (ใหม่), `row-action.tsx` (ใหม่), ลบ `list-toolbar.tsx`, `status-spine.tsx`
+- shared: `styles.ts`, `status-badge.tsx`, `toolbar.tsx`, `detail-shell.tsx`, `stat-card.tsx`, `row-action.tsx`
+- badge consumers: API client, approval, audit, notification, originator, PSP, routing, reconciliation, tenant และ webhook columns/detail views
 - psp: `styles.ts` -> re-export
 - ทุก view/columns/detail-view ในตาราง scope + `stat-cards.tsx` (approval, api-client), `kpi-cards.tsx`, `notification/tabs.tsx` (ใหม่)
 - pages: `src/app/control/<route>/page.tsx` (ถอด description, breadcrumbs), `src/app/control/<route>/read/page.tsx` (ถอด EditPageHeader)
@@ -82,3 +97,7 @@ Notifications tabs: local `notification/tabs.tsx` (ลอก strip จาก mer
 | typecheck/eslint/npm test/spec-trace | REQ-4.3 |
 | `control-parity.test.ts` | REQ-4.4 |
 | `.claude/specs/control-plane/design.md` note | REQ-4.5 |
+| `shared/styles.ts` + `shared/status-badge.tsx` + `lib/control/status.ts` | REQ-4.2, REQ-5.1, REQ-5.2 |
+| Control badge consumers + raw semantic markers | REQ-5.3 |
+| `notification/tabs.tsx` compact count | REQ-5.4 |
+| `control-parity.test.ts` + browser matrix | REQ-5.5 |

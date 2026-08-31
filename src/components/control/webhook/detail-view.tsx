@@ -16,7 +16,7 @@ import {
 } from "@/components/control/shared/detail-shell";
 import { ReadField } from "@/components/control/shared/read-field";
 import { ControlStatusBadge } from "@/components/control/shared/status-badge";
-import { cancelClass, cardStyle, primaryClass } from "@/components/control/shared/styles";
+import { cancelClass, cardStyle, controlBadgeClass, primaryClass } from "@/components/control/shared/styles";
 import { EditPageHeader } from "@/components/shared/edit-page-header";
 
 function Header({ id, actions }: { id?: string; actions?: React.ReactNode }) {
@@ -99,12 +99,12 @@ export function WebhookDetailView({ id }: { id?: string }) {
             <>
               <ControlStatusBadge tone={tone} label={DELIVERY_LABEL[event.deliveryStatus]} />
               {event.signatureVerified ? (
-                <span className="inline-flex items-center gap-1 rounded-md bg-success/12 px-1.5 py-1 text-xs font-semibold text-success-dark">
+                <span className={`${controlBadgeClass} bg-success/12 text-success-dark`}>
                   <ShieldCheck className="size-3.5 text-success" />
                   Signature ยืนยันแล้ว
                 </span>
               ) : (
-                <span className="inline-flex items-center gap-1 rounded-md bg-warning/12 px-1.5 py-1 text-xs font-semibold text-warning-dark">
+                <span className={`${controlBadgeClass} bg-warning/12 text-warning-dark`}>
                   <ShieldAlert className="size-3.5 text-warning" />
                   Signature ไม่ผ่าน
                 </span>

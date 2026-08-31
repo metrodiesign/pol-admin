@@ -4,6 +4,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import type { NotificationRule } from "@/types/control/notification";
 import { MERCHANT_LABEL } from "@/lib/mock/merchant";
 import { CHANNEL_LABEL, eventLabel } from "@/lib/control/notification";
+import { controlBadgeClass } from "@/components/control/shared/styles";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import "@/types/table-meta";
@@ -33,7 +34,7 @@ export function buildNotificationRuleColumns(
       header: "ช่องทาง",
       enableSorting: false,
       cell: ({ row }) => (
-        <Badge variant="secondary">{CHANNEL_LABEL[row.original.channel]}</Badge>
+        <Badge variant="secondary" className={controlBadgeClass}>{CHANNEL_LABEL[row.original.channel]}</Badge>
       ),
     },
     {

@@ -21,8 +21,10 @@ function AuthPending(): React.JSX.Element {
     loading -> placeholder; authed -> render children. */
 export function AuthGuard({
   children,
+  renderForbidden,
 }: {
   children: React.ReactNode;
+  renderForbidden?: (content: React.ReactNode) => React.ReactNode;
 }): React.JSX.Element {
   const { me, status } = useAuth();
 
@@ -31,13 +33,19 @@ export function AuthGuard({
   }, [status]);
 
   if (shouldShowForbidden(status, me)) {
+    const content = (
+      <ErrorCard
+        code="403"
+        title="ไม่มีสิทธิ์เข้าถึง"
+        message="บัญชีนี้ไม่มีสิทธิ์เปิดระบบผู้ดูแล ติดต่อผู้ดูแลระบบหากคิดว่าเป็นข้อผิดพลาด"
+      />
+    );
+
+    if (renderForbidden) return <>{renderForbidden(content)}</>;
+
     return (
       <main className="flex min-h-dvh items-center justify-center bg-grey-100 p-4">
-        <ErrorCard
-          code="403"
-          title="ไม่มีสิทธิ์เข้าถึง"
-          message="บัญชีนี้ไม่มีสิทธิ์เปิดระบบผู้ดูแล ติดต่อผู้ดูแลระบบหากคิดว่าเป็นข้อผิดพลาด"
-        />
+        {content}
       </main>
     );
   }

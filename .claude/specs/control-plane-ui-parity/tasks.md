@@ -1,6 +1,6 @@
 # Tasks: Control Plane UI Parity
 
-> Status: approved 2026-08-31 (quick, no gates)
+> Status: approved 2026-08-31 (quick, no gates); badge parity amendment approved 2026-08-31
 
 - [x] 1. Shared kit — styles/toolbar/detail-shell/stat-card/row-action ใต้ `control/shared`, psp re-export (REQ-3.1–3.5)
   Evidence: `src/components/control/shared/{styles,toolbar,detail-shell,stat-card,row-action}.tsx` ใหม่, `psp/styles.ts` re-export; `npx tsc --noEmit` exit 0; `npx eslint src/components/control/shared` No issues; commit `8401672`; viewports: n/a — shared kit
@@ -20,6 +20,9 @@
 - [x] 6. Verify — SSR tests ทุก view, typecheck, eslint, npm test, spec-trace (REQ-4.1–4.4)
   Evidence: `npm test` (นอก sandbox, port 3001 ว่าง) exit 0 — node --test 31/31, vitest 360/360 (29 files), workspaces 26/26; `npm run typecheck` exit 0; `npx eslint src/components/control src/app/control` No issues; `scripts/spec-trace.sh control-plane-ui-parity` OK 24/24; `grep -rn "components/merchant" src/components/control` ว่าง; viewports: n/a — Microsoft SSO บล็อก browser evidence (ดู Environment constraints)
   - Satisfies: REQ-4.1-4.4
+- [x] 7. Badge parity amendment — ปรับ status และ domain chips เป็น merchant pill geometry โดยคง tone/icon/count semantics (REQ-5.1–5.5)
+  Evidence: `controlBadgeClass` ใช้ใน shared status, UI Badge consumers และ raw semantic markers; focused parity 39/39; `npm test` ผ่าน node 31/31, vitest 373/373, shared 26/26; typecheck ผ่าน; eslint No issues; spec-trace 29/29; browser 20 Control routes ที่ 375/768/1440 + notification log tab ไม่มี badge mismatch, legacy marker, default dot, body overflow หรือ console error; PSP icon pills และ compact tab count ยังอยู่
+  - Satisfies: REQ-5.1-5.5
 
 ## Environment constraints
 
@@ -30,7 +33,6 @@
 
 | Gap | เหตุผล |
 |---|---|
-| badge สถานะยังเป็น `ControlStatusBadge` | tone ร่วมของ control plane; ตัดสินใจไว้ตั้งแต่ psp-ui-parity |
 | pageSize เริ่มต้น 10 (merchant ใช้ 25) | ห้ามเปลี่ยน default ตาม REQ-1.3 |
 | revoke ของ api-client อยู่ท้าย card ไม่ใช่ header | destructive action ใช้ variant destructive ไม่ใช่ปุ่มหลัก |
 | chart internals ของ reports | อยู่นอก scope (`src/components/charts/**`) |

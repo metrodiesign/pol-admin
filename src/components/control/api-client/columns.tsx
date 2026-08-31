@@ -8,6 +8,7 @@ import { STATUS_LABEL, statusTone, scopeLabel } from "@/lib/control/api-client";
 import { formatDateTime } from "@/lib/control/format";
 import { ControlStatusBadge } from "@/components/control/shared/status-badge";
 import { RowActionLink, RowActions } from "@/components/control/shared/row-action";
+import { controlBadgeClass } from "@/components/control/shared/styles";
 import { Badge } from "@/components/ui/badge";
 import "@/types/table-meta";
 
@@ -40,12 +41,12 @@ export const apiClientColumns: ColumnDef<ApiClient>[] = [
       return (
         <div className="flex flex-wrap items-center gap-1">
           {shown.map((s) => (
-            <Badge key={s} variant="outline" title={scopeLabel(s)}>
+            <Badge key={s} variant="outline" className={controlBadgeClass} title={scopeLabel(s)}>
               {s}
             </Badge>
           ))}
           {extra > 0 ? (
-            <Badge variant="outline" className="text-grey-600">
+            <Badge variant="outline" className={`${controlBadgeClass} text-grey-600`}>
               +{extra}
             </Badge>
           ) : null}

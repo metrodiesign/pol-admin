@@ -2,6 +2,8 @@
 
 > Status: approved 2026-08-17
 
+> Scope reconciliation: current smoke contract is superseded by `.claude/specs/bugfix-smoke-cleanup-hardening/bugfix.md` and is Admin-only on port `3001`.
+
 แก้ CI smoke command ที่ตรวจ route ครบแล้วแต่ค้างระหว่างปิด child processes. ขอบเขตครอบ
 process lifecycle, regression tests และ CI timeout โดยไม่เปลี่ยน application behavior.
 
@@ -41,6 +43,14 @@ gh api repos/metrodiesign/pol-admin/actions/jobs/95362707377 \
 Linux minimal reproduction ด้วย Node `22.19.0` และ npm `11.12.1` เกิด
 `Warning: Detected unsettled top-level await` ตรง force-stop `once()`. Full smoke บน generic Linux
 ผ่านหนึ่งรอบ จึงยืนยันว่าปัญหาเป็น timing-dependent race ไม่ใช่ build workload ช้า.
+
+## Scope Reconciliation
+
+- Current smoke command เริ่มและตรวจเฉพาะ Admin server ที่ port `3001`.
+- รายการ Merchant routes และ port `3002` ในเอกสารฉบับนี้เป็น historical evidence จาก architecture ก่อน
+  split และไม่ใช่ current acceptance.
+- งาน hardening ปัจจุบันของ IPv6 preflight และ detached descendant อยู่ใน
+  `.claude/specs/bugfix-smoke-cleanup-hardening/`.
 
 ## Expected Behavior
 

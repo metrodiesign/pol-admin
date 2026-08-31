@@ -21,7 +21,7 @@ import {
 } from "@/components/control/shared/detail-shell";
 import { ReadField } from "@/components/control/shared/read-field";
 import { ControlStatusBadge } from "@/components/control/shared/status-badge";
-import { cancelClass, cardStyle } from "@/components/control/shared/styles";
+import { cancelClass, cardStyle, controlBadgeClass } from "@/components/control/shared/styles";
 import { EditPageHeader } from "@/components/shared/edit-page-header";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -102,7 +102,7 @@ export function ApiClientDetailView({ id }: { id?: string }) {
           badges={
             <>
               <ControlStatusBadge tone={tone} label={STATUS_LABEL[currentStatus]} />
-              <span className="inline-flex items-center gap-1 rounded-md bg-success/12 px-1.5 py-1 text-xs font-semibold text-success-dark">
+              <span className={`${controlBadgeClass} bg-success/12 text-success-dark`}>
                 <ShieldCheck className="size-3.5" />
                 OAuth2 · client-credentials
               </span>
@@ -128,7 +128,7 @@ export function ApiClientDetailView({ id }: { id?: string }) {
         >
           <div className="flex flex-wrap gap-1.5">
             {client.scopes.map((s) => (
-              <Badge key={s} variant="outline" title={scopeLabel(s)}>
+              <Badge key={s} variant="outline" className={controlBadgeClass} title={scopeLabel(s)}>
                 {s}
               </Badge>
             ))}

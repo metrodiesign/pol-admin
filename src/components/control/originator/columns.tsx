@@ -7,6 +7,7 @@ import { MERCHANT_LABEL } from "@/lib/mock/merchant";
 import { TYPE_LABEL, STATUS_LABEL, statusTone } from "@/lib/control/originator";
 import { ControlStatusBadge } from "@/components/control/shared/status-badge";
 import { RowActionLink, RowActions } from "@/components/control/shared/row-action";
+import { controlBadgeClass } from "@/components/control/shared/styles";
 import { Badge } from "@/components/ui/badge";
 import "@/types/table-meta";
 
@@ -34,7 +35,7 @@ export const originatorColumns: ColumnDef<Originator>[] = [
     header: "ประเภท",
     enableSorting: true,
     cell: ({ row }) => (
-      <Badge variant="outline">{TYPE_LABEL[row.original.type]}</Badge>
+      <Badge variant="outline" className={controlBadgeClass}>{TYPE_LABEL[row.original.type]}</Badge>
     ),
   },
   {

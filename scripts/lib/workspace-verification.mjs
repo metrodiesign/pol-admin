@@ -91,20 +91,28 @@ function isWithin(root, target) {
   );
 }
 
-export async function assertPortAvailable(port) {
-  const probe = createServer();
+export async function assertPortAvailable(port, createProbe = createServer) {
+  for (const host of ["127.0.0.1", "::1", "::"]) {
+    const probe = createProbe();
 
-  try {
-    await new Promise((resolveListen, rejectListen) => {
-      probe.once("error", rejectListen);
-      probe.listen(port, "127.0.0.1", resolveListen);
-    });
-  } catch (error) {
-    throw new Error(`Port ${port} is already in use; smoke test will not touch its process`, {
-      cause: error,
-    });
-  } finally {
-    if (probe.listening) await new Promise((resolveClose) => probe.close(resolveClose));
+    try {
+      await new Promise((resolveListen, rejectListen) => {
+        probe.once("error", rejectListen);
+        probe.listen(port, host, resolveListen);
+      });
+    } catch (error) {
+      if (
+        host !== "127.0.0.1" &&
+        ["EAFNOSUPPORT", "EADDRNOTAVAIL", "ENOTSUP"].includes(error?.code)
+      ) {
+        continue;
+      }
+      throw new Error(`Port ${port} is already in use; smoke test will not touch its process`, {
+        cause: error,
+      });
+    } finally {
+      if (probe.listening) await new Promise((resolveClose) => probe.close(resolveClose));
+    }
   }
 }
 

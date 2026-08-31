@@ -32,6 +32,7 @@ import {
   cardStyle,
   primaryClass,
   warningClass,
+  controlBadgeClass,
 } from "@/components/control/shared/styles";
 import { EditPageHeader } from "@/components/shared/edit-page-header";
 import {
@@ -151,7 +152,7 @@ export function ApprovalDetailView({ id }: { id?: string }) {
           badges={
             <>
               <ControlStatusBadge tone={tone} label={STATUS_LABEL[req.status]} />
-              <span className="inline-flex items-center gap-1 rounded-md bg-success/12 px-1.5 py-1 text-xs font-semibold text-success-dark">
+              <span className={`${controlBadgeClass} bg-success/12 text-success-dark`}>
                 <ShieldCheck className="size-3.5" />
                 Maker-checker
               </span>

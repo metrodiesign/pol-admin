@@ -13,7 +13,7 @@ import {
 } from "@/components/control/shared/detail-shell";
 import { ReadField } from "@/components/control/shared/read-field";
 import { ControlStatusBadge } from "@/components/control/shared/status-badge";
-import { cancelClass, cardStyle } from "@/components/control/shared/styles";
+import { cancelClass, cardStyle, controlBadgeClass } from "@/components/control/shared/styles";
 import { EditPageHeader } from "@/components/shared/edit-page-header";
 
 function Header({ id }: { id?: string }) {
@@ -65,7 +65,7 @@ export function AuditDetailView({ id }: { id?: string }) {
           badges={
             <>
               <ControlStatusBadge tone={tone} label={RESULT_LABEL[entry.result]} />
-              <span className="inline-flex items-center gap-1 rounded-md bg-grey-100 px-1.5 py-1 text-xs font-semibold text-grey-700 dark:bg-grey-900">
+              <span className={`${controlBadgeClass} bg-grey-100 text-grey-700 dark:bg-grey-900`}>
                 <Lock className="size-3.5 text-grey-500" />
                 อ่านอย่างเดียว · เพิ่มต่อท้ายเท่านั้น
               </span>

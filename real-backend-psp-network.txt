@@ -1,0 +1,10 @@
+41. [GET] https://localhost:3001/admin/me => [200] OK
+42. [GET] https://localhost:3001/admin/me => [200] OK
+61. [GET] https://localhost:3001/api/v1/merchants?page=1&limit=100 => [FAILED] net::ERR_ABORTED
+62. [GET] https://localhost:3001/api/v1/approvals?page=1&limit=100&action=psp.credential.change&status=pending => [FAILED] net::ERR_ABORTED
+63. [GET] https://localhost:3001/api/v1/payments/psp-connections?page=1&limit=25 => [FAILED] net::ERR_ABORTED
+64. [GET] https://localhost:3001/api/v1/merchants?page=1&limit=100 => [200] OK
+65. [GET] https://localhost:3001/api/v1/approvals?page=1&limit=100&action=psp.credential.change&status=pending => [200] OK
+66. [GET] https://localhost:3001/api/v1/payments/psp-connections?page=1&limit=25 => [200] OK
+
+Note: 58 static requests not shown, run with "static" option to see them.

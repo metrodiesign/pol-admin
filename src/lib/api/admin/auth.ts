@@ -94,7 +94,7 @@ export function shouldRedirectToLogin(status: AuthStatus): boolean {
   return status === "anon";
 }
 
-/** authenticated session ที่ไม่มี effective permission ต้องใช้หน้า 403 เดิม ไม่แสดง protected shell. */
+/** authenticated session ที่ไม่มี effective permission ต้องแสดง Inline 403 โดยไม่ mount protected child. */
 export function shouldShowForbidden(status: AuthStatus, me: AdminMe | null): boolean {
   return status === "forbidden" || (status === "authed" && me !== null && me.permissions.length === 0);
 }
