@@ -1,0 +1,1454 @@
+{
+  "generatedAt": "2026-08-31T15:44:04.523Z",
+  "baseCommit": "94685d7b945f74e079cd03478f85836560faf3c0",
+  "workingTree": "uncommitted 30px badge-height amendment",
+  "expectedBadgeHeightPx": 30,
+  "notificationCountHeightPx": 20,
+  "checkedStates": 63,
+  "passedStates": 63,
+  "failedStates": 0,
+  "totalRenderedPills": 552,
+  "failures": [],
+  "results": [
+    {
+      "requestedPath": "/control/psp/list",
+      "actualPath": "/control/psp/list",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 3,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "psp@375",
+      "viewport": 375,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/routing",
+      "actualPath": "/control/routing",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 28,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "routing@375",
+      "viewport": 375,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/api-clients",
+      "actualPath": "/control/api-clients",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 28,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "api-clients@375",
+      "viewport": 375,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/webhooks",
+      "actualPath": "/control/webhooks",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 30,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "webhooks@375",
+      "viewport": 375,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/approvals",
+      "actualPath": "/control/approvals",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 8,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "approvals@375",
+      "viewport": 375,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/audit",
+      "actualPath": "/control/audit",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 10,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "audit@375",
+      "viewport": 375,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/notifications",
+      "actualPath": "/control/notifications",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 6,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        },
+        {
+          "text": "6",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        },
+        {
+          "text": "10",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "notifications-rules@375",
+      "viewport": 375,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/reconciliation",
+      "actualPath": "/control/reconciliation",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 3,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "reconciliation@375",
+      "viewport": 375,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/reports",
+      "actualPath": "/control/reports",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 0,
+      "heights": [],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "reports@375",
+      "viewport": 375,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/tenants",
+      "actualPath": "/control/tenants",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 7,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "tenants@375",
+      "viewport": 375,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/originators",
+      "actualPath": "/control/originators",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 20,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "originators@375",
+      "viewport": 375,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/notifications",
+      "actualPath": "/control/notifications",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 20,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        },
+        {
+          "text": "6",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        },
+        {
+          "text": "10",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "notifications-log@375",
+      "viewport": 375,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/psp/read?id=e8000000-0000-4000-8000-000000000001",
+      "actualPath": "/control/psp/read?id=e8000000-0000-4000-8000-000000000001",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 3,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "psp-detail@375",
+      "viewport": 375,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/routing/read?id=RR-VCOM-CARD",
+      "actualPath": "/control/routing/read?id=RR-VCOM-CARD",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 2,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "routing-detail@375",
+      "viewport": 375,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/api-clients/read?id=ACL-VPRV-01",
+      "actualPath": "/control/api-clients/read?id=ACL-VPRV-01",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 5,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "api-clients-detail@375",
+      "viewport": 375,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/webhooks/read?id=evt_5f8a2c9d4e7b3f16",
+      "actualPath": "/control/webhooks/read?id=evt_5f8a2c9d4e7b3f16",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 2,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "webhooks-detail@375",
+      "viewport": 375,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/approvals/read?id=APR-2026-0475",
+      "actualPath": "/control/approvals/read?id=APR-2026-0475",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 2,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "approvals-detail@375",
+      "viewport": 375,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/audit/read?id=AUD-000158",
+      "actualPath": "/control/audit/read?id=AUD-000158",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 2,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "audit-detail@375",
+      "viewport": 375,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/tenants/read?id=vcommerce",
+      "actualPath": "/control/tenants/read?id=vcommerce",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 2,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "tenants-detail@375",
+      "viewport": 375,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/originators/read?id=ORG-VPRV-HQ",
+      "actualPath": "/control/originators/read?id=ORG-VPRV-HQ",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 2,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "originators-detail@375",
+      "viewport": 375,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/notifications/read?id=NTF-LOG-001",
+      "actualPath": "/control/notifications/read?id=NTF-LOG-001",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 1,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "notifications-detail@375",
+      "viewport": 375,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/psp/list",
+      "actualPath": "/control/psp/list",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 3,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "psp@768",
+      "viewport": 768,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/routing",
+      "actualPath": "/control/routing",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 28,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "routing@768",
+      "viewport": 768,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/api-clients",
+      "actualPath": "/control/api-clients",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 28,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "api-clients@768",
+      "viewport": 768,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/webhooks",
+      "actualPath": "/control/webhooks",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 30,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "webhooks@768",
+      "viewport": 768,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/approvals",
+      "actualPath": "/control/approvals",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 8,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "approvals@768",
+      "viewport": 768,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/audit",
+      "actualPath": "/control/audit",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 10,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "audit@768",
+      "viewport": 768,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/notifications",
+      "actualPath": "/control/notifications",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 6,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        },
+        {
+          "text": "6",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        },
+        {
+          "text": "10",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "notifications-rules@768",
+      "viewport": 768,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/reconciliation",
+      "actualPath": "/control/reconciliation",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 3,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "reconciliation@768",
+      "viewport": 768,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/reports",
+      "actualPath": "/control/reports",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 0,
+      "heights": [],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "reports@768",
+      "viewport": 768,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/tenants",
+      "actualPath": "/control/tenants",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 7,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "tenants@768",
+      "viewport": 768,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/originators",
+      "actualPath": "/control/originators",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 20,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "originators@768",
+      "viewport": 768,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/notifications",
+      "actualPath": "/control/notifications",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 20,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        },
+        {
+          "text": "6",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        },
+        {
+          "text": "10",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "notifications-log@768",
+      "viewport": 768,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/psp/read?id=e8000000-0000-4000-8000-000000000001",
+      "actualPath": "/control/psp/read?id=e8000000-0000-4000-8000-000000000001",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 3,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "psp-detail@768",
+      "viewport": 768,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/routing/read?id=RR-VCOM-CARD",
+      "actualPath": "/control/routing/read?id=RR-VCOM-CARD",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 2,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "routing-detail@768",
+      "viewport": 768,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/api-clients/read?id=ACL-VPRV-01",
+      "actualPath": "/control/api-clients/read?id=ACL-VPRV-01",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 5,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "api-clients-detail@768",
+      "viewport": 768,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/webhooks/read?id=evt_5f8a2c9d4e7b3f16",
+      "actualPath": "/control/webhooks/read?id=evt_5f8a2c9d4e7b3f16",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 2,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "webhooks-detail@768",
+      "viewport": 768,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/approvals/read?id=APR-2026-0475",
+      "actualPath": "/control/approvals/read?id=APR-2026-0475",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 2,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "approvals-detail@768",
+      "viewport": 768,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/audit/read?id=AUD-000158",
+      "actualPath": "/control/audit/read?id=AUD-000158",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 2,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "audit-detail@768",
+      "viewport": 768,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/tenants/read?id=vcommerce",
+      "actualPath": "/control/tenants/read?id=vcommerce",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 2,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "tenants-detail@768",
+      "viewport": 768,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/originators/read?id=ORG-VPRV-HQ",
+      "actualPath": "/control/originators/read?id=ORG-VPRV-HQ",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 2,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "originators-detail@768",
+      "viewport": 768,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/notifications/read?id=NTF-LOG-001",
+      "actualPath": "/control/notifications/read?id=NTF-LOG-001",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 1,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "notifications-detail@768",
+      "viewport": 768,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/psp/list",
+      "actualPath": "/control/psp/list",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 3,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "psp@1440",
+      "viewport": 1440,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/routing",
+      "actualPath": "/control/routing",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 28,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "routing@1440",
+      "viewport": 1440,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/api-clients",
+      "actualPath": "/control/api-clients",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 28,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "api-clients@1440",
+      "viewport": 1440,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/webhooks",
+      "actualPath": "/control/webhooks",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 30,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "webhooks@1440",
+      "viewport": 1440,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/approvals",
+      "actualPath": "/control/approvals",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 8,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "approvals@1440",
+      "viewport": 1440,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/audit",
+      "actualPath": "/control/audit",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 10,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "audit@1440",
+      "viewport": 1440,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/notifications",
+      "actualPath": "/control/notifications",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 6,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        },
+        {
+          "text": "6",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        },
+        {
+          "text": "10",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "notifications-rules@1440",
+      "viewport": 1440,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/reconciliation",
+      "actualPath": "/control/reconciliation",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 3,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "reconciliation@1440",
+      "viewport": 1440,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/reports",
+      "actualPath": "/control/reports",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 0,
+      "heights": [],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "reports@1440",
+      "viewport": 1440,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/tenants",
+      "actualPath": "/control/tenants",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 7,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "tenants@1440",
+      "viewport": 1440,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/originators",
+      "actualPath": "/control/originators",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 20,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "originators@1440",
+      "viewport": 1440,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/notifications",
+      "actualPath": "/control/notifications",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 20,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        },
+        {
+          "text": "6",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        },
+        {
+          "text": "10",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "notifications-log@1440",
+      "viewport": 1440,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/psp/read?id=e8000000-0000-4000-8000-000000000001",
+      "actualPath": "/control/psp/read?id=e8000000-0000-4000-8000-000000000001",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 3,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "psp-detail@1440",
+      "viewport": 1440,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/routing/read?id=RR-VCOM-CARD",
+      "actualPath": "/control/routing/read?id=RR-VCOM-CARD",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 2,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "routing-detail@1440",
+      "viewport": 1440,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/api-clients/read?id=ACL-VPRV-01",
+      "actualPath": "/control/api-clients/read?id=ACL-VPRV-01",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 5,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "api-clients-detail@1440",
+      "viewport": 1440,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/webhooks/read?id=evt_5f8a2c9d4e7b3f16",
+      "actualPath": "/control/webhooks/read?id=evt_5f8a2c9d4e7b3f16",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 2,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "webhooks-detail@1440",
+      "viewport": 1440,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/approvals/read?id=APR-2026-0475",
+      "actualPath": "/control/approvals/read?id=APR-2026-0475",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 2,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "approvals-detail@1440",
+      "viewport": 1440,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/audit/read?id=AUD-000158",
+      "actualPath": "/control/audit/read?id=AUD-000158",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 2,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "audit-detail@1440",
+      "viewport": 1440,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/tenants/read?id=vcommerce",
+      "actualPath": "/control/tenants/read?id=vcommerce",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 2,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "tenants-detail@1440",
+      "viewport": 1440,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/originators/read?id=ORG-VPRV-HQ",
+      "actualPath": "/control/originators/read?id=ORG-VPRV-HQ",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 2,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "originators-detail@1440",
+      "viewport": 1440,
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/notifications/read?id=NTF-LOG-001",
+      "actualPath": "/control/notifications/read?id=NTF-LOG-001",
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "pillCount": 1,
+      "heights": [
+        30
+      ],
+      "invalidPills": [],
+      "compactCounts": [
+        {
+          "text": "4",
+          "computedHeight": 20,
+          "hasExpectedBadgeClass": false
+        }
+      ],
+      "state": "notifications-detail@1440",
+      "viewport": 1440,
+      "consoleErrors": [],
+      "pass": true
+    }
+  ]
+}

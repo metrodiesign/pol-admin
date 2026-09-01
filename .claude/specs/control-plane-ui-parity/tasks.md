@@ -20,8 +20,8 @@
 - [x] 6. Verify — SSR tests ทุก view, typecheck, eslint, npm test, spec-trace (REQ-4.1–4.4)
   Evidence: `npm test` (นอก sandbox, port 3001 ว่าง) exit 0 — node --test 31/31, vitest 360/360 (29 files), workspaces 26/26; `npm run typecheck` exit 0; `npx eslint src/components/control src/app/control` No issues; `scripts/spec-trace.sh control-plane-ui-parity` OK 24/24; `grep -rn "components/merchant" src/components/control` ว่าง; viewports: n/a — Microsoft SSO บล็อก browser evidence (ดู Environment constraints)
   - Satisfies: REQ-4.1-4.4
-- [x] 7. Badge parity amendment — ปรับ status และ domain chips เป็น merchant pill geometry โดยคง tone/icon/count semantics (REQ-5.1–5.5)
-  Evidence: `controlBadgeClass` ใช้ใน shared status, UI Badge consumers และ raw semantic markers; focused parity 39/39; `npm test` ผ่าน node 31/31, vitest 373/373, shared 26/26; typecheck ผ่าน; eslint No issues; spec-trace 29/29; browser 20 Control routes ที่ 375/768/1440 + notification log tab ไม่มี badge mismatch, legacy marker, default dot, body overflow หรือ console error; PSP icon pills และ compact tab count ยังอยู่
+- [x] 7. Badge parity amendment — ปรับ status และ domain chips เป็น merchant pill geometry สูง 30px โดยคง tone/icon/count semantics (REQ-5.1–5.5)
+  Evidence: เปลี่ยน shared `controlBadgeClass` จาก `h-8` เป็น `h-[30px]`; focused SSR tests RED `PASS 29, FAIL 13` ก่อนแก้และ GREEN `42/42` หลังแก้; filesystem sweep ยืนยัน status/domain badge และ chip ทุกตัวผ่าน shared token; `npm test` ผ่าน node 33/33, root Vitest 376/376 และ shared 26/26; typecheck ผ่าน; eslint No issues; spec-trace 29/29; Chrome CDP ตรวจ 21 page states ที่ 375/768/1440 รวม 63/63 checks และ badge/chip 552 instances ทุกตัว computed height 30px; notification tab count คง 20px; ไม่พบ body overflow หรือ console error; หลักฐานอยู่ที่ `browser-evidence-2026-08-31/height-30-results.json`
   - Satisfies: REQ-5.1-5.5
 
 ## Environment constraints
