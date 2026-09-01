@@ -53,9 +53,9 @@ export function webhookColumns({
       header: "PSP",
       enableSorting: true,
       cell: ({ row }) => (
-        <span className="text-sm text-foreground">
+        <Badge variant="secondary" className={controlBadgeClass}>
           {PSP_LABEL[row.original.psp]}
-        </span>
+        </Badge>
       ),
     },
     {

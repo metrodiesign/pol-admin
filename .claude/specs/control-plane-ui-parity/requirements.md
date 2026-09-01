@@ -1,6 +1,6 @@
 # Requirements: Control Plane UI Parity (4 nav group ให้เหมือน merchant user/role)
 
-> Status: approved 2026-08-31 (quick, no gates); badge parity amendment approved 2026-08-31
+> Status: approved 2026-08-31 (quick, no gates); badge parity และความสูง 30px approved 2026-08-31
 
 ## บริบท
 
@@ -15,7 +15,7 @@
 |---|---|
 | Stat/KPI/chart/endpoint cards | คงไว้ เปลี่ยนเฉพาะ shell เป็น `rounded-card bg-card p-6` + `cardStyle` |
 | PR | PR เดียวครบ 4 group, checkpoint commit ต่อ group |
-| Badge และ domain chips | ใช้ pill geometry แบบ merchant user/role; คง semantic tone/icon และคง tab count แบบ compact |
+| Badge และ domain chips | ใช้ pill geometry สูง 30px แบบ merchant user/role; คง semantic tone/icon และคง tab count แบบ compact |
 | Toolbar | shared `ControlToolbar` ใหม่ (grid + clearable + จำนวนต่อหน้า) แทน `ControlListToolbar` เพื่อไม่ซ้ำ 10 ที่ |
 
 Screens ใน scope:
@@ -71,10 +71,10 @@ Screens ใน scope:
 
 ## REQ-5: Badge และ domain chip parity amendment
 
-- 5.1 THE SYSTEM SHALL แสดง lifecycle status badge ทุกจุดด้วย geometry `inline-flex rounded-full px-4 py-1 text-sm font-semibold` แบบ merchant user/role โดยคง label และ semantic tone เดิม
+- 5.1 THE SYSTEM SHALL แสดง lifecycle status badge ทุกจุดด้วย geometry `inline-flex h-[30px] rounded-full px-4 py-1 text-sm font-semibold` สูง 30px แบบ merchant user/role โดยคง label และ semantic tone เดิม
 - 5.2 THE SYSTEM SHALL ไม่แสดง default status dot แต่ SHALL คง icon ที่สื่อ domain requirement เช่น PSP Enabled/Health/Approval, signature, maker-checker, OAuth2 และ read-only marker
-- 5.3 THE SYSTEM SHALL แสดง scope, channel, originator type, SAQ, PSP identifier และ legal marker ด้วย pill geometry เดียวกัน โดยคง variant, tone, uppercase และข้อความเดิม
-- 5.4 WHEN badge เป็น tab count THE SYSTEM SHALL คง compact count geometry แบบ `merchant/user/list-tabs.tsx` และไม่ขยายเป็น status pill
+- 5.3 THE SYSTEM SHALL แสดง scope, channel, originator type, SAQ, PSP identifier และ legal marker ด้วย pill geometry สูง 30px เดียวกัน โดยคง variant, tone, uppercase และข้อความเดิม
+- 5.4 WHEN badge เป็น tab count THE SYSTEM SHALL คง compact count geometry แบบ `merchant/user/list-tabs.tsx` และไม่ขยายเป็น status pillหรือบังคับความสูง 30px
 - 5.5 THE SYSTEM SHALL ไม่แก้ global `src/components/ui/badge.tsx`, ไม่ import Merchant component และ SHALL เพิ่ม regression test พร้อม browser verification ที่ 375/768/1440
 
 ## Self-check (5 หมวดของ /spec-analyze)

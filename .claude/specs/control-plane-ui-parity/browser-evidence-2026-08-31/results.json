@@ -1,0 +1,1870 @@
+{
+  "generatedAt": "2026-08-31T14:52:32.824Z",
+  "viewports": [
+    {
+      "width": 375,
+      "height": 1000
+    },
+    {
+      "width": 768,
+      "height": 1000
+    },
+    {
+      "width": 1440,
+      "height": 1000
+    }
+  ],
+  "listStates": [
+    {
+      "name": "psp",
+      "route": "/control/psp/list"
+    },
+    {
+      "name": "routing",
+      "route": "/control/routing"
+    },
+    {
+      "name": "api-clients",
+      "route": "/control/api-clients"
+    },
+    {
+      "name": "webhooks",
+      "route": "/control/webhooks"
+    },
+    {
+      "name": "approvals",
+      "route": "/control/approvals"
+    },
+    {
+      "name": "audit",
+      "route": "/control/audit"
+    },
+    {
+      "name": "notifications-rules",
+      "route": "/control/notifications"
+    },
+    {
+      "name": "reconciliation",
+      "route": "/control/reconciliation"
+    },
+    {
+      "name": "reports",
+      "route": "/control/reports"
+    },
+    {
+      "name": "tenants",
+      "route": "/control/tenants"
+    },
+    {
+      "name": "originators",
+      "route": "/control/originators"
+    }
+  ],
+  "discoveredDetailRoutes": {
+    "psp": "/control/psp/read?id=e8000000-0000-4000-8000-000000000001",
+    "routing": "/control/routing/read?id=RR-VCOM-CARD",
+    "api-clients": "/control/api-clients/read?id=ACL-VPRV-01",
+    "webhooks": "/control/webhooks/read?id=evt_5f8a2c9d4e7b3f16",
+    "approvals": "/control/approvals/read?id=APR-2026-0475",
+    "audit": "/control/audit/read?id=AUD-000158",
+    "tenants": "/control/tenants/read?id=vcommerce",
+    "originators": "/control/originators/read?id=ORG-VPRV-HQ",
+    "notifications": "/control/notifications/read?id=NTF-LOG-001"
+  },
+  "checkedStates": 63,
+  "passedStates": 63,
+  "failedStates": 0,
+  "failures": [],
+  "results": [
+    {
+      "requestedPath": "/control/psp/list",
+      "actualPath": "/control/psp/list",
+      "title": "การเชื่อมต่อ PSP | POL Admin",
+      "bodyClientWidth": 375,
+      "bodyScrollWidth": 375,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 3,
+      "compactTabCount": null,
+      "tableHeaders": [
+        "Connection",
+        "PSP",
+        "ช่องทาง",
+        "Enabled",
+        "Health",
+        "ทดสอบล่าสุด",
+        "Approval",
+        ""
+      ],
+      "pillColumnResults": {},
+      "detailHref": "/control/psp/read?id=e8000000-0000-4000-8000-000000000001",
+      "state": "psp@375",
+      "viewport": {
+        "width": 375,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/routing",
+      "actualPath": "/control/routing",
+      "title": "กฎการกำหนดเส้นทาง | POL Admin",
+      "bodyClientWidth": 375,
+      "bodyScrollWidth": 375,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 28,
+      "compactTabCount": null,
+      "tableHeaders": [
+        "ลำดับ",
+        "บริษัท",
+        "ช่องทาง",
+        "ช่วงจำนวนเงิน",
+        "PSP ปลายทาง",
+        "PSP สำรอง",
+        "สถานะ",
+        ""
+      ],
+      "pillColumnResults": {
+        "ช่องทาง": {
+          "found": true,
+          "failures": []
+        },
+        "PSP ปลายทาง": {
+          "found": true,
+          "failures": []
+        },
+        "PSP สำรอง": {
+          "found": true,
+          "failures": []
+        },
+        "สถานะ": {
+          "found": true,
+          "failures": []
+        }
+      },
+      "detailHref": "/control/routing/read?id=RR-VCOM-CARD",
+      "state": "routing@375",
+      "viewport": {
+        "width": 375,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/api-clients",
+      "actualPath": "/control/api-clients",
+      "title": "ไคลเอนต์ API | POL Admin",
+      "bodyClientWidth": 375,
+      "bodyScrollWidth": 375,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 28,
+      "compactTabCount": null,
+      "tableHeaders": [
+        "ไคลเอนต์",
+        "ขอบเขต",
+        "บริษัท",
+        "ใช้งานล่าสุด",
+        "สถานะ",
+        ""
+      ],
+      "pillColumnResults": {},
+      "detailHref": "/control/api-clients/read?id=ACL-VPRV-01",
+      "state": "api-clients@375",
+      "viewport": {
+        "width": 375,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/webhooks",
+      "actualPath": "/control/webhooks",
+      "title": "Webhooks และเหตุการณ์ | POL Admin",
+      "bodyClientWidth": 375,
+      "bodyScrollWidth": 375,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 30,
+      "compactTabCount": null,
+      "tableHeaders": [
+        "เหตุการณ์",
+        "PSP",
+        "บริษัท",
+        "ครั้งที่ส่ง",
+        "ลายเซ็น",
+        "รับเมื่อ",
+        "สถานะ",
+        ""
+      ],
+      "pillColumnResults": {
+        "PSP": {
+          "found": true,
+          "failures": []
+        },
+        "ลายเซ็น": {
+          "found": true,
+          "failures": []
+        },
+        "สถานะ": {
+          "found": true,
+          "failures": []
+        }
+      },
+      "detailHref": "/control/webhooks/read?id=evt_5f8a2c9d4e7b3f16",
+      "state": "webhooks@375",
+      "viewport": {
+        "width": 375,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/approvals",
+      "actualPath": "/control/approvals",
+      "title": "การอนุมัติ | POL Admin",
+      "bodyClientWidth": 375,
+      "bodyScrollWidth": 375,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 8,
+      "compactTabCount": null,
+      "tableHeaders": [
+        "การดำเนินการ",
+        "ผู้ขอ",
+        "อ้างอิง — เงิน settle PSP→บริษัทโดยตรง",
+        "บริษัท",
+        "ขอเมื่อ",
+        "สถานะ",
+        ""
+      ],
+      "pillColumnResults": {},
+      "detailHref": "/control/approvals/read?id=APR-2026-0475",
+      "state": "approvals@375",
+      "viewport": {
+        "width": 375,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/audit",
+      "actualPath": "/control/audit",
+      "title": "บันทึกการตรวจสอบ | POL Admin",
+      "bodyClientWidth": 375,
+      "bodyScrollWidth": 375,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 10,
+      "compactTabCount": null,
+      "tableHeaders": [
+        "เวลา",
+        "ผู้กระทำ",
+        "การกระทำ",
+        "บริษัท",
+        "ผลลัพธ์",
+        "IP",
+        ""
+      ],
+      "pillColumnResults": {},
+      "detailHref": "/control/audit/read?id=AUD-000158",
+      "state": "audit@375",
+      "viewport": {
+        "width": 375,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/notifications",
+      "actualPath": "/control/notifications",
+      "title": "การแจ้งเตือน | POL Admin",
+      "bodyClientWidth": 375,
+      "bodyScrollWidth": 375,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 6,
+      "compactTabCount": true,
+      "tableHeaders": [
+        "เหตุการณ์",
+        "ช่องทาง",
+        "ปลายทาง",
+        "เงื่อนไข",
+        "บริษัท",
+        "ใช้งาน"
+      ],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "notifications-rules@375",
+      "viewport": {
+        "width": 375,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/reconciliation",
+      "actualPath": "/control/reconciliation",
+      "title": "การกระทบยอด | POL Admin",
+      "bodyClientWidth": 375,
+      "bodyScrollWidth": 375,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 3,
+      "compactTabCount": null,
+      "tableHeaders": [
+        "สถานะ",
+        "สกุลเงิน",
+        "จำนวนรายการ",
+        "ยอดรวม"
+      ],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "reconciliation@375",
+      "viewport": {
+        "width": 375,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/reports",
+      "actualPath": "/control/reports",
+      "title": "รายงาน | POL Admin",
+      "bodyClientWidth": 375,
+      "bodyScrollWidth": 375,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 0,
+      "compactTabCount": null,
+      "tableHeaders": [],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "reports@375",
+      "viewport": {
+        "width": 375,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/tenants",
+      "actualPath": "/control/tenants",
+      "title": "ผู้เช่าและพื้นที่ทำงาน | POL Admin",
+      "bodyClientWidth": 375,
+      "bodyScrollWidth": 375,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 7,
+      "compactTabCount": null,
+      "tableHeaders": [
+        "บริษัท",
+        "นิติบุคคล",
+        "ขอบเขต SAQ",
+        "PSP ที่เปิดใช้",
+        "ผู้ดูแล",
+        ""
+      ],
+      "pillColumnResults": {},
+      "detailHref": "/control/tenants/read?id=vcommerce",
+      "state": "tenants@375",
+      "viewport": {
+        "width": 375,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/originators",
+      "actualPath": "/control/originators",
+      "title": "ต้นทางคำสั่ง | POL Admin",
+      "bodyClientWidth": 375,
+      "bodyScrollWidth": 375,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 20,
+      "compactTabCount": null,
+      "tableHeaders": [
+        "ต้นทาง",
+        "ประเภท",
+        "บริษัท",
+        "ไคลเอนต์ API",
+        "สถานะ",
+        ""
+      ],
+      "pillColumnResults": {},
+      "detailHref": "/control/originators/read?id=ORG-VPRV-HQ",
+      "state": "originators@375",
+      "viewport": {
+        "width": 375,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/notifications",
+      "actualPath": "/control/notifications",
+      "title": "การแจ้งเตือน | POL Admin",
+      "bodyClientWidth": 375,
+      "bodyScrollWidth": 375,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 20,
+      "compactTabCount": null,
+      "tableHeaders": [
+        "เหตุการณ์",
+        "ช่องทาง",
+        "ปลายทาง",
+        "สถานะ",
+        "ส่งเมื่อ",
+        ""
+      ],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "notifications-log@375",
+      "viewport": {
+        "width": 375,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/psp/read?id=e8000000-0000-4000-8000-000000000001",
+      "actualPath": "/control/psp/read?id=e8000000-0000-4000-8000-000000000001",
+      "title": "รายละเอียด PSP Connection | POL Admin",
+      "bodyClientWidth": 375,
+      "bodyScrollWidth": 375,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 3,
+      "compactTabCount": null,
+      "tableHeaders": [],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "psp-detail@375",
+      "viewport": {
+        "width": 375,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/routing/read?id=RR-VCOM-CARD",
+      "actualPath": "/control/routing/read?id=RR-VCOM-CARD",
+      "title": "รายละเอียด Routing Rule | POL Admin",
+      "bodyClientWidth": 375,
+      "bodyScrollWidth": 375,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 2,
+      "compactTabCount": null,
+      "tableHeaders": [],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "routing-detail@375",
+      "viewport": {
+        "width": 375,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/api-clients/read?id=ACL-VPRV-01",
+      "actualPath": "/control/api-clients/read?id=ACL-VPRV-01",
+      "title": "รายละเอียด API Client | POL Admin",
+      "bodyClientWidth": 375,
+      "bodyScrollWidth": 375,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 5,
+      "compactTabCount": null,
+      "tableHeaders": [],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "api-clients-detail@375",
+      "viewport": {
+        "width": 375,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/webhooks/read?id=evt_5f8a2c9d4e7b3f16",
+      "actualPath": "/control/webhooks/read?id=evt_5f8a2c9d4e7b3f16",
+      "title": "รายละเอียด Webhook Event | POL Admin",
+      "bodyClientWidth": 375,
+      "bodyScrollWidth": 375,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 2,
+      "compactTabCount": null,
+      "tableHeaders": [],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "webhooks-detail@375",
+      "viewport": {
+        "width": 375,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/approvals/read?id=APR-2026-0475",
+      "actualPath": "/control/approvals/read?id=APR-2026-0475",
+      "title": "รายละเอียดคำขออนุมัติ | POL Admin",
+      "bodyClientWidth": 375,
+      "bodyScrollWidth": 375,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 2,
+      "compactTabCount": null,
+      "tableHeaders": [],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "approvals-detail@375",
+      "viewport": {
+        "width": 375,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/audit/read?id=AUD-000158",
+      "actualPath": "/control/audit/read?id=AUD-000158",
+      "title": "รายละเอียด Audit Log | POL Admin",
+      "bodyClientWidth": 375,
+      "bodyScrollWidth": 375,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 2,
+      "compactTabCount": null,
+      "tableHeaders": [],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "audit-detail@375",
+      "viewport": {
+        "width": 375,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/tenants/read?id=vcommerce",
+      "actualPath": "/control/tenants/read?id=vcommerce",
+      "title": "รายละเอียด Merchant | POL Admin",
+      "bodyClientWidth": 375,
+      "bodyScrollWidth": 375,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 4,
+      "compactTabCount": null,
+      "tableHeaders": [],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "tenants-detail@375",
+      "viewport": {
+        "width": 375,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/originators/read?id=ORG-VPRV-HQ",
+      "actualPath": "/control/originators/read?id=ORG-VPRV-HQ",
+      "title": "รายละเอียด Originator | POL Admin",
+      "bodyClientWidth": 375,
+      "bodyScrollWidth": 375,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 2,
+      "compactTabCount": null,
+      "tableHeaders": [],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "originators-detail@375",
+      "viewport": {
+        "width": 375,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/notifications/read?id=NTF-LOG-001",
+      "actualPath": "/control/notifications/read?id=NTF-LOG-001",
+      "title": "รายละเอียดการส่งแจ้งเตือน | POL Admin",
+      "bodyClientWidth": 375,
+      "bodyScrollWidth": 375,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 1,
+      "compactTabCount": null,
+      "tableHeaders": [],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "notifications-detail@375",
+      "viewport": {
+        "width": 375,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/psp/list",
+      "actualPath": "/control/psp/list",
+      "title": "การเชื่อมต่อ PSP | POL Admin",
+      "bodyClientWidth": 768,
+      "bodyScrollWidth": 768,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 3,
+      "compactTabCount": null,
+      "tableHeaders": [
+        "Connection",
+        "PSP",
+        "ช่องทาง",
+        "Enabled",
+        "Health",
+        "ทดสอบล่าสุด",
+        "Approval",
+        ""
+      ],
+      "pillColumnResults": {},
+      "detailHref": "/control/psp/read?id=e8000000-0000-4000-8000-000000000001",
+      "state": "psp@768",
+      "viewport": {
+        "width": 768,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/routing",
+      "actualPath": "/control/routing",
+      "title": "กฎการกำหนดเส้นทาง | POL Admin",
+      "bodyClientWidth": 768,
+      "bodyScrollWidth": 768,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 28,
+      "compactTabCount": null,
+      "tableHeaders": [
+        "ลำดับ",
+        "บริษัท",
+        "ช่องทาง",
+        "ช่วงจำนวนเงิน",
+        "PSP ปลายทาง",
+        "PSP สำรอง",
+        "สถานะ",
+        ""
+      ],
+      "pillColumnResults": {
+        "ช่องทาง": {
+          "found": true,
+          "failures": []
+        },
+        "PSP ปลายทาง": {
+          "found": true,
+          "failures": []
+        },
+        "PSP สำรอง": {
+          "found": true,
+          "failures": []
+        },
+        "สถานะ": {
+          "found": true,
+          "failures": []
+        }
+      },
+      "detailHref": "/control/routing/read?id=RR-VCOM-CARD",
+      "state": "routing@768",
+      "viewport": {
+        "width": 768,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/api-clients",
+      "actualPath": "/control/api-clients",
+      "title": "ไคลเอนต์ API | POL Admin",
+      "bodyClientWidth": 768,
+      "bodyScrollWidth": 768,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 28,
+      "compactTabCount": null,
+      "tableHeaders": [
+        "ไคลเอนต์",
+        "ขอบเขต",
+        "บริษัท",
+        "ใช้งานล่าสุด",
+        "สถานะ",
+        ""
+      ],
+      "pillColumnResults": {},
+      "detailHref": "/control/api-clients/read?id=ACL-VPRV-01",
+      "state": "api-clients@768",
+      "viewport": {
+        "width": 768,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/webhooks",
+      "actualPath": "/control/webhooks",
+      "title": "Webhooks และเหตุการณ์ | POL Admin",
+      "bodyClientWidth": 768,
+      "bodyScrollWidth": 768,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 30,
+      "compactTabCount": null,
+      "tableHeaders": [
+        "เหตุการณ์",
+        "PSP",
+        "บริษัท",
+        "ครั้งที่ส่ง",
+        "ลายเซ็น",
+        "รับเมื่อ",
+        "สถานะ",
+        ""
+      ],
+      "pillColumnResults": {
+        "PSP": {
+          "found": true,
+          "failures": []
+        },
+        "ลายเซ็น": {
+          "found": true,
+          "failures": []
+        },
+        "สถานะ": {
+          "found": true,
+          "failures": []
+        }
+      },
+      "detailHref": "/control/webhooks/read?id=evt_5f8a2c9d4e7b3f16",
+      "state": "webhooks@768",
+      "viewport": {
+        "width": 768,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/approvals",
+      "actualPath": "/control/approvals",
+      "title": "การอนุมัติ | POL Admin",
+      "bodyClientWidth": 768,
+      "bodyScrollWidth": 768,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 8,
+      "compactTabCount": null,
+      "tableHeaders": [
+        "การดำเนินการ",
+        "ผู้ขอ",
+        "อ้างอิง — เงิน settle PSP→บริษัทโดยตรง",
+        "บริษัท",
+        "ขอเมื่อ",
+        "สถานะ",
+        ""
+      ],
+      "pillColumnResults": {},
+      "detailHref": "/control/approvals/read?id=APR-2026-0475",
+      "state": "approvals@768",
+      "viewport": {
+        "width": 768,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/audit",
+      "actualPath": "/control/audit",
+      "title": "บันทึกการตรวจสอบ | POL Admin",
+      "bodyClientWidth": 768,
+      "bodyScrollWidth": 768,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 10,
+      "compactTabCount": null,
+      "tableHeaders": [
+        "เวลา",
+        "ผู้กระทำ",
+        "การกระทำ",
+        "บริษัท",
+        "ผลลัพธ์",
+        "IP",
+        ""
+      ],
+      "pillColumnResults": {},
+      "detailHref": "/control/audit/read?id=AUD-000158",
+      "state": "audit@768",
+      "viewport": {
+        "width": 768,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/notifications",
+      "actualPath": "/control/notifications",
+      "title": "การแจ้งเตือน | POL Admin",
+      "bodyClientWidth": 768,
+      "bodyScrollWidth": 768,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 6,
+      "compactTabCount": true,
+      "tableHeaders": [
+        "เหตุการณ์",
+        "ช่องทาง",
+        "ปลายทาง",
+        "เงื่อนไข",
+        "บริษัท",
+        "ใช้งาน"
+      ],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "notifications-rules@768",
+      "viewport": {
+        "width": 768,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/reconciliation",
+      "actualPath": "/control/reconciliation",
+      "title": "การกระทบยอด | POL Admin",
+      "bodyClientWidth": 768,
+      "bodyScrollWidth": 768,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 3,
+      "compactTabCount": null,
+      "tableHeaders": [
+        "สถานะ",
+        "สกุลเงิน",
+        "จำนวนรายการ",
+        "ยอดรวม"
+      ],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "reconciliation@768",
+      "viewport": {
+        "width": 768,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/reports",
+      "actualPath": "/control/reports",
+      "title": "รายงาน | POL Admin",
+      "bodyClientWidth": 768,
+      "bodyScrollWidth": 768,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 0,
+      "compactTabCount": null,
+      "tableHeaders": [],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "reports@768",
+      "viewport": {
+        "width": 768,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/tenants",
+      "actualPath": "/control/tenants",
+      "title": "ผู้เช่าและพื้นที่ทำงาน | POL Admin",
+      "bodyClientWidth": 768,
+      "bodyScrollWidth": 768,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 7,
+      "compactTabCount": null,
+      "tableHeaders": [
+        "บริษัท",
+        "นิติบุคคล",
+        "ขอบเขต SAQ",
+        "PSP ที่เปิดใช้",
+        "ผู้ดูแล",
+        ""
+      ],
+      "pillColumnResults": {},
+      "detailHref": "/control/tenants/read?id=vcommerce",
+      "state": "tenants@768",
+      "viewport": {
+        "width": 768,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/originators",
+      "actualPath": "/control/originators",
+      "title": "ต้นทางคำสั่ง | POL Admin",
+      "bodyClientWidth": 768,
+      "bodyScrollWidth": 768,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 20,
+      "compactTabCount": null,
+      "tableHeaders": [
+        "ต้นทาง",
+        "ประเภท",
+        "บริษัท",
+        "ไคลเอนต์ API",
+        "สถานะ",
+        ""
+      ],
+      "pillColumnResults": {},
+      "detailHref": "/control/originators/read?id=ORG-VPRV-HQ",
+      "state": "originators@768",
+      "viewport": {
+        "width": 768,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/notifications",
+      "actualPath": "/control/notifications",
+      "title": "การแจ้งเตือน | POL Admin",
+      "bodyClientWidth": 768,
+      "bodyScrollWidth": 768,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 20,
+      "compactTabCount": null,
+      "tableHeaders": [
+        "เหตุการณ์",
+        "ช่องทาง",
+        "ปลายทาง",
+        "สถานะ",
+        "ส่งเมื่อ",
+        ""
+      ],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "notifications-log@768",
+      "viewport": {
+        "width": 768,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/psp/read?id=e8000000-0000-4000-8000-000000000001",
+      "actualPath": "/control/psp/read?id=e8000000-0000-4000-8000-000000000001",
+      "title": "รายละเอียด PSP Connection | POL Admin",
+      "bodyClientWidth": 768,
+      "bodyScrollWidth": 768,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 3,
+      "compactTabCount": null,
+      "tableHeaders": [],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "psp-detail@768",
+      "viewport": {
+        "width": 768,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/routing/read?id=RR-VCOM-CARD",
+      "actualPath": "/control/routing/read?id=RR-VCOM-CARD",
+      "title": "รายละเอียด Routing Rule | POL Admin",
+      "bodyClientWidth": 768,
+      "bodyScrollWidth": 768,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 2,
+      "compactTabCount": null,
+      "tableHeaders": [],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "routing-detail@768",
+      "viewport": {
+        "width": 768,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/api-clients/read?id=ACL-VPRV-01",
+      "actualPath": "/control/api-clients/read?id=ACL-VPRV-01",
+      "title": "รายละเอียด API Client | POL Admin",
+      "bodyClientWidth": 768,
+      "bodyScrollWidth": 768,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 5,
+      "compactTabCount": null,
+      "tableHeaders": [],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "api-clients-detail@768",
+      "viewport": {
+        "width": 768,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/webhooks/read?id=evt_5f8a2c9d4e7b3f16",
+      "actualPath": "/control/webhooks/read?id=evt_5f8a2c9d4e7b3f16",
+      "title": "รายละเอียด Webhook Event | POL Admin",
+      "bodyClientWidth": 768,
+      "bodyScrollWidth": 768,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 2,
+      "compactTabCount": null,
+      "tableHeaders": [],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "webhooks-detail@768",
+      "viewport": {
+        "width": 768,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/approvals/read?id=APR-2026-0475",
+      "actualPath": "/control/approvals/read?id=APR-2026-0475",
+      "title": "รายละเอียดคำขออนุมัติ | POL Admin",
+      "bodyClientWidth": 768,
+      "bodyScrollWidth": 768,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 2,
+      "compactTabCount": null,
+      "tableHeaders": [],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "approvals-detail@768",
+      "viewport": {
+        "width": 768,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/audit/read?id=AUD-000158",
+      "actualPath": "/control/audit/read?id=AUD-000158",
+      "title": "รายละเอียด Audit Log | POL Admin",
+      "bodyClientWidth": 768,
+      "bodyScrollWidth": 768,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 2,
+      "compactTabCount": null,
+      "tableHeaders": [],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "audit-detail@768",
+      "viewport": {
+        "width": 768,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/tenants/read?id=vcommerce",
+      "actualPath": "/control/tenants/read?id=vcommerce",
+      "title": "รายละเอียด Merchant | POL Admin",
+      "bodyClientWidth": 768,
+      "bodyScrollWidth": 768,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 4,
+      "compactTabCount": null,
+      "tableHeaders": [],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "tenants-detail@768",
+      "viewport": {
+        "width": 768,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/originators/read?id=ORG-VPRV-HQ",
+      "actualPath": "/control/originators/read?id=ORG-VPRV-HQ",
+      "title": "รายละเอียด Originator | POL Admin",
+      "bodyClientWidth": 768,
+      "bodyScrollWidth": 768,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 2,
+      "compactTabCount": null,
+      "tableHeaders": [],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "originators-detail@768",
+      "viewport": {
+        "width": 768,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/notifications/read?id=NTF-LOG-001",
+      "actualPath": "/control/notifications/read?id=NTF-LOG-001",
+      "title": "รายละเอียดการส่งแจ้งเตือน | POL Admin",
+      "bodyClientWidth": 768,
+      "bodyScrollWidth": 768,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 1,
+      "compactTabCount": null,
+      "tableHeaders": [],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "notifications-detail@768",
+      "viewport": {
+        "width": 768,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/psp/list",
+      "actualPath": "/control/psp/list",
+      "title": "การเชื่อมต่อ PSP | POL Admin",
+      "bodyClientWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 3,
+      "compactTabCount": null,
+      "tableHeaders": [
+        "Connection",
+        "PSP",
+        "ช่องทาง",
+        "Enabled",
+        "Health",
+        "ทดสอบล่าสุด",
+        "Approval",
+        ""
+      ],
+      "pillColumnResults": {},
+      "detailHref": "/control/psp/read?id=e8000000-0000-4000-8000-000000000001",
+      "state": "psp@1440",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/routing",
+      "actualPath": "/control/routing",
+      "title": "กฎการกำหนดเส้นทาง | POL Admin",
+      "bodyClientWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 28,
+      "compactTabCount": null,
+      "tableHeaders": [
+        "ลำดับ",
+        "บริษัท",
+        "ช่องทาง",
+        "ช่วงจำนวนเงิน",
+        "PSP ปลายทาง",
+        "PSP สำรอง",
+        "สถานะ",
+        ""
+      ],
+      "pillColumnResults": {
+        "ช่องทาง": {
+          "found": true,
+          "failures": []
+        },
+        "PSP ปลายทาง": {
+          "found": true,
+          "failures": []
+        },
+        "PSP สำรอง": {
+          "found": true,
+          "failures": []
+        },
+        "สถานะ": {
+          "found": true,
+          "failures": []
+        }
+      },
+      "detailHref": "/control/routing/read?id=RR-VCOM-CARD",
+      "state": "routing@1440",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/api-clients",
+      "actualPath": "/control/api-clients",
+      "title": "ไคลเอนต์ API | POL Admin",
+      "bodyClientWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 28,
+      "compactTabCount": null,
+      "tableHeaders": [
+        "ไคลเอนต์",
+        "ขอบเขต",
+        "บริษัท",
+        "ใช้งานล่าสุด",
+        "สถานะ",
+        ""
+      ],
+      "pillColumnResults": {},
+      "detailHref": "/control/api-clients/read?id=ACL-VPRV-01",
+      "state": "api-clients@1440",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/webhooks",
+      "actualPath": "/control/webhooks",
+      "title": "Webhooks และเหตุการณ์ | POL Admin",
+      "bodyClientWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 30,
+      "compactTabCount": null,
+      "tableHeaders": [
+        "เหตุการณ์",
+        "PSP",
+        "บริษัท",
+        "ครั้งที่ส่ง",
+        "ลายเซ็น",
+        "รับเมื่อ",
+        "สถานะ",
+        ""
+      ],
+      "pillColumnResults": {
+        "PSP": {
+          "found": true,
+          "failures": []
+        },
+        "ลายเซ็น": {
+          "found": true,
+          "failures": []
+        },
+        "สถานะ": {
+          "found": true,
+          "failures": []
+        }
+      },
+      "detailHref": "/control/webhooks/read?id=evt_5f8a2c9d4e7b3f16",
+      "state": "webhooks@1440",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/approvals",
+      "actualPath": "/control/approvals",
+      "title": "การอนุมัติ | POL Admin",
+      "bodyClientWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 8,
+      "compactTabCount": null,
+      "tableHeaders": [
+        "การดำเนินการ",
+        "ผู้ขอ",
+        "อ้างอิง — เงิน settle PSP→บริษัทโดยตรง",
+        "บริษัท",
+        "ขอเมื่อ",
+        "สถานะ",
+        ""
+      ],
+      "pillColumnResults": {},
+      "detailHref": "/control/approvals/read?id=APR-2026-0475",
+      "state": "approvals@1440",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/audit",
+      "actualPath": "/control/audit",
+      "title": "บันทึกการตรวจสอบ | POL Admin",
+      "bodyClientWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 10,
+      "compactTabCount": null,
+      "tableHeaders": [
+        "เวลา",
+        "ผู้กระทำ",
+        "การกระทำ",
+        "บริษัท",
+        "ผลลัพธ์",
+        "IP",
+        ""
+      ],
+      "pillColumnResults": {},
+      "detailHref": "/control/audit/read?id=AUD-000158",
+      "state": "audit@1440",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/notifications",
+      "actualPath": "/control/notifications",
+      "title": "การแจ้งเตือน | POL Admin",
+      "bodyClientWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 6,
+      "compactTabCount": true,
+      "tableHeaders": [
+        "เหตุการณ์",
+        "ช่องทาง",
+        "ปลายทาง",
+        "เงื่อนไข",
+        "บริษัท",
+        "ใช้งาน"
+      ],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "notifications-rules@1440",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/reconciliation",
+      "actualPath": "/control/reconciliation",
+      "title": "การกระทบยอด | POL Admin",
+      "bodyClientWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 3,
+      "compactTabCount": null,
+      "tableHeaders": [
+        "สถานะ",
+        "สกุลเงิน",
+        "จำนวนรายการ",
+        "ยอดรวม"
+      ],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "reconciliation@1440",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/reports",
+      "actualPath": "/control/reports",
+      "title": "รายงาน | POL Admin",
+      "bodyClientWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 0,
+      "compactTabCount": null,
+      "tableHeaders": [],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "reports@1440",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/tenants",
+      "actualPath": "/control/tenants",
+      "title": "ผู้เช่าและพื้นที่ทำงาน | POL Admin",
+      "bodyClientWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 7,
+      "compactTabCount": null,
+      "tableHeaders": [
+        "บริษัท",
+        "นิติบุคคล",
+        "ขอบเขต SAQ",
+        "PSP ที่เปิดใช้",
+        "ผู้ดูแล",
+        ""
+      ],
+      "pillColumnResults": {},
+      "detailHref": "/control/tenants/read?id=vcommerce",
+      "state": "tenants@1440",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/originators",
+      "actualPath": "/control/originators",
+      "title": "ต้นทางคำสั่ง | POL Admin",
+      "bodyClientWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 20,
+      "compactTabCount": null,
+      "tableHeaders": [
+        "ต้นทาง",
+        "ประเภท",
+        "บริษัท",
+        "ไคลเอนต์ API",
+        "สถานะ",
+        ""
+      ],
+      "pillColumnResults": {},
+      "detailHref": "/control/originators/read?id=ORG-VPRV-HQ",
+      "state": "originators@1440",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/notifications",
+      "actualPath": "/control/notifications",
+      "title": "การแจ้งเตือน | POL Admin",
+      "bodyClientWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 20,
+      "compactTabCount": null,
+      "tableHeaders": [
+        "เหตุการณ์",
+        "ช่องทาง",
+        "ปลายทาง",
+        "สถานะ",
+        "ส่งเมื่อ",
+        ""
+      ],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "notifications-log@1440",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/psp/read?id=e8000000-0000-4000-8000-000000000001",
+      "actualPath": "/control/psp/read?id=e8000000-0000-4000-8000-000000000001",
+      "title": "รายละเอียด PSP Connection | POL Admin",
+      "bodyClientWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 3,
+      "compactTabCount": null,
+      "tableHeaders": [],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "psp-detail@1440",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/routing/read?id=RR-VCOM-CARD",
+      "actualPath": "/control/routing/read?id=RR-VCOM-CARD",
+      "title": "รายละเอียด Routing Rule | POL Admin",
+      "bodyClientWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 2,
+      "compactTabCount": null,
+      "tableHeaders": [],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "routing-detail@1440",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/api-clients/read?id=ACL-VPRV-01",
+      "actualPath": "/control/api-clients/read?id=ACL-VPRV-01",
+      "title": "รายละเอียด API Client | POL Admin",
+      "bodyClientWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 5,
+      "compactTabCount": null,
+      "tableHeaders": [],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "api-clients-detail@1440",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/webhooks/read?id=evt_5f8a2c9d4e7b3f16",
+      "actualPath": "/control/webhooks/read?id=evt_5f8a2c9d4e7b3f16",
+      "title": "รายละเอียด Webhook Event | POL Admin",
+      "bodyClientWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 2,
+      "compactTabCount": null,
+      "tableHeaders": [],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "webhooks-detail@1440",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/approvals/read?id=APR-2026-0475",
+      "actualPath": "/control/approvals/read?id=APR-2026-0475",
+      "title": "รายละเอียดคำขออนุมัติ | POL Admin",
+      "bodyClientWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 2,
+      "compactTabCount": null,
+      "tableHeaders": [],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "approvals-detail@1440",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/audit/read?id=AUD-000158",
+      "actualPath": "/control/audit/read?id=AUD-000158",
+      "title": "รายละเอียด Audit Log | POL Admin",
+      "bodyClientWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 2,
+      "compactTabCount": null,
+      "tableHeaders": [],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "audit-detail@1440",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/tenants/read?id=vcommerce",
+      "actualPath": "/control/tenants/read?id=vcommerce",
+      "title": "รายละเอียด Merchant | POL Admin",
+      "bodyClientWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 4,
+      "compactTabCount": null,
+      "tableHeaders": [],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "tenants-detail@1440",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/originators/read?id=ORG-VPRV-HQ",
+      "actualPath": "/control/originators/read?id=ORG-VPRV-HQ",
+      "title": "รายละเอียด Originator | POL Admin",
+      "bodyClientWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 2,
+      "compactTabCount": null,
+      "tableHeaders": [],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "originators-detail@1440",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    },
+    {
+      "requestedPath": "/control/notifications/read?id=NTF-LOG-001",
+      "actualPath": "/control/notifications/read?id=NTF-LOG-001",
+      "title": "รายละเอียดการส่งแจ้งเตือน | POL Admin",
+      "bodyClientWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "bodyOverflow": false,
+      "splashVisible": false,
+      "legacyElementCount": 0,
+      "legacyClassText": false,
+      "pillCount": 1,
+      "compactTabCount": null,
+      "tableHeaders": [],
+      "pillColumnResults": {},
+      "detailHref": null,
+      "state": "notifications-detail@1440",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "consoleErrors": [],
+      "pass": true
+    }
+  ],
+  "baseCommit": "94685d7b945f74e079cd03478f85836560faf3c0",
+  "workingTree": "uncommitted parity-gap changes on fix/control-plane-badge-parity-gaps"
+}

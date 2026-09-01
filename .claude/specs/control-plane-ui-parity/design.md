@@ -1,6 +1,6 @@
 # Design: Control Plane UI Parity
 
-> Status: approved 2026-08-31 (quick, no gates); badge parity amendment approved 2026-08-31
+> Status: approved 2026-08-31 (quick, no gates); badge parity และความสูง 30px approved 2026-08-31
 
 ## แนวทาง
 
@@ -51,7 +51,7 @@ Notifications tabs: local `notification/tabs.tsx` (ลอก strip จาก mer
 
 ## Badge parity amendment
 
-`controlBadgeClass` กำหนด geometry กลางเป็น `inline-flex items-center rounded-full px-4 py-1 text-sm font-semibold` โดย consumer ยังคง semantic color, variant และ icon ของ domain เดิม
+`controlBadgeClass` กำหนด geometry กลางเป็น `inline-flex h-[30px] items-center rounded-full px-4 py-1 text-sm font-semibold` เพื่อบังคับความสูง 30px โดย consumer ยังคง semantic color, variant และ icon ของ domain เดิม
 
 | กลุ่ม | แนวทาง |
 |---|---|

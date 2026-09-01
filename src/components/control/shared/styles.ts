@@ -12,7 +12,7 @@ export const warningClass =
   "inline-flex h-11 min-w-[140px] items-center justify-center gap-1.5 rounded-control bg-warning px-3 text-sm font-bold text-white transition-colors hover:bg-warning/90 disabled:pointer-events-none disabled:opacity-50";
 
 export const controlBadgeClass =
-  "inline-flex h-auto items-center gap-1 rounded-full px-4 py-1 text-sm font-semibold";
+  "inline-flex h-[30px] items-center gap-1 rounded-full px-4 py-1 text-sm font-semibold";
 
 export const cardStyle = {
   boxShadow:

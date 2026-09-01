@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
-import { createElement, type ComponentType } from "react";
+import type { ColumnDef } from "@tanstack/react-table";
+import { createElement, type ComponentType, type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, test, vi } from "vitest";
 
@@ -9,10 +10,12 @@ vi.mock("next/navigation", () => ({
 
 import { RoutingRulesView } from "@/components/control/routing/rules-view";
 import { RoutingDetailView } from "@/components/control/routing/detail-view";
+import { routingColumns } from "@/components/control/routing/table-columns";
 import { ApiClientsView } from "@/components/control/api-client/view";
 import { ApiClientDetailView } from "@/components/control/api-client/detail-view";
 import { WebhooksView } from "@/components/control/webhook/view";
 import { WebhookDetailView } from "@/components/control/webhook/detail-view";
+import { webhookColumns } from "@/components/control/webhook/columns";
 import { ApprovalsView } from "@/components/control/approval/view";
 import { ApprovalDetailView } from "@/components/control/approval/detail-view";
 import { AuditLogView } from "@/components/control/audit/log-view";
@@ -20,14 +23,17 @@ import { AuditDetailView } from "@/components/control/audit/detail-view";
 import { NotificationsView } from "@/components/control/notification/view";
 import { NotificationLogDetailView } from "@/components/control/notification/log-detail-view";
 import { ReconciliationView } from "@/components/control/reconciliation/view";
+import { ReportsView } from "@/components/control/reports/view";
 import { TenantsView } from "@/components/control/tenant/view";
 import { TenantDetailView } from "@/components/control/tenant/detail-view";
 import { OriginatorsView } from "@/components/control/originator/view";
 import { OriginatorDetailView } from "@/components/control/originator/detail-view";
 import { ControlStatusBadge } from "@/components/control/shared/status-badge";
 
+import { CHANNEL_LABEL, PSP_LABEL as ROUTING_PSP_LABEL } from "@/lib/control/routing";
 import { routingStore } from "@/lib/control/routing-store";
 import { apiClientsStore } from "@/lib/control/api-clients-store";
+import { PSP_LABEL as WEBHOOK_PSP_LABEL } from "@/lib/control/webhook";
 import { webhookStore } from "@/lib/control/webhook-store";
 import { approvalsStore } from "@/lib/control/approvals-store";
 import { AUDIT_LOG } from "@/lib/mock/control/audit-log";
@@ -38,7 +44,24 @@ import { ORIGINATORS } from "@/lib/mock/control/originators";
 const render = (component: ComponentType<{ id?: string }>, props: { id?: string } = {}) =>
   renderToStaticMarkup(createElement(component, props));
 
+function renderColumnCell<T>(columns: ColumnDef<T>[], id: string, original: T) {
+  const column = columns.find(
+    (candidate) =>
+      candidate.id === id ||
+      ("accessorKey" in candidate && candidate.accessorKey === id),
+  );
+  assert.ok(column, `missing column: ${id}`);
+  assert.equal(typeof column.cell, "function", `column ${id} has no cell renderer`);
+
+  return renderToStaticMarkup(
+    (column.cell as (context: { row: { original: T } }) => ReactNode)({
+      row: { original },
+    }),
+  );
+}
+
 const MERCHANT_PILL_CLASSES = [
+  "h-[30px]",
   "rounded-full",
   "px-4",
   "py-1",
@@ -50,7 +73,7 @@ function assertPillText(markup: string, text: string) {
   const escapedText = text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const classLookaheads = MERCHANT_PILL_CLASSES.map((className) => {
     const escapedClass = className.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    return `(?=[^>]*\\b${escapedClass}\\b)`;
+    return `(?=[^>]*\\b${escapedClass}(?=\\s|"))`;
   }).join("");
 
   assert.match(
@@ -86,8 +109,7 @@ describe("control plane badges mirror merchant pills", () => {
   });
 });
 
-// Notifications defaults to the rules tab (no pagination); reports has no table. Both are
-// covered by the "no legacy pattern" sweep below rather than the toolbar assertions.
+// Notifications defaults to the rules tab (no pagination), so it has a dedicated assertion.
 const LIST_VIEWS: [string, ComponentType, boolean][] = [
   ["routing", RoutingRulesView, false],
   ["api-clients", ApiClientsView, true],
@@ -95,6 +117,7 @@ const LIST_VIEWS: [string, ComponentType, boolean][] = [
   ["approvals", ApprovalsView, true],
   ["audit", AuditLogView, true],
   ["reconciliation", ReconciliationView, true],
+  ["reports", ReportsView, false],
   ["tenants", TenantsView, true],
   ["originators", OriginatorsView, true],
 ];
@@ -121,6 +144,31 @@ const DOMAIN_CHIP_VIEWS: [string, ComponentType, string][] = [
 describe("control plane domain chips mirror merchant pills", () => {
   test.each(DOMAIN_CHIP_VIEWS)("%s", (_name, View, text) => {
     assertPillText(render(View), text);
+  });
+
+  test("routing channel and PSP cells use pill geometry", () => {
+    const rule = routingStore.get().find((candidate) => candidate.fallbackPsp);
+    assert.ok(rule);
+    const columns = routingColumns({
+      onMoveUp: vi.fn(),
+      onMoveDown: vi.fn(),
+      onToggle: vi.fn(),
+    });
+
+    assertPillText(renderColumnCell(columns, "channel", rule), CHANNEL_LABEL[rule.channel]);
+    assertPillText(renderColumnCell(columns, "target", rule), ROUTING_PSP_LABEL[rule.targetPsp]);
+
+    const fallback = renderColumnCell(columns, "fallback", rule);
+    assertPillText(fallback, ROUTING_PSP_LABEL[rule.fallbackPsp!]);
+    assert.match(fallback, /lucide-arrow-right/);
+  });
+
+  test("webhook PSP cells use pill geometry", () => {
+    const event = webhookStore.get()[0];
+    assert.ok(event);
+    const columns = webhookColumns({ onReplay: vi.fn(), replaying: new Set() });
+
+    assertPillText(renderColumnCell(columns, "psp", event), WEBHOOK_PSP_LABEL[event.psp]);
   });
 });
 
@@ -163,6 +211,7 @@ describe("control plane semantic markers mirror merchant pills", () => {
     const markup = render(NotificationsView);
     assert.match(markup, /h-5 min-w-5/);
     assert.match(markup, /rounded px-1 text-xs font-bold/);
+    assert.doesNotMatch(markup, /<span class="[^"]*h-5 min-w-5[^"]*h-\[30px\]/);
   });
 });
 

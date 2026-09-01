@@ -12,6 +12,8 @@ import {
   RowActionLink,
   RowActions,
 } from "@/components/control/shared/row-action";
+import { controlBadgeClass } from "@/components/control/shared/styles";
+import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import "@/types/table-meta";
 
@@ -61,9 +63,9 @@ export function routingColumns({
       header: "ช่องทาง",
       enableSorting: false,
       cell: ({ row }) => (
-        <span className="text-sm font-semibold text-foreground">
+        <Badge variant="outline" className={controlBadgeClass}>
           {CHANNEL_LABEL[row.original.channel]}
-        </span>
+        </Badge>
       ),
     },
     {
@@ -81,9 +83,9 @@ export function routingColumns({
       header: "PSP ปลายทาง",
       enableSorting: false,
       cell: ({ row }) => (
-        <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-foreground">
+        <Badge variant="secondary" className={controlBadgeClass}>
           {PSP_LABEL[row.original.targetPsp]}
-        </span>
+        </Badge>
       ),
     },
     {
@@ -92,10 +94,10 @@ export function routingColumns({
       enableSorting: false,
       cell: ({ row }) =>
         row.original.fallbackPsp ? (
-          <span className="inline-flex items-center gap-1 text-xs font-semibold text-grey-600">
+          <Badge variant="outline" className={`${controlBadgeClass} text-grey-600`}>
             <ArrowRight className="size-3.5 text-grey-500" />
             {PSP_LABEL[row.original.fallbackPsp]}
-          </span>
+          </Badge>
         ) : (
           <span className="text-xs text-grey-500">—</span>
         ),
