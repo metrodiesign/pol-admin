@@ -94,7 +94,7 @@ interface AccountDrawerProps {
 }
 
 export function AccountDrawer({ variant = "white" }: AccountDrawerProps) {
-  const { me } = useAuth();
+  const { clearAuthState, me } = useAuth();
   const [open, setOpen] = useState(false);
   const [avatarStatus, setAvatarStatus] = useState<
     "idle" | "loading" | "loaded" | "error"
@@ -110,6 +110,7 @@ export function AccountDrawer({ variant = "white" }: AccountDrawerProps) {
     setLogoutFailed(false);
     try {
       await logout();
+      clearAuthState();
       window.location.href = "/login";
     } catch {
       setLogoutFailed(true);
@@ -266,7 +267,7 @@ export function AccountDrawer({ variant = "white" }: AccountDrawerProps) {
             />
           </div>
 
-          {/* Logout — navigate only after BFF confirms 204; keep drawer open on failure. */}
+          {/* Logout — 204/401/403 are terminal logged-out states; keep drawer open on real failure. */}
           {logoutFailed && (
             <p role="alert" className="mb-2 text-center text-xs font-semibold text-error">
               ออกจากระบบไม่สำเร็จ กรุณาลองอีกครั้ง

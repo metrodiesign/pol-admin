@@ -7,10 +7,10 @@
 
 ## Current Behavior (Defect)
 
-WHEN `POST /api/v1/admins/auth/logout` คืน non-2xx หรือ network error
+WHEN `POST /api/v1/admins/auth/logout` คืน failure จริง (`5xx`) หรือ network error
 THEN implementation ปัจจุบันไม่ควร redirect เหมือนสำเร็จแล้ว แต่ repository ยังไม่มี component หรือ
 browser regression test ที่ยืนยัน rendered failure state, retry action และการไม่ navigate ของทั้ง
-`/logout` page และ Account drawer.
+`/logout` page และ Account drawer. Terminal status `204`, `401` และ `403` ควรไป `/login`.
 
 WHEN Admin Microsoft login ทำงาน
 THEN backend ปัจจุบันส่ง `prompt=select_account` และใช้ Authorization Code กับ PKCE แต่ evidence
@@ -22,7 +22,7 @@ THEN backend ปัจจุบันส่ง `prompt=select_account` และ
 
 Reproduction seams:
 
-- ทำให้ logout response เป็น `401`, `403`, `500` หรือ network rejection ใน component test harness
+- ทำให้ logout response เป็น terminal status (`204`, `401`, `403`) หรือ failure จริง (`500`, network rejection) ใน component test harness
 - ตรวจ `router.replace` หรือ `window.location.href` หลัง failure
 - ตรวจ auth documentation และ bugfix evidence เทียบกับ source ปัจจุบัน
 - ตรวจ Admin Microsoft authorize request ที่มี `prompt=select_account`, PKCE, state และ nonce
@@ -31,7 +31,7 @@ Reproduction seams:
 
 - F-1 WHEN logout สำเร็จด้วย HTTP `204` THE SYSTEM SHALL navigate ไป `/login` และแสดงผลสำเร็จตาม
   contract เดิม.
-- F-2 WHEN logout คืน non-2xx หรือ network error THE SYSTEM SHALL ไม่ navigate เหมือนสำเร็จ
+- F-2 WHEN logout คืน failure จริง (`5xx` หรือ network error) THE SYSTEM SHALL ไม่ navigate เหมือนสำเร็จ
   SHALL แสดง failure state ที่มองเห็นได้ และ SHALL มี action สำหรับ retry.
 - F-3 THE SYSTEM SHALL มี component regression tests ที่รัน caller จริงของ `/logout` page และ
   Account drawer และตรวจ observable navigation/failure behavior.
@@ -48,7 +48,7 @@ Reproduction seams:
 - B-1 WHEN local logout สำเร็จ THE SYSTEM SHALL CONTINUE TO revoke current POL session family,
   append logout audit, clear session/CSRF cookies และคืน `204`.
 - B-2 WHEN logout-all สำเร็จ THE SYSTEM SHALL CONTINUE TO revoke ทุก POL session ของ Admin ทุกอุปกรณ์.
-- B-3 WHEN logout mutation ไม่มี valid CSRF THE SYSTEM SHALL CONTINUE TO คืน `403`.
+- B-3 WHEN logout mutation ไม่มี valid CSRF THE SYSTEM SHALL CONTINUE TO คืน `403` และ frontend SHALL treat it as a terminal logged-out state.
 - B-4 WHEN Microsoft login ทำงาน THE SYSTEM SHALL CONTINUE TO ใช้ minimal scopes, tenant pinning,
   Authorization Code และ PKCE S256.
 - B-5 WHEN auth ทำงาน THE SYSTEM SHALL CONTINUE TO ไม่เปิดเผย token หรือ session credential แก่

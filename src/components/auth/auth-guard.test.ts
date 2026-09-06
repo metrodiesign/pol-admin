@@ -13,6 +13,7 @@ import { AuthGuard } from "./auth-guard";
 import { useAuth } from "./auth-provider";
 
 const auth = vi.mocked(useAuth);
+const clearAuthState = vi.fn();
 const noPermissionMe: AdminMe = {
   adminId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
   email: "employee@viriyah.co.th",
@@ -21,10 +22,13 @@ const noPermissionMe: AdminMe = {
   permissions: [],
 };
 
-beforeEach(() => auth.mockReset());
+beforeEach(() => {
+  auth.mockReset();
+  clearAuthState.mockReset();
+});
 
 test("permissions ว่างแสดง Inline 403 และไม่ render protected child", () => {
-  auth.mockReturnValue({ status: "authed", me: noPermissionMe });
+  auth.mockReturnValue({ status: "authed", me: noPermissionMe, clearAuthState });
 
   const markup = renderToStaticMarkup(
     createElement(
@@ -42,7 +46,7 @@ test("permissions ว่างแสดง Inline 403 และไม่ render 
 });
 
 test("permissions ว่างวาง Inline 403 ใน layout wrapper ที่ caller ส่งมา", () => {
-  auth.mockReturnValue({ status: "authed", me: noPermissionMe });
+  auth.mockReturnValue({ status: "authed", me: noPermissionMe, clearAuthState });
 
   const markup = renderToStaticMarkup(
     // This test deliberately models the required ReactNode prop in a non-JSX test file.

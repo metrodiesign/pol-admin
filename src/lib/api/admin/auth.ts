@@ -99,17 +99,26 @@ export function shouldShowForbidden(status: AuthStatus, me: AdminMe | null): boo
   return status === "forbidden" || (status === "authed" && me !== null && me.permissions.length === 0);
 }
 
-/** ออกจากระบบ (device นี้); ถือว่า success เฉพาะตาม endpoint contract ที่คืน 204. */
+export function isLogoutSuccessStatus(status: number): boolean {
+  return status === 204 || status === 401 || status === 403;
+}
+
+/** ออกจากระบบ (device นี้); 401/403 คือ terminal logged-out state ที่ retry กู้ไม่ได้จาก UI. */
 export async function logout(): Promise<Response> {
   const response = await adminFetch("/admin/auth/logout", {
     method: "POST",
     redirectOnUnauthorized: false,
   });
-  if (response.status !== 204) throw new Error("admin-logout-failed");
+  if (!isLogoutSuccessStatus(response.status)) throw new Error("admin-logout-failed");
   return response;
 }
 
-/** ออกจากระบบทุก device. */
-export function logoutAll(): Promise<Response> {
-  return adminFetch("/admin/auth/logout-all", { method: "POST", redirectOnUnauthorized: false });
+/** ออกจากระบบทุก device; ใช้ terminal-state rule เดียวกับ local logout. */
+export async function logoutAll(): Promise<Response> {
+  const response = await adminFetch("/admin/auth/logout-all", {
+    method: "POST",
+    redirectOnUnauthorized: false,
+  });
+  if (!isLogoutSuccessStatus(response.status)) throw new Error("admin-logout-all-failed");
+  return response;
 }

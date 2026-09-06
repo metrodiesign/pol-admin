@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { logout } from "@/lib/api/admin/auth";
 
-// sign-out: เรียก BFF logout (POST /admin/auth/logout + CSRF) แล้วเด้งกลับ /login เมื่อได้ 204 เท่านั้น.
+// sign-out: เรียก BFF logout แล้วเด้งกลับ /login เมื่อได้ 204 หรือ terminal logged-out state (401/403).
 export default function LogoutPage() {
   const router = useRouter();
   const [failed, setFailed] = useState(false);

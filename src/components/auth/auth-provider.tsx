@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 
 import { getMe } from "@/lib/api/admin/auth";
 import type { AdminMe, AuthStatus } from "@/types/auth";
@@ -8,6 +8,7 @@ import type { AdminMe, AuthStatus } from "@/types/auth";
 export interface AuthContextValue {
   me: AdminMe | null;
   status: AuthStatus;
+  clearAuthState: () => void;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -27,17 +28,31 @@ export function AuthProvider({
 }: {
   children: React.ReactNode;
 }): React.JSX.Element {
-  const [state, setState] = useState<AuthContextValue>({ me: null, status: "loading" });
+  const [state, setState] = useState<Omit<AuthContextValue, "clearAuthState">>({
+    me: null,
+    status: "loading",
+  });
+  const bootstrapVersion = useRef(0);
+
+  const clearAuthState = useCallback(() => {
+    bootstrapVersion.current += 1;
+    setState({ me: null, status: "anon" });
+  }, []);
 
   useEffect(() => {
     let active = true;
+    const version = bootstrapVersion.current;
     getMe().then((result) => {
-      if (active) setState(result);
+      if (active && version === bootstrapVersion.current) setState(result);
     });
     return () => {
       active = false;
     };
   }, []);
 
-  return <AuthContext.Provider value={state}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ ...state, clearAuthState }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
