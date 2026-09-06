@@ -44,10 +44,23 @@ const PROVIDER_OPTIONS = [
   { value: "omise", label: "Omise" },
 ];
 
-export function PspCreateView() {
+export function PspCreateView({
+  initialMerchantId,
+  initialProvider,
+  returnTo,
+}: {
+  initialMerchantId?: string;
+  initialProvider?: PspProvider;
+  returnTo?: "settings";
+} = {}) {
   const router = useRouter();
   const merchants = useMerchantCatalog(true);
-  const [draft, setDraft] = useState<CreateDraft>(INITIAL_DRAFT);
+  const [draft, setDraft] = useState<CreateDraft>(() => ({
+    ...INITIAL_DRAFT,
+    merchantId: initialMerchantId ?? "",
+    provider: initialProvider ?? "",
+    enabledMethods: initialProvider === "omise" ? ["card"] : [],
+  }));
   const [errors, setErrors] = useState<PspValidationErrors>({});
   const [formError, setFormError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -130,7 +143,9 @@ export function PspCreateView() {
       setRetryState("idle");
       setDraft(INITIAL_DRAFT);
       router.push(
-        `/control/psp/read?id=${encodeURIComponent(created.connection.pspConnectionId)}`,
+        returnTo === "settings"
+          ? `/control/psp/settings?merchantId=${encodeURIComponent(created.connection.merchantId)}`
+          : `/control/psp/read?id=${encodeURIComponent(created.connection.pspConnectionId)}`,
       );
     } catch (error) {
       const apiError = error instanceof PspApiError ? error : new PspApiError(null, null);

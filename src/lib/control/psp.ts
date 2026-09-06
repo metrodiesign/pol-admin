@@ -162,10 +162,13 @@ export function validateCredentialDraft(
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-export function normalizePspConnectionId(value: string | undefined): string | null {
+/** Canonical UUID guard shared by connection- and merchant-scoped routes. */
+export function normalizeUuid(value: string | undefined): string | null {
   if (!value || !UUID.test(value)) return null;
   return value.toLowerCase();
 }
+
+export const normalizePspConnectionId = normalizeUuid;
 
 export function resolveApprovalState(
   connectionId: string,
