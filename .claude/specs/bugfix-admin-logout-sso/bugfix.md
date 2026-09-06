@@ -9,9 +9,8 @@ OIDC security และ local-only logout ตาม contract เดิม.
 
 ## Current Behavior (Defect)
 
-WHEN Admin กด Logout แล้ว `POST /api/v1/admins/auth/logout` ล้มเหลวด้วย non-2xx หรือ network error
-THEN `pol-admin` ยัง redirect ไป `/login` เพราะ callers ใช้ `logout().finally(...)`; ผู้ใช้จึงเห็นเหมือน
-logout สำเร็จ ทั้งที่ POL session อาจยัง active.
+WHEN Admin กด Logout แล้ว `POST /api/v1/admins/auth/logout` ล้มเหลวด้วย backend failure จริง (`5xx`) หรือ network error
+THEN `pol-admin` ต้องไม่ redirect ไป `/login`; ผู้ใช้ต้องเห็น retryable failure state. Terminal status `204`, `401` และ `403` ต้องถือเป็น logout success ฝั่ง UI.
 
 WHEN Admin เปิด `/login` หลัง local logout แล้วกด Microsoft ขณะที่ Entra session ยัง active
 THEN authorization request ไม่มี `prompt` และ Entra SSO ส่งกลับ `/dashboard` โดยไม่แสดง account/credential UI.
@@ -20,8 +19,8 @@ THEN authorization request ไม่มี `prompt` และ Entra SSO ส่�
 
 1. เปิด `https://localhost:3001/control/psp/list` ที่ viewport 1440px และมี Admin session.
 2. เปิด Account drawer แล้วกด `Logout`.
-3. ทำให้ `POST /api/v1/admins/auth/logout` unavailable หรือคืน non-2xx (เช่น block request ใน browser
-   DevTools) แล้วสังเกตว่า SPA ยังไป `/login`.
+3. ทำให้ `POST /api/v1/admins/auth/logout` unavailable หรือคืน `500` (เช่น block request ใน browser
+   DevTools) แล้วสังเกตว่า SPA ไม่ไป `/login` และแสดง retryable failure state.
 4. จาก `/login` กด Microsoft ขณะมี Entra session เดิม แล้วสังเกตว่า browser กลับ `/dashboard` โดยไม่มี
    username/password หรือ account chooser.
 
@@ -31,9 +30,9 @@ POL cookies/session; `pol-core/src/Hosts/Api/Admins/OidcAuthentication.cs` ไ�
 
 ## Expected Behavior
 
-- F-1 WHEN `POST /api/v1/admins/auth/logout` คืน `204` THEN THE SYSTEM SHALL navigate ไป `/login` และถือว่า
-  local logout สำเร็จ.
-- F-2 WHEN logout คืน non-2xx หรือ network error THEN THE SYSTEM SHALL ไม่ navigate เหมือนสำเร็จ และต้อง
+- F-1 WHEN `POST /api/v1/admins/auth/logout` คืน `204`, `401` หรือ `403` THEN THE SYSTEM SHALL navigate ไป `/login` และถือว่า
+  local logout สำเร็จหรืออยู่ใน terminal logged-out state.
+- F-2 WHEN logout คืน backend failure จริง (`5xx`) หรือ network error THEN THE SYSTEM SHALL ไม่ navigate เหมือนสำเร็จ และต้อง
   แสดงข้อความ failure พร้อม action สำหรับ retry.
 - F-3 WHEN Admin เริ่ม Microsoft login THEN THE SYSTEM SHALL ส่ง OIDC authorization parameter
   `prompt=select_account` แบบค่าคงที่ เพื่อให้ผู้ใช้เลือกบัญชีก่อน callback.
@@ -45,7 +44,7 @@ POL cookies/session; `pol-core/src/Hosts/Api/Admins/OidcAuthentication.cs` ไ�
 - B-1 WHEN local logout สำเร็จ THEN THE SYSTEM SHALL CONTINUE TO revoke current POL session family, append
   logout audit, clear session/CSRF cookies และคืน `204`.
 - B-2 WHEN logout-all สำเร็จ THEN THE SYSTEM SHALL CONTINUE TO revoke ทุก POL session ของ Admin ทุกอุปกรณ์.
-- B-3 WHEN logout mutation ไม่มี valid CSRF THEN THE SYSTEM SHALL CONTINUE TO คืน `403`.
+- B-3 WHEN logout mutation ไม่มี valid CSRF THEN THE SYSTEM SHALL CONTINUE TO คืน `403` และ frontend SHALL treat it as a terminal logged-out state.
 - B-4 WHEN Microsoft login ทำงาน THEN THE SYSTEM SHALL CONTINUE TO ใช้ Authorization Code, PKCE S256,
   unique `state`/`nonce`, tenant pinning และ minimal scopes.
 - B-5 WHEN auth ทำงาน THEN THE SYSTEM SHALL CONTINUE TO ไม่เปิดเผย token หรือ session credential แก่
