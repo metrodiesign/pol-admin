@@ -1,21 +1,14 @@
 import type { MerchantUserFormData } from "@pol/shared/merchant-user";
 
 // Merchant user BFF client — full-page navigate เริ่ม SSO; ไม่ถือ token (session = httpOnly cookie ฝั่ง backend).
-// contract: pol-core/docs/reference/producer-google-sso.md
 // login เป็น top-level navigation ตรงไป backend origin (เหตุผลเดียวกับ lib/api/admin/auth.ts: redirect_uri ต้องตรง host จริง).
 const API_ORIGIN = process.env.NEXT_PUBLIC_API_ORIGIN ?? "";
-const MERCHANT_USER_LOGIN_PATH = `${API_ORIGIN}/api/v1/merchants/auth/google/login`;
 const MERCHANT_USER_MICROSOFT_LOGIN_PATH = `${API_ORIGIN}/api/v1/merchants/auth/microsoft/login`;
 const MERCHANT_USER_REGISTER_PATH = "/producer/users/register";
 
 // landing หลัง login สำเร็จ (active merchant user). ต้องอยู่ใน Producer:Session:ReturnUrlAllowlist ฝั่ง backend.
 // merchant user ใหม่/ถูก reject backend จะ redirect ไป RegisterUrl?ticket เองจาก callback (ไม่ผ่าน returnTo).
 const MERCHANT_USER_DEFAULT_RETURN_TO = "/register";
-
-/** เริ่ม SSO ด้วย full-page navigate (flow เด้งออกไป Google แล้วกลับมาที่ returnTo). */
-export function merchantUserLogin(returnTo: string = MERCHANT_USER_DEFAULT_RETURN_TO): void {
-  window.location.href = `${MERCHANT_USER_LOGIN_PATH}?returnTo=${encodeURIComponent(returnTo)}`;
-}
 
 /** เริ่ม SSO ผ่าน Microsoft/Entra ด้วย full-page navigate. */
 export function merchantUserMicrosoftLogin(returnTo: string = MERCHANT_USER_DEFAULT_RETURN_TO): void {

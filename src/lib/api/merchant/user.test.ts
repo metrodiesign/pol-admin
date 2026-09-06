@@ -1,29 +1,30 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+import type { MerchantUserFormData } from "@pol/shared/merchant-user";
+
 import {
   buildRegisterFormData,
-  merchantUserLogin,
+  merchantUserMicrosoftLogin,
   merchantUserRegister,
 } from "./user";
-import type { MerchantUserFormData } from "@pol/shared/merchant-user";
 
 afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-describe("merchantUserLogin", () => {
-  it("navigate ไป /api/v1/merchants/auth/google/login พร้อม returnTo default (/register, encoded)", () => {
+describe("merchantUserMicrosoftLogin", () => {
+  it("navigate ไป /api/v1/merchants/auth/microsoft/login พร้อม returnTo default (/register, encoded)", () => {
     const location = { href: "" };
     vi.stubGlobal("window", { location });
-    merchantUserLogin();
-    expect(location.href).toBe("/api/v1/merchants/auth/google/login?returnTo=%2Fregister");
+    merchantUserMicrosoftLogin();
+    expect(location.href).toBe("/api/v1/merchants/auth/microsoft/login?returnTo=%2Fregister");
   });
 
   it("encode returnTo ที่ส่งเข้ามา", () => {
     const location = { href: "" };
     vi.stubGlobal("window", { location });
-    merchantUserLogin("/a/b");
-    expect(location.href).toBe("/api/v1/merchants/auth/google/login?returnTo=%2Fa%2Fb");
+    merchantUserMicrosoftLogin("/a/b");
+    expect(location.href).toBe("/api/v1/merchants/auth/microsoft/login?returnTo=%2Fa%2Fb");
   });
 });
 
