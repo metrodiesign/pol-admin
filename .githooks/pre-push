@@ -31,9 +31,19 @@ while read -r local_ref local_sha remote_ref remote_sha; do
     fi
   done
 
-  # Deleting a remote ref (local_sha all-zero): treat as a destructive op, block.
+  # Deleting a remote ref (local_sha all-zero): destructive. Allowed only for a
+  # branch whose PR is already MERGED on GitHub (post-merge cleanup); every other
+  # deletion (tags, unmerged or unknown branches, gh unavailable) stays blocked.
   if [ "$local_sha" = "$ZERO" ]; then
-    block "deleting remote ref $remote_ref — confirm with a human first."
+    branch="${remote_ref#refs/heads/}"
+    if [ "$branch" = "$remote_ref" ]; then
+      block "deleting remote ref $remote_ref — only merged branches may be deleted."
+    fi
+    merged="$(gh pr list --state merged --head "$branch" --json number --jq 'length' 2>/dev/null || echo 0)"
+    if [ "${merged:-0}" -gt 0 ] 2>/dev/null; then
+      continue
+    fi
+    block "deleting remote ref $remote_ref — no merged PR found for this branch (or gh unavailable); confirm with a human first."
   fi
 
   # 2. Non-fast-forward (force) push: skip when creating a brand-new remote ref.
