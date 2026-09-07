@@ -6,6 +6,9 @@ argument-hint: <feature> [--dry-run] [--epic-only]
 
 # Sync spec to GitHub Issues: $ARGUMENTS
 
+ก่อนสร้างหรือแก้ issue body หรือ artifact ให้ใช้
+[นโยบายภาษาของผลลัพธ์](../../../.ai/shared/TASK_PROTOCOL.md#ภาษาของผลลัพธ์)
+
 Mirror a spec's `tasks.md` onto GitHub Issues so teammates see progress. The spec
 files stay the SOURCE OF TRUTH; the issues are an idempotent PROJECTION. Re-running
 must UPDATE, never duplicate.
@@ -16,9 +19,8 @@ flags `--dry-run` (preview only, never write) and `--epic-only` (epic, no sub-is
 Transport: use the GitHub MCP tools (`mcp__plugin_github_github__*`), NOT `gh` in
 Bash — the RTK hook rewrites bash stdout into a summary, which mangles `gh --json`
 output and loses issue numbers. MCP tools return structured fields directly and skip
-permission prompts. Confirm the repo with `git remote -v` (expected
-`metrodiesign/spec-driven-development`). Use Bash ONLY for read-only spec parsing and
-writing the manifest file.
+permission prompts. Use Bash ONLY for read-only spec parsing and writing the
+manifest file.
 
 ## Steps
 
@@ -26,6 +28,17 @@ writing the manifest file.
    not name one and `.claude/specs/` holds many, ask — never guess. Refuse to run if
    `requirements.md` (or `tasks.md`) is still `> Status: draft`, unless `--epic-only`:
    do not publish unapproved scope to teammates. State the reason and stop.
+
+   Repository binding (REQ-4.7-4.9): resolve the target repo from git, never
+   hardcode it — this skill is shared across repos via template sync.
+   ```bash
+   ORIGIN_URL="$(git remote get-url origin 2>/dev/null)" || { echo "REPO_ORIGIN_MISSING" >&2; exit 2; }
+   OWNER_REPO="$(python3 -c 'import re,sys; u=sys.argv[1]; m=re.search(r"[:/]([^/:]+/[^/]+?)(?:\.git)?/?$",u); print(m.group(1) if m else "")' "$ORIGIN_URL")"
+   [[ -n "$OWNER_REPO" ]] || { echo "REPO_ORIGIN_MISSING" >&2; exit 2; }
+   ```
+   Compare `$OWNER_REPO` against the manifest's `"repo"` field before any GitHub
+   I/O; a mismatch means the manifest belongs to a different repo — stop with
+   `REPO_MANIFEST_MISMATCH` (exit 1) rather than write to the wrong one.
 
 2. Trace gate (blocking). Run `scripts/spec-trace.sh <feature>`. If it exits non-zero
    (REQ spine incomplete), STOP — never publish a broken spine. A bugfix spec with no
@@ -93,7 +106,7 @@ closes its sub-issue and advances the epic progress bar.
 {
   "schemaVersion": 1,
   "feature": "<feature>",
-  "repo": "metrodiesign/spec-driven-development",
+  "repo": "<owner/repo ที่ resolve จาก git remote get-url origin>",
   "epic": { "issue": 0, "nodeId": "", "bodyHash": "sha256:..." },
   "tasks": {
     "1": { "issue": 0, "nodeId": "", "subIssueLinked": true, "bodyHash": "sha256:...", "state": "open|closed" }
