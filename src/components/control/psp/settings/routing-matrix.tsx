@@ -64,8 +64,8 @@ export function RoutingMatrix({
 }: RoutingMatrixProps) {
   const canManage = permissions.includes("settings.manage");
   const activationTarget = resolveActivationTarget(routing, ruleset);
-  const advancedReadOnly = routing?.advancedRoutingReadOnly === true || hasAdvancedRules(ruleset);
-  const initialRows = routing?.rows ?? simpleRowsFromRuleset(ruleset);
+  const advancedReadOnly = routing?.advancedReadOnly === true || hasAdvancedRules(ruleset);
+  const initialRows = routing?.rules ?? simpleRowsFromRuleset(ruleset);
   const [rows, setRows] = useState<SimpleRoutingRow[]>(initialRows);
   const [saving, setSaving] = useState(false);
   const [activating, setActivating] = useState(false);
@@ -80,7 +80,7 @@ export function RoutingMatrix({
   if (syncedFrom !== routingSignature) {
     // re-seed rows เท่านั้น — คง notice ไว้ให้ข้อความ conflict/success อยู่หลัง refetch (AC-6)
     setSyncedFrom(routingSignature);
-    setRows(routing?.rows ?? simpleRowsFromRuleset(ruleset));
+    setRows(routing?.rules ?? simpleRowsFromRuleset(ruleset));
   }
 
   const enabledMethods = merchantMethods
@@ -143,8 +143,18 @@ export function RoutingMatrix({
     setActivating(true);
     setNotice(null);
     try {
-      await requestRoutingActivation(activationTarget, routingEtag, crypto.randomUUID());
-      setNotice({ tone: "success", text: "ส่งคำขอเปิดใช้เส้นทางแล้ว รอการอนุมัติ" });
+      const accepted = await requestRoutingActivation(
+        activationTarget,
+        merchantId,
+        routingEtag,
+        crypto.randomUUID(),
+      );
+      setNotice({
+        tone: "success",
+        text: accepted.replayed
+          ? "คำขอเปิดใช้เส้นทางนี้ถูกส่งไว้แล้ว รอการอนุมัติ"
+          : "ส่งคำขอเปิดใช้เส้นทางแล้ว รอการอนุมัติ",
+      });
       onChanged();
     } catch (error) {
       const apiError = error instanceof PspApiError ? error : new PspApiError(null, null);

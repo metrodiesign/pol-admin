@@ -264,7 +264,9 @@ function ConnectedCard({
             <div className="mt-2">
               <CandidateTestButton
                 connectionId={connection.pspConnectionId}
+                merchantId={connection.merchantId}
                 approvalId={pendingCredentialApproval.approvalId}
+                onTested={(latest) => resourceState.replace(latest)}
               />
             </div>
           ) : null}

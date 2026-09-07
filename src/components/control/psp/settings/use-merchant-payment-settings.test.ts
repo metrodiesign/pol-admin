@@ -59,7 +59,7 @@ function settingsResource() {
 
 function methodResource(method: "card" | "promptpay" | "installment") {
   return {
-    state: { merchantId: MERCHANT, method, enabled: true, effective: true, version: 2 },
+    state: { merchantId: MERCHANT, method, enabled: true, effective: true, version: 2, denial: null },
     etag: '"v2"',
   };
 }
@@ -73,7 +73,8 @@ function accountResource(method: "card" | "promptpay" | "installment") {
       method,
       enabled: true,
       version: 2,
-      reason: null,
+      adapterVerified: true,
+      denial: null,
     },
     etag: '"v2"',
   };
@@ -82,11 +83,12 @@ function accountResource(method: "card" | "promptpay" | "installment") {
 function routingResource() {
   return {
     routing: {
+      merchantId: MERCHANT,
       rulesetId: "r-1",
-      status: "active" as const,
+      status: "active",
       version: 3,
-      rows: [],
-      advancedRoutingReadOnly: false,
+      rules: [],
+      advancedReadOnly: false,
     },
     etag: '"v3"',
   };

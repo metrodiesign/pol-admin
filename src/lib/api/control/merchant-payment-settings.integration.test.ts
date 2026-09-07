@@ -174,7 +174,7 @@ describe("Merchant payment settings HTTP contract", () => {
   });
 
   it("reads effective methods and paginates routing rulesets", async () => {
-    queue.push({ status: 200, body: { methods: ["card", "promptpay"] } });
+    queue.push({ status: 200, body: [{ method: "card" }, { method: "promptpay" }] });
     queue.push({
       status: 200,
       body: {
@@ -195,21 +195,34 @@ describe("Merchant payment settings HTTP contract", () => {
     );
   });
 
-  it("saves simple routing draft and requests activation with headers", async () => {
+  it("saves simple routing draft and requests activation with headers and merchantId body (D2/D3)", async () => {
     queue.push({
       status: 200,
       body: {
+        merchantId: MERCHANT,
         rulesetId: RULESET,
         status: "draft",
         version: 4,
-        rows: [{ method: "card", primaryConnectionId: CONNECTION, fallbackConnectionId: null }],
-        advancedRoutingReadOnly: false,
+        rules: [{ method: "card", primaryConnectionId: CONNECTION, fallbackConnectionId: null }],
+        advancedReadOnly: false,
       },
       headers: { ETag: '"v4"' },
     });
     queue.push({
       status: 202,
-      body: { approvalId: APPROVAL, rulesetId: RULESET, status: "pending", replayed: false },
+      body: {
+        approvalId: APPROVAL,
+        ruleset: {
+          rulesetId: RULESET,
+          merchantId: MERCHANT,
+          name: "default",
+          status: "pending",
+          approvalId: APPROVAL,
+          rules: [],
+          version: 4,
+        },
+        replayed: false,
+      },
     });
 
     const routing = await putSimpleRouting(
@@ -219,14 +232,23 @@ describe("Merchant payment settings HTTP contract", () => {
       "idem-r",
     );
     expect(routing.etag).toBe('"v4"');
+    expect(routing.routing.rules).toHaveLength(1);
     expect(captured[0]?.headers["if-match"]).toBe('"v3"');
     expect(captured[0]?.headers["x-csrf-token"]).toBe("csrf-token");
+    // D3 body: {merchantId, rules}
+    const routingBody = JSON.parse(captured[0]?.body ?? "{}");
+    expect(routingBody.merchantId).toBe(MERCHANT);
+    expect(routingBody.rules).toHaveLength(1);
 
-    const activation = await requestRoutingActivation(RULESET, '"v4"', "idem-act");
-    expect(activation.status).toBe("pending");
+    const activation = await requestRoutingActivation(RULESET, MERCHANT, '"v4"', "idem-act");
+    expect(activation.ruleset.status).toBe("pending");
+    expect(activation.replayed).toBe(false);
     expect(captured[1]?.url).toBe(
       `/api/v1/payments/routing-rulesets/${RULESET}/activation-requests`,
     );
+    // D2 body: {merchantId}
+    expect(JSON.parse(captured[1]?.body ?? "{}").merchantId).toBe(MERCHANT);
+    expect(captured[1]?.headers["if-match"]).toBe('"v4"');
   });
 
   it("maps 409 settings codes to a PspApiError carrying only the safe code", async () => {
@@ -267,32 +289,97 @@ describe("Merchant payment settings HTTP contract", () => {
     expect((error as PspApiError).code).toBe("request_too_large");
   });
 
-  it("returns a sanitized candidate test result without secrets", async () => {
-    queue.push({ status: 200, body: { result: "authenticated", testedAt: "2026-09-06T11:00:00Z", message: null } });
+  it("returns the connection with a fresh ETag and pending test, sending merchantId (D1)", async () => {
+    queue.push({
+      status: 200,
+      body: {
+        pspConnectionId: CONNECTION,
+        merchantId: MERCHANT,
+        psp: "2c2p",
+        enabledMethods: ["card"],
+        config: null,
+        maskedSecrets: { secretKey: "2c2p_l••••••••d9e4" },
+        isEnabled: true,
+        health: "healthy",
+        lastTestedAt: null,
+        lastTestResult: null,
+        capabilities: { test: true },
+        createdAt: "2026-08-18T00:00:00Z",
+        version: 8,
+        pendingCredentialTest: { result: "authenticated", testedAt: "2026-09-06T11:00:00Z" },
+        webhookRegistration: null,
+      },
+      headers: { ETag: '"v8"' },
+    });
 
-    const result = await testCandidateCredential(CONNECTION, APPROVAL, '"v4"', "idem-t");
-    expect(result.result).toBe("authenticated");
+    const result = await testCandidateCredential(CONNECTION, MERCHANT, APPROVAL, '"v4"', "idem-t");
+    expect(result.etag).toBe('"v8"');
+    expect(result.connection.pendingCredentialTest?.result).toBe("authenticated");
     expect(captured[0]?.url).toBe(
       `/api/v1/payments/psp-connections/${CONNECTION}/credential-change-requests/${APPROVAL}/test`,
     );
     expect(captured[0]?.headers["if-match"]).toBe('"v4"');
-    expect(JSON.stringify(result)).not.toContain("secret");
+    // D1 body: {merchantId}
+    expect(JSON.parse(captured[0]?.body ?? "{}").merchantId).toBe(MERCHANT);
+    // credential hint ต้อง masked เท่านั้น (ไม่มี secret ดิบใน state)
+    expect(result.connection.maskedSecrets.secretKey).toContain("•");
   });
 
-  it("reads simple routing with its ETag", async () => {
+  it("reads simple routing with its ETag (D3 shape)", async () => {
     queue.push({
       status: 200,
       body: {
+        merchantId: MERCHANT,
         rulesetId: RULESET,
         status: "active",
         version: 3,
-        rows: [],
-        advancedRoutingReadOnly: true,
+        rules: [],
+        advancedReadOnly: true,
       },
       headers: { ETag: '"v3"' },
     });
     const result = await getSimpleRouting(MERCHANT);
     expect(result.etag).toBe('"v3"');
-    expect(result.routing.advancedRoutingReadOnly).toBe(true);
+    expect(result.routing.advancedReadOnly).toBe(true);
+  });
+
+  it("sends If-Match \"v0\" when simple-routing has no draft yet (AC-9)", async () => {
+    queue.push({
+      status: 200,
+      body: {
+        merchantId: MERCHANT,
+        rulesetId: null,
+        status: "none",
+        version: 0,
+        rules: [],
+        advancedReadOnly: false,
+      },
+      headers: { ETag: '"v0"' },
+    });
+    queue.push({
+      status: 200,
+      body: {
+        merchantId: MERCHANT,
+        rulesetId: RULESET,
+        status: "draft",
+        version: 1,
+        rules: [{ method: "card", primaryConnectionId: CONNECTION, fallbackConnectionId: null }],
+        advancedReadOnly: false,
+      },
+      headers: { ETag: '"v1"' },
+    });
+
+    const read = await getSimpleRouting(MERCHANT);
+    expect(read.etag).toBe('"v0"');
+    expect(read.routing.rulesetId).toBeNull();
+
+    await putSimpleRouting(
+      MERCHANT,
+      [{ method: "card", primaryConnectionId: CONNECTION, fallbackConnectionId: null }],
+      read.etag!,
+      "idem-v0",
+    );
+    expect(captured[1]?.headers["if-match"]).toBe('"v0"');
+    expect(JSON.parse(captured[1]?.body ?? "{}").merchantId).toBe(MERCHANT);
   });
 });

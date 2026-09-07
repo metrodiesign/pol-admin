@@ -6,7 +6,6 @@ import {
 import type {
   AccountMethodResource,
   AccountMethodState,
-  CandidateTestResult,
   EnvironmentChangeAccepted,
   EnvironmentChangeInput,
   MerchantMethodResource,
@@ -20,6 +19,7 @@ import type {
   SimpleRoutingView,
 } from "@/types/control/merchant-payment-settings";
 import type {
+  ConnectionResource,
   PagedResult,
   PspConnection,
   PspMethod,
@@ -109,7 +109,10 @@ export async function setMerchantMethod(
   return { state: value, etag: response.headers.get("ETag") };
 }
 
-interface EffectiveMethodsWire {
+interface EffectiveMethodWire {
+  method: string;
+}
+interface EffectiveMethodsLegacyWire {
   methods: string[];
 }
 
@@ -117,11 +120,13 @@ export async function listEffectiveMethods(
   merchantId: string,
   signal?: AbortSignal,
 ): Promise<string[]> {
-  const { value } = await responseJson<EffectiveMethodsWire | string[]>(
-    `${BASE}/merchants/${enc(merchantId)}/methods`,
-    { signal },
-  );
-  return Array.isArray(value) ? value : (value.methods ?? []);
+  const { value } = await responseJson<
+    EffectiveMethodWire[] | EffectiveMethodsLegacyWire | string[]
+  >(`${BASE}/merchants/${enc(merchantId)}/methods`, { signal });
+  if (Array.isArray(value)) {
+    return value.map((entry) => (typeof entry === "string" ? entry : entry.method));
+  }
+  return value.methods ?? [];
 }
 
 export async function listRoutingRulesets(
@@ -183,36 +188,37 @@ export async function putSimpleRouting(
 ): Promise<SimpleRoutingResource> {
   const { value, response } = await responseJson<SimpleRoutingView>(
     `${BASE}/merchant-settings/${enc(merchantId)}/simple-routing`,
-    mutationInit("PUT", { rows }, idempotencyKey, etag),
+    mutationInit("PUT", { merchantId, rules: rows }, idempotencyKey, etag),
   );
   return { routing: value, etag: response.headers.get("ETag") };
 }
 
 export async function requestRoutingActivation(
   rulesetId: string,
+  merchantId: string,
   etag: string,
   idempotencyKey: string,
 ): Promise<RoutingActivationAccepted> {
   return (
     await responseJson<RoutingActivationAccepted>(
       `${BASE}/routing-rulesets/${enc(rulesetId)}/activation-requests`,
-      mutationInit("POST", {}, idempotencyKey, etag),
+      mutationInit("POST", { merchantId }, idempotencyKey, etag),
     )
   ).value;
 }
 
 export async function testCandidateCredential(
   connectionId: string,
+  merchantId: string,
   approvalId: string,
   etag: string,
   idempotencyKey: string,
-): Promise<CandidateTestResult> {
-  return (
-    await responseJson<CandidateTestResult>(
-      `${BASE}/psp-connections/${enc(connectionId)}/credential-change-requests/${enc(approvalId)}/test`,
-      mutationInit("POST", {}, idempotencyKey, etag),
-    )
-  ).value;
+): Promise<ConnectionResource> {
+  const { value, response } = await responseJson<PspConnection>(
+    `${BASE}/psp-connections/${enc(connectionId)}/credential-change-requests/${enc(approvalId)}/test`,
+    mutationInit("POST", { merchantId }, idempotencyKey, etag),
+  );
+  return { connection: value, etag: response.headers.get("ETag") };
 }
 
 /** Scoped connection list ต่อร้าน (design.md 589) — reuse core list endpoint. */
