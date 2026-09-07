@@ -107,7 +107,7 @@ const merchantSettings = {
   version: settingsVersion,
 };
 
-// Account-level method capability per (connectionId, method); Omise disabled with reason.
+// Account-level method capability per (connectionId, method); Omise disabled with denial.
 const accountMethods = new Map();
 for (const method of ["card", "promptpay", "installment"]) {
   accountMethods.set(`${connectionId}:${method}`, {
@@ -117,7 +117,8 @@ for (const method of ["card", "promptpay", "installment"]) {
     method,
     enabled: method !== "installment",
     version: 2,
-    reason: null,
+    adapterVerified: true,
+    denial: null,
   });
   accountMethods.set(`${omiseAlphaId}:${method}`, {
     pspConnectionId: omiseAlphaId,
@@ -126,7 +127,8 @@ for (const method of ["card", "promptpay", "installment"]) {
     method,
     enabled: false,
     version: 2,
-    reason: "adapter_unverified",
+    adapterVerified: false,
+    denial: "adapter_unverified",
   });
 }
 
@@ -140,13 +142,16 @@ const merchantMethods = new Map(
       enabled: method !== "installment",
       effective: method !== "installment",
       version: 2,
+      denial: null,
     },
   ]),
 );
 
 const advancedRouting = scenario === "settings-advanced-routing";
+// settings-no-draft (AC-9): ยังไม่มี draft ruleset -> version 0, PUT ต้องส่ง If-Match "v0".
+const noDraft = scenario === "settings-no-draft";
 const routingRulesetId = "88888888-8888-4888-8888-888888888888";
-let routingVersion = 3;
+let routingVersion = noDraft ? 0 : 3;
 const routingRuleset = {
   rulesetId: routingRulesetId,
   merchantId,
@@ -161,7 +166,7 @@ const routingRuleset = {
           priority: 1,
           method: "card",
           originatorId: null,
-          minAmount: 100000,
+          minAmount: "100000",
           maxAmount: null,
           targetConnectionId: connectionId,
           fallbackConnectionId: omiseAlphaId,
@@ -231,7 +236,7 @@ function validMutation(request, needsEtag) {
   return (
     request.headers["x-csrf-token"] === csrf &&
     typeof request.headers["idempotency-key"] === "string" &&
-    (!needsEtag || (typeof etag === "string" && /^"v[1-9][0-9]*"$/.test(etag)))
+    (!needsEtag || (typeof etag === "string" && /^"v(0|[1-9][0-9]*)"$/.test(etag)))
   );
 }
 
@@ -468,7 +473,7 @@ const server = createServer(async (request, response) => {
     /^\/api\/v1\/payments\/merchant-settings\/([0-9a-f-]+)\/simple-routing$/i,
   );
   if (simpleRoutingMatch) {
-    const rows = ["card", "promptpay", "installment"].map((m) => {
+    const rules = ["card", "promptpay", "installment"].map((m) => {
       const rule = routingRuleset.rules.find((r) => r.method === m);
       return {
         method: m,
@@ -477,23 +482,28 @@ const server = createServer(async (request, response) => {
       };
     });
     const view = {
-      rulesetId: routingRuleset.rulesetId,
-      status: routingRuleset.status,
+      merchantId,
+      rulesetId: noDraft ? null : routingRuleset.rulesetId,
+      status: noDraft ? "none" : routingRuleset.status,
       version: routingVersion,
-      rows,
-      advancedRoutingReadOnly: advancedRouting,
+      rules,
+      advancedReadOnly: advancedRouting,
     };
     if (method === "GET") {
       return json(response, 200, view, { ETag: `"v${routingVersion}"` });
     }
     if (method === "PUT") {
       if (!validMutation(request, true)) return problem(response, 400, "invalid_headers");
+      const body = await readJson(request);
+      // EnsureMerchant (AdminControlEndpoints.cs:1085): body.merchantId ว่างหรือไม่ตรง route -> 400
+      if (!body.merchantId || body.merchantId !== simpleRoutingMatch[1]?.toLowerCase()) {
+        return problem(response, 400, "validation_failed");
+      }
       if (advancedRouting) return problem(response, 409, "advanced_routing_read_only");
       if (scenario === "settings-conflict") return problem(response, 409, "state_conflict");
-      const body = await readJson(request);
-      const nextRows = Array.isArray(body.rows) ? body.rows : rows;
-      // persist rows กลับเข้า ruleset เพื่อให้ GET ครั้งถัดไปคืนค่าที่บันทึก (AC-8)
-      routingRuleset.rules = nextRows.map((row, index) => {
+      const nextRules = Array.isArray(body.rules) ? body.rules : rules;
+      // persist rules กลับเข้า ruleset เพื่อให้ GET ครั้งถัดไปคืนค่าที่บันทึก (AC-5)
+      routingRuleset.rules = nextRules.map((row, index) => {
         const existing = routingRuleset.rules.find((r) => r.method === row.method);
         return {
           ruleId: existing?.ruleId ?? `rule-${row.method}`,
@@ -512,7 +522,7 @@ const server = createServer(async (request, response) => {
       return json(
         response,
         200,
-        { ...view, rows: nextRows, version: routingVersion },
+        { ...view, rulesetId: routingRuleset.rulesetId, status: routingRuleset.status, rules: nextRules, version: routingVersion },
         { ETag: `"v${routingVersion}"` },
       );
     }
@@ -522,7 +532,7 @@ const server = createServer(async (request, response) => {
     /^\/api\/v1\/payments\/psp-connections\/([0-9a-f-]+)\/methods\/([a-z]+)$/i,
   );
   if (accountMethodMatch) {
-    if (scenario === "settings-methods-forbidden") return problem(response, 403, "forbidden");
+    if (scenario === "settings-methods-forbidden") return problem(response, 403, "merchant_scope_forbidden");
     const key = `${accountMethodMatch[1]?.toLowerCase()}:${accountMethodMatch[2]}`;
     const state = accountMethods.get(key);
     if (!state) return problem(response, 404, "not_found");
@@ -533,7 +543,7 @@ const server = createServer(async (request, response) => {
       const body = await readJson(request);
       state.enabled = Boolean(body.enabled);
       state.version += 1;
-      state.reason = state.enabled ? null : state.reason;
+      state.denial = state.enabled ? null : state.denial;
       return json(response, 200, state, { ETag: `"v${state.version}"` });
     }
   }
@@ -542,18 +552,18 @@ const server = createServer(async (request, response) => {
     /^\/api\/v1\/payments\/merchants\/([0-9a-f-]+)\/methods$/i,
   );
   if (method === "GET" && merchantMethodsListMatch) {
-    if (scenario === "settings-methods-forbidden") return problem(response, 403, "forbidden");
+    if (scenario === "settings-methods-forbidden") return problem(response, 403, "merchant_scope_forbidden");
     const methods = [...merchantMethods.values()]
       .filter((state) => state.effective)
-      .map((state) => state.method);
-    return json(response, 200, { methods });
+      .map((state) => ({ method: state.method }));
+    return json(response, 200, methods);
   }
 
   const merchantMethodMatch = url.pathname.match(
     /^\/api\/v1\/payments\/merchants\/([0-9a-f-]+)\/methods\/([a-z]+)$/i,
   );
   if (merchantMethodMatch) {
-    if (scenario === "settings-methods-forbidden") return problem(response, 403, "forbidden");
+    if (scenario === "settings-methods-forbidden") return problem(response, 403, "merchant_scope_forbidden");
     const state = merchantMethods.get(merchantMethodMatch[2]);
     if (!state) return problem(response, 404, "not_found");
     if (method === "GET") return json(response, 200, state, { ETag: `"v${state.version}"` });
@@ -579,11 +589,15 @@ const server = createServer(async (request, response) => {
   );
   if (method === "POST" && activationMatch) {
     if (!validMutation(request, true)) return problem(response, 400, "invalid_headers");
+    const body = await readJson(request);
+    // backend ไม่มี EnsureMerchant บน route นี้: merchantId ขาด/ไม่ตรง -> EnsureAccess -> 404 ไม่มี code
+    if (!body.merchantId || body.merchantId !== routingRuleset.merchantId) {
+      return problem(response, 404);
+    }
     if (scenario === "settings-conflict") return problem(response, 409, "state_conflict");
     return json(response, 202, {
       approvalId: "99999999-9999-4999-8999-999999999999",
-      rulesetId: activationMatch[1]?.toLowerCase(),
-      status: "pending",
+      ruleset: { ...routingRuleset, status: "pending", approvalId: "99999999-9999-4999-8999-999999999999" },
       replayed: false,
     });
   }
@@ -593,14 +607,25 @@ const server = createServer(async (request, response) => {
   );
   if (method === "POST" && candidateTestMatch) {
     if (!validMutation(request, true)) return problem(response, 400, "invalid_headers");
+    const body = await readJson(request);
+    const targetId = candidateTestMatch[1]?.toLowerCase();
+    const index = connections.findIndex((c) => c.pspConnectionId === targetId);
+    if (index < 0) return problem(response, 404);
+    // backend ไม่มี EnsureMerchant บน route นี้: merchantId ขาด/ไม่ตรง -> EnsureAccess -> 404 ไม่มี code
+    if (!body.merchantId || body.merchantId !== connections[index].merchantId) {
+      return problem(response, 404);
+    }
     if (scenario === "settings-candidate-failed") {
       return problem(response, 502, "psp_test_failed");
     }
-    return json(response, 200, {
-      result: "authenticated",
-      testedAt: "2026-09-06T11:00:00Z",
-      message: null,
-    });
+    // คืน connection เต็ม + ETag ใหม่; ผล test อยู่ที่ pendingCredentialTest (D1)
+    const updated = {
+      ...connections[index],
+      version: connections[index].version + 1,
+      pendingCredentialTest: { result: "authenticated", testedAt: "2026-09-06T11:00:00Z" },
+    };
+    connections[index] = updated;
+    return json(response, 200, updated, { ETag: `"v${updated.version}"` });
   }
 
   return problem(response, 404, "not_found");

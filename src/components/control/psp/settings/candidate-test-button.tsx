@@ -7,17 +7,24 @@ import { PspApiError, getPspConnection } from "@/lib/api/control/psp";
 import { testCandidateCredential } from "@/lib/api/control/merchant-payment-settings";
 import { mapSettingsProblem } from "@/lib/control/merchant-psp-settings";
 import { formatDateTime } from "@/lib/control/format";
+import type { ConnectionResource } from "@/types/control/psp-connection";
 
 /**
  * ทดสอบชุด credential ที่รออนุมัติ — sanitized result เท่านั้น, ไม่บล็อก approval flow.
  * ดึง ETag ล่าสุดของ connection ก่อนยิงเพื่อให้ If-Match ถูกต้อง.
+ * candidate test เป็น mutation ที่ backend bump version — ส่ง connection+ETag ใหม่กลับผ่าน
+ * onTested เพื่อไม่ให้ toggle/test ถัดไปถือ ETag ค้าง (AC-1b).
  */
 export function CandidateTestButton({
   connectionId,
+  merchantId,
   approvalId,
+  onTested,
 }: {
   connectionId: string;
+  merchantId: string;
   approvalId: string;
+  onTested?: (resource: ConnectionResource) => void;
 }) {
   const [status, setStatus] = useState<"idle" | "testing">("idle");
   const [result, setResult] = useState<string | null>(null);
@@ -35,12 +42,19 @@ export function CandidateTestButton({
       }
       const outcome = await testCandidateCredential(
         connectionId,
+        merchantId,
         approvalId,
         resource.etag,
         crypto.randomUUID(),
       );
-      const when = outcome.testedAt ? ` (${formatDateTime(outcome.testedAt)})` : "";
-      setResult(`${outcome.result === "authenticated" ? "สำเร็จ" : "ล้มเหลว"}${when}`);
+      onTested?.(outcome);
+      const test = outcome.connection.pendingCredentialTest;
+      if (!test) {
+        setError("ไม่พบผลทดสอบชุดรออนุมัติ");
+        return;
+      }
+      const when = test.testedAt ? ` (${formatDateTime(test.testedAt)})` : "";
+      setResult(`${test.result === "authenticated" ? "สำเร็จ" : "ล้มเหลว"}${when}`);
     } catch (caught) {
       const apiError = caught instanceof PspApiError ? caught : new PspApiError(null, null);
       setError(mapSettingsProblem(apiError.status, apiError.code, "candidate-test").message);

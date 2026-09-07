@@ -21,7 +21,7 @@ export interface MerchantPaymentSettingsResource {
   etag: string | null;
 }
 
-/** GET/PUT psp-connections/{id}/methods/{method} (account-level capability). */
+/** GET/PUT psp-connections/{id}/methods/{method} (AccountPaymentCapabilityView). */
 export interface AccountMethodState {
   pspConnectionId: string;
   merchantId: string;
@@ -29,8 +29,10 @@ export interface AccountMethodState {
   method: PspMethod;
   enabled: boolean;
   version: number;
-  /** Backend reason เมื่อเปิดไม่ได้ (adapter ยังไม่ verify ฯลฯ); optional จน backend task 3. */
-  reason?: string | null;
+  /** true เมื่อ adapter มีหลักฐาน sandbox รองรับ method นี้ (REQ-5.11). */
+  adapterVerified: boolean;
+  /** first blocking reason (snake_case) เมื่อเปิดไม่ได้; null = ไม่มีเหตุปฏิเสธ. */
+  denial: string | null;
 }
 
 export interface AccountMethodResource {
@@ -45,6 +47,8 @@ export interface MerchantMethodState {
   enabled: boolean;
   effective: boolean;
   version: number;
+  /** first blocking reason (snake_case) จาก MerchantPaymentMethodView; null = ไม่มี. */
+  denial: string | null;
 }
 
 export interface MerchantMethodResource {
@@ -57,8 +61,8 @@ export interface RoutingRuleView {
   priority: number;
   method: PspMethod | "any";
   originatorId: string | null;
-  minAmount: number | null;
-  maxAmount: number | null;
+  minAmount: string | null;
+  maxAmount: string | null;
   targetConnectionId: string | null;
   fallbackConnectionId: string | null;
   enabled: boolean;
@@ -82,16 +86,14 @@ export interface SimpleRoutingRow {
   fallbackConnectionId: string | null;
 }
 
-/**
- * GET/PUT simple-routing (design.md 644-647). `advancedRoutingReadOnly` เป็น
- * assumption จนกว่า backend จะยืนยัน contract — plan.md Assumptions.
- */
+/** GET/PUT simple-routing (SimpleRoutingView). `version` = 0 เมื่อยังไม่มี draft. */
 export interface SimpleRoutingView {
+  merchantId: string;
   rulesetId: string | null;
-  status: RoutingRulesetStatus | null;
+  status: string;
   version: number;
-  rows: SimpleRoutingRow[];
-  advancedRoutingReadOnly: boolean;
+  rules: SimpleRoutingRow[];
+  advancedReadOnly: boolean;
 }
 
 export interface SimpleRoutingResource {
@@ -121,16 +123,9 @@ export interface EnvironmentChangeAccepted {
   replayed: boolean;
 }
 
+/** POST routing-rulesets/{id}/activation-requests (RoutingActivationResult). */
 export interface RoutingActivationAccepted {
   approvalId: string;
-  rulesetId: string;
-  status: string;
+  ruleset: RoutingRuleset;
   replayed: boolean;
-}
-
-/** Sanitized candidate credential test result (POST .../{approvalId}/test). */
-export interface CandidateTestResult {
-  result: string;
-  testedAt: string | null;
-  message?: string | null;
 }

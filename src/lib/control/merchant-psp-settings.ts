@@ -130,7 +130,7 @@ export function deriveReadiness(input: ReadinessInput): ReadinessStep[] {
   };
 
   const withPrimary = enabledMethods.filter((method) =>
-    routing?.rows.some((row) => row.method === method && row.primaryConnectionId),
+    routing?.rules.some((row) => row.method === method && row.primaryConnectionId),
   ).length;
   const routingStep: ReadinessStep = {
     id: "routing",
@@ -202,7 +202,7 @@ function providerCell(
   return {
     status: "disabled",
     reason:
-      state.reason ??
+      state.denial ??
       (connection.psp === "omise" ? OMISE_UNVERIFIED_MESSAGE : null),
   };
 }
@@ -211,7 +211,7 @@ export function buildMethodMatrix(input: MethodMatrixInput): MethodMatrixRow[] {
   const { connections, merchantMethods, accountMethods, routing } = input;
   return CANONICAL_METHODS.map((method) => {
     const merchant = merchantMethods.find((state) => state.method === method);
-    const row = routing?.rows.find((candidate) => candidate.method === method);
+    const row = routing?.rules.find((candidate) => candidate.method === method);
     const providers = {} as Record<PspProvider, ProviderMethodCell>;
     for (const provider of SETTINGS_PROVIDERS) {
       providers[provider] = providerCell(
@@ -511,6 +511,14 @@ export function mapSettingsProblem(
     return {
       kind: "auth-stale",
       message: "สิทธิ์หมดอายุ กรุณาเข้าสู่ระบบใหม่",
+      retryable: false,
+      refetch: false,
+    };
+  }
+  if (status === 403 && code === "merchant_scope_forbidden") {
+    return {
+      kind: "forbidden",
+      message: "ไม่มีสิทธิ์เข้าถึงร้านค้านี้",
       retryable: false,
       refetch: false,
     };

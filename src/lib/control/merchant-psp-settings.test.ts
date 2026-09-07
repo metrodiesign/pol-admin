@@ -67,14 +67,14 @@ function merchantMethod(
   method: MerchantMethodState["method"],
   enabled: boolean,
 ): MerchantMethodState {
-  return { merchantId: MERCHANT, method, enabled, effective: enabled, version: 1 };
+  return { merchantId: MERCHANT, method, enabled, effective: enabled, version: 1, denial: null };
 }
 
 function accountMethod(
   pspConnectionId: string,
   method: AccountMethodState["method"],
   enabled: boolean,
-  reason: string | null = null,
+  denial: string | null = null,
 ): AccountMethodState {
   return {
     pspConnectionId,
@@ -83,20 +83,22 @@ function accountMethod(
     method,
     enabled,
     version: 1,
-    reason,
+    adapterVerified: enabled,
+    denial,
   };
 }
 
 function routingView(
-  rows: SimpleRoutingView["rows"],
+  rules: SimpleRoutingView["rules"],
   overrides: Partial<SimpleRoutingView> = {},
 ): SimpleRoutingView {
   return {
+    merchantId: MERCHANT,
     rulesetId: "r-1",
     status: "draft",
     version: 1,
-    rows,
-    advancedRoutingReadOnly: false,
+    rules,
+    advancedReadOnly: false,
     ...overrides,
   };
 }
@@ -344,7 +346,7 @@ describe("hasAdvancedRules + simpleRowsFromRuleset", () => {
             priority: 1,
             method: "card",
             originatorId: null,
-            minAmount: 100,
+            minAmount: "100",
             maxAmount: null,
             targetConnectionId: C2P,
             fallbackConnectionId: null,
@@ -558,6 +560,15 @@ describe("mapSettingsProblem", () => {
     expect(mapSettingsProblem(403, "forbidden", "method").kind).toBe("forbidden");
   });
 
+  it("maps 403 merchant_scope_forbidden to a merchant-scope message, not stale (AC-8)", () => {
+    const scoped = mapSettingsProblem(403, "merchant_scope_forbidden", "method");
+    expect(scoped.kind).toBe("forbidden");
+    expect(scoped.message).toContain("ร้านค้า");
+    // ต้องต่างจากทั้ง auth-stale และ generic forbidden
+    expect(scoped.message).not.toBe(mapSettingsProblem(403, "forbidden", "method").message);
+    expect(scoped.message).not.toBe(mapSettingsProblem(403, "authorization_stale", "method").message);
+  });
+
   it("differentiates candidate test failures from active test failures", () => {
     expect(mapSettingsProblem(502, "psp_test_failed", "candidate-test").message).toContain(
       "ชุดใหม่",
@@ -588,11 +599,12 @@ describe("resolveActivationTarget", () => {
   });
 
   const routing = (rulesetId: string | null): SimpleRoutingView => ({
+    merchantId: MERCHANT,
     rulesetId,
-    status: rulesetId ? "draft" : null,
+    status: rulesetId ? "draft" : "none",
     version: 3,
-    rows: [],
-    advancedRoutingReadOnly: false,
+    rules: [],
+    advancedReadOnly: false,
   });
 
   it("targets routing.rulesetId even when list has an active ruleset before the draft", () => {

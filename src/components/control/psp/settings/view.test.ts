@@ -41,7 +41,7 @@ function connection(overrides: Partial<PspConnection> = {}): PspConnection {
 
 function merchantMethod(method: "card" | "promptpay" | "installment", enabled: boolean): MerchantMethodResource {
   return {
-    state: { merchantId: MERCHANT, method, enabled, effective: enabled, version: 2 },
+    state: { merchantId: MERCHANT, method, enabled, effective: enabled, version: 2, denial: null },
     etag: '"v2"',
   };
 }
@@ -59,7 +59,8 @@ function accountMethod(
       method,
       enabled,
       version: 2,
-      reason: null,
+      adapterVerified: enabled,
+      denial: null,
     },
     etag: '"v2"',
   };
@@ -107,15 +108,16 @@ function baseData(): MerchantPaymentSettingsData {
       ],
     },
     routing: {
+      merchantId: MERCHANT,
       rulesetId: "88888888-8888-4888-8888-888888888888",
       status: "active",
       version: 3,
-      rows: [
+      rules: [
         { method: "card", primaryConnectionId: C2P, fallbackConnectionId: null },
         { method: "promptpay", primaryConnectionId: null, fallbackConnectionId: null },
         { method: "installment", primaryConnectionId: null, fallbackConnectionId: null },
       ],
-      advancedRoutingReadOnly: false,
+      advancedReadOnly: false,
     },
     routingEtag: '"v3"',
     approvals: [],
@@ -298,7 +300,7 @@ test("unconnected provider links to create with prefill and returnTo (AC-10)", (
 test("advanced ruleset renders routing read-only without any select", () => {
   permissions = ["settings.manage", "merchant.view", "merchant.manage"];
   const next = baseData();
-  next.routing = { ...next.routing!, advancedRoutingReadOnly: true };
+  next.routing = { ...next.routing!, advancedReadOnly: true };
   data = next;
   const markup = renderToStaticMarkup(createElement(MerchantPaymentSettingsView, { merchantId: MERCHANT }));
   assert.doesNotMatch(markup, /<select/);
