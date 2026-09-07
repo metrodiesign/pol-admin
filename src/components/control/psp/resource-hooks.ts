@@ -69,10 +69,19 @@ export interface PendingApprovalResult {
   items: ApprovalListItem[];
 }
 
+export interface PendingApprovalOptions {
+  /** null = ไม่กรอง action ที่ server (ดึงทุก action ที่ pending); default = psp.credential.change. */
+  action?: string | null;
+  /** กรอง merchantId ฝั่ง client หลังดึงครบ. */
+  merchantId?: string;
+}
+
 export async function loadPendingApprovals(
   signal?: AbortSignal,
   search?: string,
+  options: PendingApprovalOptions = {},
 ): Promise<PendingApprovalResult> {
+  const action = options.action === undefined ? "psp.credential.change" : options.action;
   const items: ApprovalListItem[] = [];
   const ids = new Set<string>();
   let page = 1;
@@ -85,8 +94,9 @@ export async function loadPendingApprovals(
           page,
           limit: PAGE_LIMIT,
           search,
-          action: "psp.credential.change",
+          action: action ?? undefined,
           status: "pending",
+          merchantId: options.merchantId,
         },
         signal,
       );
@@ -109,7 +119,10 @@ export async function loadPendingApprovals(
       if (items.length > expectedTotal) return { status: "unavailable", items };
       page += 1;
     }
-    return { status: "ready", items };
+    const scoped = options.merchantId
+      ? items.filter((item) => item.merchantId === options.merchantId)
+      : items;
+    return { status: "ready", items: scoped };
   } catch (error) {
     if (aborted(error)) throw error;
     return { status: "unavailable", items };

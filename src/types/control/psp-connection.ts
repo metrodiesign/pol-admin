@@ -1,6 +1,18 @@
 export type PspProvider = "2c2p" | "omise";
 export type PspMethod = "card" | "promptpay" | "installment";
 export type PspHealth = "unknown" | "healthy" | "failed";
+export type PaymentEnvironment = "sandbox" | "live";
+
+/** Sanitized candidate/active credential test result — never carries a secret. */
+export interface CredentialTestResult {
+  result: string;
+  testedAt: string;
+}
+
+export interface WebhookRegistration {
+  acknowledged: boolean;
+  acknowledgedAt: string | null;
+}
 
 export type JsonObject = Record<string, unknown>;
 
@@ -29,6 +41,12 @@ export interface PspConnection {
   hasPendingCredentialChange?: boolean;
   createdAt: string;
   version: number;
+  /** Safe merchant-settings fields (design.md 649-665); optional จน backend rollout ครบ. */
+  environment?: PaymentEnvironment;
+  credentialEnvironment?: PaymentEnvironment;
+  callbackUrl?: string;
+  pendingCredentialTest?: CredentialTestResult | null;
+  webhookRegistration?: WebhookRegistration | null;
 }
 
 export interface PagedResult<T> {

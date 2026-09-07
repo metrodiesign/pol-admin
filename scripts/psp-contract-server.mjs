@@ -34,9 +34,17 @@ function connection(overrides = {}) {
     hasPendingCredentialChange: scenario === "approval-lag",
     createdAt: "2026-08-18T00:00:00Z",
     version: scenario === "test-failed" ? 8 : 7,
+    environment: "sandbox",
+    credentialEnvironment: "sandbox",
+    callbackUrl: `https://api.example.test/api/v1/webhooks/${connectionId}`,
+    pendingCredentialTest: null,
+    webhookRegistration: null,
     ...overrides,
   };
 }
+
+const isSettingsScenario = scenario.startsWith("settings-");
+const omiseAlphaId = "44444444-4444-4444-8444-444444444444";
 
 const connections = [
   connection(
@@ -64,6 +72,116 @@ const connections = [
     version: 2,
   }),
 ];
+
+if (isSettingsScenario) {
+  connections.push(
+    connection({
+      pspConnectionId: omiseAlphaId,
+      merchantId,
+      psp: "omise",
+      enabledMethods: ["card"],
+      config: null,
+      maskedSecrets: { secretKey: "skey_l••••••••f160" },
+      isEnabled: true,
+      health: "unknown",
+      lastTestedAt: null,
+      lastTestResult: null,
+      capabilities: { test: true },
+      version: 3,
+      callbackUrl: `https://api.example.test/api/v1/webhooks/${omiseAlphaId}`,
+      pendingCredentialTest: { result: "authenticated", testedAt: "2026-09-06T10:00:00Z" },
+      webhookRegistration: { acknowledged: false, acknowledgedAt: null },
+    }),
+  );
+}
+
+// Merchant settings state per Alpha (mutable across environment-change).
+const settingsVersion = scenario === "settings-pending-env" ? 5 : 4;
+const merchantSettings = {
+  merchantId,
+  environment: "sandbox",
+  pendingEnvironment: scenario === "settings-pending-env" ? "live" : null,
+  pendingApprovalId:
+    scenario === "settings-pending-env" ? "77777777-7777-4777-8777-777777777777" : null,
+  updatedAt: "2026-09-06T00:00:00Z",
+  version: settingsVersion,
+};
+
+// Account-level method capability per (connectionId, method); Omise disabled with reason.
+const accountMethods = new Map();
+for (const method of ["card", "promptpay", "installment"]) {
+  accountMethods.set(`${connectionId}:${method}`, {
+    pspConnectionId: connectionId,
+    merchantId,
+    provider: "2c2p",
+    method,
+    enabled: method !== "installment",
+    version: 2,
+    reason: null,
+  });
+  accountMethods.set(`${omiseAlphaId}:${method}`, {
+    pspConnectionId: omiseAlphaId,
+    merchantId,
+    provider: "omise",
+    method,
+    enabled: false,
+    version: 2,
+    reason: "adapter_unverified",
+  });
+}
+
+// Merchant policy per method.
+const merchantMethods = new Map(
+  ["card", "promptpay", "installment"].map((method) => [
+    method,
+    {
+      merchantId,
+      method,
+      enabled: method !== "installment",
+      effective: method !== "installment",
+      version: 2,
+    },
+  ]),
+);
+
+const advancedRouting = scenario === "settings-advanced-routing";
+const routingRulesetId = "88888888-8888-4888-8888-888888888888";
+let routingVersion = 3;
+const routingRuleset = {
+  rulesetId: routingRulesetId,
+  merchantId,
+  name: "default",
+  status: "active",
+  approvalId: null,
+  version: routingVersion,
+  rules: advancedRouting
+    ? [
+        {
+          ruleId: "rule-adv",
+          priority: 1,
+          method: "card",
+          originatorId: null,
+          minAmount: 100000,
+          maxAmount: null,
+          targetConnectionId: connectionId,
+          fallbackConnectionId: omiseAlphaId,
+          enabled: true,
+        },
+      ]
+    : [
+        {
+          ruleId: "rule-card",
+          priority: 1,
+          method: "card",
+          originatorId: null,
+          minAmount: null,
+          maxAmount: null,
+          targetConnectionId: connectionId,
+          fallbackConnectionId: null,
+          enabled: true,
+        },
+      ],
+};
 
 const merchants = Array.from({ length: scenario === "catalog-partial" ? 100 : 2 }, (_, index) => ({
   id:
@@ -169,6 +287,16 @@ const server = createServer(async (request, response) => {
         merchantId,
         action: "psp.credential.change",
         targetId,
+        status: "pending",
+      });
+    }
+    // seed approval ให้ Omise ที่มี pendingCredentialTest เพื่อให้ CandidateTestButton แสดง (AC-11)
+    if (isSettingsScenario) {
+      approvals.push({
+        approvalId: "ffffffff-ffff-4fff-8fff-ffffffffffff",
+        merchantId,
+        action: "psp.credential.change",
+        targetId: omiseAlphaId,
         status: "pending",
       });
     }
@@ -305,6 +433,173 @@ const server = createServer(async (request, response) => {
       candidateVersionId: "ffffffff-ffff-4fff-8fff-ffffffffffff",
       status: "pending",
       replayed: false,
+    });
+  }
+
+  const settingsMatch = url.pathname.match(
+    /^\/api\/v1\/payments\/merchant-settings\/([0-9a-f-]+)$/i,
+  );
+  if (method === "GET" && settingsMatch) {
+    return json(response, 200, merchantSettings, { ETag: `"v${merchantSettings.version}"` });
+  }
+
+  const envChangeMatch = url.pathname.match(
+    /^\/api\/v1\/payments\/merchant-settings\/([0-9a-f-]+)\/environment-change-requests$/i,
+  );
+  if (method === "POST" && envChangeMatch) {
+    if (!validMutation(request, true)) return problem(response, 400, "invalid_headers");
+    if (scenario === "settings-conflict") return problem(response, 409, "state_conflict");
+    if (scenario === "settings-pending-env") return problem(response, 409, "approval_pending");
+    const body = await readJson(request);
+    merchantSettings.pendingEnvironment = body.targetEnvironment;
+    merchantSettings.pendingApprovalId = "77777777-7777-4777-8777-777777777777";
+    merchantSettings.version += 1;
+    return json(response, 202, {
+      approvalId: "77777777-7777-4777-8777-777777777777",
+      merchantId,
+      targetEnvironment: body.targetEnvironment,
+      connectionCount: Array.isArray(body.connections) ? body.connections.length : 0,
+      status: "pending",
+      replayed: false,
+    });
+  }
+
+  const simpleRoutingMatch = url.pathname.match(
+    /^\/api\/v1\/payments\/merchant-settings\/([0-9a-f-]+)\/simple-routing$/i,
+  );
+  if (simpleRoutingMatch) {
+    const rows = ["card", "promptpay", "installment"].map((m) => {
+      const rule = routingRuleset.rules.find((r) => r.method === m);
+      return {
+        method: m,
+        primaryConnectionId: rule ? rule.targetConnectionId : null,
+        fallbackConnectionId: rule ? rule.fallbackConnectionId : null,
+      };
+    });
+    const view = {
+      rulesetId: routingRuleset.rulesetId,
+      status: routingRuleset.status,
+      version: routingVersion,
+      rows,
+      advancedRoutingReadOnly: advancedRouting,
+    };
+    if (method === "GET") {
+      return json(response, 200, view, { ETag: `"v${routingVersion}"` });
+    }
+    if (method === "PUT") {
+      if (!validMutation(request, true)) return problem(response, 400, "invalid_headers");
+      if (advancedRouting) return problem(response, 409, "advanced_routing_read_only");
+      if (scenario === "settings-conflict") return problem(response, 409, "state_conflict");
+      const body = await readJson(request);
+      const nextRows = Array.isArray(body.rows) ? body.rows : rows;
+      // persist rows กลับเข้า ruleset เพื่อให้ GET ครั้งถัดไปคืนค่าที่บันทึก (AC-8)
+      routingRuleset.rules = nextRows.map((row, index) => {
+        const existing = routingRuleset.rules.find((r) => r.method === row.method);
+        return {
+          ruleId: existing?.ruleId ?? `rule-${row.method}`,
+          priority: existing?.priority ?? index + 1,
+          method: row.method,
+          originatorId: null,
+          minAmount: null,
+          maxAmount: null,
+          targetConnectionId: row.primaryConnectionId ?? null,
+          fallbackConnectionId: row.fallbackConnectionId ?? null,
+          enabled: true,
+        };
+      });
+      routingVersion += 1;
+      routingRuleset.version = routingVersion;
+      return json(
+        response,
+        200,
+        { ...view, rows: nextRows, version: routingVersion },
+        { ETag: `"v${routingVersion}"` },
+      );
+    }
+  }
+
+  const accountMethodMatch = url.pathname.match(
+    /^\/api\/v1\/payments\/psp-connections\/([0-9a-f-]+)\/methods\/([a-z]+)$/i,
+  );
+  if (accountMethodMatch) {
+    if (scenario === "settings-methods-forbidden") return problem(response, 403, "forbidden");
+    const key = `${accountMethodMatch[1]?.toLowerCase()}:${accountMethodMatch[2]}`;
+    const state = accountMethods.get(key);
+    if (!state) return problem(response, 404, "not_found");
+    if (method === "GET") return json(response, 200, state, { ETag: `"v${state.version}"` });
+    if (method === "PUT") {
+      if (!validMutation(request, true)) return problem(response, 400, "invalid_headers");
+      if (scenario === "settings-conflict") return problem(response, 409, "state_conflict");
+      const body = await readJson(request);
+      state.enabled = Boolean(body.enabled);
+      state.version += 1;
+      state.reason = state.enabled ? null : state.reason;
+      return json(response, 200, state, { ETag: `"v${state.version}"` });
+    }
+  }
+
+  const merchantMethodsListMatch = url.pathname.match(
+    /^\/api\/v1\/payments\/merchants\/([0-9a-f-]+)\/methods$/i,
+  );
+  if (method === "GET" && merchantMethodsListMatch) {
+    if (scenario === "settings-methods-forbidden") return problem(response, 403, "forbidden");
+    const methods = [...merchantMethods.values()]
+      .filter((state) => state.effective)
+      .map((state) => state.method);
+    return json(response, 200, { methods });
+  }
+
+  const merchantMethodMatch = url.pathname.match(
+    /^\/api\/v1\/payments\/merchants\/([0-9a-f-]+)\/methods\/([a-z]+)$/i,
+  );
+  if (merchantMethodMatch) {
+    if (scenario === "settings-methods-forbidden") return problem(response, 403, "forbidden");
+    const state = merchantMethods.get(merchantMethodMatch[2]);
+    if (!state) return problem(response, 404, "not_found");
+    if (method === "GET") return json(response, 200, state, { ETag: `"v${state.version}"` });
+    if (method === "PUT") {
+      if (!validMutation(request, true)) return problem(response, 400, "invalid_headers");
+      if (scenario === "settings-conflict") return problem(response, 409, "state_conflict");
+      const body = await readJson(request);
+      state.enabled = Boolean(body.enabled);
+      state.effective = state.enabled;
+      state.version += 1;
+      return json(response, 200, state, { ETag: `"v${state.version}"` });
+    }
+  }
+
+  if (method === "GET" && url.pathname === "/api/v1/payments/routing-rulesets") {
+    const requested = url.searchParams.get("merchantId");
+    const items = requested && requested !== merchantId ? [] : [routingRuleset];
+    return json(response, 200, page(items, url));
+  }
+
+  const activationMatch = url.pathname.match(
+    /^\/api\/v1\/payments\/routing-rulesets\/([0-9a-f-]+)\/activation-requests$/i,
+  );
+  if (method === "POST" && activationMatch) {
+    if (!validMutation(request, true)) return problem(response, 400, "invalid_headers");
+    if (scenario === "settings-conflict") return problem(response, 409, "state_conflict");
+    return json(response, 202, {
+      approvalId: "99999999-9999-4999-8999-999999999999",
+      rulesetId: activationMatch[1]?.toLowerCase(),
+      status: "pending",
+      replayed: false,
+    });
+  }
+
+  const candidateTestMatch = url.pathname.match(
+    /^\/api\/v1\/payments\/psp-connections\/([0-9a-f-]+)\/credential-change-requests\/([0-9a-f-]+)\/test$/i,
+  );
+  if (method === "POST" && candidateTestMatch) {
+    if (!validMutation(request, true)) return problem(response, 400, "invalid_headers");
+    if (scenario === "settings-candidate-failed") {
+      return problem(response, 502, "psp_test_failed");
+    }
+    return json(response, 200, {
+      result: "authenticated",
+      testedAt: "2026-09-06T11:00:00Z",
+      message: null,
     });
   }
 

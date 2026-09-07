@@ -47,7 +47,7 @@ function addQueryValue(params: URLSearchParams, name: string, value: unknown): v
   params.set(name, String(value));
 }
 
-function withQuery(path: string, values: object): string {
+export function withQuery(path: string, values: object): string {
   const params = new URLSearchParams();
   for (const [name, value] of Object.entries(values)) addQueryValue(params, name, value);
   const query = params.toString();
@@ -71,7 +71,7 @@ async function readSafeCode(response: Response): Promise<string | null> {
   }
 }
 
-async function request(path: string, init: RequestInit = {}): Promise<Response> {
+export async function request(path: string, init: RequestInit = {}): Promise<Response> {
   try {
     const response = await adminFetch(path, init);
     if (!response.ok) throw new PspApiError(response.status, await readSafeCode(response));
@@ -83,12 +83,12 @@ async function request(path: string, init: RequestInit = {}): Promise<Response> 
   }
 }
 
-async function responseJson<T>(path: string, init?: RequestInit): Promise<{ value: T; response: Response }> {
+export async function responseJson<T>(path: string, init?: RequestInit): Promise<{ value: T; response: Response }> {
   const response = await request(path, init);
   return { value: (await response.json()) as T, response };
 }
 
-function mutationInit(
+export function mutationInit(
   method: "POST" | "PUT",
   body: unknown,
   idempotencyKey: string,

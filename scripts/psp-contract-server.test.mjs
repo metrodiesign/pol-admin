@@ -1,0 +1,95 @@
+import assert from "node:assert/strict";
+import { spawn } from "node:child_process";
+import { fileURLToPath } from "node:url";
+import { after, before, test } from "node:test";
+
+// ยืนยันพฤติกรรม persistence ของ psp-contract-server ที่ browser pass ใช้เป็นตัวตัดสิน:
+// AC-8 (simple-routing PUT ต้อง round-trip) และ AC-11 (seed approval ให้ Omise candidate test)
+const PORT = 5177;
+const ORIGIN = `http://127.0.0.1:${PORT}`;
+const MERCHANT = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
+const C2P = "11111111-1111-4111-8111-111111111111";
+const OMISE = "44444444-4444-4444-8444-444444444444";
+const CSRF = "contract-csrf";
+const serverPath = fileURLToPath(new URL("./psp-contract-server.mjs", import.meta.url));
+
+let child;
+
+function mutationHeaders(etag) {
+  return {
+    "content-type": "application/json",
+    "x-csrf-token": CSRF,
+    "idempotency-key": crypto.randomUUID(),
+    "if-match": etag,
+  };
+}
+
+async function waitForReady() {
+  for (let attempt = 0; attempt < 100; attempt += 1) {
+    try {
+      const res = await fetch(`${ORIGIN}/api/v1/admins/me`);
+      if (res.ok) return;
+    } catch {
+      // server ยังไม่ขึ้น รอรอบถัดไป
+    }
+    await new Promise((resolve) => setTimeout(resolve, 50));
+  }
+  throw new Error("contract server did not become ready");
+}
+
+before(async () => {
+  child = spawn("node", [serverPath], {
+    env: { ...process.env, PSP_CONTRACT_SCENARIO: "settings-happy", PSP_CONTRACT_PORT: String(PORT) },
+    stdio: "ignore",
+  });
+  await waitForReady();
+});
+
+after(() => {
+  child?.kill("SIGTERM");
+});
+
+test("AC-8: simple-routing PUT persists rows so the next GET returns them", async () => {
+  const routingUrl = `${ORIGIN}/api/v1/payments/merchant-settings/${MERCHANT}/simple-routing`;
+
+  const before = await fetch(routingUrl);
+  const beforeBody = await before.json();
+  const etag = before.headers.get("etag");
+  assert.equal(before.status, 200);
+  assert.ok(etag, "GET must return an ETag");
+
+  // ตั้ง promptpay ให้ชี้ primary=OMISE (เดิมเป็น null) เพื่อพิสูจน์ว่าค่าถูกบันทึกจริง
+  const nextRows = beforeBody.rows.map((row) =>
+    row.method === "promptpay" ? { ...row, primaryConnectionId: OMISE } : row,
+  );
+  const put = await fetch(routingUrl, {
+    method: "PUT",
+    headers: mutationHeaders(etag),
+    body: JSON.stringify({ rows: nextRows }),
+  });
+  assert.equal(put.status, 200);
+
+  const after = await fetch(routingUrl);
+  const afterBody = await after.json();
+  const promptpay = afterBody.rows.find((row) => row.method === "promptpay");
+  assert.equal(promptpay.primaryConnectionId, OMISE, "saved primaryConnectionId must survive GET");
+  // card เดิม (primary=C2P) ต้องยังอยู่หลังบันทึก
+  const card = afterBody.rows.find((row) => row.method === "card");
+  assert.equal(card.primaryConnectionId, C2P);
+});
+
+test("AC-11: approvals seed a pending psp.credential.change for the Omise connection", async () => {
+  const res = await fetch(
+    `${ORIGIN}/api/v1/approvals?action=psp.credential.change&status=pending&limit=100`,
+  );
+  const body = await res.json();
+  assert.equal(res.status, 200);
+  const match = body.items.find(
+    (item) =>
+      item.action === "psp.credential.change" &&
+      item.status === "pending" &&
+      item.targetId.toLowerCase() === OMISE &&
+      item.merchantId === MERCHANT,
+  );
+  assert.ok(match, "expected a pending credential-change approval targeting the Omise connection");
+});

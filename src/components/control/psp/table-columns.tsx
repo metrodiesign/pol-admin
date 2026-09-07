@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { ColumnDef } from "@tanstack/react-table";
-import { Activity, CircleAlert, Clock3, Eye, Hourglass, Power } from "lucide-react";
+import { Activity, CircleAlert, Clock3, Eye, Hourglass, Power, Settings2 } from "lucide-react";
 
 import { ControlStatusBadge } from "@/components/control/shared/status-badge";
 import { Button } from "@/components/ui/button";
@@ -124,7 +124,7 @@ export const pspColumns: ColumnDef<PspConnectionListRow>[] = [
   {
     id: "actions",
     enableSorting: false,
-    meta: { headClassName: "w-20", cellClassName: "w-20", ignoreRowClick: true },
+    meta: { headClassName: "w-32", cellClassName: "w-32", ignoreRowClick: true },
     header: () => null,
     cell: ({ row }) => (
       <TooltipProvider>
@@ -147,6 +147,25 @@ export const pspColumns: ColumnDef<PspConnectionListRow>[] = [
               </Button>
             </TooltipTrigger>
             <TooltipContent>ดูรายละเอียด</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger render={<span className="inline-flex" />}>
+              <Button
+                render={
+                  <Link
+                    href={`/control/psp/settings?merchantId=${encodeURIComponent(row.original.merchantId)}`}
+                  />
+                }
+                nativeButton={false}
+                variant="ghost"
+                size="icon-lg"
+                className="size-10 cursor-pointer bg-grey-600/8 text-grey-700 hover:bg-grey-800 hover:text-white focus-visible:bg-grey-800 focus-visible:text-white"
+                aria-label={`ตั้งค่าร้านค้า ${row.original.merchantName}`}
+              >
+                <Settings2 className="size-5" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>ตั้งค่าร้านค้า</TooltipContent>
           </Tooltip>
         </div>
       </TooltipProvider>
