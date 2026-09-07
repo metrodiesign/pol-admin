@@ -117,15 +117,62 @@ fi
 # branch protection: commit/push ขณะอยู่บน main/develop หรือ push ระบุ main/develop
 if echo "$N" | grep -qE "${POS}git[[:space:]]+(commit|push)([[:space:]]|$)"; then
   BR=$(git branch --show-current 2>/dev/null)
+  # เดิม: อยู่บน main/develop = block commit/push ทุกแบบ (ตัดสินจาก HEAD ไม่ใช่ target).
+  # ยกเว้นเดียวที่เพิ่ม: delete push "ล้วน" ของ ref ที่ไม่ใช่ main/develop (post-merge
+  # cleanup เช่น `git push origin --delete feature/x` ขณะยืนบน develop) — floor จริงอยู่ที่
+  # .githooks/pre-push (#132) ที่บังคับว่า branch ต้องมี PR merged ก่อนลบ.
+  #
+  # ทำไมเป็น *positive shape allowlist* ไม่ใช่ blocklist: rework 1-3 ยกเว้นแบบ "เห็น
+  # indicator (--delete/-d หรือ colon) หนึ่งตัวก็พอ" แล้วปะช่องทีละตัวที่หลุด — trailing
+  # metachar, variable ref, colon ปน content push, และ --tags/--follow-tags ที่ inject ref
+  # (tag) เข้า remote เอง (4 ช่องในผิวสัมผัสเดียวกัน). surface นี้ไม่มีขอบเขต จึงพลิกเป็น:
+  # ยกเว้นเฉพาะ span ที่ match รูปแบบเต็มแบบ token-by-token เท่านั้น token แปลกหน้าตัวเดียว =
+  # ไม่ยกเว้น = ตกไปกฎเดิม (AC-8). ตัดสินต่อ span ของแต่ละ push (pattern เดียวกับ RM_SPANS)
+  # เพื่อกันเคส multi-segment.
   if [ "$BR" = "main" ] || [ "$BR" = "develop" ]; then
-    block "git commit/push บน branch $BR — ต้อง branch แยกแล้วผ่าน PR (Workflow rules)"
+    echo "$N" | grep -qE "${POS}git[[:space:]]+commit([[:space:]]|$)" &&
+      block "git commit บน branch $BR — ต้อง branch แยกแล้วผ่าน PR (Workflow rules)"
+    PUSH_SPANS=$(echo "$N" | grep -oE "${POS}git[[:space:]]+push([[:space:]][^;&|]*)?")
+    [ -n "$PUSH_SPANS" ] ||
+      block "git commit/push บน branch $BR — ต้อง branch แยกแล้วผ่าน PR (Workflow rules)"
+    # shape delete-push ที่ยกเว้นได้ (AC-8) — ต้อง match args หลัง `push` แบบเต็มทั้ง span:
+    #   push <remote> (--delete|-d) <ref>...   (delete flag ล้วน, ref ตามหลัง)
+    #   push (--delete|-d) <remote> <ref>...   (delete flag นำหน้า remote)
+    #   push <remote> :<ref>...                (colon-refspec ล้วน, ทุกตัวขึ้นต้น ':')
+    # <remote>=_RE_RMT ไม่ขึ้นต้น `-` และไม่มี `:` `/` `@` (ตัด URL ที่มี colon);
+    # <ref>=_RE_REF ไม่ขึ้นต้น `-` -> flag ที่ inject ref (--tags/--follow-tags) หรือ flag
+    # อื่นใด (--, -o, --repo=, --atomic, -dq, flag ที่ยังไม่แจกแจง) ไม่ผ่านเป็น remote/ref
+    # จึงทำให้ทั้ง span ไม่ match = block. `$` ` ` * ? [ { ก็ไม่อยู่ใน class -> ref ไม่
+    # determinable = ไม่ยกเว้น (fail-safe, กัน `--delete $B` ที่ $B=main). strip ถึง `push`
+    # ตัวแรก (shortest-match) แล้ว quote กัน glob/word-split; anchor ^...$ กันช่อง ref ที่มี
+    # คำว่า `push` (เช่น `--tags feature/push origin :old`) มา re-open การยกเว้น.
+    #
+    # ข้อจำกัดที่ประกาศไว้ (นอกขอบเขต task นี้ — shape allowlist ปิดไม่ถึง, เป็น task แยก):
+    #   - gitconfig `push.followTags=true` ทำให้ `git push origin :old` push tag ตามไปเอง
+    #     โดยไม่มี flag; guard อ่าน gitconfig ไม่ได้ (ตัดสินจาก command string เท่านั้น)
+    #   - `git -c a=b push origin main` ข้าม branch protection (POS ต้องการ git ติด push)
+    #   - backtick command substitution ข้าม guard ทั้งตัว รวมกฎ rm -rf
+    #   - trailing metachar ที่ arm outer (`git push;`) ข้าม branch-protection arm
+    _RE_RMT='[A-Za-z0-9_.][A-Za-z0-9_.-]*'
+    _RE_REF='[[:alnum:]_./][[:alnum:]_./-]*'
+    DELSHAPE="^[[:space:]]+(${_RE_RMT}[[:space:]]+(--delete|-d)([[:space:]]+${_RE_REF})+|(--delete|-d)[[:space:]]+${_RE_RMT}([[:space:]]+${_RE_REF})+|${_RE_RMT}([[:space:]]+:${_RE_REF})+)[[:space:]]*\$"
+    while IFS= read -r SPAN; do
+      # match shape = delete push ล้วน -> ข้ามเฉพาะ arm HEAD-branch นี้ (AC-9); กฎ
+      # target-based (บรรทัดท้าย if) และ force/mirror/all (ด้านบน) ยังทำงานกับ span ที่ match
+      printf '%s' "${SPAN#*push}" | grep -qE "$DELSHAPE" && continue
+      block "git push บน branch $BR — ต้อง branch แยกแล้วผ่าน PR (ยกเว้น delete push ของ ref ที่ไม่ใช่ main/develop; Workflow rules)"
+    done <<<"$PUSH_SPANS"
   fi
   # anchor ก่อน (main|develop) รับ whitespace / ':' / '+' / '/' :
   #   ':' หรือ whitespace -> 'origin main', 'HEAD:main'
   #   '+' -> '+main' force push
   #   '/' -> fully-qualified refspec 'HEAD:refs/heads/main' (critic: เดิม / นำหน้า main เลยรอด)
-  # trailing ([[:space:]]|$) บังคับ word boundary -> 'maintenance'/'developer-x' ไม่ false-block
-  echo "$N" | grep -qE "${POS}git[[:space:]]+push[[:space:]][^;&|]*([[:space:]]|:|\+|/)(main|develop)([[:space:]]|$)" &&
+  # trailing ([^[:alnum:]_./-]|$) = negated ref-name class บังคับ word boundary:
+  #   อักขระของชื่อ ref (a-z0-9 _ . / -) ต่อท้าย = คนละ ref -> 'maintenance'/'developer-x'/
+  #   'develop-old'/'main.bak' ไม่ false-block. อักขระอื่น (';' '&' '|' ')' '>' '<' ฯลฯ) =
+  #   สิ้นสุด token main/develop จริง -> block. (เดิม ([[:space:]]|$) จับเฉพาะ whitespace/EOL
+  #   จึงหลุด delete push ที่ target main/develop แล้วตามด้วย shell metachar ประชิด.)
+  echo "$N" | grep -qE "${POS}git[[:space:]]+push[[:space:]][^;&|]*([[:space:]]|:|\+|/)(main|develop)([^[:alnum:]_./-]|$)" &&
     block 'git push ตรงเข้า main/develop — ต้องผ่าน PR (Workflow rules)'
 fi
 
