@@ -267,6 +267,19 @@ check_at "$REPO_DEV" allow "69 delete flag before remote"     'git push --delete
 # หลวมรับ '-' นำหน้า `--tags` จะผ่านเป็น ref แล้วยกเว้นทั้งที่ push tag จริง) -> block
 check_at "$REPO_DEV" block "70 --tags in ref position"        'git push origin --delete feature/x --tags'
 
+# bugfix: trailing shell redirect (`2>&1`/`>file`/`&>file`) ที่ปิดท้ายคำสั่งจริง เคยโดน
+# block เกินจริง เพราะ exclusion class ของ PUSH_SPANS (`[^;&|]*`) ตัด span กลางคันที่ `&`
+# ของ `2>&1` ก่อนถึงท้าย ref -> DELSHAPE (anchor `$` ต้องเจอท้ายจริง) ไม่ match. ต้องยัง allow
+# เมื่อเป็น delete-push ล้วนที่ปิดท้ายด้วย redirect เท่านั้น และยัง block เหมือนเดิมทุกกรณีที่
+# ควร block (target protected / chain คำสั่งจริงหลัง redirect).
+check_at "$REPO_DEV" allow "71 --delete feature/x 2>&1"        'git push origin --delete feature/x 2>&1'
+check_at "$REPO_DEV" allow "72 --delete feature/x >log 2>&1"   'git push origin --delete feature/x >log 2>&1'
+check_at "$REPO_DEV" allow "73 --delete feature/x &>log"       'git push origin --delete feature/x &>log'
+check_at "$REPO_DEV" allow "74 -d docs/y 2>&1"                 'git push -d origin docs/y 2>&1'
+check_at "$REPO_DEV" allow "75 colon feature/x 2>&1"           'git push origin :feature/x 2>&1'
+check_at "$REPO_DEV" block "76 --delete develop 2>&1"          'git push origin --delete develop 2>&1'
+check_at "$REPO_DEV" block "77 delete+2>&1 && push develop"    'git push origin --delete feature/x 2>&1 && git push origin develop'
+
 # HEAD = feature/x — ผลต้องเท่ากับพฤติกรรมก่อนแก้ (arm branch-protection ไม่ทำงานนอก protected):
 # 1-14/18-22 เท่าเดิม, ต่างเฉพาะ 15/16/17 ที่กลับเป็น allow เพราะ push/commit จาก branch ปกติผ่านได้
 check_at "$REPO_FEAT" allow "f1 delete feature/x"               'git push origin --delete feature/x'
