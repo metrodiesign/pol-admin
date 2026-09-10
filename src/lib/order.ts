@@ -7,6 +7,7 @@ import {
   payLink as sessionPayLink,
   sourceDetail as sessionSourceDetail,
   policyItems as sessionPolicyItems,
+  orderReferences as sessionOrderReferences,
   buildTimeline as sessionBuildTimeline,
   type SourceDetail,
   type PolicyItem,
@@ -93,6 +94,9 @@ export function sourceDetail(o: OrderRow): SourceDetail | undefined {
 }
 export function policyItems(o: OrderRow): PolicyItem[] {
   return o.session ? sessionPolicyItems(o.session) : [];
+}
+export function orderReferences(o: OrderRow): { ref1: string; ref2: string } {
+  return o.session ? sessionOrderReferences(o.session) : { ref1: "", ref2: "" };
 }
 export function buildTimeline(o: OrderRow): TimelineEvent[] {
   return o.session ? sessionBuildTimeline(o.session) : [];

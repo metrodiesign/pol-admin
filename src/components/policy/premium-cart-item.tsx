@@ -17,7 +17,7 @@ export function PremiumCartItem({ policy, onRemove }: PremiumCartItemProps) {
         <span className="block truncate text-sm font-bold text-foreground">
           {policy.customer.name}
         </span>
-        <span className="block truncate text-xs font-semibold text-primary">{policy.id}</span>
+        <span className="block truncate text-xs font-semibold text-primary">{policy.referenceNo}</span>
       </div>
       <span className="shrink-0 text-sm font-bold text-foreground">
         {formatTHB(policy.premium, 2)}

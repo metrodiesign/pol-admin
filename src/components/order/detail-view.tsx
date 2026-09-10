@@ -24,7 +24,7 @@ import {
   getOrderById,
   buildTimeline,
   policyItems,
-  sourceDetail,
+  orderReferences,
   customerPhone,
   payLink,
   type TimelineIcon,
@@ -130,7 +130,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
   }
 
   const items = policyItems(t);
-  const src = sourceDetail(t);
+  const refs = orderReferences(t);
   const timeline = buildTimeline(t);
   const link = payLink(t);
   const sessionChannel = t.session?.channel;
@@ -260,23 +260,23 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
           <div className="mt-4 grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
             <div>
               <p className={fieldLabel}>หมายเลขอ้างอิง 1</p>
-              <p className="text-sm font-bold text-foreground">{t.session?.source.code || <span className="text-grey-400">—</span>}</p>
+              <p className="text-sm font-bold text-foreground">{refs.ref1 || <span className="text-grey-400">—</span>}</p>
             </div>
             <div>
               <p className={fieldLabel}>หมายเลขอ้างอิง 2</p>
-              <p className="text-sm font-bold text-foreground">{t.session?.source.label || <span className="text-grey-400">—</span>}</p>
+              <p className="text-sm font-bold text-foreground">{refs.ref2 || <span className="text-grey-400">—</span>}</p>
             </div>
             <div>
               <p className={fieldLabel}>หมายเลขอ้างอิง 3</p>
-              <p className="text-sm font-bold text-foreground">{src ? `${src.role} · ${src.location}` : <span className="text-grey-400">—</span>}</p>
+              <p className="text-sm font-bold text-foreground"><span className="text-grey-400">—</span></p>
             </div>
             <div>
               <p className={fieldLabel}>หมายเลขอ้างอิง 4</p>
-              <p className="text-sm font-bold text-foreground">{src ? `${src.branchCode} · ${src.branchLabel}` : <span className="text-grey-400">—</span>}</p>
+              <p className="text-sm font-bold text-foreground"><span className="text-grey-400">—</span></p>
             </div>
             <div>
               <p className={fieldLabel}>หมายเลขอ้างอิง 5</p>
-              <p className="text-sm font-bold text-foreground">{src?.linkRef || <span className="text-grey-400">—</span>}</p>
+              <p className="text-sm font-bold text-foreground"><span className="text-grey-400">—</span></p>
             </div>
           </div>
         </div>

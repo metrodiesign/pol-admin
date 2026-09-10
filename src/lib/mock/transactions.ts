@@ -1,6 +1,14 @@
 // UI-only, ไม่มี read endpoint รองรับ — pol-core ไม่มี endpoint คืน PaymentSession
 // list เลย ต้องมี endpoint นี้ก่อนถึงจะ align ได้ (REQ-7.2).
 import type { PaymentSession } from "@/types/order-payment";
+import { POLICIES } from "@/lib/mock/policies";
+
+// order -> กรมธรรม์ที่ถูกเลือกจากหน้า /policy/list (single source = POLICIES).
+// amount/items/subItems ของ session ที่ผูกไว้ ถูก derive จาก POLICIES ด้านล่าง เพื่อให้ทุกหน้า
+// (order list/detail, transaction detail) แสดงตรงกับตะกร้าที่เลือก.
+export const ORDER_POLICY_LINKS: Record<string, string[]> = {
+  ORD6900000002: ["POL-MT0014", "POL-MT0015", "POL-MT0016", "POL-MT0018"],
+};
 
 export const PAYMENT_SESSIONS: PaymentSession[] = [
   {
@@ -797,6 +805,28 @@ export const PAYMENT_SESSIONS: PaymentSession[] = [
     ],
   },
 ];
+
+// เติม amount/items/subItems ของ session ที่ผูกกรมธรรม์ ให้ตรงกับ POLICIES ที่เลือก (Money = 4 ทศนิยม).
+for (const [orderId, policyIds] of Object.entries(ORDER_POLICY_LINKS)) {
+  const session = PAYMENT_SESSIONS.find((s) => s.id === orderId);
+  if (!session) continue;
+  const linked = policyIds
+    .map((id) => POLICIES.find((p) => p.id === id))
+    .filter((p): p is (typeof POLICIES)[number] => p !== undefined);
+  const total = linked.reduce((sum, p) => sum + p.totalAmount, 0);
+  session.amount = { amount: total.toFixed(4), currency: "THB" };
+  session.subItems = linked.length;
+  session.items = linked.map((p) => ({
+    name: p.customer.name,
+    amount: { amount: p.totalAmount.toFixed(4), currency: "THB" },
+  }));
+  // ผู้ชำระ = ลูกค้าของกรมธรรม์รายการแรก (เดียวกับ buildCustomerInfo ในหน้า checkout)
+  const payer = linked[0];
+  if (payer) {
+    session.recipientEmail = payer.customer.email ?? session.recipientEmail;
+    session.source = { ...session.source, label: payer.customer.name };
+  }
+}
 
 export const TRANSACTION_SUMMARY = {
   totalToday: 2498,
