@@ -2,7 +2,7 @@
 
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 
-import { getMe } from "@/lib/api/admin/auth";
+import { getMe, SKIP_AUTH, BYPASS_ME } from "@/lib/api/admin/auth";
 import type { AdminMe, AuthStatus } from "@/types/auth";
 
 export interface AuthContextValue {
@@ -28,10 +28,11 @@ export function AuthProvider({
 }: {
   children: React.ReactNode;
 }): React.JSX.Element {
-  const [state, setState] = useState<Omit<AuthContextValue, "clearAuthState">>({
-    me: null,
-    status: "loading",
-  });
+  // TEMP bypass: ระหว่างรอ pol-core ปรับ /admin/me — เริ่มด้วย identity สังเคราะห์
+  // เป็น authed เลย ไม่เรียก getMe (ดู SKIP_AUTH ใน lib/api/admin/auth.ts). ลบทั้ง branch เมื่อ pol-core พร้อม.
+  const [state, setState] = useState<Omit<AuthContextValue, "clearAuthState">>(
+    SKIP_AUTH ? { me: BYPASS_ME, status: "authed" } : { me: null, status: "loading" },
+  );
   const bootstrapVersion = useRef(0);
 
   const clearAuthState = useCallback(() => {
@@ -40,6 +41,7 @@ export function AuthProvider({
   }, []);
 
   useEffect(() => {
+    if (SKIP_AUTH) return; // bypass: ไม่ bootstrap จาก /admin/me
     let active = true;
     const version = bootstrapVersion.current;
     getMe().then((result) => {
