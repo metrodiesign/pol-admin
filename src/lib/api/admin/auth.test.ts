@@ -11,6 +11,7 @@ import {
   readCookieFrom,
   shouldRedirectToLogin,
   shouldShowForbidden,
+  BYPASS_ME,
 } from "./auth";
 
 afterEach(() => vi.unstubAllGlobals());
@@ -214,5 +215,9 @@ describe("auth redirect decision", () => {
     expect(shouldShowForbidden("authed", { ...me, permissions: ["dashboard.view"] })).toBe(false);
     expect(shouldShowForbidden("forbidden", null)).toBe(true);
     expect(shouldShowForbidden("anon", null)).toBe(false);
+  });
+
+  it("BYPASS_ME ต้องไม่ trigger 403 (permissions ต้องไม่ว่าง)", () => {
+    expect(shouldShowForbidden("authed", BYPASS_ME)).toBe(false);
   });
 });

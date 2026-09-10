@@ -66,7 +66,7 @@ export function PremiumCheckoutDialog({
                     <span className="block truncate text-sm font-bold text-foreground">
                       {p.customer.name}
                     </span>
-                    <span className="block truncate text-xs font-semibold text-primary">{p.id}</span>
+                    <span className="block truncate text-xs font-semibold text-primary">{p.referenceNo}</span>
                   </span>
                   <span className="shrink-0 text-sm font-bold tabular-nums text-foreground">
                     {formatAmount(p.premium, 2)}

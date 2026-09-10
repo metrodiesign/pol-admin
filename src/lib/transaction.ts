@@ -1,5 +1,6 @@
 import type { PaymentSession, PaymentSessionStatus, PaymentChannel, Psp, OrderStatus } from "@/types/order-payment";
-import { PAYMENT_SESSIONS } from "@/lib/mock/transactions";
+import { PAYMENT_SESSIONS, ORDER_POLICY_LINKS } from "@/lib/mock/transactions";
+import { POLICIES } from "@/lib/mock/policies";
 import { formatMoney } from "@/types/money";
 
 export const PAYMENT_SESSION_STATUS_LABEL: Record<PaymentSessionStatus, string> = {
@@ -95,6 +96,12 @@ function seedOf(t: PaymentSession): number {
 
 /** เบอร์โทรลูกค้า (mock) — deterministic จากรหัสธุรกรรม. */
 export function customerPhone(t: PaymentSession): string {
+  // linked order: เบอร์ผู้ชำระ = กรมธรรม์รายการแรกที่เลือก
+  const linkedIds = ORDER_POLICY_LINKS[t.id];
+  if (linkedIds) {
+    const p = POLICIES.find((x) => x.id === linkedIds[0]);
+    if (p?.customer.phone) return p.customer.phone;
+  }
   const s = seedOf(t);
   const a = (s % 9) + 1;
   const b = String(100 + ((s * 7) % 900));
@@ -179,6 +186,23 @@ export interface PolicyItem {
 }
 /** รายการกรมธรรม์ที่จะรับชำระ — derive deterministic; grossPremium คงค่า (รวม = t.amount), netPremium = 70% ของ gross. */
 export function policyItems(t: PaymentSession): PolicyItem[] {
+  // order ที่ผูกกรมธรรม์จริง (เลือกจาก /policy/list): ใช้ค่าจาก POLICIES ตรง ๆ เพื่อให้ทุกหน้าตรงกัน.
+  const linkedIds = ORDER_POLICY_LINKS[t.id];
+  if (linkedIds) {
+    return linkedIds
+      .map((id) => POLICIES.find((p) => p.id === id))
+      .filter((p): p is (typeof POLICIES)[number] => p !== undefined)
+      .map((p, i) => ({
+        seq: i + 1,
+        docNo: p.referenceNo,
+        docType: "เลขกรมธรรม์",
+        insuredName: p.customer.name,
+        netPremium: p.netPremium,
+        grossPremium: p.totalAmount,
+        discount: 0,
+        ref: p.extraInfo.text,
+      }));
+  }
   const s = seedOf(t);
   return t.items.map((it, i) => {
     const k = s + i * 17;
@@ -195,6 +219,34 @@ export function policyItems(t: PaymentSession): PolicyItem[] {
       ref: `${REF_PREFIX[k % REF_PREFIX.length] ?? "นบ"} ${(k * 7) % 10000}`,
     };
   });
+}
+
+/**
+ * หมายเลขอ้างอิง 1 (User Defined 2, 16–17 หลัก) และ 2 (User Defined 3, 15 หลัก)
+ * ตามกฎ Generate Reference (Motor) จากกรมธรรม์รายการแรกของคำสั่งซื้อ.
+ * Ref1 = รหัสตัวแทน(5) + ปีกรมธรรม์(2) + สาขา(3) + เลขที่อ้างอิง running(6) + อท(1 เฉพาะสลักหลัง)
+ * Ref2 = หน่วยงาน(1)=1 + ประเภทกรมธรรม์(2) + ประเภทประกันภัย(1) + สาขา(3) + รหัสตัวแทน(5) + ผลิตภัณฑ์(3)
+ * คืน "" เมื่อ docNo ไม่เข้ารูปแบบ (เช่นไม่มีรหัสตัวแทนนำหน้า) -> หน้าจอแสดง —.
+ */
+export function orderReferences(t: PaymentSession): { ref1: string; ref2: string } {
+  const item = policyItems(t)[0];
+  if (!item) return { ref1: "", ref2: "" };
+  // รูปแบบ PolicyNumber: รหัสตัวแทน(5)-ปี(2)สาขา(3)/ประเภท/running(6)-PolicyType(2)
+  const m = item.docNo.match(/^(\d{5})-(\d{2})(\d{3})\/[^/]+\/(\d{6})-(\d{2})/);
+  if (!m) return { ref1: "", ref2: "" };
+  const [, agent = "", year = "", branch = "", running = "", ptype = ""] = m;
+  // ประเภทกรมธรรม์: ใหม่=02, รับแจ้ง=08, สลักหลัง=09
+  const docCode = item.docType.includes("สลักหลัง") ? "09" : item.docType.includes("รับแจ้ง") ? "08" : "02";
+  // ประเภทประกันภัย: บังคับ(CMI)=1, สมัครใจ(VMI)=2 — จากกรมธรรม์ที่ผูก, ค่าเริ่มต้น 2
+  const linked = ORDER_POLICY_LINKS[t.id];
+  const kind = linked ? POLICIES.find((p) => p.id === linked[0])?.insuranceKind : undefined;
+  const insType = kind === "CMI" ? "1" : "2";
+  // Ref1 = PolicyNumber ต่อกันไม่มีตัวคั่น 18 หลัก (agent+ปี+สาขา+running+PolicyType) ตรงกับ previousPolicyNumber ในต้นทาง
+  // ponytail: ผลิตภัณฑ์ 3 หลัก = 000 (Motor ไม่มีรหัสผลิตภัณฑ์; มีเฉพาะงาน Non-Motor)
+  return {
+    ref1: `${agent}${year}${branch}${running}${ptype}`,
+    ref2: `1${docCode}${insType}${branch}${agent}000`,
+  };
 }
 
 // ── payment lifecycle (Authorize → Capture → Settled) ────────────────────────

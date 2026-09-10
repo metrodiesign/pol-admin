@@ -11,6 +11,29 @@ const CSRF_COOKIE = "adm_csrf";
 const CSRF_HEADER = "X-CSRF-Token";
 const MUTATION_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"]);
 
+// TEMP bypass — เปิดทุกหน้าระหว่างรอ pol-core ปรับโครงสร้าง /admin/me ใหม่.
+// เมื่อ /admin/me ฝั่ง pol-core กลับมาใช้ได้: ลบ SKIP_AUTH + BYPASS_ME, การ gate 401
+// ใน adminFetch, และ branch bypass ใน AuthProvider ออก แล้วเอา NEXT_PUBLIC_SKIP_AUTH
+// ออกจาก .env.local. NODE_ENV guard กันไม่ให้ flag ติดใน production build (env เป็น NEXT_PUBLIC_ = inline ตอน build).
+export const SKIP_AUTH =
+  process.env.NODE_ENV !== "production" &&
+  process.env.NEXT_PUBLIC_SKIP_AUTH === "true";
+
+/** identity สังเคราะห์ตอน bypass — Super + ทุก permission เพื่อให้ nav และ page gate เปิดครบ. */
+export const BYPASS_ME: AdminMe = {
+  adminId: "bypass",
+  email: "bypass@local",
+  tier: "Super",
+  accessibleMerchants: { isUnrestricted: true },
+  permissions: [
+    "txn.view", "txn.refund", "txn.export",
+    "merchant.view", "merchant.manage",
+    "invoice.view", "invoice.manage", "settlement.run",
+    "user.view", "user.manage", "user.roles",
+    "audit.view", "settings.manage", "apikey.manage",
+  ],
+};
+
 // returnTo ที่ส่งให้ backend — ต้องเป็น subset ของ AdminSession:ReturnUrlAllowlist ฝั่ง backend.
 // landing = /dashboard; backend ต้องเพิ่ม /dashboard ใน allowlist (ไม่งั้น reject -> falls back /). ดู coordination item.
 const RETURN_TO_ALLOWLIST: readonly string[] = ["/", "/minimals", "/dashboard"];
@@ -71,7 +94,8 @@ export async function adminFetch(
   const { redirectOnUnauthorized = true, ...init } = opts;
   const csrf = isMutation(init.method ?? "GET") ? cookie(CSRF_COOKIE) : null;
   const res = await fetch(path, buildRequestInit(init, csrf));
-  if (res.status === 401 && redirectOnUnauthorized) {
+  // TEMP bypass: อย่าเด้งไป /login เมื่อ pol-core คืน 401 ระหว่าง restructuring (ดู SKIP_AUTH).
+  if (res.status === 401 && redirectOnUnauthorized && !SKIP_AUTH) {
     window.location.href = "/login"; // session หมด -> หน้า login (ผู้ใช้เริ่ม SSO เอง)
   }
   return res;
