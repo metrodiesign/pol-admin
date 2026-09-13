@@ -132,7 +132,22 @@ if echo "$N" | grep -qE "${POS}git[[:space:]]+(commit|push)([[:space:]]|$)"; the
   if [ "$BR" = "main" ] || [ "$BR" = "develop" ]; then
     echo "$N" | grep -qE "${POS}git[[:space:]]+commit([[:space:]]|$)" &&
       block "git commit บน branch $BR — ต้อง branch แยกแล้วผ่าน PR (Workflow rules)"
-    PUSH_SPANS=$(echo "$N" | grep -oE "${POS}git[[:space:]]+push([[:space:]][^;&|]*)?")
+    # trailing redirect (`2>&1`, `>/dev/null`, `&>out.log`, ...) ที่ปิดท้ายทั้งคำสั่งจริง ๆ
+    # ไม่ใช่ separator ของอีกคำสั่ง แต่ตัวมันมี `&` ปนอยู่ ซึ่งเป็นอักขระเดียวกับที่ exclusion
+    # class ของ PUSH_SPANS (`[^;&|]*`) ใช้ตัด span — เจอ `&` ก่อนถึงท้าย ref ก็ตัด span
+    # กลางคัน (`... feature/x 2>` ไม่มี `&1`) ทำให้ DELSHAPE (ซึ่ง anchor `$` ต้องเจอท้ายจริง)
+    # ไม่ match แล้วตกไป block ทั้งที่เป็น delete-push ล้วนที่ควรยกเว้น (AC-8). ลอก trailing
+    # redirect ออกจากปลายคำสั่งจริงก่อนตัด span (ไม่แตะ $N ตัวอื่นในไฟล์) — anchor `$` ท้าย
+    # regex กันไม่ให้ไปแมตช์ redirect ที่อยู่กลางคำสั่งก่อน `&&`/`;` ตัวถัดไป (เช่น
+    # `push ... 2>&1 && rm -rf /` ยังเห็น `&& rm -rf /` เป็นคำสั่งแยกตามเดิม).
+    _RE_REDIR_TAIL='[[:space:]]+([0-9]{0,2}>&[0-9]+-?|&>>?[[:space:]]*[^;&|[:space:]]+|[0-9]{0,2}>>?[[:space:]]*[^;&|[:space:]]+)[[:space:]]*$'
+    N_PUSH="$N"
+    _redir_i=0
+    while [ "$_redir_i" -lt 6 ] && [[ "$N_PUSH" =~ $_RE_REDIR_TAIL ]]; do
+      N_PUSH="${N_PUSH%"${BASH_REMATCH[0]}"}"
+      _redir_i=$((_redir_i + 1))
+    done
+    PUSH_SPANS=$(echo "$N_PUSH" | grep -oE "${POS}git[[:space:]]+push([[:space:]][^;&|]*)?")
     [ -n "$PUSH_SPANS" ] ||
       block "git commit/push บน branch $BR — ต้อง branch แยกแล้วผ่าน PR (Workflow rules)"
     # shape delete-push ที่ยกเว้นได้ (AC-8) — ต้อง match args หลัง `push` แบบเต็มทั้ง span:
