@@ -91,13 +91,13 @@ describe("toAdminMe", () => {
   it("map accountId/displayName/hasPlatformAccess/permissions", () => {
     expect(
       toAdminMe(
-        { accountId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", displayName: "สมชาย" },
+        { accountId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", displayName: "สมชาย", email: "somchai@viriyah.co.th" },
         { hasPlatformAccess: true, permissions: ["settings.manage"] },
       ),
     ).toEqual({
       adminId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
       displayName: "สมชาย",
-      email: null,
+      email: "somchai@viriyah.co.th",
       hasPlatformAccess: true,
       permissions: ["settings.manage"],
     });
@@ -105,16 +105,22 @@ describe("toAdminMe", () => {
 
   it("ไม่มี platform access -> hasPlatformAccess false, displayName null คงไว้", () => {
     const me = toAdminMe(
-      { accountId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", displayName: null },
+      { accountId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", displayName: null, email: null },
       { hasPlatformAccess: false, permissions: [] },
     );
     expect(me.hasPlatformAccess).toBe(false);
     expect(me.displayName).toBeNull();
+    expect(me.email).toBeNull();
   });
 });
 
 describe("getMe", () => {
-  const meBody = { accountId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", displayName: "สมชาย", accountType: "EMPLOYEE" };
+  const meBody = {
+    accountId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+    displayName: "สมชาย",
+    email: "somchai@viriyah.co.th",
+    accountType: "EMPLOYEE",
+  };
   const accessBody = { hasPlatformAccess: false, permissions: ["settings.manage", "merchant.view"] };
   const fetchByPath = (statuses: Record<string, number>) =>
     vi.fn(async (path: string) => {
@@ -132,7 +138,7 @@ describe("getMe", () => {
       me: {
         adminId: meBody.accountId,
         displayName: "สมชาย",
-        email: null,
+        email: "somchai@viriyah.co.th",
         hasPlatformAccess: false,
         permissions: ["settings.manage", "merchant.view"],
       },

@@ -81,6 +81,7 @@ export async function adminFetch(
 interface MeResponse {
   accountId: string;
   displayName: string | null;
+  email: string | null;
 }
 
 /** payload GET /api/v1/me/access (เฉพาะ field ที่ใช้). */
@@ -94,7 +95,7 @@ export function toAdminMe(me: MeResponse, access: AccessResponse): AdminMe {
   return {
     adminId: me.accountId,
     displayName: me.displayName,
-    email: null, // /api/v1/me ยังไม่ส่ง email
+    email: me.email ?? null,
     hasPlatformAccess: access.hasPlatformAccess,
     permissions: access.permissions,
   };
