@@ -63,40 +63,55 @@ export interface AdminFetchOptions extends RequestInit {
   redirectOnUnauthorized?: boolean;
 }
 
+const SESSION_PATH = "/api/v1/auth/session";
 const SESSION_REFRESH_PATH = "/api/v1/auth/session/refresh";
 
-// BFF session ไม่ slide ฝั่ง server (absolute BffSessionMinutes) — ต่ออายุได้ทาง refresh เท่านั้น
-// เรียกซ้ำพร้อมกันหลาย request ให้แชร์ refresh เดียว กัน rotate cookie ชนกัน
-let refreshInFlight: Promise<boolean> | null = null;
+/** payload GET /api/v1/auth/session และ POST session/refresh (เฉพาะ field ที่ใช้). */
+interface SessionResponse {
+  expiresAt: string;
+}
 
-/** POST session/refresh หนึ่งครั้ง (dedupe เมื่อมีหลาย 401 พร้อมกัน). true = ได้ cookie ชุดใหม่. */
-export function refreshSession(): Promise<boolean> {
+async function expiresAtOf(res: Response): Promise<string | null> {
+  if (res.status !== 200) return null;
+  const body = (await res.json()) as SessionResponse;
+  return body.expiresAt;
+}
+
+/** GET session ปัจจุบัน -> expiresAt (ISO) หรือ null เมื่อไม่มี session. */
+export async function getSessionExpiry(): Promise<string | null> {
+  try {
+    return await expiresAtOf(await fetch(SESSION_PATH, buildRequestInit({}, null)));
+  } catch {
+    return null;
+  }
+}
+
+// BFF session ไม่ slide ฝั่ง server (absolute BffSessionMinutes) และ refresh รับเฉพาะ ticket ที่ยัง live
+// จึงต้อง refresh เชิงรุกก่อน expiresAt (ดู lib/auth/session-keepalive) — เรียกซ้ำพร้อมกันให้แชร์ครั้งเดียว
+let refreshInFlight: Promise<string | null> | null = null;
+
+/** POST session/refresh (dedupe) -> expiresAt ใหม่ หรือ null เมื่อต่ออายุไม่ได้ (session ตาย ปล่อยให้ 401 ถัดไปเด้ง /login). */
+export function refreshSession(): Promise<string | null> {
   refreshInFlight ??= fetch(
     SESSION_REFRESH_PATH,
     buildRequestInit({ method: "POST" }, cookie(CSRF_COOKIE)),
   )
-    .then((res) => res.status === 200)
-    .catch(() => false)
+    .then(expiresAtOf)
+    .catch(() => null)
     .finally(() => {
       refreshInFlight = null;
     });
   return refreshInFlight;
 }
 
-/**
- * fetch admin API: credentials:'include', แนบ CSRF เมื่อ mutation.
- * 401 -> refresh session หนึ่งครั้งแล้ว retry (อ่าน pol_csrf ใหม่เพราะ refresh rotate);
- * ถ้า refresh ไม่ผ่านคืน 401 เดิม และเด้ง /login เมื่อ redirectOnUnauthorized.
- */
+/** fetch admin API: credentials:'include', แนบ CSRF เมื่อ mutation, 401 -> เด้งไปหน้า /login. */
 export async function adminFetch(
   path: string,
   opts: AdminFetchOptions = {},
 ): Promise<Response> {
   const { redirectOnUnauthorized = true, ...init } = opts;
-  const send = () =>
-    fetch(path, buildRequestInit(init, isMutation(init.method ?? "GET") ? cookie(CSRF_COOKIE) : null));
-  let res = await send();
-  if (res.status === 401 && (await refreshSession())) res = await send();
+  const csrf = isMutation(init.method ?? "GET") ? cookie(CSRF_COOKIE) : null;
+  const res = await fetch(path, buildRequestInit(init, csrf));
   if (res.status === 401 && redirectOnUnauthorized) {
     window.location.href = "/login"; // session หมด -> หน้า login (ผู้ใช้เริ่ม SSO เอง)
   }
