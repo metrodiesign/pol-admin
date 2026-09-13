@@ -43,6 +43,8 @@ export interface Role {
   permissions: string[];
   /** seed คงที่ (read-only mock, REQ-10) */
   userCount: number;
+  /** optimistic concurrency — ส่งเป็น If-Match `"v<version>"` ตอน PUT/DELETE */
+  version: number;
 }
 
 export type RoleFormMode = "create" | "edit" | "duplicate";

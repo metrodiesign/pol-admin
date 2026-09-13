@@ -74,14 +74,14 @@ export function RoleEditView({ code }: RoleEditViewProps) {
   }
 
   async function handleSave() {
-    if (!input || saving) return;
+    if (!input || !role || saving) return;
     const found = validateRoleForm(input, [], "edit");
     if (Object.keys(found).length > 0) {
       setErrors(found);
       return;
     }
     setSaving(true);
-    const res = await updateRole(code, input);
+    const res = await updateRole(code, input, role.version);
     setSaving(false);
     if (res.status === 409) {
       setErrors({ name: "ข้อมูลขัดแย้งกับบทบาทอื่น" });

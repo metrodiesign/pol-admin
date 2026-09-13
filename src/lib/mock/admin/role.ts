@@ -44,6 +44,7 @@ export const ROLES: Role[] = [
     color: "red",
     status: "active",
     userCount: 1,
+    version: 1,
     permissions: PERMISSION_CATALOG.map((p) => p.key),
   },
   {
@@ -53,6 +54,7 @@ export const ROLES: Role[] = [
     color: "blue",
     status: "active",
     userCount: 2,
+    version: 1,
     permissions: [
       "txn.view",
       "txn.refund",
@@ -69,6 +71,7 @@ export const ROLES: Role[] = [
     color: "green",
     status: "active",
     userCount: 2,
+    version: 1,
     permissions: [
       "txn.view",
       "txn.export",
@@ -84,6 +87,7 @@ export const ROLES: Role[] = [
     color: "amber",
     status: "active",
     userCount: 2,
+    version: 1,
     permissions: ["txn.view", "merchant.view", "user.view"],
   },
   {
@@ -93,6 +97,7 @@ export const ROLES: Role[] = [
     color: "gray",
     status: "inactive",
     userCount: 1,
+    version: 1,
     permissions: ["txn.view", "invoice.view", "audit.view"],
   },
 ];

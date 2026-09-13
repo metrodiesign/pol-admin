@@ -212,7 +212,7 @@ export function RolesView() {
           if (!open) setDeleteRole(null);
         }}
         onConfirm={async (role) => {
-          const res = await deleteRoleApi(role.code);
+          const res = await deleteRoleApi(role.code, role.version);
           if (res.status === 409) {
             show(`ลบบทบาท “${role.name}” ไม่ได้ — มีผู้ใช้ผูกอยู่`);
             return;

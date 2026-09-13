@@ -22,6 +22,17 @@ interface RoleResponse {
   status: string;
   permissions: string[] | null;
   userCount: number | string;
+  version: number;
+}
+
+/** list เป็น PagedResult (SFS) ไม่ใช่ array. */
+interface PagedRoles {
+  items: RoleResponse[];
+}
+
+/** ETag รูปแบบ `"v<version>"` ตรง VersionEtags ฝั่ง pol-core (มี double quote). */
+function ifMatch(version: number): string {
+  return `"v${version}"`;
 }
 
 /** map RoleResponse -> Role (coerce null/string กัน table/filter พัง). */
@@ -34,6 +45,7 @@ function toRole(r: RoleResponse): Role {
     status: r.status as RoleStatus,
     permissions: r.permissions ?? [],
     userCount: Number(r.userCount) || 0,
+    version: r.version,
   };
 }
 
@@ -41,8 +53,8 @@ function toRole(r: RoleResponse): Role {
 export async function getRoles(): Promise<Role[]> {
   const res = await adminFetch("/admin/roles");
   if (!res.ok) throw new Error(`/admin/roles ${res.status}`);
-  const raw = (await res.json()) as RoleResponse[];
-  return raw.map(toRole);
+  const raw = (await res.json()) as PagedRoles;
+  return raw.items.map(toRole);
 }
 
 /** GET /admin/roles/{code} — รายตัว. 404 -> null. throw ถ้า status อื่น. */
@@ -62,20 +74,25 @@ export function createRole(input: RoleFormInput): Promise<Response> {
   });
 }
 
-/** PUT /admin/roles/{code} — แก้ไข (code immutable, ไม่ส่งใน body). คืน Response ดิบ. */
-export function updateRole(code: string, input: RoleFormInput): Promise<Response> {
+/** PUT /admin/roles/{code} — แก้ไข (code immutable, ไม่ส่งใน body). ต้องส่ง If-Match จาก version ที่อ่านมา. คืน Response ดิบ (409 = version ชนหรือ conflict). */
+export function updateRole(
+  code: string,
+  input: RoleFormInput,
+  version: number,
+): Promise<Response> {
   const { code: _omit, ...body } = input;
   return adminFetch(`/admin/roles/${encodeURIComponent(code)}`, {
     method: "PUT",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", "If-Match": ifMatch(version) },
     body: JSON.stringify(body),
   });
 }
 
 /** DELETE /admin/roles/{code}. คืน Response ดิบ (caller เช็ค 409 = มีผู้ใช้ผูกอยู่). */
-export function deleteRole(code: string): Promise<Response> {
+export function deleteRole(code: string, version: number): Promise<Response> {
   return adminFetch(`/admin/roles/${encodeURIComponent(code)}`, {
     method: "DELETE",
+    headers: { "If-Match": ifMatch(version) },
   });
 }
 
