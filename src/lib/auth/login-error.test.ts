@@ -6,6 +6,7 @@ describe("getLoginErrorContent", () => {
   it("อธิบาย workforce denial และ identity conflict ด้วยข้อความที่ตรงเหตุผล", () => {
     expect(getLoginErrorContent("workforce-access-denied").message).toContain("ไม่ผ่านนโยบายพนักงาน");
     expect(getLoginErrorContent("identity-conflict").message).toContain("identity binding");
+    expect(getLoginErrorContent("workforce-email-unavailable").message).toContain("ไม่มีอีเมล");
   });
 
   it("ใช้ข้อความ provider-neutral สำหรับ legacy reasons", () => {
