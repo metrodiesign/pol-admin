@@ -63,6 +63,47 @@ export interface AdminFetchOptions extends RequestInit {
   redirectOnUnauthorized?: boolean;
 }
 
+const SESSION_PATH = "/api/v1/auth/session";
+const SESSION_REFRESH_PATH = "/api/v1/auth/session/refresh";
+
+/** payload GET /api/v1/auth/session และ POST session/refresh (เฉพาะ field ที่ใช้). */
+interface SessionResponse {
+  expiresAt: string;
+}
+
+async function expiresAtOf(res: Response): Promise<string | null> {
+  if (res.status !== 200) return null;
+  const body = (await res.json()) as SessionResponse;
+  return body.expiresAt;
+}
+
+/** GET session ปัจจุบัน -> expiresAt (ISO) หรือ null เมื่อไม่มี session. */
+export async function getSessionExpiry(): Promise<string | null> {
+  try {
+    return await expiresAtOf(await fetch(SESSION_PATH, buildRequestInit({}, null)));
+  } catch {
+    return null;
+  }
+}
+
+// BFF session ไม่ slide ฝั่ง server (absolute BffSessionMinutes) และ refresh รับเฉพาะ ticket ที่ยัง live
+// จึงต้อง refresh เชิงรุกก่อน expiresAt (ดู lib/auth/session-keepalive) — เรียกซ้ำพร้อมกันให้แชร์ครั้งเดียว
+let refreshInFlight: Promise<string | null> | null = null;
+
+/** POST session/refresh (dedupe) -> expiresAt ใหม่ หรือ null เมื่อต่ออายุไม่ได้ (session ตาย ปล่อยให้ 401 ถัดไปเด้ง /login). */
+export function refreshSession(): Promise<string | null> {
+  refreshInFlight ??= fetch(
+    SESSION_REFRESH_PATH,
+    buildRequestInit({ method: "POST" }, cookie(CSRF_COOKIE)),
+  )
+    .then(expiresAtOf)
+    .catch(() => null)
+    .finally(() => {
+      refreshInFlight = null;
+    });
+  return refreshInFlight;
+}
+
 /** fetch admin API: credentials:'include', แนบ CSRF เมื่อ mutation, 401 -> เด้งไปหน้า /login. */
 export async function adminFetch(
   path: string,

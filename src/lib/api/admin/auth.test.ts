@@ -1,6 +1,9 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
+  adminFetch,
+  getSessionExpiry,
+  refreshSession,
   buildMicrosoftLoginUrl,
   buildRequestInit,
   getMe,
@@ -122,12 +125,13 @@ describe("getMe", () => {
     accountType: "EMPLOYEE",
   };
   const accessBody = { hasPlatformAccess: false, permissions: ["settings.manage", "merchant.view"] };
-  const fetchByPath = (statuses: Record<string, number>) =>
-    vi.fn(async (path: string) => {
+  const fetchByPath = (statuses: Record<string, number>) => {
+    return vi.fn(async (path: string) => {
       const status = statuses[path] ?? 200;
       const body = status !== 200 ? null : path === "/api/v1/me" ? meBody : accessBody;
       return new Response(body ? JSON.stringify(body) : null, { status });
     });
+  };
 
   it("เรียก /api/v1/me + /api/v1/me/access แล้ว map เป็น authed", async () => {
     const fetchMock = fetchByPath({});
@@ -247,5 +251,54 @@ describe("auth redirect decision", () => {
     expect(shouldShowForbidden("authed", { ...me, permissions: ["dashboard.view"] })).toBe(false);
     expect(shouldShowForbidden("forbidden", null)).toBe(true);
     expect(shouldShowForbidden("anon", null)).toBe(false);
+  });
+});
+
+describe("refreshSession / getSessionExpiry", () => {
+  const REFRESH = "/api/v1/auth/session/refresh";
+  afterEach(() => vi.unstubAllGlobals());
+
+  it("getSessionExpiry: 200 -> expiresAt, 401 -> null", async () => {
+    vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify({ expiresAt: "2026-01-01T00:00:00Z" }), { status: 200 })));
+    await expect(getSessionExpiry()).resolves.toBe("2026-01-01T00:00:00Z");
+    vi.stubGlobal("fetch", vi.fn(async () => new Response(null, { status: 401 })));
+    await expect(getSessionExpiry()).resolves.toBeNull();
+  });
+
+  it("refreshSession: POST พร้อม X-CSRF-Token จาก pol_csrf -> expiresAt ใหม่", async () => {
+    vi.stubGlobal("document", { cookie: "pol_csrf=tok" });
+    const fetchMock = vi.fn(async () => new Response(JSON.stringify({ expiresAt: "2026-01-02T00:00:00Z" }), { status: 200 }));
+    vi.stubGlobal("fetch", fetchMock);
+    await expect(refreshSession()).resolves.toBe("2026-01-02T00:00:00Z");
+    const [path, init] = fetchMock.mock.calls[0] as unknown as [string, RequestInit];
+    expect(path).toBe(REFRESH);
+    expect(init.method).toBe("POST");
+    expect(new Headers(init.headers).get("X-CSRF-Token")).toBe("tok");
+  });
+
+  it("refreshSession: 401 หรือ network -> null", async () => {
+    vi.stubGlobal("document", { cookie: "pol_csrf=tok" });
+    vi.stubGlobal("fetch", vi.fn(async () => new Response(null, { status: 401 })));
+    await expect(refreshSession()).resolves.toBeNull();
+    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new TypeError("down")));
+    await expect(refreshSession()).resolves.toBeNull();
+  });
+
+  it("เรียกพร้อมกันแชร์ refresh เดียว", async () => {
+    vi.stubGlobal("document", { cookie: "pol_csrf=tok" });
+    const fetchMock = vi.fn(async () => new Response(JSON.stringify({ expiresAt: "x" }), { status: 200 }));
+    vi.stubGlobal("fetch", fetchMock);
+    await Promise.all([refreshSession(), refreshSession()]);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("adminFetch: 401 ไม่เรียก refresh เอง (keepalive ทำเชิงรุกแทน) และเด้ง /login", async () => {
+    vi.stubGlobal("document", { cookie: "" });
+    vi.stubGlobal("window", { location: { href: "" } });
+    const fetchMock = vi.fn(async () => new Response(null, { status: 401 }));
+    vi.stubGlobal("fetch", fetchMock);
+    await expect(adminFetch("/admin/roles")).resolves.toMatchObject({ status: 401 });
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(window.location.href).toBe("/login");
   });
 });

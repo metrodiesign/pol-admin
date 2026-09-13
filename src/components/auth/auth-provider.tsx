@@ -2,7 +2,8 @@
 
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 
-import { getMe } from "@/lib/api/admin/auth";
+import { getMe, getSessionExpiry, refreshSession } from "@/lib/api/admin/auth";
+import { startSessionKeepalive } from "@/lib/auth/session-keepalive";
 import type { AdminMe, AuthStatus } from "@/types/auth";
 
 export interface AuthContextValue {
@@ -49,6 +50,16 @@ export function AuthProvider({
       active = false;
     };
   }, []);
+
+  // ต่ออายุ session เชิงรุกตลอดที่ authed (server ไม่ slide) หยุดเมื่อ logout/unmount
+  useEffect(() => {
+    if (state.status !== "authed") return;
+    return startSessionKeepalive({
+      getExpiresAt: getSessionExpiry,
+      refresh: refreshSession,
+      doc: document,
+    });
+  }, [state.status]);
 
   return (
     <AuthContext.Provider value={{ ...state, clearAuthState }}>
