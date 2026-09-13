@@ -6,7 +6,7 @@ import { ErrorCard, errorButtonClass } from "@/components/error/error-screen";
 import { shouldRedirectToLogin, shouldShowForbidden } from "@/lib/api/admin/auth";
 import { useAuth } from "./auth-provider";
 
-/** loading placeholder — กัน flash ของ shell ก่อน /admin/me ตอบ. */
+/** loading placeholder — กัน flash ของ shell ก่อน /api/v1/me ตอบ. */
 function AuthPending(): React.JSX.Element {
   return (
     <main className="flex min-h-dvh items-center justify-center bg-grey-100 p-4">

@@ -26,7 +26,7 @@ function stubFetchSeq(responses: { status: number; body?: unknown }[]): { calls:
     return Promise.resolve(new Response(payload, { status: r.status }));
   });
   // mutations อ่าน document.cookie หา CSRF
-  vi.stubGlobal("document", { cookie: "adm_csrf=tok" });
+  vi.stubGlobal("document", { cookie: "pol_csrf=tok" });
   return { calls };
 }
 

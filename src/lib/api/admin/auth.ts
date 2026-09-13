@@ -1,18 +1,18 @@
 import type { AdminMe, AuthBootstrapResult, AuthStatus } from "@/types/auth";
 
-// Admin BFF client (auth) — FE ไม่ถือ token; session อยู่ใน httpOnly cookie ที่ backend จัดการ.
-// contract: pol-core/docs/reference/admin-fe-integration.md
+// Employee BFF client (auth) — FE ไม่ถือ token; session อยู่ใน httpOnly cookie ที่ backend จัดการ.
+// contract: pol-core src/Api/Api/IdentityAccess/IdentityAccessEndpoints.cs (employee stack: /api/v1/auth/*, /api/v1/me*)
 
 // login เป็น top-level navigation ตรงไป backend origin (callback ลงทะเบียนที่ backend host จริง) —
 // ไม่ผ่าน Next rewrite proxy เพราะ redirect_uri ที่ ASP.NET OIDC handler สร้างต้องตรง host ที่ browser navigate ไปเป๊ะ.
 const API_ORIGIN = process.env.NEXT_PUBLIC_API_ORIGIN ?? "";
-const MICROSOFT_LOGIN_PATH = `${API_ORIGIN}/api/v1/admins/auth/microsoft/login`;
-const CSRF_COOKIE = "adm_csrf";
+const MICROSOFT_LOGIN_PATH = `${API_ORIGIN}/api/v1/auth/employees/login`;
+const CSRF_COOKIE = "pol_csrf";
 const CSRF_HEADER = "X-CSRF-Token";
 const MUTATION_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"]);
 
-// returnTo ที่ส่งให้ backend — ต้องเป็น subset ของ AdminSession:ReturnUrlAllowlist ฝั่ง backend.
-// landing = /dashboard; backend ต้องเพิ่ม /dashboard ใน allowlist (ไม่งั้น reject -> falls back /). ดู coordination item.
+// returnTo ที่ส่งให้ backend — employee stack รับ path ที่ขึ้นต้นด้วย "/" ทุกค่า (ไม่มี allowlist);
+// clamp ฝั่ง FE ไว้เพื่อกัน open-redirect-ish path ที่ไม่ใช่ landing ของแอป.
 const RETURN_TO_ALLOWLIST: readonly string[] = ["/", "/minimals", "/dashboard"];
 const DEFAULT_RETURN_TO = "/dashboard";
 
@@ -34,7 +34,7 @@ function clampReturnTo(returnTo: string): string {
   return RETURN_TO_ALLOWLIST.includes(returnTo) ? returnTo : DEFAULT_RETURN_TO;
 }
 
-/** สร้าง URL เริ่ม SSO ผ่าน Microsoft/Entra: `/admin/auth/microsoft/login?returnTo=<encoded,clamped>`. */
+/** สร้าง URL เริ่ม SSO ผ่าน Microsoft/Entra: `/api/v1/auth/employees/login?returnTo=<encoded,clamped>`. */
 export function buildMicrosoftLoginUrl(returnTo: string): string {
   return `${MICROSOFT_LOGIN_PATH}?returnTo=${encodeURIComponent(clampReturnTo(returnTo))}`;
 }
@@ -77,14 +77,43 @@ export async function adminFetch(
   return res;
 }
 
-/** GET /admin/me — แยก auth failure ออกจาก bootstrap/system failure. */
+/** payload GET /api/v1/me (เฉพาะ field ที่ใช้). */
+interface MeResponse {
+  accountId: string;
+  displayName: string | null;
+  email: string | null;
+}
+
+/** payload GET /api/v1/me/access (เฉพาะ field ที่ใช้). */
+interface AccessResponse {
+  hasPlatformAccess: boolean;
+  permissions: string[];
+}
+
+/** ประกอบ AdminMe จาก /me + /me/access (permissions ใช้ vocabulary Iam Keys เดียวกับ stack เก่า). */
+export function toAdminMe(me: MeResponse, access: AccessResponse): AdminMe {
+  return {
+    adminId: me.accountId,
+    displayName: me.displayName,
+    email: me.email ?? null,
+    hasPlatformAccess: access.hasPlatformAccess,
+    permissions: access.permissions,
+  };
+}
+
+/** GET /api/v1/me + /api/v1/me/access — แยก auth failure ออกจาก bootstrap/system failure. */
 export async function getMe(): Promise<AuthBootstrapResult> {
   try {
-    const res = await adminFetch("/admin/me", { redirectOnUnauthorized: false });
-    if (res.status === 401) return { status: "anon", me: null };
-    if (res.status === 403) return { status: "forbidden", me: null };
-    if (!res.ok) return { status: "error", me: null };
-    return { status: "authed", me: (await res.json()) as AdminMe };
+    const [meRes, accessRes] = await Promise.all([
+      adminFetch("/api/v1/me", { redirectOnUnauthorized: false }),
+      adminFetch("/api/v1/me/access", { redirectOnUnauthorized: false }),
+    ]);
+    const status = meRes.status === 200 ? accessRes.status : meRes.status;
+    if (status === 401) return { status: "anon", me: null };
+    if (status === 403) return { status: "forbidden", me: null };
+    if (status !== 200) return { status: "error", me: null };
+    const [me, access] = (await Promise.all([meRes.json(), accessRes.json()])) as [MeResponse, AccessResponse];
+    return { status: "authed", me: toAdminMe(me, access) };
   } catch {
     return { status: "error", me: null };
   }
@@ -99,26 +128,17 @@ export function shouldShowForbidden(status: AuthStatus, me: AdminMe | null): boo
   return status === "forbidden" || (status === "authed" && me !== null && me.permissions.length === 0);
 }
 
+/** 204 = logout สำเร็จ, 401 = ไม่มี session อยู่แล้ว (terminal). 403 ใน stack ใหม่คือ csrf_failed ขณะ session ยังอยู่ จึงไม่นับ. */
 export function isLogoutSuccessStatus(status: number): boolean {
-  return status === 204 || status === 401 || status === 403;
+  return status === 204 || status === 401;
 }
 
-/** ออกจากระบบ (device นี้); 401/403 คือ terminal logged-out state ที่ retry กู้ไม่ได้จาก UI. */
+/** ออกจากระบบ (device นี้) POST /api/v1/auth/logout; 401 คือ terminal logged-out state ที่ retry กู้ไม่ได้จาก UI. */
 export async function logout(): Promise<Response> {
-  const response = await adminFetch("/admin/auth/logout", {
+  const response = await adminFetch("/api/v1/auth/logout", {
     method: "POST",
     redirectOnUnauthorized: false,
   });
   if (!isLogoutSuccessStatus(response.status)) throw new Error("admin-logout-failed");
-  return response;
-}
-
-/** ออกจากระบบทุก device; ใช้ terminal-state rule เดียวกับ local logout. */
-export async function logoutAll(): Promise<Response> {
-  const response = await adminFetch("/admin/auth/logout-all", {
-    method: "POST",
-    redirectOnUnauthorized: false,
-  });
-  if (!isLogoutSuccessStatus(response.status)) throw new Error("admin-logout-all-failed");
   return response;
 }
