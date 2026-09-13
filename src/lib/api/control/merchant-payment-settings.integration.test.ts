@@ -70,7 +70,7 @@ describe("Merchant payment settings HTTP contract", () => {
     const address = server.address() as AddressInfo;
     origin = `http://127.0.0.1:${address.port}`;
 
-    vi.stubGlobal("document", { cookie: "adm_csrf=csrf-token" });
+    vi.stubGlobal("document", { cookie: "pol_csrf=csrf-token" });
     vi.stubGlobal("window", { location: { href: "" } });
     vi.stubGlobal("fetch", (input: string | URL | Request, init: RequestInit = {}) => {
       const target =

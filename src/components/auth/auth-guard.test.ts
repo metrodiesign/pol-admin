@@ -16,9 +16,9 @@ const auth = vi.mocked(useAuth);
 const clearAuthState = vi.fn();
 const noPermissionMe: AdminMe = {
   adminId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+  displayName: null,
   email: "employee@viriyah.co.th",
-  tier: "Scoped",
-  accessibleMerchants: { isUnrestricted: false, merchants: [] },
+  hasPlatformAccess: false,
   permissions: [],
 };
 

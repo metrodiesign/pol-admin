@@ -13,7 +13,7 @@ export interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-/** identity ปัจจุบันจาก /admin/me. ต้องอยู่ใต้ <AuthProvider>. */
+/** identity ปัจจุบันจาก /api/v1/me + /me/access. ต้องอยู่ใต้ <AuthProvider>. */
 export function useAuth(): AuthContextValue {
   const ctx = useContext(AuthContext);
   if (!ctx) {

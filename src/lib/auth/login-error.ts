@@ -24,6 +24,14 @@ const REASON_MESSAGES: Readonly<Record<string, string>> = {
   "missing-identity": "ไม่พบข้อมูลบัญชีสำหรับเข้าสู่ระบบ",
   "registration-link-invalid": "ลิงก์ลงทะเบียนไม่ถูกต้องหรือหมดอายุ กรุณาเข้าสู่ระบบใหม่อีกครั้ง",
   "already-registered": "บัญชีนี้ลงทะเบียนไว้แล้ว กรุณาเข้าสู่ระบบ",
+  // employee stack (IdentityAccess) policy codes — kebab ของ HumanIdentityPolicy/EmployeeJit
+  "workforce-not-eligible": "บัญชีนี้ไม่ใช่บัญชีพนักงานที่ได้รับอนุญาต กรุณาใช้บัญชี Microsoft ขององค์กร",
+  "issuer-mismatch": "บัญชี Microsoft นี้ไม่ได้อยู่ในองค์กรที่ได้รับอนุญาต",
+  "tenant-mismatch": "บัญชี Microsoft นี้ไม่ได้อยู่ในองค์กรที่ได้รับอนุญาต",
+  "audience-mismatch": "การยืนยันตัวตนไม่ถูกต้อง กรุณาลองใหม่",
+  "account-suspended": "บัญชีถูกระงับการใช้งาน ติดต่อผู้ดูแลระบบ",
+  "identity-account-type-conflict":
+    "identity นี้ผูกกับบัญชีประเภทอื่นอยู่แล้ว กรุณาติดต่อผู้ดูแลระบบ",
 };
 
 const DEFAULT_MESSAGE = "เข้าสู่ระบบไม่สำเร็จ กรุณาลองใหม่";

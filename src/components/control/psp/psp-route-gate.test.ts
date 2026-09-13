@@ -5,9 +5,9 @@ import { shouldRedirectToForbidden } from "./psp-route-gate";
 
 const me: AdminMe = {
   adminId: "admin-1",
+  displayName: null,
   email: "admin@example.test",
-  tier: "Super",
-  accessibleMerchants: { isUnrestricted: true },
+  hasPlatformAccess: true,
   permissions: ["merchant.view"],
 };
 

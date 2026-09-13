@@ -174,12 +174,12 @@ export function AccountDrawer({ variant = "white" }: AccountDrawerProps) {
             </Avatar>
           </div>
 
-          {/* identity จริงจาก /admin/me — email + tier. name/avatar ยัง mock (backend ไม่ส่ง — ดู coordination item). */}
-          <p className="mt-2 text-base font-semibold text-grey-800">{accountUser.name}</p>
+          {/* identity จริงจาก /api/v1/me — displayName + platform access. email/avatar ยัง mock (backend ไม่ส่ง). */}
+          <p className="mt-2 text-base font-semibold text-grey-800">{me?.displayName ?? accountUser.name}</p>
           <p className="text-sm text-grey-600">{me?.email ?? accountUser.email}</p>
           {me && (
             <span className="mt-1 rounded-md bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">
-              {me.tier === "Super" ? "Super Admin" : "Scoped Admin"}
+              {me.hasPlatformAccess ? "Platform Access" : "No Platform Access"}
             </span>
           )}
 

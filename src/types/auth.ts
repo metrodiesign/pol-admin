@@ -1,21 +1,15 @@
-/** ระดับสิทธิ์ของ admin จาก backend (GET /admin/me). */
-export type AdminTier = "Super" | "Scoped";
-
-/** merchant ที่ admin เข้าถึงได้ — backend ยังเป็น authorization source of truth. */
-export interface AccessibleMerchants {
-  isUnrestricted: boolean;
-  merchants?: { id: string; code: string | null }[];
-}
-
 /**
- * payload ของ GET /admin/me (200). FE ไม่ถือ token — identity มาจาก httpOnly session cookie
- * ที่ backend จัดการ (server-side OIDC BFF). backend ยังไม่ส่ง name/picture (ดู coordination item).
+ * identity ที่ประกอบจาก GET /api/v1/me + GET /api/v1/me/access (employee stack ใหม่).
+ * FE ไม่ถือ token — identity มาจาก httpOnly session cookie ที่ backend จัดการ (BFF).
+ * คงชื่อ field adminId/permissions เพื่อไม่แตะ consumer.
+ * stack ใหม่ไม่มี tier: hasPlatformAccess = มี platform role ACTIVE อย่างน้อยหนึ่ง (ไม่ได้แปลว่าเห็นทุก merchant);
+ * merchant scope อยู่ที่ GET /api/v1/me/merchants + POST /api/v1/auth/merchant-context (ยังไม่ใช้ใน SPA).
  */
 export interface AdminMe {
   adminId: string;
+  displayName: string | null;
   email: string | null;
-  tier: AdminTier;
-  accessibleMerchants: AccessibleMerchants;
+  hasPlatformAccess: boolean;
   permissions: string[];
 }
 

@@ -9,6 +9,12 @@ describe("getLoginErrorContent", () => {
     expect(getLoginErrorContent("workforce-email-unavailable").message).toContain("ไม่มีอีเมล");
   });
 
+  it("map policy code ของ employee stack เป็นข้อความเฉพาะ ไม่ตก default", () => {
+    for (const reason of ["workforce-not-eligible", "issuer-mismatch", "tenant-mismatch", "account-suspended"]) {
+      expect(getLoginErrorContent(reason).message).not.toBe(getLoginErrorContent("unknown-x").message);
+    }
+  });
+
   it("ใช้ข้อความ provider-neutral สำหรับ legacy reasons", () => {
     for (const reason of ["not-provisioned", "missing-subject", "email-unverified", "missing-identity"]) {
       expect(getLoginErrorContent(reason).message).not.toMatch(/Google|Microsoft/);
