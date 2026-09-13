@@ -7,6 +7,8 @@ export interface LoginErrorContent {
 const REASON_MESSAGES: Readonly<Record<string, string>> = {
   "workforce-access-denied":
     "บัญชีนี้ไม่ผ่านนโยบายพนักงานขององค์กร กรุณาใช้บัญชี Microsoft ขององค์กรที่ได้รับอนุญาต",
+  "workforce-email-unavailable":
+    "บัญชี Microsoft นี้ไม่มีอีเมลที่ใช้ติดต่อได้ (ไม่มี mailbox) กรุณาติดต่อผู้ดูแลระบบ",
   "identity-conflict":
     "ไม่สามารถเชื่อมโยง identity นี้กับบัญชีผู้ดูแลได้ กรุณาติดต่อผู้ดูแลระบบเพื่อแก้ไข identity binding",
   "not-provisioned": "บัญชีนี้ยังไม่ได้รับสิทธิ์เข้าถึงระบบผู้ดูแล ติดต่อผู้ดูแลระบบ",

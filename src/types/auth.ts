@@ -13,7 +13,7 @@ export interface AccessibleMerchants {
  */
 export interface AdminMe {
   adminId: string;
-  email: string;
+  email: string | null;
   tier: AdminTier;
   accessibleMerchants: AccessibleMerchants;
   permissions: string[];
