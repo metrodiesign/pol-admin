@@ -1,5 +1,11 @@
 # Implementation Tasks: โมดูลโครงสร้างองค์กร (organization-structure)
 
+> **Status: retired (2026-09-13).** pol-core PR #219 ลบ `/api/v1/{offices,divisions,positions,levels}`
+> และตาราง cfg master data ทิ้ง (ข้อมูลมาจาก HR mirror แทน) โมดูลนี้จึงถูกถอดออกจาก pol-admin ทั้งหมด
+> (`src/app/organization`, `src/components/organization`, `src/lib/organization`, `src/types/organization`,
+> `src/lib/api/admin/{office,division,position,level,org-read-contract}.ts` และ nav group "โครงสร้างองค์กร")
+> ห้าม `/spec-implement` งานด้านล่างซ้ำ เก็บไว้เป็นประวัติเท่านั้น
+
 > Status: approved 2026-08-02; ต่อ task 7-12 เพิ่ม 2026-08-03 (migrate ตาม REQ-7 revised — แยกอิสระต่อ module)
 
 > Each task is a cohesive, independently verifiable slice. Implement a whole task

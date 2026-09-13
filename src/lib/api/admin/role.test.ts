@@ -44,18 +44,24 @@ const SAMPLE_INPUT: RoleFormInput = {
 };
 
 describe("getRoles", () => {
-  it("map RoleResponse -> Role และ coerce ค่า nullable/loose", async () => {
-    stubFetch(200, [
-      {
-        code: "c1",
-        name: "n1",
-        description: null,
-        color: null,
-        status: "active",
-        permissions: null,
-        userCount: "3",
-      },
-    ]);
+  it("อ่าน items จาก PagedResult, map RoleResponse -> Role และ coerce ค่า nullable/loose", async () => {
+    stubFetch(200, {
+      items: [
+        {
+          code: "c1",
+          name: "n1",
+          description: null,
+          color: null,
+          status: "active",
+          permissions: null,
+          userCount: "3",
+          version: 4,
+        },
+      ],
+      page: 1,
+      limit: 25,
+      total: 1,
+    });
     const roles = await getRoles();
     expect(roles).toEqual([
       {
@@ -66,6 +72,7 @@ describe("getRoles", () => {
         status: "active",
         permissions: [],
         userCount: 3,
+        version: 4,
       },
     ]);
   });
@@ -90,10 +97,12 @@ describe("getRole", () => {
       status: "inactive",
       permissions: ["a"],
       userCount: 2,
+      version: 7,
     });
     const role = await getRole("c1");
     expect(role?.status).toBe("inactive");
     expect(role?.userCount).toBe(2);
+    expect(role?.version).toBe(7);
   });
   it("encode code ใน path", async () => {
     const { calls } = stubFetch(404, undefined);
@@ -133,11 +142,12 @@ describe("createRole", () => {
 });
 
 describe("updateRole", () => {
-  it("PUT /admin/roles/{code} และ body ไม่มี code", async () => {
+  it("PUT /admin/roles/{code} พร้อม If-Match จาก version และ body ไม่มี code", async () => {
     const { calls } = stubFetch(200, undefined);
-    await updateRole("finance_admin", SAMPLE_INPUT);
+    await updateRole("finance_admin", SAMPLE_INPUT, 3);
     expect(calls[0]!.path).toBe("/admin/roles/finance_admin");
     expect(calls[0]!.init.method).toBe("PUT");
+    expect(new Headers(calls[0]!.init.headers).get("If-Match")).toBe('"v3"');
     const body = JSON.parse(calls[0]!.init.body as string);
     expect(body.code).toBeUndefined();
     expect(body.name).toBe("ผู้ดูแลการเงิน");
@@ -146,11 +156,12 @@ describe("updateRole", () => {
 });
 
 describe("deleteRole", () => {
-  it("DELETE ไป path ที่ encode แล้ว", async () => {
+  it("DELETE ไป path ที่ encode แล้ว พร้อม If-Match", async () => {
     const { calls } = stubFetch(204, undefined);
-    const res = await deleteRole("a b");
+    const res = await deleteRole("a b", 2);
     expect(calls[0]!.path).toBe("/admin/roles/a%20b");
     expect(calls[0]!.init.method).toBe("DELETE");
+    expect(new Headers(calls[0]!.init.headers).get("If-Match")).toBe('"v2"');
     expect(res.status).toBe(204);
   });
 });
