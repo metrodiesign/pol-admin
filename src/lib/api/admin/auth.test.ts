@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { clearTokens, getTokens, resetTokenStoreForTest, setTokens } from "@/lib/auth/token-store";
+import { clearTokens, getTokens, setTokens } from "@/lib/auth/token-store";
 import {
   adminFetch,
   beginLogin,
@@ -40,9 +40,10 @@ let location: { href: string; origin: string; search: string; replace: (u: strin
 
 beforeEach(() => {
   vi.stubGlobal("sessionStorage", memoryStorage());
+  vi.stubGlobal("localStorage", memoryStorage());
+  vi.stubGlobal("navigator", {});
   location = { href: "", origin: "https://localhost:3001", search: "", replace: () => {} };
   vi.stubGlobal("window", { location });
-  resetTokenStoreForTest();
   clearTokens();
 });
 afterEach(() => vi.unstubAllGlobals());
@@ -203,6 +204,29 @@ describe("refreshTokens", () => {
     const fetchMock = stubFetch({});
     await expect(refreshTokens()).resolves.toBeNull();
     expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("ข้ามแท็บ: แท็บอื่นหมุนไปแล้วระหว่างรอ lock -> ใช้คู่ใหม่จาก storage ไม่ยิง refresh ซ้ำ", async () => {
+    setTokens(LIVE);
+    const OTHER = { accessToken: "at9", refreshToken: "rt9", expiresAt: Date.now() + 900_000 };
+    const request = vi.fn(async (_name: string, work: () => Promise<unknown>) => {
+      setTokens(OTHER); // แท็บอื่น refresh สำเร็จก่อนเราได้ lock
+      return work();
+    });
+    vi.stubGlobal("navigator", { locks: { request } });
+    const fetchMock = stubFetch({ "/oauth/token": () => json(TOKEN_BODY) });
+    await expect(refreshTokens()).resolves.toEqual(OTHER);
+    expect(request).toHaveBeenCalledWith("pol_refresh", expect.any(Function));
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("ข้ามแท็บ: ได้ lock แล้ว token ยังตัวเดิม -> ยิง refresh ภายใต้ lock", async () => {
+    setTokens(LIVE);
+    const request = vi.fn((_name: string, work: () => Promise<unknown>) => work());
+    vi.stubGlobal("navigator", { locks: { request } });
+    const fetchMock = stubFetch({ "/oauth/token": () => json(TOKEN_BODY) });
+    await expect(refreshTokens()).resolves.toMatchObject({ refreshToken: "rt2" });
+    expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 });
 

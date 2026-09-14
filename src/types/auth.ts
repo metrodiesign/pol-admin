@@ -1,6 +1,6 @@
 /**
  * identity ที่ประกอบจาก GET /api/v1/me + GET /api/v1/me/access (employee stack ใหม่).
- * SPA ถือ access/refresh token (OAuth code + PKCE) ใน memory + sessionStorage แล้วส่ง Bearer ทุก request.
+ * SPA ถือ access/refresh token (OAuth code + PKCE) ใน localStorage (แชร์ทุกแท็บ) แล้วส่ง Bearer ทุก request.
  * คงชื่อ field adminId/permissions เพื่อไม่แตะ consumer.
  * stack ใหม่ไม่มี tier: hasPlatformAccess = มี platform role ACTIVE อย่างน้อยหนึ่ง (ไม่ได้แปลว่าเห็นทุก merchant);
  * merchant scope เลือกผ่าน refresh พร้อม merchant_id (ยังไม่ใช้ใน SPA).

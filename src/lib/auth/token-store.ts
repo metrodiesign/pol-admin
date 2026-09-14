@@ -1,6 +1,6 @@
-// ที่เก็บ token คู่ (access + refresh) ของ employee login — memory + sessionStorage (user เลือกทางนี้ รับ XSS reach).
-// ponytail: sessionStorage ถูก copy ตอน duplicate tab ทำให้สองแท็บแชร์ refresh token เดียว
-// แท็บที่ refresh ทีหลังโดน revoke ทั้งคู่ — ถ้าเจอจริงค่อยย้ายไป localStorage + storage event แชร์คู่ล่าสุด.
+// ที่เก็บ token คู่ (access + refresh) ของ employee login — localStorage เพื่อให้ทุกแท็บของ origin เดียวกัน
+// เห็นคู่ล่าสุดเสมอ (refresh token หมุนทุกครั้ง ใช้ซ้ำ = login ถูก revoke ทั้งชุด) อ่านสดจาก storage ทุกครั้ง
+// ไม่ cache ใน memory เพราะแท็บอื่นอาจเขียนทับ; memory ใช้เฉพาะเมื่อ storage ใช้ไม่ได้ (SSR/test/blocked).
 
 export interface TokenPair {
   accessToken: string;
@@ -9,39 +9,46 @@ export interface TokenPair {
   expiresAt: number;
 }
 
-const STORAGE_KEY = "pol_tokens";
+export const TOKEN_STORAGE_KEY = "pol_tokens";
 
-let memory: TokenPair | null | undefined; // undefined = ยังไม่ hydrate จาก sessionStorage
+let memoryFallback: TokenPair | null = null;
 
 function storage(): Storage | null {
   try {
-    return typeof sessionStorage === "undefined" ? null : sessionStorage;
+    return typeof localStorage === "undefined" ? null : localStorage;
   } catch {
-    return null; // sessionStorage โยน SecurityError ได้ (cookie/storage ถูก block)
+    return null; // localStorage โยน SecurityError ได้ (storage ถูก block)
   }
 }
 
-/** คู่ token ปัจจุบัน หรือ null เมื่อไม่มี (hydrate จาก sessionStorage ครั้งแรกหลัง full reload). */
+/** คู่ token ปัจจุบัน (ล่าสุดจากทุกแท็บ) หรือ null เมื่อไม่มี. */
 export function getTokens(): TokenPair | null {
-  if (memory === undefined) {
-    const raw = storage()?.getItem(STORAGE_KEY);
-    memory = raw ? (JSON.parse(raw) as TokenPair) : null;
+  const store = storage();
+  if (!store) return memoryFallback;
+  try {
+    const raw = store.getItem(TOKEN_STORAGE_KEY);
+    return raw ? (JSON.parse(raw) as TokenPair) : null;
+  } catch {
+    return null;
   }
-  return memory;
 }
 
-/** เก็บคู่ใหม่ทันที (refresh token หมุนทุกครั้ง — คู่เก่าใช้ซ้ำ = login ถูก revoke). */
+/** เก็บคู่ใหม่ทันที — แท็บอื่นอ่านเจอในการเรียก getTokens ครั้งถัดไป. */
 export function setTokens(pair: TokenPair): void {
-  memory = pair;
-  storage()?.setItem(STORAGE_KEY, JSON.stringify(pair));
+  memoryFallback = pair;
+  storage()?.setItem(TOKEN_STORAGE_KEY, JSON.stringify(pair));
 }
 
 export function clearTokens(): void {
-  memory = null;
-  storage()?.removeItem(STORAGE_KEY);
+  memoryFallback = null;
+  storage()?.removeItem(TOKEN_STORAGE_KEY);
 }
 
-/** สำหรับ test: ลืมค่าใน memory ให้ hydrate ใหม่. */
-export function resetTokenStoreForTest(): void {
-  memory = undefined;
+/**
+ * รัน `work` ภายใต้ lock ข้ามแท็บ (Web Locks API) — ใช้ล้อม refresh ให้แท็บเดียวหมุน token ทีละครั้ง.
+ * browser ที่ไม่มี navigator.locks รันตรง ๆ (best-effort).
+ */
+export function withCrossTabLock<T>(name: string, work: () => Promise<T>): Promise<T> {
+  const locks = typeof navigator === "undefined" ? undefined : navigator.locks;
+  return locks ? (locks.request(name, work) as Promise<T>) : work();
 }

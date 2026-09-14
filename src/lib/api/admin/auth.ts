@@ -1,9 +1,9 @@
 import { codeChallengeOf, randomToken } from "@/lib/auth/pkce";
-import { clearTokens, getTokens, setTokens, type TokenPair } from "@/lib/auth/token-store";
+import { clearTokens, getTokens, setTokens, withCrossTabLock, type TokenPair } from "@/lib/auth/token-store";
 import type { AdminMe, AuthBootstrapResult, AuthStatus } from "@/types/auth";
 
 // Employee auth client — OAuth authorization code + PKCE ผ่าน OpenIddict ของ pol-core (client_id pol-admin).
-// SPA ถือ access token (15 นาที) + refresh token (หมุนทุกครั้ง) ใน memory + sessionStorage; ไม่มี cookie/CSRF.
+// SPA ถือ access token (15 นาที) + refresh token (หมุนทุกครั้ง) ใน localStorage (แชร์ทุกแท็บ, refresh ภายใต้ Web Lock); ไม่มี cookie/CSRF.
 // contract: pol-core PR #261 (feature/employee-jwt-auth) — /oauth/authorize, /oauth/token, /api/v1/auth/logout, /api/v1/me*
 
 // authorize เป็น top-level navigation ตรงไป API origin (callback ของ Entra ลงที่ API host) —
@@ -146,17 +146,29 @@ export async function completeLogin(search: string): Promise<LoginCompletion> {
   }
 }
 
-// refresh token หมุนทุกครั้งและใช้ซ้ำไม่ได้ (ซ้ำ = revoke ทั้ง login) จึงต้อง single-flight เสมอ
+// refresh token หมุนทุกครั้งและใช้ซ้ำไม่ได้ (ซ้ำ = revoke ทั้ง login) จึงต้อง single-flight ในแท็บ (promise เดียว)
+// และข้ามแท็บ (Web Lock + อ่าน token สดใน lock: ถ้าแท็บอื่นหมุนไปแล้วให้ใช้คู่ใหม่แทนการยิงซ้ำ)
 let refreshInFlight: Promise<TokenPair | null> | null = null;
+const REFRESH_LOCK = "pol_refresh";
 
 /**
- * POST /oauth/token grant_type=refresh_token (dedupe). คืนคู่ใหม่ หรือ null เมื่อต่อไม่ได้:
+ * POST /oauth/token grant_type=refresh_token (dedupe ในแท็บ + lock ข้ามแท็บ). คืนคู่ใหม่ หรือ null เมื่อต่อไม่ได้:
  * 400 invalid_grant = login ตาย -> ล้าง token; network/5xx = คง token เดิม (ไม่ logout เพราะเน็ตหลุด).
  */
 export function refreshTokens(): Promise<TokenPair | null> {
-  refreshInFlight ??= (async () => {
-    const current = getTokens();
+  refreshInFlight ??= refreshOnce().finally(() => {
+    refreshInFlight = null;
+  });
+  return refreshInFlight;
+}
+
+async function refreshOnce(): Promise<TokenPair | null> {
+  const before = getTokens();
+  if (!before) return null;
+  return withCrossTabLock(REFRESH_LOCK, async () => {
+    const current = getTokens(); // อ่านสดหลังได้ lock — แท็บอื่นอาจหมุนไปแล้วระหว่างรอ
     if (!current) return null;
+    if (current.refreshToken !== before.refreshToken) return current;
     try {
       const res = await tokenRequest({ grant_type: "refresh_token", refresh_token: current.refreshToken });
       if (res.status === 200) {
@@ -169,10 +181,7 @@ export function refreshTokens(): Promise<TokenPair | null> {
     } catch {
       return null;
     }
-  })().finally(() => {
-    refreshInFlight = null;
   });
-  return refreshInFlight;
 }
 
 /** access token ที่ยังใช้ได้ (refresh ล่วงหน้าเมื่อใกล้หมด) หรือ null เมื่อไม่มี login. */
