@@ -33,6 +33,8 @@ const nextConfig: NextConfig = {
       // master data โครงสร้างองค์กร (offices/divisions/positions/levels) อยู่ /api/v1 top-level
       // ไม่เข้า 2 rule บน — passthrough ทั้ง /api ได้เพราะ src/app ไม่มี route ใต้ /api
       { source: "/api/:path*", destination: `${adminApiOrigin}/api/:path*` },
+      // OAuth token endpoint (employee login code exchange + refresh) — POST form ผ่าน proxy ไม่ต้องตั้ง CORS
+      { source: "/oauth/token", destination: `${adminApiOrigin}/oauth/token` },
     ];
   },
 };

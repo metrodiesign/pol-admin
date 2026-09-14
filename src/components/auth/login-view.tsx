@@ -3,11 +3,10 @@
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
-import { microsoftLogin } from "@/lib/api/admin/auth";
+import { beginLogin } from "@/lib/api/admin/auth";
 import { merchantUserMicrosoftLogin } from "@/lib/api/merchant/user";
 
-// landing หลัง login = /dashboard (admin landing จริง). backend ต้องมี /dashboard ใน AdminSession:ReturnUrlAllowlist
-// (ไม่งั้น reject -> falls back /). ดู coordination item ใน spec.
+// landing หลัง login = /dashboard (admin landing จริง) — SPA เก็บ returnTo เองคู่ PKCE state (API ไม่รับ returnTo)
 const RETURN_TO = "/dashboard";
 
 // โลโก้ Microsoft (4 สี่เหลี่ยมมาตรฐาน)
@@ -26,7 +25,7 @@ function MicrosoftIcon() {
 const SSO_BUTTON_CLASS =
   "h-12 w-full justify-center gap-2 bg-white text-crop-blue hover:bg-white/90 hover:text-crop-blue";
 
-// server-side OIDC BFF: full-page navigate ไป backend แล้วกลับมาที่ returnTo (ไม่ใช่ fetch).
+// OAuth code + PKCE: full-page navigate ไป /oauth/authorize ของ API แล้วกลับมาที่ /auth/callback (ไม่ใช่ fetch).
 export function LoginView() {
   return (
     <main className="flex min-h-dvh flex-col bg-white">
@@ -76,7 +75,7 @@ export function LoginView() {
               type="button"
               size="lg"
               className={`mt-8 ${SSO_BUTTON_CLASS}`}
-              onClick={() => microsoftLogin(RETURN_TO)}
+              onClick={() => void beginLogin(RETURN_TO)}
             >
               <MicrosoftIcon />
               เข้าสู่ระบบด้วย Microsoft

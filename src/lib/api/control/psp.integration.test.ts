@@ -14,6 +14,7 @@ import {
   updatePspConnection,
 } from "./psp";
 import type { PspConnection } from "@/types/control/psp-connection";
+import { clearTokens, setTokens } from "@/lib/auth/token-store";
 
 interface CapturedRequest {
   method: string;
@@ -89,7 +90,7 @@ describe("PSP API HTTP contract", () => {
     const address = server.address() as AddressInfo;
     origin = `http://127.0.0.1:${address.port}`;
 
-    vi.stubGlobal("document", { cookie: "pol_csrf=csrf-token" });
+    setTokens({ accessToken: "access-token", refreshToken: "refresh-token", expiresAt: Date.now() + 600_000 });
     vi.stubGlobal("window", { location: { href: "", reload: vi.fn() } });
     vi.stubGlobal("fetch", (input: string | URL | Request, init: RequestInit = {}) => {
       fetchInits.push(init);
@@ -101,6 +102,7 @@ describe("PSP API HTTP contract", () => {
   });
 
   afterEach(async () => {
+    clearTokens();
     vi.unstubAllGlobals();
     await new Promise<void>((resolve, reject) =>
       server.close((error) => (error ? reject(error) : resolve())),
@@ -127,7 +129,8 @@ describe("PSP API HTTP contract", () => {
     });
     expect(captured[0]?.headers["if-match"]).toBeUndefined();
     expect(captured[0]?.headers["idempotency-key"]).toBeUndefined();
-    expect(fetchInits[0]?.credentials).toBe("include");
+    expect(fetchInits[0]?.credentials).toBeUndefined();
+    expect(new Headers(fetchInits[0]?.headers).get("Authorization")).toBe("Bearer access-token");
   });
 
   it("รักษา 403 จาก PSP List เป็น permission signal", async () => {
@@ -225,7 +228,7 @@ describe("PSP API HTTP contract", () => {
     expect(request.method).toBe("POST");
     expect(request.url).toBe("/api/v1/payments/psp-connections");
     expect(request.headers["content-type"]).toBe("application/json");
-    expect(request.headers["x-csrf-token"]).toBe("csrf-token");
+    expect(request.headers["authorization"]).toBe("Bearer access-token");
     expect(request.headers["idempotency-key"]).toBe("create-key");
     expect(request.headers["if-match"]).toBeUndefined();
     expect(JSON.parse(request.body)).toEqual(input);
@@ -248,7 +251,7 @@ describe("PSP API HTTP contract", () => {
     expect(request.method).toBe("PUT");
     expect(request.headers["if-match"]).toBe('"v7"');
     expect(request.headers["idempotency-key"]).toBe("update-key");
-    expect(request.headers["x-csrf-token"]).toBe("csrf-token");
+    expect(request.headers["authorization"]).toBe("Bearer access-token");
     expect(body.config).toEqual(rawConfig);
     expect(body).not.toHaveProperty("secrets");
     expect(body).not.toHaveProperty("pspMerchantId");

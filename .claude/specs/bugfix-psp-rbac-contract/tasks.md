@@ -2,9 +2,9 @@
 
 > **หมายเหตุ (2026-09-13):** endpoint auth ในเอกสารนี้เป็นของ stack เดิม (`/admin/me`, `/admin/auth/logout`,
 > `/api/v1/admins/auth/microsoft/login`, cookie `adm_*`) ตั้งแต่ PR #144 SPA ใช้ employee identity stack แทน:
-> login `GET /api/v1/auth/employees/login?returnTo=`, bootstrap `GET /api/v1/me` + `GET /api/v1/me/access`
-> (`hasPlatformAccess`, `permissions[]`), logout `POST /api/v1/auth/logout` (204), CSRF cookie `pol_csrf` ส่งเป็น header
-> `X-CSRF-Token` ดู `src/lib/api/admin/auth.ts` เป็น contract ปัจจุบัน ข้อความด้านล่างคงไว้เป็นประวัติ
+> login OAuth code + PKCE (`/oauth/authorize` -> `/auth/callback` -> `POST /oauth/token`), bootstrap `GET /api/v1/me` +
+> `GET /api/v1/me/access` (`hasPlatformAccess`, `permissions[]`), logout `POST /api/v1/auth/logout` (204), ทุก request ส่ง
+> `Authorization: Bearer` (ไม่มี cookie/CSRF ตั้งแต่ pol-core #261) ดู `src/lib/api/admin/auth.ts` เป็น contract ปัจจุบัน ข้อความด้านล่างคงไว้เป็นประวัติ
 
 > Status: approved 2026-08-27
 
