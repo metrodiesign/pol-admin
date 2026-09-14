@@ -21,7 +21,7 @@ export function AreaInstalled() {
       title="ธุรกรรมตามช่องทางชำระเงิน"
       action={
         <Select value={year} onValueChange={(v) => v && setYear(v)}>
-          <SelectTrigger className="h-10 w-[100px] rounded-control text-sm data-[size=default]:h-10">
+          <SelectTrigger className="h-10 w-[100px] rounded-control text-lg data-[size=default]:h-10">
             <SelectValue />
           </SelectTrigger>
           <SelectContent align="end">
@@ -41,8 +41,8 @@ export function AreaInstalled() {
               className="size-3 rounded-full"
               style={{ backgroundColor: CATEGORICAL[i % CATEGORICAL.length] }}
             />
-            <span className="text-sm text-grey-600">{t.name}</span>
-            <span className="text-sm font-semibold text-grey-800">{t.value}</span>
+            <span className="text-lg text-grey-600">{t.name}</span>
+            <span className="text-lg font-semibold text-grey-800">{t.value}</span>
           </div>
         ))}
       </div>

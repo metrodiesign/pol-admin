@@ -130,7 +130,7 @@ export function UserEditFormCard({
         <div className="mt-6 flex flex-col items-end">
           <button
             type="submit"
-            className="h-9 rounded-control bg-grey-800 px-3 text-sm font-bold text-white transition-colors hover:bg-grey-900 dark:bg-white dark:text-grey-900 dark:hover:bg-grey-300"
+            className="h-9 rounded-control bg-grey-800 px-3 text-lg font-semibold text-white transition-colors hover:bg-grey-900 dark:bg-white dark:text-grey-900 dark:hover:bg-grey-300"
           >
             {submitLabel}
           </button>

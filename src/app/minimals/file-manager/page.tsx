@@ -14,7 +14,7 @@ export default function FileManagerPage() {
         action={
           <button
             type="button"
-            className="inline-flex h-9 items-center gap-2 rounded-lg bg-foreground px-3 text-sm font-bold text-card transition-opacity hover:opacity-90"
+            className="inline-flex h-9 items-center gap-2 rounded-lg bg-foreground px-3 text-lg font-semibold text-card transition-opacity hover:opacity-90"
           >
             <UploadCloud className="size-4" />
             Upload

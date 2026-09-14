@@ -213,12 +213,12 @@ export function PspCreateView({
 
       <div className="flex flex-col gap-5">
         {merchants.status === "loading" ? (
-          <p className="rounded-xl border border-[var(--divider)] bg-card px-4 py-3 text-sm text-grey-600" role="status">
+          <p className="rounded-xl border border-[var(--divider)] bg-card px-4 py-3 text-lg text-grey-600" role="status">
             กำลังโหลด Merchant catalog...
           </p>
         ) : null}
         {merchants.status === "partial" || merchants.status === "error" ? (
-          <div className="flex flex-col gap-3 rounded-xl border border-error/30 bg-error/8 px-4 py-3 text-sm text-error-dark sm:flex-row sm:items-center sm:justify-between" role="alert">
+          <div className="flex flex-col gap-3 rounded-xl border border-error/30 bg-error/8 px-4 py-3 text-lg text-error-dark sm:flex-row sm:items-center sm:justify-between" role="alert">
             <span>โหลด Merchant catalog ไม่ครบ จึงยังสร้าง connection ไม่ได้</span>
             <Button type="button" variant="outline" onClick={merchants.retry}>
               <RefreshCw className="size-4" />
@@ -227,7 +227,7 @@ export function PspCreateView({
           </div>
         ) : null}
         {merchants.status === "forbidden" ? (
-          <p className="rounded-xl border border-error/30 bg-error/8 px-4 py-3 text-sm text-error-dark" role="alert">
+          <p className="rounded-xl border border-error/30 bg-error/8 px-4 py-3 text-lg text-error-dark" role="alert">
             ไม่มีสิทธิ์ merchant.view จึงโหลด Merchant catalog ไม่ได้
           </p>
         ) : null}
@@ -240,10 +240,10 @@ export function PspCreateView({
           aria-busy={submitting}
           noValidate
         >
-          <h2 className="text-lg font-bold leading-7 text-foreground">
+          <h2 className="text-2xl font-semibold leading-7 text-foreground">
             {draft.provider ? PROVIDER_OPTIONS.find((o) => o.value === draft.provider)?.label : "ข้อมูลการเชื่อมต่อ"}
           </h2>
-          <p className="mt-1 text-sm text-grey-600">
+          <p className="mt-1 text-lg text-grey-600">
             {merchant?.name ?? "เลือก Merchant และ PSP แล้วกำหนด Credential เริ่มต้นแบบ write-only"}
           </p>
 
@@ -290,10 +290,10 @@ export function PspCreateView({
             />
           </div>
 
-          <p className="mt-5 text-xs text-grey-600">
+          <p className="mt-5 text-lg text-grey-600">
             Config เริ่มต้นถูกส่งเป็น null; ระบบไม่เก็บ Credential ใน URL หรือ browser storage
           </p>
-          {formError ? <p className="mt-4 text-sm text-error" role="alert">{formError}</p> : null}
+          {formError ? <p className="mt-4 text-lg text-error" role="alert">{formError}</p> : null}
         </form>
       </div>
 

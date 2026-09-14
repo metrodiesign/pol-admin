@@ -28,7 +28,7 @@ function StatusBadge({ status }: { status: InvoiceStatus }) {
   return (
     <span
       className={cn(
-        "inline-flex h-6 items-center rounded-md px-1.5 text-xs font-bold",
+        "inline-flex h-6 items-center rounded-md px-1.5 text-lg font-semibold",
         statusTone[status],
       )}
     >
@@ -41,7 +41,7 @@ export function NewInvoices() {
   return (
     <section className="dashboard-card flex h-full flex-col">
       <header className="p-6">
-        <h6 className="text-lg font-semibold text-grey-800">New Invoices</h6>
+        <h6 className="text-2xl font-semibold text-grey-800">New Invoices</h6>
       </header>
       <div className="flex-1 overflow-x-auto">
         <Table>
@@ -100,7 +100,7 @@ export function NewInvoices() {
       <footer className="border-t border-dashed border-[var(--divider)] p-3 text-right">
         <button
           type="button"
-          className="inline-flex items-center gap-1 rounded-control px-3 py-1.5 text-sm font-semibold text-grey-800 transition-colors hover:bg-[var(--action-hover)]"
+          className="inline-flex items-center gap-1 rounded-control px-3 py-1.5 text-lg font-semibold text-grey-800 transition-colors hover:bg-[var(--action-hover)]"
         >
           View all
           <ArrowRight className="size-4" />

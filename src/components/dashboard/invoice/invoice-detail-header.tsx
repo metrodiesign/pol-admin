@@ -26,9 +26,9 @@ export function InvoiceDetailHeader({ invoiceNumber, initialStatus }: InvoiceDet
   return (
     <div className="mb-5">
       {/* Breadcrumb heading */}
-      <h4 className="text-2xl font-bold leading-9 text-foreground">{invoiceNumber}</h4>
+      <h4 className="text-4xl font-semibold leading-9 text-foreground">{invoiceNumber}</h4>
       <nav aria-label="breadcrumb" className="mt-1">
-        <ol className="flex flex-wrap items-center text-sm text-grey-600">
+        <ol className="flex flex-wrap items-center text-lg text-grey-600">
           {[
             { label: "Dashboard", href: "/minimals" },
             { label: "Invoice", href: "/minimals/invoice/list" },
@@ -92,9 +92,9 @@ export function InvoiceDetailHeader({ invoiceNumber, initialStatus }: InvoiceDet
 
         {/* Status select */}
         <div className="flex shrink-0 flex-col gap-1">
-          <label id={statusId} className="text-xs font-medium text-grey-500">Status</label>
+          <label id={statusId} className="text-lg font-medium text-grey-500">Status</label>
           <Select value={status} onValueChange={(v) => setStatus(v as MinimalsInvoiceStatus)}>
-            <SelectTrigger aria-labelledby={statusId} className="w-40 text-sm font-medium">
+            <SelectTrigger aria-labelledby={statusId} className="w-40 text-lg font-medium">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
             <SelectContent>

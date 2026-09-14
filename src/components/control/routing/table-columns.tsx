@@ -43,7 +43,7 @@ export function routingColumns({
       enableSorting: false,
       meta: { headClassName: "w-16", cellClassName: "w-16" },
       cell: ({ row }) => (
-        <span className="text-data text-sm font-semibold text-grey-700">
+        <span className="text-data text-lg font-semibold text-grey-700">
           #{row.original.priority}
         </span>
       ),
@@ -53,7 +53,7 @@ export function routingColumns({
       header: "บริษัท",
       enableSorting: false,
       cell: ({ row }) => (
-        <span className="text-sm text-foreground">
+        <span className="text-lg text-foreground">
           {MERCHANT_LABEL[row.original.merchantId]}
         </span>
       ),
@@ -73,7 +73,7 @@ export function routingColumns({
       header: "ช่วงจำนวนเงิน",
       enableSorting: false,
       cell: ({ row }) => (
-        <span className="text-data text-xs text-grey-700">
+        <span className="text-data text-lg text-grey-700">
           {amountRange(row.original)}
         </span>
       ),
@@ -99,7 +99,7 @@ export function routingColumns({
             {PSP_LABEL[row.original.fallbackPsp]}
           </Badge>
         ) : (
-          <span className="text-xs text-grey-500">—</span>
+          <span className="text-lg text-grey-500">—</span>
         ),
     },
     {

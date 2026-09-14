@@ -42,11 +42,11 @@ export function ReadinessRail({ steps }: { steps: ReadinessStep[] }) {
             >
               <Icon className={cn("mt-0.5 size-5 shrink-0", meta.className)} aria-hidden />
               <div className="min-w-0">
-                <p className="text-xs font-medium text-grey-600">
+                <p className="text-lg font-medium text-grey-600">
                   {index + 1}. {step.label}
                 </p>
-                <p className="text-sm font-semibold text-foreground">{step.detail}</p>
-                <p className={cn("text-xs", meta.className)}>{meta.label}</p>
+                <p className="text-lg font-semibold text-foreground">{step.detail}</p>
+                <p className={cn("text-lg", meta.className)}>{meta.label}</p>
               </div>
             </li>
           );

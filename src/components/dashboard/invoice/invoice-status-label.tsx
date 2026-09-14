@@ -30,7 +30,7 @@ export function InvoiceStatusLabel({ status, className }: InvoiceStatusLabelProp
   return (
     <span
       className={cn(
-        "inline-flex h-6 items-center rounded-[6px] px-1.5 text-xs font-bold leading-[18px]",
+        "inline-flex h-6 items-center rounded-[6px] px-1.5 text-lg font-semibold leading-[18px]",
         config.className,
         className,
       )}

@@ -38,21 +38,21 @@ export function BookingStatistics() {
     <div className="dashboard-card flex flex-col h-full">
       <div className="flex items-start justify-between gap-3 p-6 pb-0">
         <div>
-          <h6 className="text-lg font-semibold text-grey-800">Statistics</h6>
+          <h6 className="text-2xl font-semibold text-grey-800">Statistics</h6>
           {/* Legend chips */}
           <div className="mt-2 flex items-center gap-4">
             {legend.map((l) => (
-              <div key={l.label} className="flex items-center gap-1.5 text-sm">
+              <div key={l.label} className="flex items-center gap-1.5 text-lg">
                 <span className="size-3 rounded-full" style={{ backgroundColor: l.color }} />
                 <span className="text-grey-600">{l.label}</span>
-                <span className="font-bold text-grey-800">{l.value}</span>
+                <span className="font-semibold text-grey-800">{l.value}</span>
               </div>
             ))}
           </div>
         </div>
         {/* Period selector */}
         <Select value={period} onValueChange={(v) => v && setPeriod(v)}>
-          <SelectTrigger className="h-8 shrink-0 rounded-control text-sm">
+          <SelectTrigger className="h-8 shrink-0 rounded-control text-lg">
             <SelectValue />
           </SelectTrigger>
           <SelectContent align="end">

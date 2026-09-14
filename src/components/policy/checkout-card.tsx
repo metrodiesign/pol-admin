@@ -28,9 +28,9 @@ export function CheckoutCard({
     >
       <header className="flex items-start justify-between gap-4 border-b border-[var(--divider)] px-6 py-5">
         <div className="min-w-0">
-          <h2 className="text-base font-bold text-primary">{title}</h2>
+          <h2 className="text-xl font-semibold text-primary">{title}</h2>
           {description ? (
-            <p className="mt-0.5 text-xs text-grey-500">{description}</p>
+            <p className="mt-0.5 text-lg text-grey-500">{description}</p>
           ) : null}
         </div>
         {action ? <div className="shrink-0">{action}</div> : null}
@@ -53,7 +53,7 @@ export function FieldLabel({
   return (
     <label
       htmlFor={htmlFor}
-      className="text-sm font-semibold text-grey-700 select-none"
+      className="text-lg font-semibold text-grey-700 select-none"
     >
       {children}
       {required ? <span className="ml-0.5 text-error">*</span> : null}

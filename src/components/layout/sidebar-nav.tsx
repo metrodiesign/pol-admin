@@ -68,7 +68,7 @@ function ChildLink({ child, treeline = true }: { child: NavItem; treeline?: bool
     (!!child.deepMatch && pathname.startsWith(child.path + "/"));
 
   const linkClass = cn(
-    "flex h-9 items-center rounded-control pr-3 text-sm outline-none transition-colors",
+    "flex h-9 items-center rounded-control pr-3 text-lg outline-none transition-colors",
     treeline ? "ml-7 pl-2" : "gap-3 pl-3",
     active
       ? "bg-crop-blue font-semibold text-crop-gold"
@@ -122,7 +122,7 @@ function ExpandedRow({ item }: { item: NavItem }) {
           type="button"
           onClick={() => setOpen((v) => !v)}
           className={cn(
-            "flex min-h-11 w-full items-center gap-3 rounded-control py-1 pl-3 pr-2 text-sm font-medium outline-none transition-colors",
+            "flex min-h-11 w-full items-center gap-3 rounded-control py-1 pl-3 pr-2 text-lg font-medium outline-none transition-colors",
             // Live: primary tint only while a child route is active; a manually
             // expanded parent gets the neutral grey tint instead.
             childActive
@@ -159,7 +159,7 @@ function ExpandedRow({ item }: { item: NavItem }) {
       <Link
         href={item.path}
         className={cn(
-          "flex min-h-11 items-center gap-3 rounded-control py-1 pl-3 pr-2 text-sm outline-none transition-colors",
+          "flex min-h-11 items-center gap-3 rounded-control py-1 pl-3 pr-2 text-lg outline-none transition-colors",
           active
             ? "bg-crop-blue font-semibold text-crop-gold"
             : "font-medium text-grey-600 hover:bg-[var(--primary-soft)] hover:text-primary focus-visible:bg-[var(--primary-soft)] focus-visible:text-primary",
@@ -169,13 +169,13 @@ function ExpandedRow({ item }: { item: NavItem }) {
         <span className="flex flex-1 flex-col">
           <span>{item.title}</span>
           {item.caption && (
-            <span className="text-xs font-normal text-grey-500">
+            <span className="text-lg font-normal text-grey-500">
               {item.caption}
             </span>
           )}
         </span>
         {item.badge && (
-          <span className="rounded-md bg-error/10 px-1.5 py-0.5 text-xs font-bold text-error">
+          <span className="rounded-md bg-error/10 px-1.5 py-0.5 text-lg font-semibold text-error">
             {item.badge}
           </span>
         )}
@@ -190,7 +190,7 @@ function MiniItemInner({ item, active }: { item: NavItem; active: boolean }) {
   return (
     <span
       className={cn(
-        "relative flex h-[58px] w-full flex-col items-center justify-center gap-1 rounded-control px-1 pb-1.5 pt-2 text-xs font-bold leading-none transition-colors",
+        "relative flex h-[58px] w-full flex-col items-center justify-center gap-1 rounded-control px-1 pb-1.5 pt-2 text-lg font-semibold leading-none transition-colors",
         active
           ? "bg-crop-blue text-crop-gold"
           : "text-grey-600 hover:bg-[var(--primary-soft)] hover:text-primary",
@@ -235,7 +235,7 @@ function MiniRow({ item }: { item: NavItem }) {
             sideOffset={8}
             className="w-44 gap-1 p-2"
           >
-            <p className="px-3 pb-1 pt-1 text-xs font-semibold text-grey-600">
+            <p className="px-3 pb-1 pt-1 text-lg font-semibold text-grey-600">
               {item.title}
             </p>
             <ul className="space-y-1">
@@ -280,11 +280,11 @@ export function SidebarNav({
         <div key={group.subheader} className="pt-4">
           {collapsed ? (
             <span className="mx-auto mb-2 block h-px w-6 bg-[var(--divider)]" />
-          ) : (
-            <p className="px-3 pb-2 text-xs font-bold uppercase tracking-wider text-grey-600">
+          ) : group.subheader ? (
+            <p className="px-3 pb-2 text-lg font-semibold uppercase tracking-wider text-grey-600">
               {group.subheader}
             </p>
-          )}
+          ) : null}
           <ul className="space-y-1">
             {group.items.map((item) =>
               collapsed ? (

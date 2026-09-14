@@ -24,7 +24,7 @@ export function OrderStatusLabel({ status, className }: OrderStatusLabelProps) {
   return (
     <span
       className={cn(
-        "inline-flex h-6 items-center rounded-md px-1.5 text-xs font-bold leading-[18px]",
+        "inline-flex h-6 items-center rounded-md px-1.5 text-lg font-semibold leading-[18px]",
         STATUS_STYLES[status],
         className,
       )}

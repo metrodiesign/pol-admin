@@ -141,11 +141,11 @@ export function CalendarPageClient() {
     <div className="py-4">
       {/* Page header */}
       <div className="mb-5 flex items-center justify-between">
-        <h4 className="text-2xl font-bold leading-9 text-grey-800">Calendar</h4>
+        <h4 className="text-4xl font-semibold leading-9 text-grey-800">Calendar</h4>
         <button
           type="button"
           onClick={handleAddEvent}
-          className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-foreground px-3 text-sm font-bold leading-6 text-card transition-opacity hover:opacity-90"
+          className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-foreground px-3 text-lg font-semibold leading-6 text-card transition-opacity hover:opacity-90"
         >
           <Plus className="size-4" />
           Add event

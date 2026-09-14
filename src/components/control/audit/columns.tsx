@@ -16,7 +16,7 @@ export const auditColumns: ColumnDef<AuditEntry>[] = [
     header: "เวลา",
     enableSorting: true,
     cell: ({ row }) => (
-      <span className="text-data text-xs text-grey-600">
+      <span className="text-data text-lg text-grey-600">
         {formatDateTime(row.original.timestamp)}
       </span>
     ),
@@ -26,7 +26,7 @@ export const auditColumns: ColumnDef<AuditEntry>[] = [
     header: "ผู้กระทำ",
     enableSorting: false,
     cell: ({ row }) => (
-      <span className="text-data text-xs text-grey-700">
+      <span className="text-data text-lg text-grey-700">
         {row.original.actor}
       </span>
     ),
@@ -37,10 +37,10 @@ export const auditColumns: ColumnDef<AuditEntry>[] = [
     enableSorting: false,
     cell: ({ row }) => (
       <div className="flex flex-col gap-0.5">
-        <span className="text-sm font-semibold text-foreground">
+        <span className="text-lg font-semibold text-foreground">
           {actionLabel(row.original.action)}
         </span>
-        <span className="text-data text-xs text-grey-500">
+        <span className="text-data text-lg text-grey-500">
           {row.original.entityId}
         </span>
       </div>
@@ -51,7 +51,7 @@ export const auditColumns: ColumnDef<AuditEntry>[] = [
     header: "บริษัท",
     enableSorting: false,
     cell: ({ row }) => (
-      <span className="text-sm text-foreground">
+      <span className="text-lg text-foreground">
         {MERCHANT_LABEL[row.original.merchantId]}
       </span>
     ),
@@ -72,7 +72,7 @@ export const auditColumns: ColumnDef<AuditEntry>[] = [
     header: "IP",
     enableSorting: false,
     cell: ({ row }) => (
-      <span className="text-data text-xs text-grey-600">{row.original.ip}</span>
+      <span className="text-data text-lg text-grey-600">{row.original.ip}</span>
     ),
   },
   {

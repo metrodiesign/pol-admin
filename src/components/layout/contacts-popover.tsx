@@ -45,7 +45,7 @@ export function ContactsPopover({ variant = "white" }: ContactsPopoverProps) {
         <Users className="size-6" />
       </PopoverTrigger>
       <PopoverContent align="end" className="w-[328px] p-0">
-        <p className="p-3 text-base font-semibold text-grey-800">
+        <p className="p-3 text-xl font-semibold text-grey-800">
           Contacts{" "}
           <span className="text-grey-500">({contacts.length})</span>
         </p>
@@ -59,7 +59,7 @@ export function ContactsPopover({ variant = "white" }: ContactsPopoverProps) {
               <span className="relative shrink-0">
                 <Avatar className="size-10">
                   <AvatarImage src={c.avatar} alt={c.name} />
-                  <AvatarFallback className="bg-grey-200 text-xs font-semibold text-grey-700">
+                  <AvatarFallback className="bg-grey-200 text-lg font-semibold text-grey-700">
                     {initials(c.name)}
                   </AvatarFallback>
                 </Avatar>
@@ -71,11 +71,11 @@ export function ContactsPopover({ variant = "white" }: ContactsPopoverProps) {
                 />
               </span>
               <span className="min-w-0">
-                <span className="block truncate text-sm font-semibold text-grey-800">
+                <span className="block truncate text-lg font-semibold text-grey-800">
                   {c.name}
                 </span>
                 {c.lastSeen && (
-                  <span className="text-xs text-grey-500">{c.lastSeen}</span>
+                  <span className="text-lg text-grey-500">{c.lastSeen}</span>
                 )}
               </span>
             </li>

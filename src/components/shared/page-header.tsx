@@ -32,7 +32,7 @@ export function PageHeader({ title, breadcrumbs, description, action, actions }:
       {action && (
         <Link
           href={action.href}
-          className="inline-flex h-11 min-w-[140px] items-center justify-center gap-1.5 rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground hover:bg-primary/90 transition-colors"
+          className="inline-flex h-11 min-w-[140px] items-center justify-center gap-1.5 rounded-control bg-primary px-3 text-lg font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
         >
           <Plus className="size-4" />
           {action.label}

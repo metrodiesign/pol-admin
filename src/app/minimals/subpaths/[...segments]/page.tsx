@@ -13,12 +13,12 @@ export default function SubpathsPage() {
   return (
     <div className="-mt-2 flex flex-col">
       <h4
-        className="font-bold text-grey-800"
-        style={{ fontSize: "24px", lineHeight: "36px", fontWeight: 700 }}
+        className="font-semibold text-grey-800"
+        style={{ fontSize: "24px", lineHeight: "36px", fontWeight: 600 }}
       >
         Match subpaths
       </h4>
-      <p className="mt-2 text-base text-grey-800">
+      <p className="mt-2 text-xl text-grey-800">
         Active on matching path and its subpaths.
       </p>
     </div>

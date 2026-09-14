@@ -6,7 +6,7 @@ import { UserEditProfileCard } from "@/components/admin/user/edit-profile-card";
 import { UserEditFormCard } from "@/components/admin/user/edit-form-card";
 
 const cancelClass =
-  "inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-sm font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]";
+  "inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-lg font-semibold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]";
 
 export default function UserReadPage() {
   return (
@@ -25,7 +25,7 @@ export default function UserReadPage() {
             </Link>
             <Link
               href="/admin/user/edit"
-              className="inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
+              className="inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-primary px-3 text-lg font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
             >
               แก้ไข
             </Link>

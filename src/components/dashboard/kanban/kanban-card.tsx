@@ -130,21 +130,21 @@ export function KanbanCard({ card, onClick }: KanbanCardProps) {
         </div>
 
         {/* Title */}
-        <p className="pr-6 text-sm font-semibold leading-[22px] text-grey-800">
+        <p className="pr-6 text-lg font-semibold leading-[22px] text-grey-800">
           {card.title}
         </p>
 
         {/* Footer meta */}
         <div className="mt-2 flex items-center gap-3">
           {/* Comment count */}
-          <span className="flex items-center gap-1 text-xs text-grey-500">
+          <span className="flex items-center gap-1 text-lg text-grey-500">
             <MessageCircle className="size-[14px]" strokeWidth={1.5} />
             {card.commentCount}
           </span>
 
           {/* Attachment count */}
           {card.attachmentCount > 0 && (
-            <span className="flex items-center gap-1 text-xs text-grey-500">
+            <span className="flex items-center gap-1 text-lg text-grey-500">
               <Paperclip className="size-[14px]" strokeWidth={1.5} />
               {card.attachmentCount}
             </span>
@@ -163,7 +163,7 @@ export function KanbanCard({ card, onClick }: KanbanCardProps) {
                   </Avatar>
                 ))}
                 {overflowCount > 0 && (
-                  <AvatarGroupCount className="size-6 text-xs font-bold">
+                  <AvatarGroupCount className="size-6 text-lg font-semibold">
                     +{overflowCount}
                   </AvatarGroupCount>
                 )}

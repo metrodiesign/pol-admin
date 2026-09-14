@@ -17,8 +17,8 @@ export function TransactionStatCards() {
           className="rounded-2xl bg-card p-6"
           style={{ boxShadow: "var(--shadow-card)" }}
         >
-          <p className="text-sm font-semibold text-grey-600">{card.label}</p>
-          <p className="mt-2 text-2xl font-bold text-foreground md:text-3xl">
+          <p className="text-lg font-semibold text-grey-600">{card.label}</p>
+          <p className="mt-2 text-4xl font-semibold text-foreground md:text-5xl">
             {card.value}
           </p>
         </div>

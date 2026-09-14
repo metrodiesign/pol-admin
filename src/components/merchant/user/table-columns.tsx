@@ -77,7 +77,7 @@ export const merchantUserColumns: ColumnDef<MerchantUser>[] = [
       const d = new Date(row.original.createdAt);
       const time = d.toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit" });
       return (
-        <span className="text-sm text-grey-600">
+        <span className="text-lg text-grey-600">
           {formatThaiDate(d)} {time}
         </span>
       );
@@ -98,10 +98,10 @@ export const merchantUserColumns: ColumnDef<MerchantUser>[] = [
             <AvatarFallback>{getInitials(name)}</AvatarFallback>
           </Avatar>
           <div className="min-w-0">
-            <span className="block truncate text-sm font-semibold leading-[22px] text-foreground">
+            <span className="block truncate text-lg font-semibold leading-[22px] text-foreground">
               {name}
             </span>
-            <span className="block truncate text-sm leading-[22px] text-grey-500">
+            <span className="block truncate text-lg leading-[22px] text-grey-500">
               {p.email}
             </span>
           </div>
@@ -115,7 +115,7 @@ export const merchantUserColumns: ColumnDef<MerchantUser>[] = [
     enableSorting: false,
     meta: { headClassName: "w-[160px]", cellClassName: "w-[160px]" },
     cell: ({ getValue }) => (
-      <span className="text-sm text-foreground">{getValue<string | null>() ?? "-"}</span>
+      <span className="text-lg text-foreground">{getValue<string | null>() ?? "-"}</span>
     ),
   },
   {
@@ -124,7 +124,7 @@ export const merchantUserColumns: ColumnDef<MerchantUser>[] = [
     enableSorting: false,
     meta: { headClassName: "w-[140px]", cellClassName: "w-[140px]" },
     cell: ({ getValue }) => (
-      <span className="text-sm text-foreground">{getValue<string | null>() ?? "-"}</span>
+      <span className="text-lg text-foreground">{getValue<string | null>() ?? "-"}</span>
     ),
   },
   {
@@ -135,7 +135,7 @@ export const merchantUserColumns: ColumnDef<MerchantUser>[] = [
     cell: ({ row }) => {
       const pt = row.original.personType;
       return (
-        <span className="text-sm text-foreground">
+        <span className="text-lg text-foreground">
           {pt ? PERSON_TYPE_LABEL[pt] : "-"}
         </span>
       );
@@ -147,7 +147,7 @@ export const merchantUserColumns: ColumnDef<MerchantUser>[] = [
     enableSorting: false,
     meta: { headClassName: "w-[160px]", cellClassName: "w-[160px]" },
     cell: ({ getValue }) => (
-      <span className="text-sm text-foreground">{getValue<string | null>() ?? "-"}</span>
+      <span className="text-lg text-foreground">{getValue<string | null>() ?? "-"}</span>
     ),
   },
   {
@@ -157,7 +157,7 @@ export const merchantUserColumns: ColumnDef<MerchantUser>[] = [
     meta: { headClassName: "w-[140px]", cellClassName: "w-[140px]" },
     cell: ({ row }) => (
       <span
-        className={`inline-flex items-center rounded-full px-4 py-1 text-sm font-semibold ${statusStyles[row.original.status]}`}
+        className={`inline-flex items-center rounded-full px-4 py-1 text-lg font-semibold ${statusStyles[row.original.status]}`}
       >
         {statusLabel[row.original.status]}
       </span>

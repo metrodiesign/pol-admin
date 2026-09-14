@@ -20,8 +20,8 @@ export function TopAuthors() {
               className="size-12 shrink-0 rounded-full object-cover"
             />
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-semibold text-grey-800">{a.name}</p>
-              <p className="mt-0.5 flex items-center gap-1 text-xs text-grey-600">
+              <p className="truncate text-lg font-semibold text-grey-800">{a.name}</p>
+              <p className="mt-0.5 flex items-center gap-1 text-lg text-grey-600">
                 <Heart className="size-3.5 text-error" />
                 {a.total}
               </p>

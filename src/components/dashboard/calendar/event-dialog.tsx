@@ -96,7 +96,7 @@ export function EventDialog({
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {/* Title */}
           <div className="flex flex-col gap-1.5">
-            <label id={titleId} className="text-sm font-medium text-grey-700">Title</label>
+            <label id={titleId} className="text-lg font-medium text-grey-700">Title</label>
             <Input
               aria-labelledby={titleId}
               placeholder="Event title"
@@ -115,12 +115,12 @@ export function EventDialog({
               onChange={(e) => setForm((f) => ({ ...f, allDay: e.target.checked }))}
               className="h-4 w-4 rounded border-grey-300 accent-grey-800"
             />
-            <label id="allDay" className="text-sm text-grey-700">All day</label>
+            <label id="allDay" className="text-lg text-grey-700">All day</label>
           </div>
 
           {/* Start date */}
           <div className="flex flex-col gap-1.5">
-            <label id={startId} className="text-sm font-medium text-grey-700">Start date</label>
+            <label id={startId} className="text-lg font-medium text-grey-700">Start date</label>
             <Input
               aria-labelledby={startId}
               type="date"
@@ -131,7 +131,7 @@ export function EventDialog({
 
           {/* End date */}
           <div className="flex flex-col gap-1.5">
-            <label id={endId} className="text-sm font-medium text-grey-700">End date</label>
+            <label id={endId} className="text-lg font-medium text-grey-700">End date</label>
             <Input
               aria-labelledby={endId}
               type="date"
@@ -142,7 +142,7 @@ export function EventDialog({
 
           {/* Color picker */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium text-grey-700">Color</label>
+            <label className="text-lg font-medium text-grey-700">Color</label>
             <div className="flex flex-wrap gap-2">
               {COLOR_OPTIONS.map((c) => (
                 <button
@@ -162,14 +162,14 @@ export function EventDialog({
 
           {/* Description */}
           <div className="flex flex-col gap-1.5">
-            <label id={descriptionId} className="text-sm font-medium text-grey-700">Description</label>
+            <label id={descriptionId} className="text-lg font-medium text-grey-700">Description</label>
             <textarea
               aria-labelledby={descriptionId}
               rows={3}
               placeholder="Description (optional)"
               value={form.description ?? ""}
               onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
-              className="w-full rounded-lg border border-grey-300 bg-transparent px-3.5 py-2 text-sm text-foreground transition-colors outline-0 placeholder:text-grey-500 focus:border-grey-800 resize-none"
+              className="w-full rounded-lg border border-grey-300 bg-transparent px-3.5 py-2 text-lg text-foreground transition-colors outline-0 placeholder:text-grey-500 focus:border-grey-800 resize-none"
             />
           </div>
 

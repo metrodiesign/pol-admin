@@ -129,13 +129,13 @@ export function WebhookDetailView({ id }: { id?: string }) {
           title="Payload ดิบ"
           description="payload ดิบที่ได้รับจาก PSP — ใช้สำหรับตรวจสอบและกระทบยอด ไม่ใช่ค่าที่แก้ไขได้"
         >
-          <pre className="text-data max-h-[28rem] overflow-auto rounded-xl border border-[var(--divider)] bg-grey-100 p-4 text-xs text-grey-700 dark:bg-grey-900">
+          <pre className="text-data max-h-[28rem] overflow-auto rounded-xl border border-[var(--divider)] bg-grey-100 p-4 text-lg text-grey-700 dark:bg-grey-900">
             {event.payload}
           </pre>
         </DetailSection>
 
         <DetailSection title="Idempotency และแหล่งความจริง">
-          <p className="text-sm text-grey-600">
+          <p className="text-lg text-grey-600">
             Webhook คือแหล่งความจริงของสถานะการชำระเงิน —
             สถานะทั้งหมดอ้างอิงจาก event ที่ยืนยัน signature แล้วเท่านั้น
             การส่งซ้ำเป็น idempotent โดยอ้างอิง event id เดิม

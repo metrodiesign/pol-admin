@@ -8,7 +8,7 @@ import { type NavGroup } from "./nav-config";
 export const minimalsNavConfig: NavGroup[] = [
   // ── Main ────────────────────────────────────────────────────────────────
   {
-    subheader: "Main",
+    subheader: "", // no label — dashboard sits alone above the first section
     items: [{ title: "แดชบอร์ด", path: "/dashboard", icon: "dashboard" }],
   },
 

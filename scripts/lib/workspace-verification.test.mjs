@@ -746,30 +746,22 @@ test("F-1, F-2, F-4, F-5, F-6: Admin fonts use repository-local assets", async (
   assert.match(layout, /next\/font\/local/);
 
   for (const asset of [
-    "barlow-600.ttf",
-    "barlow-700.ttf",
-    "barlow-800.ttf",
-    "dm-sans-variable.ttf",
+    "db-sathorn-x-bold-italic.ttf",
+    "db-sathorn-x-bold.ttf",
+    "db-sathorn-x-italic.ttf",
+    "db-sathorn-x-medium-italic.ttf",
+    "db-sathorn-x-medium.ttf",
+    "db-sathorn-x-regular.ttf",
     "ibm-plex-mono-400.ttf",
     "ibm-plex-mono-500.ttf",
     "ibm-plex-mono-600.ttf",
-    "inter-variable.ttf",
-    "noto-sans-thai-variable.ttf",
-    "nunito-sans-variable.ttf",
-    "public-sans-variable.ttf",
   ]) {
     await assert.doesNotReject(() => readFile(join(repositoryRoot, "src/app/fonts", asset)));
   }
 
-  for (const license of [
-    "LICENSE-barlow.txt",
-    "LICENSE-dmsans.txt",
-    "LICENSE-ibmplexmono.txt",
-    "LICENSE-inter.txt",
-    "LICENSE-notosansthai.txt",
-    "LICENSE-nunitosans.txt",
-    "LICENSE-publicsans.txt",
-  ]) {
+  // DB Sathorn X is a commercial face shipped without an OFL text; only the
+  // open-licensed IBM Plex Mono carries a license file in the repository.
+  for (const license of ["LICENSE-ibmplexmono.txt"]) {
     const text = await readFile(join(repositoryRoot, "src/app/fonts", license), "utf8");
     assert.match(text, /SIL Open Font License, Version 1\.1/);
   }

@@ -22,7 +22,7 @@ export const notificationLogColumns: ColumnDef<NotificationLogEntry>[] = [
     header: "เหตุการณ์",
     enableSorting: true,
     cell: ({ row }) => (
-      <span className="text-sm font-semibold text-foreground">
+      <span className="text-lg font-semibold text-foreground">
         {eventLabel(row.original.event)}
       </span>
     ),
@@ -40,7 +40,7 @@ export const notificationLogColumns: ColumnDef<NotificationLogEntry>[] = [
     header: "ปลายทาง",
     enableSorting: false,
     cell: ({ row }) => (
-      <span className="text-data text-xs text-grey-700">
+      <span className="text-data text-lg text-grey-700">
         {row.original.target}
       </span>
     ),
@@ -61,7 +61,7 @@ export const notificationLogColumns: ColumnDef<NotificationLogEntry>[] = [
     header: "ส่งเมื่อ",
     enableSorting: true,
     cell: ({ row }) => (
-      <span className="text-data text-xs text-grey-600">
+      <span className="text-data text-lg text-grey-600">
         {formatDateTime(row.original.sentAt)}
       </span>
     ),

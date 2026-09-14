@@ -100,7 +100,7 @@ export function PolicyCheckoutView({ ids, sessionId }: PolicyCheckoutViewProps) 
       >
         <div className="flex w-full max-w-md items-center gap-2 rounded-control border border-[var(--divider)] bg-grey-50 px-3.5 py-2.5">
           <LinkIcon className="size-4 shrink-0 text-grey-500" />
-          <span className="truncate text-sm text-grey-700">{issuedLink}</span>
+          <span className="truncate text-lg text-grey-700">{issuedLink}</span>
         </div>
       </EmptyOrDone>
     );
@@ -214,13 +214,13 @@ function EmptyOrDone({
       >
         {icon}
       </span>
-      <p className="text-base font-bold text-foreground">{title}</p>
-      <p className="max-w-md text-xs leading-relaxed text-grey-500">{subtitle}</p>
+      <p className="text-xl font-semibold text-foreground">{title}</p>
+      <p className="max-w-md text-lg leading-relaxed text-grey-500">{subtitle}</p>
       {children}
       <Button
         render={<Link href="/policy/list" />}
         nativeButton={false}
-        className="mt-1 h-10 bg-primary px-5 font-bold text-primary-foreground hover:bg-primary/90"
+        className="mt-1 h-10 bg-primary px-5 font-semibold text-primary-foreground hover:bg-primary/90"
       >
         กลับไปหน้ารายการ
       </Button>

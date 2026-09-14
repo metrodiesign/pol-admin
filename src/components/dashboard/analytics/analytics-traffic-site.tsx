@@ -30,10 +30,10 @@ export function AnalyticsTrafficSite() {
             className="flex flex-col items-center gap-2 rounded-xl border border-grey-300 p-5"
           >
             <SocialIcon name={site.icon} color={site.color} />
-            <span className="text-base font-bold text-grey-800">
+            <span className="text-xl font-semibold text-grey-800">
               {site.value}
             </span>
-            <span className="text-xs text-grey-500">{site.name}</span>
+            <span className="text-lg text-grey-500">{site.name}</span>
           </div>
         ))}
       </div>

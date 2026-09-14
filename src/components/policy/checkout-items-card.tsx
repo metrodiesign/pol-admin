@@ -28,7 +28,7 @@ export function CheckoutItemsCard({ items, total, onUpdate, onRemove }: Checkout
       <div className="-mx-6 overflow-x-auto">
         <table className="w-full min-w-[880px] border-collapse">
           <thead>
-            <tr className="bg-grey-200 text-sm font-semibold text-grey-600 dark:bg-grey-900">
+            <tr className="bg-grey-200 text-lg font-semibold text-grey-600 dark:bg-grey-900">
               <th className="whitespace-nowrap py-4 pr-4 pl-4 text-center">ลำดับ</th>
               <th className="whitespace-nowrap px-4 py-4 text-left">
                 หมายเลขกรมธรรม์ / รับแจ้ง / สลักหลัง
@@ -47,12 +47,12 @@ export function CheckoutItemsCard({ items, total, onUpdate, onRemove }: Checkout
             {items.map((it, idx) => (
               <tr
                 key={it.uid}
-                className="border-b border-dashed border-[var(--divider)] align-top text-sm"
+                className="border-b border-dashed border-[var(--divider)] align-top text-lg"
               >
                 <td className="py-4 pr-4 pl-4 text-center text-grey-600">{idx + 1}</td>
                 <td className="px-4 py-4">
                   <p className="font-semibold text-primary">{it.policyNo}</p>
-                  <p className="mt-0.5 text-xs text-grey-500">
+                  <p className="mt-0.5 text-lg text-grey-500">
                     {it.referenceType === "claim" ? "เลขรับแจ้ง" : "เลขกรมธรรม์"}
                   </p>
                 </td>
@@ -83,7 +83,7 @@ export function CheckoutItemsCard({ items, total, onUpdate, onRemove }: Checkout
                       setDraft(it.discount ? String(it.discount) : "");
                     }}
                     onBlur={() => setFocusedUid(null)}
-                    className="h-9 w-28 rounded-control border border-[var(--divider)] bg-transparent px-2.5 text-right text-sm tabular-nums text-foreground outline-none focus:border-primary focus:ring-1 focus:ring-inset focus:ring-primary"
+                    className="h-9 w-28 rounded-control border border-[var(--divider)] bg-transparent px-2.5 text-right text-lg tabular-nums text-foreground outline-none focus:border-primary focus:ring-1 focus:ring-inset focus:ring-primary"
                   />
                 </td>
                 <td className="px-4 py-4 text-right tabular-nums text-grey-500">
@@ -112,13 +112,13 @@ export function CheckoutItemsCard({ items, total, onUpdate, onRemove }: Checkout
       </div>
 
       <div className="mt-4 flex flex-col-reverse gap-3 rounded-2xl bg-info/8 px-5 py-4 mmd:flex-row mmd:items-center mmd:justify-between">
-        <p className="flex items-center gap-2 text-sm text-grey-600">
+        <p className="flex items-center gap-2 text-lg text-grey-600">
           <Info className="size-4 shrink-0 text-info" />
           ลูกค้าจะเห็นรายการย่อยทั้งหมดในหน้าชำระเงิน และจ่ายครั้งเดียว
         </p>
         <div className="text-right">
-          <p className="text-sm text-grey-500">ยอดที่ลูกค้าต้องชำระ</p>
-          <p className="text-2xl font-bold tabular-nums text-secondary">{formatTHB(total, 2)}</p>
+          <p className="text-lg text-grey-500">ยอดที่ลูกค้าต้องชำระ</p>
+          <p className="text-4xl font-semibold tabular-nums text-secondary">{formatTHB(total, 2)}</p>
         </div>
       </div>
     </CheckoutCard>

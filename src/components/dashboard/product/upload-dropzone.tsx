@@ -106,10 +106,10 @@ export function UploadDropzone({ initialImages = [] }: UploadDropzoneProps) {
               <ellipse cx="68" cy="88" rx="5" ry="10" fill="#36B37E" opacity="0.5" />
             </svg>
           </div>
-          <p className="text-sm font-bold text-foreground">
+          <p className="text-lg font-semibold text-foreground">
             Drop or select files
           </p>
-          <p className="text-sm text-grey-500">
+          <p className="text-lg text-grey-500">
             Drag files here, or{" "}
             <span className="font-semibold text-primary underline">browse</span>{" "}
             your device.
@@ -151,14 +151,14 @@ export function UploadDropzone({ initialImages = [] }: UploadDropzoneProps) {
             <button
               type="button"
               onClick={removeAll}
-              className="text-sm font-semibold text-grey-600 transition-colors hover:text-error"
+              className="text-lg font-semibold text-grey-600 transition-colors hover:text-error"
             >
               Remove All
             </button>
             <button
               type="button"
               onClick={() => inputRef.current?.click()}
-              className="flex items-center gap-1.5 rounded-lg bg-grey-800 px-3 py-1.5 text-sm font-bold text-white transition-colors hover:bg-grey-900"
+              className="flex items-center gap-1.5 rounded-lg bg-grey-800 px-3 py-1.5 text-lg font-semibold text-white transition-colors hover:bg-grey-900"
             >
               <Upload className="size-3.5" />
               Upload

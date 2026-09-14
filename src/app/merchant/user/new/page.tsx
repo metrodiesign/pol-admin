@@ -35,7 +35,7 @@ export default function MerchantUserCreatePage() {
               <div className="space-y-5">
                 <Field className="flex-row items-start justify-between gap-4">
                   <div>
-                    <Label className="text-sm font-semibold">รูปถ่ายตัวแทน + บัตรประชาชน</Label>
+                    <Label className="text-lg font-semibold">รูปถ่ายตัวแทน + บัตรประชาชน</Label>
                     <Description>
                       แนบรูปถ่ายตัวแทนพร้อมกับบัตรประชาชนผ่านปุ่มอัปโหลดด้านบน
                     </Description>
@@ -44,7 +44,7 @@ export default function MerchantUserCreatePage() {
 
                 <Field className="flex-row items-start justify-between gap-4">
                   <div>
-                    <Label className="text-sm font-semibold">ยืนยันอีเมลแล้ว</Label>
+                    <Label className="text-lg font-semibold">ยืนยันอีเมลแล้ว</Label>
                     <Description>
                       หากปิด ระบบจะส่งอีเมลยืนยันให้ตัวแทนโดยอัตโนมัติ
                     </Description>

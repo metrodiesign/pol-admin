@@ -19,9 +19,9 @@ function StatCard({ stat }: { stat: CourseStat }) {
         <Icon className="size-5" style={{ color: stat.color }} />
       </div>
       {/* Number */}
-      <p className="text-3xl font-bold leading-[48px] text-grey-800">{stat.value}</p>
+      <p className="text-5xl font-semibold leading-[48px] text-grey-800">{stat.value}</p>
       {/* Label */}
-      <p className="mt-1 text-sm text-grey-500">{stat.title}</p>
+      <p className="mt-1 text-lg text-grey-500">{stat.title}</p>
     </div>
   );
 }
@@ -29,10 +29,10 @@ function StatCard({ stat }: { stat: CourseStat }) {
 export function CourseHero() {
   return (
     <div>
-      <h4 className="text-2xl font-bold leading-9 text-grey-800">
+      <h4 className="text-4xl font-semibold leading-9 text-grey-800">
         Hi, {courseGreeting.name} {"\u{1F44B}"}
       </h4>
-      <p className="mt-1 text-sm text-grey-500">{courseGreeting.subtitle}</p>
+      <p className="mt-1 text-lg text-grey-500">{courseGreeting.subtitle}</p>
       <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-3">
         {courseStats.map((stat) => (
           <StatCard key={stat.title} stat={stat} />

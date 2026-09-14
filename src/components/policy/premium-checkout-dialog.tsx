@@ -42,7 +42,7 @@ export function PremiumCheckoutDialog({
     <Dialog open={open} onOpenChange={(o) => (!o ? onClose() : undefined)}>
       <DialogContent className="theme-minimals sm:max-w-md" showCloseButton={false}>
         <DialogHeader>
-          <DialogTitle className="text-lg font-bold text-foreground">
+          <DialogTitle className="text-2xl font-semibold text-foreground">
             รายการกรมธรรม์
           </DialogTitle>
           <DialogDescription>
@@ -63,12 +63,12 @@ export function PremiumCheckoutDialog({
                   className="flex items-center justify-between gap-3 border-b border-[var(--divider)] py-2.5 last:border-b-0"
                 >
                   <span className="min-w-0">
-                    <span className="block truncate text-sm font-bold text-foreground">
+                    <span className="block truncate text-lg font-semibold text-foreground">
                       {p.customer.name}
                     </span>
-                    <span className="block truncate text-xs font-semibold text-primary">{p.referenceNo}</span>
+                    <span className="block truncate text-lg font-semibold text-primary">{p.referenceNo}</span>
                   </span>
-                  <span className="shrink-0 text-sm font-bold tabular-nums text-foreground">
+                  <span className="shrink-0 text-lg font-semibold tabular-nums text-foreground">
                     {formatAmount(p.premium, 2)}
                   </span>
                 </li>
@@ -78,8 +78,8 @@ export function PremiumCheckoutDialog({
         </div>
 
         <div className="flex items-center justify-between">
-          <span className="text-base font-semibold text-foreground">เบี้ยรวม</span>
-          <span className="text-xl font-bold tabular-nums text-secondary">
+          <span className="text-xl font-semibold text-foreground">เบี้ยรวม</span>
+          <span className="text-3xl font-semibold tabular-nums text-secondary">
             {formatAmount(total, 2)}
           </span>
         </div>
@@ -87,14 +87,14 @@ export function PremiumCheckoutDialog({
         <DialogFooter>
           <DialogClose
             render={
-              <Button className="h-11 min-w-[100px] px-5 bg-[rgba(145,158,171,0.16)] font-bold text-grey-800 hover:bg-[rgba(145,158,171,0.24)]" />
+              <Button className="h-11 min-w-[100px] px-5 bg-[rgba(145,158,171,0.16)] font-semibold text-grey-800 hover:bg-[rgba(145,158,171,0.24)]" />
             }
           >
             ยกเลิก
           </DialogClose>
           <Button
             onClick={handleConfirm}
-            className="h-11 min-w-[100px] px-5 bg-primary font-bold text-primary-foreground hover:bg-primary/90"
+            className="h-11 min-w-[100px] px-5 bg-primary font-semibold text-primary-foreground hover:bg-primary/90"
           >
             ยืนยัน
           </Button>

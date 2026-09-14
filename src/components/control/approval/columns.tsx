@@ -48,10 +48,10 @@ export function approvalColumns({
         const r = row.original;
         return (
           <div className="flex flex-col gap-0.5">
-            <span className="text-sm font-semibold text-foreground">
+            <span className="text-lg font-semibold text-foreground">
               {ACTION_LABEL[r.actionType]}
             </span>
-            <span className="text-data text-xs text-grey-600">{r.target}</span>
+            <span className="text-data text-lg text-grey-600">{r.target}</span>
           </div>
         );
       },
@@ -61,7 +61,7 @@ export function approvalColumns({
       header: "ผู้ขอ",
       enableSorting: true,
       cell: ({ row }) => (
-        <span className="text-data text-xs text-grey-700">
+        <span className="text-data text-lg text-grey-700">
           {row.original.maker}
         </span>
       ),
@@ -73,7 +73,7 @@ export function approvalColumns({
       cell: ({ row }) => {
         const amount = row.original.refAmount;
         return (
-          <span className="text-data text-sm text-foreground">
+          <span className="text-data text-lg text-foreground">
             {amount == null ? "—" : formatTHB(amount)}
           </span>
         );
@@ -84,7 +84,7 @@ export function approvalColumns({
       header: "บริษัท",
       enableSorting: false,
       cell: ({ row }) => (
-        <span className="text-sm text-foreground">
+        <span className="text-lg text-foreground">
           {MERCHANT_LABEL[row.original.merchantId]}
         </span>
       ),
@@ -94,7 +94,7 @@ export function approvalColumns({
       header: "ขอเมื่อ",
       enableSorting: true,
       cell: ({ row }) => (
-        <span className="text-data text-xs text-grey-600">
+        <span className="text-data text-lg text-grey-600">
           {formatDateTime(row.original.requestedAt)}
         </span>
       ),

@@ -38,7 +38,7 @@ export function CalendarToolbar({
         /* Mobile: dropdown trigger (non-functional dropdown for fidelity) */
         <button
           type="button"
-          className="flex items-center gap-1.5 rounded-lg border border-border bg-transparent px-2 py-1.5 text-sm text-grey-700 transition-colors hover:bg-grey-100"
+          className="flex items-center gap-1.5 rounded-lg border border-border bg-transparent px-2 py-1.5 text-lg text-grey-700 transition-colors hover:bg-grey-100"
         >
           <AlignJustify className="size-4" />
           <ChevronDown className="size-3.5 text-grey-500" />
@@ -73,7 +73,7 @@ export function CalendarToolbar({
         >
           <ChevronLeft className="size-4" />
         </button>
-        <span className="min-w-[120px] text-center text-sm font-semibold leading-7 text-grey-800 sm:text-base">
+        <span className="min-w-[120px] text-center text-lg font-semibold leading-7 text-grey-800 sm:text-xl">
           {periodLabel}
         </span>
         <button
@@ -90,7 +90,7 @@ export function CalendarToolbar({
         <button
           type="button"
           onClick={onToday}
-          className="rounded-lg px-2 py-1 text-xs font-bold leading-[22px] text-white transition-opacity hover:opacity-90"
+          className="rounded-lg px-2 py-1 text-lg font-semibold leading-[22px] text-white transition-opacity hover:opacity-90"
           style={{ backgroundColor: "rgb(255, 86, 48)" }}
         >
           Today

@@ -12,7 +12,7 @@ export function TransactionListStatusBadge({
   return (
     <span
       className={cn(
-        "inline-flex items-center whitespace-nowrap rounded-full px-4 py-1 text-sm font-semibold",
+        "inline-flex items-center whitespace-nowrap rounded-full px-4 py-1 text-lg font-semibold",
         LIST_STATUS_STYLE[status],
         className,
       )}

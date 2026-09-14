@@ -49,7 +49,7 @@ function RadialGauge({
         </ResponsiveContainer>
         {/* Center percentage text */}
         <span
-          className="pointer-events-none absolute inset-0 flex items-center justify-center text-xs font-bold leading-none"
+          className="pointer-events-none absolute inset-0 flex items-center justify-center text-lg font-semibold leading-none"
           style={{ color }}
         >
           {percentage}%
@@ -58,8 +58,8 @@ function RadialGauge({
 
       {/* Label */}
       <div className="min-w-0">
-        <p className="text-sm font-bold text-grey-800">{total}</p>
-        <p className="text-xs text-grey-500 leading-tight max-w-[90px]">{label}</p>
+        <p className="text-lg font-semibold text-grey-800">{total}</p>
+        <p className="text-lg text-grey-500 leading-tight max-w-[90px]">{label}</p>
       </div>
     </div>
   );
@@ -68,17 +68,17 @@ function RadialGauge({
 export function BookingBooked() {
   return (
     <div className="dashboard-card flex flex-col p-6 h-full">
-      <h6 className="text-lg font-semibold text-grey-800">Booked</h6>
+      <h6 className="text-2xl font-semibold text-grey-800">Booked</h6>
 
       {/* Progress bars */}
       <div className="mt-4 space-y-3">
         {bookedItems.map((item) => (
           <div key={item.label}>
             <div className="flex items-center justify-between mb-1.5">
-              <span className="text-xs font-semibold uppercase tracking-wide text-grey-500">
+              <span className="text-lg font-semibold uppercase tracking-wide text-grey-500">
                 {item.label}
               </span>
-              <span className="text-sm font-semibold text-grey-800">{item.value}</span>
+              <span className="text-lg font-semibold text-grey-800">{item.value}</span>
             </div>
             <div className="h-2 w-full overflow-hidden rounded-full bg-grey-500/16">
               <div

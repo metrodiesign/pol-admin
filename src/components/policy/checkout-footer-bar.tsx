@@ -24,12 +24,12 @@ export function CheckoutFooterBar({
     >
       <div className="flex items-center gap-6">
         <div>
-          <p className="text-sm text-grey-500">กรมธรรม์</p>
-          <p className="text-xl font-bold tabular-nums text-secondary">{count}</p>
+          <p className="text-lg text-grey-500">กรมธรรม์</p>
+          <p className="text-3xl font-semibold tabular-nums text-secondary">{count}</p>
         </div>
         <div>
-          <p className="text-sm text-grey-500">เบี้ยรวม</p>
-          <p className="text-xl font-bold tabular-nums text-secondary">{formatTHB(total, 2)}</p>
+          <p className="text-lg text-grey-500">เบี้ยรวม</p>
+          <p className="text-3xl font-semibold tabular-nums text-secondary">{formatTHB(total, 2)}</p>
         </div>
       </div>
 
@@ -37,7 +37,7 @@ export function CheckoutFooterBar({
         <button
           type="button"
           onClick={onCancel}
-          className="inline-flex h-11 min-w-[100px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-5 text-sm font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]"
+          className="inline-flex h-11 min-w-[100px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-5 text-lg font-semibold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]"
         >
           ยกเลิก
         </button>
@@ -45,7 +45,7 @@ export function CheckoutFooterBar({
           type="button"
           onClick={onIssue}
           disabled={!canIssue}
-          className="inline-flex h-11 items-center justify-center rounded-control bg-primary px-5 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:bg-grey-300 disabled:text-grey-500 disabled:hover:bg-grey-300"
+          className="inline-flex h-11 items-center justify-center rounded-control bg-primary px-5 text-lg font-semibold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:bg-grey-300 disabled:text-grey-500 disabled:hover:bg-grey-300"
         >
           ยืนยันคำสั่งซื้อ
         </button>

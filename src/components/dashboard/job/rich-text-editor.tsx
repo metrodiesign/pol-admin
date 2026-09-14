@@ -118,7 +118,7 @@ export function RichTextEditor({
         <button
           type="button"
           onMouseDown={(e) => e.preventDefault()}
-          className="flex items-center gap-1 rounded-md px-2 py-1 text-sm font-medium text-grey-800 hover:bg-[rgba(145,158,171,0.08)]"
+          className="flex items-center gap-1 rounded-md px-2 py-1 text-lg font-medium text-grey-800 hover:bg-[rgba(145,158,171,0.08)]"
         >
           Paragraph <ChevronDown className="size-3.5" />
         </button>
@@ -195,7 +195,7 @@ export function RichTextEditor({
         suppressContentEditableWarning
         onInput={handleInput}
         data-placeholder={placeholder}
-        className="min-h-[160px] px-4 py-3 text-sm text-grey-800 outline-none empty:before:text-grey-400 empty:before:content-[attr(data-placeholder)]"
+        className="min-h-[160px] px-4 py-3 text-lg text-grey-800 outline-none empty:before:text-grey-400 empty:before:content-[attr(data-placeholder)]"
       />
     </div>
   );

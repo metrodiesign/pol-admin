@@ -94,9 +94,9 @@ function Panel({
       {title ? (
         <>
           <div className="px-6 py-5">
-            <p className="text-base font-bold text-primary">{title}</p>
+            <p className="text-xl font-semibold text-primary">{title}</p>
             {description ? (
-              <p className="mt-0.5 text-xs text-grey-500">{description}</p>
+              <p className="mt-0.5 text-lg text-grey-500">{description}</p>
             ) : null}
           </div>
           <div className="border-t border-[var(--divider)]" />
@@ -107,7 +107,7 @@ function Panel({
   );
 }
 
-const fieldLabel = "mb-1.5 block text-xs font-semibold text-grey-700";
+const fieldLabel = "mb-1.5 block text-lg font-semibold text-grey-700";
 
 export function TransactionDetailView({ id, compact = false }: { id: string | undefined; compact?: boolean }) {
   const t = getTransactionById(id);
@@ -118,11 +118,11 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
         className="flex flex-col items-center justify-center gap-4 rounded-2xl bg-card px-6 py-16 text-center"
         style={{ boxShadow: "var(--shadow-card)" }}
       >
-        <p className="text-base font-bold text-foreground">ไม่พบรายการชำระเงิน</p>
+        <p className="text-xl font-semibold text-foreground">ไม่พบรายการชำระเงิน</p>
         <Button
           render={<Link href="/transaction/list" />}
           nativeButton={false}
-          className="mt-1 h-10 bg-primary px-5 font-bold text-primary-foreground hover:bg-primary/90"
+          className="mt-1 h-10 bg-primary px-5 font-semibold text-primary-foreground hover:bg-primary/90"
         >
           กลับไปหน้ารายการ
         </Button>
@@ -143,7 +143,7 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
       <Panel title="สถานะลิงก์และชำระเงิน">
         <div className="px-6 pt-5 pb-6">
           <div className="flex flex-wrap items-center gap-3">
-            <p className="text-sm font-bold text-foreground">สถานะ</p>
+            <p className="text-lg font-semibold text-foreground">สถานะ</p>
             <TransactionStatusBadge status={t.status} />
           </div>
 
@@ -156,21 +156,21 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
               <div className="flex flex-col gap-3">
                 <button
                   type="button"
-                  className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-info/12 px-4 text-sm font-bold text-info transition-colors hover:bg-info/16"
+                  className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-info/12 px-4 text-lg font-semibold text-info transition-colors hover:bg-info/16"
                 >
                   <Send className="size-4" />
                   ส่งลิงก์อีกครั้ง
                 </button>
                 <button
                   type="button"
-                  className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-warning/12 px-4 text-sm font-bold text-warning-dark transition-colors hover:bg-warning/16"
+                  className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-warning/12 px-4 text-lg font-semibold text-warning-dark transition-colors hover:bg-warning/16"
                 >
                   <Clock className="size-4" />
                   ต่ออายุลิงก์
                 </button>
                 <button
                   type="button"
-                  className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-error/12 px-4 text-sm font-bold text-error transition-colors hover:bg-error/16"
+                  className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-error/12 px-4 text-lg font-semibold text-error transition-colors hover:bg-error/16"
                 >
                   <Ban className="size-4" />
                   ยกเลิกลิงก์
@@ -180,21 +180,21 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
               <div className="mt-4 grid grid-cols-2 gap-2.5">
                 <button
                   type="button"
-                  className="col-span-2 inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-control bg-success px-3 text-sm font-bold text-white transition-colors hover:bg-success-dark"
+                  className="col-span-2 inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-control bg-success px-3 text-lg font-semibold text-white transition-colors hover:bg-success-dark"
                 >
                   <ExternalLink className="size-4 shrink-0" />
                   เปิดลิงก์
                 </button>
                 <button
                   type="button"
-                  className="inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-control border border-[var(--divider)] px-3 text-sm font-bold text-foreground transition-colors hover:bg-grey-100"
+                  className="inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-control border border-[var(--divider)] px-3 text-lg font-semibold text-foreground transition-colors hover:bg-grey-100"
                 >
                   <Download className="size-4 shrink-0" />
                   ดาวน์โหลด QR
                 </button>
                 <button
                   type="button"
-                  className="inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-control border border-[var(--divider)] px-3 text-sm font-bold text-foreground transition-colors hover:bg-grey-100"
+                  className="inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-control border border-[var(--divider)] px-3 text-lg font-semibold text-foreground transition-colors hover:bg-grey-100"
                 >
                   <Copy className="size-4 shrink-0" />
                   คัดลอกลิงก์
@@ -207,7 +207,7 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
 
       <Panel>
         <div className="px-6 py-5">
-          <h2 className="text-base font-bold text-primary">ประวัติการดำเนินงาน</h2>
+          <h2 className="text-xl font-semibold text-primary">ประวัติการดำเนินงาน</h2>
         </div>
         <div className="border-t border-[var(--divider)]" />
         <div className="py-5">
@@ -232,12 +232,12 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
                     </span>
                     <div className="min-w-0 flex-1 pt-1">
                       <div className="flex items-start justify-between gap-3">
-                        <p className="text-sm font-semibold text-foreground">{ev.title}</p>
-                        <span className="shrink-0 text-xs tabular-nums text-grey-500">
+                        <p className="text-lg font-semibold text-foreground">{ev.title}</p>
+                        <span className="shrink-0 text-lg tabular-nums text-grey-500">
                           {ev.time}
                         </span>
                       </div>
-                      <p className="mt-0.5 text-xs text-grey-500">{ev.desc}</p>
+                      <p className="mt-0.5 text-lg text-grey-500">{ev.desc}</p>
                     </div>
                   </li>
                 );
@@ -254,45 +254,45 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
           <div className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
             <div>
               <p className={fieldLabel}>หมายเลขธุรกรรม</p>
-              <p className="text-sm font-bold text-foreground">{t.code || <span className="text-grey-400">—</span>}</p>
+              <p className="text-lg font-semibold text-foreground">{t.code || <span className="text-grey-400">—</span>}</p>
             </div>
             <div>
               <p className={fieldLabel}>หมายเลขคำสั่งซื้อ</p>
               {/* ponytail: mock — PaymentSession ยังไม่มี field รหัสคำสั่งซื้อจริงใน pol-core */}
-              <p className="text-sm font-bold text-foreground">{t.code.replace(/^VCP/, "ORD") || <span className="text-grey-400">—</span>}</p>
+              <p className="text-lg font-semibold text-foreground">{t.code.replace(/^VCP/, "ORD") || <span className="text-grey-400">—</span>}</p>
             </div>
           </div>
           <div className="mt-4 grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
             <div>
               <p className={fieldLabel}>แอปพลิเคชัน</p>
               {/* ponytail: mock — PaymentSession ยังไม่มี field แอปพลิเคชันจริงใน pol-core */}
-              <p className="text-sm font-bold text-foreground">V Central Pay</p>
+              <p className="text-lg font-semibold text-foreground">V Central Pay</p>
             </div>
             <div>
               <p className={fieldLabel}>ผู้ให้บริการ</p>
-              <p className="text-sm font-bold text-foreground">{t.psp.toUpperCase() || <span className="text-grey-400">—</span>}</p>
+              <p className="text-lg font-semibold text-foreground">{t.psp.toUpperCase() || <span className="text-grey-400">—</span>}</p>
             </div>
           </div>
           <div className="mt-4 grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
             <div>
               <p className={fieldLabel}>หมายเลขอ้างอิง 1</p>
-              <p className="text-sm font-bold text-foreground">{t.source.code || <span className="text-grey-400">—</span>}</p>
+              <p className="text-lg font-semibold text-foreground">{t.source.code || <span className="text-grey-400">—</span>}</p>
             </div>
             <div>
               <p className={fieldLabel}>หมายเลขอ้างอิง 2</p>
-              <p className="text-sm font-bold text-foreground">{t.source.label || <span className="text-grey-400">—</span>}</p>
+              <p className="text-lg font-semibold text-foreground">{t.source.label || <span className="text-grey-400">—</span>}</p>
             </div>
             <div>
               <p className={fieldLabel}>หมายเลขอ้างอิง 3</p>
-              <p className="text-sm font-bold text-foreground">{src ? `${src.role} · ${src.location}` : <span className="text-grey-400">—</span>}</p>
+              <p className="text-lg font-semibold text-foreground">{src ? `${src.role} · ${src.location}` : <span className="text-grey-400">—</span>}</p>
             </div>
             <div>
               <p className={fieldLabel}>หมายเลขอ้างอิง 4</p>
-              <p className="text-sm font-bold text-foreground">{src ? `${src.branchCode} · ${src.branchLabel}` : <span className="text-grey-400">—</span>}</p>
+              <p className="text-lg font-semibold text-foreground">{src ? `${src.branchCode} · ${src.branchLabel}` : <span className="text-grey-400">—</span>}</p>
             </div>
             <div>
               <p className={fieldLabel}>หมายเลขอ้างอิง 5</p>
-              <p className="text-sm font-bold text-foreground">{src?.linkRef || <span className="text-grey-400">—</span>}</p>
+              <p className="text-lg font-semibold text-foreground">{src?.linkRef || <span className="text-grey-400">—</span>}</p>
             </div>
           </div>
         </div>
@@ -304,15 +304,15 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
           <div className="grid grid-cols-1 gap-x-5 gap-y-5 sm:grid-cols-2">
             <div className="flex flex-col gap-1.5">
               <p className={fieldLabel}>ชื่อ-นามสกุล</p>
-              <p className="text-sm font-bold text-foreground">{t.source.label || <span className="text-grey-400">—</span>}</p>
+              <p className="text-lg font-semibold text-foreground">{t.source.label || <span className="text-grey-400">—</span>}</p>
             </div>
             <div className="flex flex-col gap-1.5">
               <p className={fieldLabel}>อีเมล</p>
-              <p className="text-sm font-bold text-foreground">{t.recipientEmail || <span className="text-grey-400">—</span>}</p>
+              <p className="text-lg font-semibold text-foreground">{t.recipientEmail || <span className="text-grey-400">—</span>}</p>
             </div>
             <div className="flex flex-col gap-1.5">
               <p className={fieldLabel}>เบอร์โทรศัพท์</p>
-              <p className="text-sm font-bold text-foreground">{customerPhone(t) || <span className="text-grey-400">—</span>}</p>
+              <p className="text-lg font-semibold text-foreground">{customerPhone(t) || <span className="text-grey-400">—</span>}</p>
             </div>
           </div>
         </div>
@@ -324,7 +324,7 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
           <div className="-mx-6 overflow-x-auto">
             <table className="w-full min-w-[880px] border-collapse">
               <thead>
-                <tr className="bg-grey-200 text-sm font-semibold text-grey-600 dark:bg-grey-900">
+                <tr className="bg-grey-200 text-lg font-semibold text-grey-600 dark:bg-grey-900">
                   <th className="whitespace-nowrap py-4 pr-4 pl-4 text-center">ลำดับ</th>
                   <th className="whitespace-nowrap px-4 py-4 text-left">
                     หมายเลขกรมธรรม์ / รับแจ้ง / สลักหลัง
@@ -344,12 +344,12 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
                 {items.map((it) => (
                   <tr
                     key={it.seq}
-                    className="border-b border-dashed border-[var(--divider)] align-top text-sm"
+                    className="border-b border-dashed border-[var(--divider)] align-top text-lg"
                   >
                     <td className="py-4 pr-4 pl-4 text-center text-grey-600">{it.seq}</td>
                     <td className="px-4 py-4">
                       <p className="font-semibold text-primary">{it.docNo}</p>
-                      <p className="mt-0.5 text-xs text-grey-500">{it.docType}</p>
+                      <p className="mt-0.5 text-lg text-grey-500">{it.docType}</p>
                     </td>
                     <td className="max-w-[160px] truncate px-4 py-4 text-foreground">{it.insuredName}</td>
                     <td className="px-4 py-4 text-right tabular-nums text-foreground">
@@ -358,14 +358,14 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
                     <td className="px-4 py-4 text-right tabular-nums text-foreground">
                       {formatAmount(it.grossPremium, 2)}
                     </td>
-                    <td className="px-4 py-4 text-right tabular-nums text-grey-600">
+                    <td className="px-4 py-4 text-right tabular-nums text-foreground">
                       {it.discount}
                     </td>
-                    <td className="px-4 py-4 text-right tabular-nums text-grey-500">0.00%</td>
-                    <td className="px-4 py-4 text-right font-semibold tabular-nums text-foreground">
+                    <td className="px-4 py-4 text-right tabular-nums text-foreground">0.00%</td>
+                    <td className="px-4 py-4 text-right tabular-nums text-foreground">
                       {formatAmount(it.grossPremium, 2)}
                     </td>
-                    <td className="px-4 py-4 text-grey-600">{it.ref}</td>
+                    <td className="px-4 py-4 text-foreground">{it.ref}</td>
                   </tr>
                 ))}
               </tbody>
@@ -373,13 +373,13 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
           </div>
 
           <div className={cn("mt-4 flex flex-col-reverse gap-3 rounded-2xl bg-info/8 px-5 py-4", !compact && "mmd:flex-row mmd:items-center mmd:justify-between")}>
-            <p className="flex items-center gap-2 text-sm text-grey-600">
+            <p className="flex items-center gap-2 text-lg text-grey-600">
               <Info className="size-4 shrink-0 text-info" />
               ลูกค้าจะเห็นรายการย่อยทั้งหมดในหน้าชำระเงิน และจ่ายครั้งเดียว
             </p>
             <div className="text-right">
-              <p className="text-sm text-grey-500">ยอดที่ลูกค้าต้องชำระ</p>
-              <p className="text-2xl font-bold tabular-nums text-secondary">
+              <p className="text-lg text-grey-500">ยอดที่ลูกค้าต้องชำระ</p>
+              <p className="text-4xl font-semibold tabular-nums text-secondary">
                 {formatMoney(t.amount, false)}
               </p>
             </div>
@@ -399,11 +399,11 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
                 className="h-20 w-20 shrink-0 object-contain"
               />
               <span className="flex min-w-0 flex-1 flex-col gap-1">
-                <span className="text-sm font-bold text-secondary">
+                <span className="text-lg font-semibold text-secondary">
                   {channel?.label ?? t.channel}
                 </span>
                 {channel?.caption ? (
-                  <span className="text-xs leading-relaxed text-foreground">{channel.caption}</span>
+                  <span className="text-lg leading-relaxed text-foreground">{channel.caption}</span>
                 ) : null}
               </span>
             </div>
@@ -416,19 +416,19 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
         <div className="px-6 pt-5 pb-6">
           <div className="flex flex-col gap-6">
             <div>
-              <span className="mb-2 block text-sm font-semibold text-grey-700">
+              <span className="mb-2 block text-lg font-semibold text-grey-700">
                 ระยะเวลาก่อนลิงก์หมดอายุ
               </span>
-              <span className="inline-flex h-9 items-center rounded-full border border-secondary bg-secondary/8 px-4 text-sm font-semibold text-secondary">
+              <span className="inline-flex h-9 items-center rounded-full border border-secondary bg-secondary/8 px-4 text-lg font-semibold text-secondary">
                 72 ชม.
               </span>
             </div>
 
             <div>
-              <span className="mb-2 block text-sm font-semibold text-grey-700">
+              <span className="mb-2 block text-lg font-semibold text-grey-700">
                 การแจ้งเตือนลูกค้า
               </span>
-              <span className="inline-flex h-9 items-center rounded-full border border-secondary bg-secondary/8 px-4 text-sm font-semibold text-secondary">
+              <span className="inline-flex h-9 items-center rounded-full border border-secondary bg-secondary/8 px-4 text-lg font-semibold text-secondary">
                 ส่งหาลูกค้า
               </span>
 
@@ -439,17 +439,17 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
                       <MessageSquare className="size-4" />
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block text-sm font-bold text-grey-700">ส่ง SMS แจ้งลิงก์</span>
+                      <span className="block text-lg font-semibold text-grey-700">ส่ง SMS แจ้งลิงก์</span>
                     </span>
                   </div>
                   <div className="border-t border-[var(--divider)] px-4 py-3">
-                    <p className="text-sm font-bold text-foreground">{customerPhone(t)}</p>
+                    <p className="text-lg font-semibold text-foreground">{customerPhone(t)}</p>
                   </div>
                 </div>
               </div>
             </div>
             <div>
-              <span className="mb-2 block text-sm font-semibold text-grey-700">
+              <span className="mb-2 block text-lg font-semibold text-grey-700">
                 การแจ้งเตือนกำหนดผู้รับเอง
               </span>
               <div className="flex flex-col gap-3">
@@ -459,11 +459,11 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
                       <MessageSquare className="size-4" />
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block text-sm font-bold text-grey-700">ส่ง SMS ถึงผู้รับที่กำหนด</span>
+                      <span className="block text-lg font-semibold text-grey-700">ส่ง SMS ถึงผู้รับที่กำหนด</span>
                     </span>
                   </div>
                   <div className="border-t border-[var(--divider)] px-4 py-3">
-                    <p className="text-sm font-bold text-foreground">{customerPhone(t)}</p>
+                    <p className="text-lg font-semibold text-foreground">{customerPhone(t)}</p>
                   </div>
                 </div>
                 <div className="rounded-xl border border-[var(--divider)]">
@@ -472,11 +472,11 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
                       <Mail className="size-4" />
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block text-sm font-bold text-grey-700">ส่งอีเมลถึงผู้รับที่กำหนด</span>
+                      <span className="block text-lg font-semibold text-grey-700">ส่งอีเมลถึงผู้รับที่กำหนด</span>
                     </span>
                   </div>
                   <div className="border-t border-[var(--divider)] px-4 py-3">
-                    <p className="text-sm font-bold text-foreground">{t.recipientEmail ?? "—"}</p>
+                    <p className="text-lg font-semibold text-foreground">{t.recipientEmail ?? "—"}</p>
                   </div>
                 </div>
               </div>

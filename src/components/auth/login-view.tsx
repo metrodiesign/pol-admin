@@ -70,7 +70,7 @@ export function LoginView() {
             aria-label="สำหรับพนักงาน"
             className="flex min-h-[260px] flex-col justify-center rounded-2xl bg-crop-blue p-8 shadow-card"
           >
-            <h2 className="text-center text-lg font-semibold text-white">สำหรับพนักงาน</h2>
+            <h2 className="text-center text-2xl font-semibold text-white">สำหรับพนักงาน</h2>
             <Button
               type="button"
               size="lg"
@@ -86,7 +86,7 @@ export function LoginView() {
             aria-label="สำหรับตัวแทน/นายหน้า"
             className="flex min-h-[260px] flex-col justify-center rounded-2xl bg-crop-blue p-8 shadow-card"
           >
-            <h2 className="text-center text-lg font-semibold text-white">สำหรับตัวแทน/นายหน้า</h2>
+            <h2 className="text-center text-2xl font-semibold text-white">สำหรับตัวแทน/นายหน้า</h2>
             <Button
               type="button"
               size="lg"

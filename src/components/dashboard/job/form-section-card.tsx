@@ -34,10 +34,10 @@ export function FormSectionCard({
         className="flex w-full items-center justify-between px-6 pt-6 pb-0 text-left"
       >
         <div>
-          <p className="text-base font-semibold leading-7 text-grey-800">
+          <p className="text-xl font-semibold leading-7 text-grey-800">
             {title}
           </p>
-          <p className="text-sm text-grey-500">{caption}</p>
+          <p className="text-lg text-grey-500">{caption}</p>
         </div>
         <ChevronDown
           className={cn(

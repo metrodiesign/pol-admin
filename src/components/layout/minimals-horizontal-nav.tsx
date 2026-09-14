@@ -48,7 +48,7 @@ function itemActive(pathname: string, item: NavItem): boolean {
 
 function Badge({ children }: { children: React.ReactNode }) {
   return (
-    <span className="ml-0.5 rounded-md bg-grey-200 px-1 py-0.5 text-xs font-bold leading-none text-grey-700">
+    <span className="ml-0.5 rounded-md bg-grey-200 px-1 py-0.5 text-lg font-semibold leading-none text-grey-700">
       {children}
     </span>
   );
@@ -117,7 +117,7 @@ export function MinimalsHorizontalNav({ groups }: { groups: readonly NavGroup[] 
         {entries.map((item) => {
           const active = itemActive(pathname, item);
           const base =
-            "flex shrink-0 items-center gap-1.5 rounded-lg px-2 py-1.5 text-sm font-medium transition-colors outline-none";
+            "flex shrink-0 items-center gap-1.5 rounded-lg px-2 py-1.5 text-lg font-medium transition-colors outline-none";
           const tone = active
             ? "text-primary"
             : "text-grey-600 hover:bg-grey-200 hover:text-grey-800";

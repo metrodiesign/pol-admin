@@ -16,8 +16,8 @@ export default function BlankPage() {
   return (
     <div className="-mt-2 flex flex-col">
       <h4
-        className="mb-10 font-bold text-grey-800"
-        style={{ fontSize: "24px", lineHeight: "36px", fontWeight: 700 }}
+        className="mb-10 font-semibold text-grey-800"
+        style={{ fontSize: "24px", lineHeight: "36px", fontWeight: 600 }}
       >
         Blank
       </h4>

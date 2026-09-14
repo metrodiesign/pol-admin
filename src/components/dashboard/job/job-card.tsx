@@ -51,7 +51,7 @@ function MoreMenu({ jobId }: { jobId: string }) {
         >
           <Link
             href={`/minimals/job/${jobId}`}
-            className="flex items-center gap-2 px-3 py-1.5 text-sm text-grey-800 hover:bg-grey-100"
+            className="flex items-center gap-2 px-3 py-1.5 text-lg text-grey-800 hover:bg-grey-100"
             role="menuitem"
             onClick={() => setOpen(false)}
           >
@@ -59,7 +59,7 @@ function MoreMenu({ jobId }: { jobId: string }) {
           </Link>
           <Link
             href={`/minimals/job/edit`}
-            className="flex items-center gap-2 px-3 py-1.5 text-sm text-grey-800 hover:bg-grey-100"
+            className="flex items-center gap-2 px-3 py-1.5 text-lg text-grey-800 hover:bg-grey-100"
             role="menuitem"
             onClick={() => setOpen(false)}
           >
@@ -67,7 +67,7 @@ function MoreMenu({ jobId }: { jobId: string }) {
           </Link>
           <button
             type="button"
-            className="flex w-full items-center gap-2 px-3 py-1.5 text-sm text-error hover:bg-grey-100"
+            className="flex w-full items-center gap-2 px-3 py-1.5 text-lg text-error hover:bg-grey-100"
             role="menuitem"
             onClick={() => setOpen(false)}
           >
@@ -108,16 +108,16 @@ export function JobCard({ job }: JobCardProps) {
         {/* title + posted */}
         <Link
           href={`/minimals/job/${job.id}`}
-          className="mb-0.5 block text-sm font-bold leading-snug text-grey-800 hover:underline"
+          className="mb-0.5 block text-lg font-semibold leading-snug text-grey-800 hover:underline"
         >
           {job.title}
         </Link>
-        <p className="text-xs text-grey-400">
+        <p className="text-lg text-grey-400">
           Posted date: {job.posted}
         </p>
 
         {/* candidates */}
-        <p className="mt-3 flex items-center gap-1 text-xs font-semibold text-success-dark">
+        <p className="mt-3 flex items-center gap-1 text-lg font-semibold text-success-dark">
           <Users className="size-3.5" />
           {job.candidates} candidates
         </p>
@@ -128,19 +128,19 @@ export function JobCard({ job }: JobCardProps) {
 
       {/* Footer section: meta 2x2 grid */}
       <div className="grid grid-cols-2 gap-x-3 gap-y-3 p-6">
-        <div className="flex items-center gap-1.5 text-xs text-grey-500">
+        <div className="flex items-center gap-1.5 text-lg text-grey-500">
           <Award className="size-3.5 shrink-0" />
           <span className="truncate">{job.experience}</span>
         </div>
-        <div className="flex items-center gap-1.5 text-xs text-grey-500">
+        <div className="flex items-center gap-1.5 text-lg text-grey-500">
           <Briefcase className="size-3.5 shrink-0" />
           <span className="truncate">{job.employmentType}</span>
         </div>
-        <div className="flex items-center gap-1.5 text-xs text-grey-500">
+        <div className="flex items-center gap-1.5 text-lg text-grey-500">
           <DollarSign className="size-3.5 shrink-0" />
           <span className="truncate">{job.salary}</span>
         </div>
-        <div className="flex items-center gap-1.5 text-xs text-grey-500">
+        <div className="flex items-center gap-1.5 text-lg text-grey-500">
           <UserRound className="size-3.5 shrink-0" />
           <span className="truncate">{job.role}</span>
         </div>

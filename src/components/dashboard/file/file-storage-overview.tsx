@@ -55,10 +55,10 @@ export function FileStorageOverview() {
             />
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-end pb-1">
-            <span className="text-3xl font-bold text-grey-800">{percent}%</span>
+            <span className="text-5xl font-semibold text-grey-800">{percent}%</span>
           </div>
         </div>
-        <p className="mt-1 text-center text-xs text-grey-500">
+        <p className="mt-1 text-center text-lg text-grey-500">
           Used of {used} Gb / {total} Gb
         </p>
 
@@ -74,10 +74,10 @@ export function FileStorageOverview() {
                 <img src={item.icon} alt={item.label} className="size-6" />
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-semibold text-grey-800">{item.label}</p>
-                <p className="text-xs text-grey-500">{item.files}</p>
+                <p className="text-lg font-semibold text-grey-800">{item.label}</p>
+                <p className="text-lg text-grey-500">{item.files}</p>
               </div>
-              <span className="shrink-0 text-sm font-semibold text-grey-800">
+              <span className="shrink-0 text-lg font-semibold text-grey-800">
                 {item.size}
               </span>
             </div>

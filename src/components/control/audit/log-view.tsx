@@ -143,7 +143,7 @@ export function AuditLogView() {
           }}
         />
 
-        <p className="flex items-center gap-1.5 border-t border-[var(--divider)] px-5 py-3 text-xs text-grey-600">
+        <p className="flex items-center gap-1.5 border-t border-[var(--divider)] px-5 py-3 text-lg text-grey-600">
           <Lock className="size-3.5 text-grey-500" />
           บันทึกการตรวจสอบเป็นแบบอ่านอย่างเดียว แก้ไข/ลบไม่ได้
         </p>

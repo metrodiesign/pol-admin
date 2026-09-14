@@ -42,12 +42,12 @@ export function OrderDetailItems({
               />
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-semibold text-foreground">
+              <p className="text-lg font-semibold text-foreground">
                 {item.name}
               </p>
-              <p className="text-xs text-grey-600">{item.sku}</p>
+              <p className="text-lg text-grey-600">{item.sku}</p>
             </div>
-            <div className="flex items-center gap-8 text-sm text-foreground">
+            <div className="flex items-center gap-8 text-lg text-foreground">
               <span className="text-grey-600">x{item.qty}</span>
               <span className="w-20 text-right font-semibold">
                 {formatCurrency(item.price * item.qty)}
@@ -61,7 +61,7 @@ export function OrderDetailItems({
       <div className="my-5 border-t border-dashed border-[var(--divider)]" />
 
       {/* Price summary */}
-      <div className="space-y-2.5 text-sm">
+      <div className="space-y-2.5 text-lg">
         <div className="flex items-center justify-end gap-2">
           <span className="w-48 text-right text-grey-600">
             Subtotal
@@ -93,10 +93,10 @@ export function OrderDetailItems({
           </span>
         </div>
         <div className="flex items-center justify-end gap-2 pt-2">
-          <span className="w-48 text-right text-base font-semibold text-foreground">
+          <span className="w-48 text-right text-xl font-semibold text-foreground">
             Total
           </span>
-          <span className="w-24 text-right text-base font-bold text-foreground">
+          <span className="w-24 text-right text-xl font-semibold text-foreground">
             {formatCurrency(total)}
           </span>
         </div>

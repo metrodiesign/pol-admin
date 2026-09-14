@@ -48,7 +48,7 @@ export function RadialChart({
         </RadialBarChart>
       </ResponsiveContainer>
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-        <span className={cn("text-base font-bold text-grey-800", labelClassName)}>{value}%</span>
+        <span className={cn("text-xl font-semibold text-grey-800", labelClassName)}>{value}%</span>
       </div>
     </div>
   );

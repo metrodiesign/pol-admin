@@ -164,7 +164,7 @@ export function DateRangeField({
 
   return (
     <div className="flex w-full flex-col gap-1.5">
-      <label id={labelId} className="text-sm font-medium text-grey-800">
+      <label id={labelId} className="text-lg font-medium text-grey-800">
         {label}
       </label>
       <Popover open={open} onOpenChange={handleOpenChange}>
@@ -176,7 +176,7 @@ export function DateRangeField({
           )}
         >
           <span
-            className={cn("min-w-0 flex-1 truncate text-sm", value ? "text-foreground" : "text-grey-500")}
+            className={cn("min-w-0 flex-1 truncate text-lg", value ? "text-foreground" : "text-grey-500")}
           >
             {value ? formatThaiRange(value) : placeholder}
           </span>
@@ -194,7 +194,7 @@ export function DateRangeField({
                   type="button"
                   variant={activePreset === preset.key ? "default" : "ghost"}
                   size="lg"
-                  className="justify-start rounded-control px-3 text-sm font-medium sm:w-full"
+                  className="justify-start rounded-control px-3 text-lg font-medium sm:w-full"
                   onClick={() => handlePresetClick(preset.key)}
                 >
                   {preset.label}
@@ -241,16 +241,16 @@ export function DateRangeField({
           </div>
 
           <div className="sticky bottom-0 flex items-center justify-between gap-3 border-t border-[var(--divider)] bg-popover p-3">
-            <span className="truncate text-sm text-grey-700">
+            <span className="truncate text-lg text-grey-700">
               {draft?.end !== undefined ? formatThaiRange({ start: draft.start, end: draft.end }) : "เลือกวันที่"}
             </span>
             <div className="flex shrink-0 gap-2">
-              {/* ขนาดตามธีมของ footer ปุ่มในฟอร์ม (role-edit-view): h-9 min-w-[100px] text-sm font-bold */}
+              {/* ขนาดตามธีมของ footer ปุ่มในฟอร์ม (role-edit-view): h-9 min-w-[100px] text-lg font-semibold */}
               <Button
                 type="button"
                 variant="outline"
                 size="lg"
-                className="min-w-[100px] rounded-control px-3 text-sm font-bold"
+                className="min-w-[100px] rounded-control px-3 text-lg font-semibold"
                 onClick={() => setOpen(false)}
               >
                 ยกเลิก
@@ -258,7 +258,7 @@ export function DateRangeField({
               <Button
                 type="button"
                 size="lg"
-                className="min-w-[100px] rounded-control px-3 text-sm font-bold"
+                className="min-w-[100px] rounded-control px-3 text-lg font-semibold"
                 disabled={!draft || draft.end === undefined}
                 onClick={handleConfirm}
               >

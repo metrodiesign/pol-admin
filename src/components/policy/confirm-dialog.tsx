@@ -33,21 +33,21 @@ export function ConfirmDialog({
     <Dialog open={open} onOpenChange={(o) => (!o ? onClose() : undefined)}>
       <DialogContent className="theme-minimals sm:max-w-sm" showCloseButton={false}>
         <DialogHeader>
-          <DialogTitle className="text-lg font-bold text-foreground">{title}</DialogTitle>
+          <DialogTitle className="text-2xl font-semibold text-foreground">{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
 
         <DialogFooter>
           <DialogClose
             render={
-              <Button className="h-11 min-w-[100px] px-5 bg-[rgba(145,158,171,0.16)] font-bold text-grey-800 hover:bg-[rgba(145,158,171,0.24)]" />
+              <Button className="h-11 min-w-[100px] px-5 bg-[rgba(145,158,171,0.16)] font-semibold text-grey-800 hover:bg-[rgba(145,158,171,0.24)]" />
             }
           >
             ยกเลิก
           </DialogClose>
           <Button
             onClick={onConfirm}
-            className="h-11 min-w-[100px] px-5 bg-primary font-bold text-primary-foreground hover:bg-primary/90"
+            className="h-11 min-w-[100px] px-5 bg-primary font-semibold text-primary-foreground hover:bg-primary/90"
           >
             {confirmLabel}
           </Button>

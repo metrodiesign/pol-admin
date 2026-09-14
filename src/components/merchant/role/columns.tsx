@@ -88,7 +88,7 @@ export function buildRoleColumns({
       enableSorting: false,
       meta: { cellClassName: "max-w-xs whitespace-normal text-grey-600" },
       cell: ({ getValue }) => (
-        <span className="text-sm text-grey-600">{getValue<string>()}</span>
+        <span className="text-lg text-grey-600">{getValue<string>()}</span>
       ),
     },
     {
@@ -107,7 +107,7 @@ export function buildRoleColumns({
       header: "ผู้ใช้",
       enableSorting: false,
       cell: ({ row }) => (
-        <span className="inline-flex items-center gap-1.5 text-sm text-foreground">
+        <span className="inline-flex items-center gap-1.5 text-lg text-foreground">
           <Users className="size-4 text-grey-500" />
           {row.original.userCount}
         </span>

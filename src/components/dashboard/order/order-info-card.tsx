@@ -23,7 +23,7 @@ export function OrderInfoCard({
     >
       {/* Card header */}
       <div className="flex items-center justify-between px-6 pb-3 pt-5">
-        <h3 className="text-lg font-semibold leading-7 text-foreground">
+        <h3 className="text-2xl font-semibold leading-7 text-foreground">
           {title}
         </h3>
         {showEdit && (

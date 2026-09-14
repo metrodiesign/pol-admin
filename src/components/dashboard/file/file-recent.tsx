@@ -28,7 +28,7 @@ export function FileRecent() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <h6 className="text-lg font-semibold text-grey-800">Recent files</h6>
+          <h6 className="text-2xl font-semibold text-grey-800">Recent files</h6>
           <button
             type="button"
             className="flex size-6 items-center justify-center rounded-full bg-success text-white hover:bg-success-dark"
@@ -39,7 +39,7 @@ export function FileRecent() {
         </div>
         <Link
           href="/minimals/file-manager"
-          className="-mr-3 inline-flex items-center gap-1 rounded-control px-3 py-1.5 text-sm font-semibold text-grey-800 transition-colors hover:bg-[var(--action-hover)]"
+          className="-mr-3 inline-flex items-center gap-1 rounded-control px-3 py-1.5 text-lg font-semibold text-grey-800 transition-colors hover:bg-[var(--action-hover)]"
         >
           View all
           <ArrowRight className="size-4" />
@@ -61,8 +61,8 @@ export function FileRecent() {
 
               {/* File info */}
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-semibold text-grey-800">{file.name}</p>
-                <p className="mt-0.5 text-xs text-grey-500">
+                <p className="truncate text-lg font-semibold text-grey-800">{file.name}</p>
+                <p className="mt-0.5 text-lg text-grey-500">
                   {file.size}&nbsp;&nbsp;·&nbsp;&nbsp;{file.modifiedAt}
                 </p>
               </div>
@@ -83,7 +83,7 @@ export function FileRecent() {
                     ))}
                   </div>
                   {file.overflow > 0 && (
-                    <span className="ml-1 text-xs font-medium text-grey-500">
+                    <span className="ml-1 text-lg font-medium text-grey-500">
                       +{file.overflow}
                     </span>
                   )}

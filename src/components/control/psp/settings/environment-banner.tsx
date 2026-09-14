@@ -33,17 +33,17 @@ export function EnvironmentBanner({
           aria-hidden
         />
         <div>
-          <p className="text-xs font-medium text-grey-600">สภาพแวดล้อมปัจจุบัน</p>
+          <p className="text-lg font-medium text-grey-600">สภาพแวดล้อมปัจจุบัน</p>
           <p
             className={cn(
-              "text-lg font-bold leading-7",
+              "text-2xl font-semibold leading-7",
               isLive ? "text-warning" : "text-foreground",
             )}
           >
             {settings.environment.toUpperCase()}
           </p>
           {settings.pendingEnvironment ? (
-            <p className="mt-1 text-sm text-warning">
+            <p className="mt-1 text-lg text-warning">
               รออนุมัติเปลี่ยนเป็น {settings.pendingEnvironment.toUpperCase()}
               {settings.pendingApprovalId ? (
                 <>
@@ -67,12 +67,12 @@ export function EnvironmentBanner({
             type="button"
             onClick={onRequestChange}
             disabled={!canRequestChange}
-            className="inline-flex h-11 min-w-[180px] items-center justify-center rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90 disabled:pointer-events-none disabled:opacity-50"
+            className="inline-flex h-11 min-w-[180px] items-center justify-center rounded-control bg-primary px-3 text-lg font-semibold text-primary-foreground transition-colors hover:bg-primary/90 disabled:pointer-events-none disabled:opacity-50"
           >
             ขอเปลี่ยนเป็น {target.toUpperCase()}
           </button>
           {!canRequestChange && disabledReason ? (
-            <p className="text-xs text-grey-600">{disabledReason}</p>
+            <p className="text-lg text-grey-600">{disabledReason}</p>
           ) : null}
         </div>
       ) : null}

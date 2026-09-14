@@ -5,12 +5,12 @@ import { UPGRADE_ILLUSTRATION } from "@/lib/mock/file";
 export function FileUpgradeCard() {
   return (
     <div className="relative overflow-hidden rounded-card bg-grey-900 px-6 py-8 text-white">
-      <h6 className="relative z-10 max-w-[150px] text-lg font-semibold leading-snug">
+      <h6 className="relative z-10 max-w-[150px] text-2xl font-semibold leading-snug">
         Upgrade your plan and get more space
       </h6>
       <button
         type="button"
-        className="relative z-10 mt-4 rounded-lg bg-warning px-3 py-1.5 text-sm font-bold text-[#1C252E] transition-colors duration-[250ms] hover:bg-warning-dark"
+        className="relative z-10 mt-4 rounded-lg bg-warning px-3 py-1.5 text-lg font-semibold text-[#1C252E] transition-colors duration-[250ms] hover:bg-warning-dark"
       >
         Upgrade plan
       </button>

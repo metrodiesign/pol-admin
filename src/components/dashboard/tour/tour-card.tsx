@@ -58,11 +58,11 @@ export function TourCard({ tour, onDelete }: TourCardProps) {
             loading="lazy"
           />
           {/* Price chip — top left (fixed dark, not theme-flipped) */}
-          <span className="absolute left-2 top-2 rounded-control bg-grey-800 px-1.5 py-0.5 text-sm font-semibold text-white">
+          <span className="absolute left-2 top-2 rounded-control bg-grey-800 px-1.5 py-0.5 text-lg font-semibold text-white">
             ${tour.price.toFixed(2)}
           </span>
           {/* Rating chip — top right */}
-          <span className="absolute right-2 top-2 flex items-center gap-0.5 rounded-control bg-warning-lighter px-1.5 py-0.5 text-sm font-semibold text-grey-900">
+          <span className="absolute right-2 top-2 flex items-center gap-0.5 rounded-control bg-warning-lighter px-1.5 py-0.5 text-lg font-semibold text-grey-900">
             <Star className="size-3.5 fill-warning text-warning" />
             {tour.rating}
           </span>
@@ -82,12 +82,12 @@ export function TourCard({ tour, onDelete }: TourCardProps) {
       {/* Card body */}
       <div className="relative px-5 pb-4 pt-5">
         {/* Posted date caption */}
-        <p className="text-xs text-grey-500">Posted date: {tour.postedAt}</p>
+        <p className="text-lg text-grey-500">Posted date: {tour.postedAt}</p>
 
         {/* Title */}
         <Link
           href={`/minimals/tour/details?id=${tour.id}`}
-          className="mt-1.5 block truncate text-base font-semibold text-grey-800 hover:underline"
+          className="mt-1.5 block truncate text-xl font-semibold text-grey-800 hover:underline"
           title={tour.title}
         >
           {tour.title}
@@ -95,15 +95,15 @@ export function TourCard({ tour, onDelete }: TourCardProps) {
 
         {/* Meta rows — colored icons */}
         <div className="mt-4 space-y-2.5">
-          <div className="flex items-center gap-1.5 text-sm text-grey-800">
+          <div className="flex items-center gap-1.5 text-lg text-grey-800">
             <MapPin className="size-5 shrink-0 text-error" />
             {tour.country}
           </div>
-          <div className="flex items-center gap-1.5 text-sm text-grey-800">
+          <div className="flex items-center gap-1.5 text-lg text-grey-800">
             <Calendar className="size-5 shrink-0 text-info" />
             {dateRange}
           </div>
-          <div className="flex items-center gap-1.5 text-sm text-grey-800">
+          <div className="flex items-center gap-1.5 text-lg text-grey-800">
             <Users className="size-5 shrink-0 text-primary" />
             {tour.bookedCount} Booked
           </div>

@@ -6,7 +6,7 @@ import { Clock } from "lucide-react";
 import { getLoginErrorContent } from "@/lib/auth/login-error";
 
 const linkButtonClass =
-  "mt-8 inline-flex h-11 w-full items-center justify-center rounded-control bg-primary px-5 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1";
+  "mt-8 inline-flex h-11 w-full items-center justify-center rounded-control bg-primary px-5 text-lg font-semibold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1";
 
 export const metadata: Metadata = { title: "เข้าสู่ระบบไม่สำเร็จ POL Pay" };
 
@@ -73,8 +73,8 @@ export default async function LoginErrorPage({
               <Clock className="size-12 text-warning" strokeWidth={1.5} />
             </div>
           )}
-          <h1 className="text-xl font-bold text-foreground">{title}</h1>
-          <p className="mt-2 text-sm text-muted-foreground">{message}</p>
+          <h1 className="text-3xl font-semibold text-foreground">{title}</h1>
+          <p className="mt-2 text-lg text-muted-foreground">{message}</p>
           <Link href="/login" className={linkButtonClass}>
             กลับไปหน้าเข้าสู่ระบบ
           </Link>

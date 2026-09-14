@@ -28,14 +28,14 @@ export function BankingQuickTransfer() {
 
   return (
     <div className="dashboard-card p-6">
-      <h6 className="text-lg font-semibold text-grey-800">Quick transfer</h6>
+      <h6 className="text-2xl font-semibold text-grey-800">Quick transfer</h6>
 
       {/* RECENT label + View all */}
       <div className="mt-4 flex items-center justify-between">
-        <span className="text-xs font-semibold uppercase tracking-wider text-grey-500">Recent</span>
+        <span className="text-lg font-semibold uppercase tracking-wider text-grey-500">Recent</span>
         <button
           type="button"
-          className="-mr-3 inline-flex items-center gap-1 rounded-control px-3 py-1.5 text-sm font-semibold text-grey-800 transition-colors hover:bg-[var(--action-hover)]"
+          className="-mr-3 inline-flex items-center gap-1 rounded-control px-3 py-1.5 text-lg font-semibold text-grey-800 transition-colors hover:bg-[var(--action-hover)]"
         >
           View all
           <ArrowRight className="size-4" />
@@ -84,7 +84,7 @@ export function BankingQuickTransfer() {
                     unoptimized
                   />
                 </span>
-                <span className="w-14 truncate text-center text-xs font-medium text-grey-600">
+                <span className="w-14 truncate text-center text-lg font-medium text-grey-600">
                   {c.name.split(" ")[0]}
                 </span>
               </button>
@@ -108,12 +108,12 @@ export function BankingQuickTransfer() {
 
       {/* Insert amount */}
       <div className="mt-6">
-        <p className="text-xs font-semibold uppercase tracking-wider text-grey-500">
+        <p className="text-lg font-semibold uppercase tracking-wider text-grey-500">
           Insert amount
         </p>
         <div className="mt-3 flex items-center justify-center gap-1">
           <span
-            className="text-4xl font-bold leading-none text-grey-800"
+            className="text-5xl font-semibold leading-none text-grey-800"
             style={{ fontFamily: "var(--font-barlow, var(--font-sans))" }}
           >
             $
@@ -124,7 +124,7 @@ export function BankingQuickTransfer() {
             max={1000}
             value={amount}
             onChange={handleAmountChange}
-            className="w-32 bg-transparent text-center text-4xl font-bold leading-none text-grey-800 outline-none"
+            className="w-32 bg-transparent text-center text-5xl font-semibold leading-none text-grey-800 outline-none"
             style={{ fontFamily: "var(--font-barlow, var(--font-sans))" }}
             aria-label="Insert amount"
           />
@@ -148,7 +148,7 @@ export function BankingQuickTransfer() {
       </div>
 
       {/* Balance */}
-      <div className="mt-4 flex items-center justify-between text-sm">
+      <div className="mt-4 flex items-center justify-between text-lg">
         <span className="text-grey-600">Your balance</span>
         <span className="font-semibold text-grey-800">$34,212</span>
       </div>
@@ -156,7 +156,7 @@ export function BankingQuickTransfer() {
       {/* Transfer now button */}
       <button
         type="button"
-        className="mt-4 w-full rounded-control bg-grey-800 py-3 text-sm font-bold text-white transition-colors hover:bg-grey-900"
+        className="mt-4 w-full rounded-control bg-grey-800 py-3 text-lg font-semibold text-white transition-colors hover:bg-grey-900"
       >
         Transfer now
       </button>

@@ -29,13 +29,13 @@ export function CourseSidebar() {
           height={84}
           className="size-[84px] rounded-full object-cover"
         />
-        <p className="mt-4 text-base font-semibold text-grey-800">Jaydon Frankie</p>
-        <p className="mt-0.5 text-sm text-grey-500">ID: 123987</p>
+        <p className="mt-4 text-xl font-semibold text-grey-800">Jaydon Frankie</p>
+        <p className="mt-0.5 text-lg text-grey-500">ID: 123987</p>
       </div>
 
       {/* Strength radar */}
       <div className="dashboard-card p-6">
-        <h6 className="text-lg font-semibold text-grey-800">Strength</h6>
+        <h6 className="text-2xl font-semibold text-grey-800">Strength</h6>
         <div className="h-[220px] pt-2">
           <ResponsiveContainer
             width="100%"
@@ -64,12 +64,12 @@ export function CourseSidebar() {
 
       {/* Reminders */}
       <div className="dashboard-card p-6">
-        <h6 className="text-lg font-semibold text-grey-800">Reminders</h6>
+        <h6 className="text-2xl font-semibold text-grey-800">Reminders</h6>
         <ul className="mt-4 space-y-4">
           {reminders.map((r) => (
             <li key={r.title}>
-              <p className="text-sm font-semibold leading-snug text-grey-800">{r.title}</p>
-              <p className="mt-0.5 text-xs text-grey-500">{r.date}</p>
+              <p className="text-lg font-semibold leading-snug text-grey-800">{r.title}</p>
+              <p className="mt-0.5 text-lg text-grey-500">{r.date}</p>
               <div className="mt-2 flex items-center gap-2">
                 <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-grey-200">
                   <div
@@ -77,7 +77,7 @@ export function CourseSidebar() {
                     style={{ width: `${r.progress}%`, backgroundColor: r.color }}
                   />
                 </div>
-                <span className="w-10 text-right text-xs font-semibold text-grey-600">
+                <span className="w-10 text-right text-lg font-semibold text-grey-600">
                   {r.progress}%
                 </span>
               </div>

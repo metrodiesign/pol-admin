@@ -48,7 +48,7 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
           <ChevronRight className="size-4 text-grey-700" />
         </button>
         {/* Counter */}
-        <span className="absolute bottom-4 right-4 rounded-md bg-grey-800/64 px-2 py-0.5 text-xs font-semibold text-white backdrop-blur-sm">
+        <span className="absolute bottom-4 right-4 rounded-md bg-grey-800/64 px-2 py-0.5 text-lg font-semibold text-white backdrop-blur-sm">
           {current + 1}/{images.length}
         </span>
       </div>

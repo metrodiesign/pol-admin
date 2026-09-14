@@ -7,59 +7,21 @@ import {
   SETTINGS_INIT_SCRIPT,
 } from "@/components/providers/settings-provider";
 
-const publicSans = localFont({
-  src: "./fonts/public-sans-variable.ttf",
-  variable: "--font-public-sans",
-  weight: "100 900",
-  style: "normal",
+// Single face for the whole UI — DB Sathorn X covers both Thai and Latin
+// glyphs, so no separate Thai fallback is needed. Weight ranges are widened
+// past the shipped weights (e.g. 700 900) so font-weight: 800 in the heading
+// utilities maps to the Bold file instead of a synthetic bold.
+const dbSathornX = localFont({
+  variable: "--font-db-sathorn-x",
   display: "swap",
-});
-
-const barlow = localFont({
   src: [
-    { path: "./fonts/barlow-600.ttf", weight: "600", style: "normal" },
-    { path: "./fonts/barlow-700.ttf", weight: "700", style: "normal" },
-    { path: "./fonts/barlow-800.ttf", weight: "800", style: "normal" },
+    { path: "./fonts/db-sathorn-x-regular.ttf", weight: "400", style: "normal" },
+    { path: "./fonts/db-sathorn-x-italic.ttf", weight: "400", style: "italic" },
+    { path: "./fonts/db-sathorn-x-medium.ttf", weight: "500 600", style: "normal" },
+    { path: "./fonts/db-sathorn-x-medium-italic.ttf", weight: "500 600", style: "italic" },
+    { path: "./fonts/db-sathorn-x-bold.ttf", weight: "700 900", style: "normal" },
+    { path: "./fonts/db-sathorn-x-bold-italic.ttf", weight: "700 900", style: "italic" },
   ],
-  variable: "--font-barlow",
-  display: "swap",
-});
-
-// Thai glyph coverage — Public Sans/Barlow are Latin-only, so Thai text would
-// otherwise fall back to a heavier OS font. Loaded once and appended to every
-// font chain (see globals.css) so Thai renders at the correct weight.
-const notoSansThai = localFont({
-  src: "./fonts/noto-sans-thai-variable.ttf",
-  variable: "--font-noto-thai",
-  weight: "100 900",
-  style: "normal",
-  display: "swap",
-});
-
-// Alternate body fonts — switchable via the settings drawer (Font → Family).
-// All three are variable fonts, so the weight axis loads automatically.
-const inter = localFont({
-  src: "./fonts/inter-variable.ttf",
-  variable: "--font-inter",
-  weight: "100 900",
-  style: "normal",
-  display: "swap",
-});
-
-const dmSans = localFont({
-  src: "./fonts/dm-sans-variable.ttf",
-  variable: "--font-dm-sans",
-  weight: "100 1000",
-  style: "normal",
-  display: "swap",
-});
-
-const nunitoSans = localFont({
-  src: "./fonts/nunito-sans-variable.ttf",
-  variable: "--font-nunito-sans",
-  weight: "200 1000",
-  style: "normal",
-  display: "swap",
 });
 
 // Monospace data face for the control plane — machine identifiers, keys, refs.
@@ -86,7 +48,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${publicSans.variable} ${barlow.variable} ${inter.variable} ${dmSans.variable} ${nunitoSans.variable} ${notoSansThai.variable} ${ibmPlexMono.variable} h-full antialiased`}
+      className={`${dbSathornX.variable} ${ibmPlexMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>

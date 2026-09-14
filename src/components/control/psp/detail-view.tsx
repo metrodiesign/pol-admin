@@ -75,9 +75,9 @@ export function ConnectionIdentity({
   return (
     <div className="flex flex-col gap-4 border-b border-[var(--divider)] p-6 sm:flex-row sm:items-start sm:justify-between">
       <div className="min-w-0">
-        <h2 className="text-lg font-bold leading-7 text-foreground">{PROVIDER_LABEL[connection.psp]}</h2>
-        <p className="mt-0.5 truncate text-sm text-grey-600">{merchantName}</p>
-        <p className="text-data mt-1 break-all text-xs text-grey-500">{connection.pspConnectionId}</p>
+        <h2 className="text-2xl font-semibold leading-7 text-foreground">{PROVIDER_LABEL[connection.psp]}</h2>
+        <p className="mt-0.5 truncate text-lg text-grey-600">{merchantName}</p>
+        <p className="text-data mt-1 break-all text-lg text-grey-500">{connection.pspConnectionId}</p>
       </div>
       <div className="flex flex-wrap items-center gap-2">
         <ControlStatusBadge
@@ -103,7 +103,7 @@ export function ConnectionIdentity({
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="border-b border-[var(--divider)] p-6 last:border-b-0">
-      <h3 className="text-sm font-semibold text-foreground">{title}</h3>
+      <h3 className="text-lg font-semibold text-foreground">{title}</h3>
       <div className="mt-4">{children}</div>
     </section>
   );
@@ -126,7 +126,7 @@ function Header({ id, actions }: { id: string; actions?: React.ReactNode }) {
 function LoadingState() {
   return (
     <div className="flex min-h-[50vh] items-center justify-center" aria-busy="true">
-      <p className="text-sm text-grey-600" role="status">กำลังโหลด PSP Connection...</p>
+      <p className="text-lg text-grey-600" role="status">กำลังโหลด PSP Connection...</p>
     </div>
   );
 }
@@ -143,7 +143,7 @@ function BlockingState({
   return (
     <div className="rounded-card bg-card px-5 py-12 text-center" style={cardStyle} role="alert">
       <h1 className="text-h6 text-foreground">{title}</h1>
-      <p className="mt-2 text-sm text-grey-600">{message}</p>
+      <p className="mt-2 text-lg text-grey-600">{message}</p>
       {onRetry ? (
         <Button type="button" variant="outline" className="mt-5" onClick={onRetry}>
           <RefreshCw className="size-4" />
@@ -158,7 +158,7 @@ function Notice({ tone, children }: { tone: "error" | "warning" | "success"; chi
   return (
     <div
       className={cn(
-        "rounded-xl border px-4 py-3 text-sm",
+        "rounded-xl border px-4 py-3 text-lg",
         tone === "error"
           ? "border-error/30 bg-error/8 text-error-dark"
           : tone === "warning"
@@ -410,14 +410,14 @@ export function PspDetailView({
                 {configFields.map(([label, value]) => <ReadField key={label} label={label} value={value} />)}
               </div>
             ) : (
-              <p className="text-sm text-grey-600">ไม่มี config ที่รองรับสำหรับแสดงผล</p>
+              <p className="text-lg text-grey-600">ไม่มี config ที่รองรับสำหรับแสดงผล</p>
             )}
           </Section>
 
           <Section title="Credential ที่ใช้งานอยู่">
             <ReadField label="secretKey" value={connection.maskedSecrets.secretKey ?? "-"} mono />
             {connection.psp === "2c2p" ? (
-              <p className="mt-4 text-sm text-grey-600">
+              <p className="mt-4 text-lg text-grey-600">
                 2C2P Merchant ID เป็น write-only และอ่านกลับจาก backend ไม่ได้
               </p>
             ) : null}
@@ -449,7 +449,7 @@ export function PspDetailView({
               </Button>
             </div>
             {disabledReasons.length ? (
-              <ul className="list-disc space-y-1 pl-5 text-xs text-grey-600">
+              <ul className="list-disc space-y-1 pl-5 text-lg text-grey-600">
                 {disabledReasons.map((reason) => <li key={reason}>{reason}</li>)}
               </ul>
             ) : null}

@@ -27,7 +27,7 @@ function ChartCard({
 }) {
   return (
     <div className="flex flex-col gap-5 rounded-card bg-card p-6" style={cardStyle}>
-      <h6 className="text-lg font-semibold text-grey-800">{title}</h6>
+      <h6 className="text-2xl font-semibold text-grey-800">{title}</h6>
       {children}
     </div>
   );
@@ -101,8 +101,8 @@ export function ReportsView() {
                   className="size-3 rounded-full"
                   style={{ backgroundColor: CATEGORICAL[i % CATEGORICAL.length] }}
                 />
-                <span className="text-sm text-grey-600">{c.name}</span>
-                <span className="text-sm font-semibold text-grey-800">
+                <span className="text-lg text-grey-600">{c.name}</span>
+                <span className="text-lg font-semibold text-grey-800">
                   {formatTHB(c.value)}
                 </span>
               </div>
@@ -127,15 +127,15 @@ export function ReportsView() {
               className="flex items-center justify-between gap-4 border-b border-dashed border-[var(--divider)] py-3 last:border-0"
             >
               <div className="flex items-center gap-3">
-                <span className="w-5 text-sm font-semibold text-grey-500">
+                <span className="w-5 text-lg font-semibold text-grey-500">
                   {i + 1}
                 </span>
-                <span className="text-data text-sm font-semibold text-grey-800">
+                <span className="text-data text-lg font-semibold text-grey-800">
                   {o.code}
                 </span>
-                <span className="text-sm text-grey-600">{o.label}</span>
+                <span className="text-lg text-grey-600">{o.label}</span>
               </div>
-              <span className="text-sm font-semibold text-foreground">
+              <span className="text-lg font-semibold text-foreground">
                 {formatTHB(o.amount)}
               </span>
             </li>

@@ -20,10 +20,10 @@ export const originatorColumns: ColumnDef<Originator>[] = [
       const o = row.original;
       return (
         <div className="flex flex-col gap-0.5">
-          <span className="text-sm font-semibold text-foreground">
+          <span className="text-lg font-semibold text-foreground">
             {o.name}
           </span>
-          <span className="text-data text-xs font-medium text-grey-700">
+          <span className="text-data text-lg font-medium text-grey-700">
             {o.code}
           </span>
         </div>
@@ -43,7 +43,7 @@ export const originatorColumns: ColumnDef<Originator>[] = [
     header: "บริษัท",
     enableSorting: false,
     cell: ({ row }) => (
-      <span className="text-sm text-foreground">
+      <span className="text-lg text-foreground">
         {MERCHANT_LABEL[row.original.merchantId]}
       </span>
     ),
@@ -53,7 +53,7 @@ export const originatorColumns: ColumnDef<Originator>[] = [
     header: "ไคลเอนต์ API",
     enableSorting: false,
     cell: ({ row }) => (
-      <span className="text-data text-xs text-grey-700">
+      <span className="text-data text-lg text-grey-700">
         {row.original.linkedApiClientId ?? "—"}
       </span>
     ),

@@ -38,17 +38,17 @@ export default function PermissionPage() {
             {/* Card header */}
             <div className="px-6 pt-6 pb-2">
               <h6
-                className="text-lg font-semibold leading-7 text-grey-800"
+                className="text-2xl font-semibold leading-7 text-grey-800"
                 style={{ fontSize: "18px", lineHeight: "28px" }}
               >
                 {card.title}
               </h6>
-              <p className="mt-0.5 text-sm text-grey-600">{card.subtitle}</p>
+              <p className="mt-0.5 text-lg text-grey-600">{card.subtitle}</p>
             </div>
             {/* Card body */}
             <div className="px-6 pb-6">
               <p
-                className="text-sm font-normal text-grey-600"
+                className="text-lg font-normal text-grey-600"
                 style={{ lineHeight: "22px" }}
               >
                 {card.body}

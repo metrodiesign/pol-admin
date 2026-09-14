@@ -22,7 +22,7 @@ export default function AuthCallbackPage() {
 
   return (
     <main className="flex min-h-dvh items-center justify-center bg-grey-100 p-4">
-      <p className="text-sm text-muted-foreground" role="status">
+      <p className="text-lg text-muted-foreground" role="status">
         กำลังเข้าสู่ระบบ...
       </p>
     </main>

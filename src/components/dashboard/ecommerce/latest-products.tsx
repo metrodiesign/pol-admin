@@ -29,16 +29,16 @@ export function LatestProducts() {
                 className="size-12 shrink-0 rounded-xl object-cover"
               />
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-semibold text-grey-800">
+                <p className="truncate text-lg font-semibold text-grey-800">
                   {product.name}
                 </p>
                 <div className="mt-0.5 flex items-center gap-1.5">
                   {product.priceSale && (
-                    <span className="text-sm text-grey-400 line-through">
+                    <span className="text-lg text-grey-400 line-through">
                       {product.priceSale}
                     </span>
                   )}
-                  <span className="text-sm font-semibold text-grey-800">
+                  <span className="text-lg font-semibold text-grey-800">
                     {product.price}
                   </span>
                 </div>
@@ -52,7 +52,7 @@ export function LatestProducts() {
                   />
                 ))}
                 {extraCount > 0 && (
-                  <span className="ml-0.5 text-xs font-medium text-grey-500">
+                  <span className="ml-0.5 text-lg font-medium text-grey-500">
                     +{extraCount}
                   </span>
                 )}

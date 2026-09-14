@@ -28,7 +28,7 @@ export function FileStorageCards({ stacked = false }: FileStorageCardsProps) {
                 <MoreVertical className="size-5" />
               </button>
             </div>
-            <h6 className="mt-4 text-lg font-semibold text-grey-800">{card.name}</h6>
+            <h6 className="mt-4 text-2xl font-semibold text-grey-800">{card.name}</h6>
             {/* Push progress + label to bottom of card */}
             <div className="mt-auto pt-4">
               <div className="h-1.5 w-full overflow-hidden rounded-full bg-grey-200">
@@ -37,7 +37,7 @@ export function FileStorageCards({ stacked = false }: FileStorageCardsProps) {
                   style={{ width: `${card.progress}%`, backgroundColor: card.barColor }}
                 />
               </div>
-              <p className="mt-2 text-right text-sm text-grey-500">
+              <p className="mt-2 text-right text-lg text-grey-500">
                 <span className="font-semibold text-grey-800">{card.used}</span>{" "}
                 / {card.total}
               </p>

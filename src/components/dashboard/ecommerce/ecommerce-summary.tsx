@@ -7,9 +7,9 @@ function StatCard({ stat }: { stat: EcommerceStat }) {
   return (
     <div className="dashboard-card flex min-h-[166px] items-start justify-between gap-4 p-6">
       <div>
-        <p className="text-sm font-semibold leading-[22px] text-grey-800">{stat.title}</p>
+        <p className="text-lg font-semibold leading-[22px] text-grey-800">{stat.title}</p>
         <p
-          className="mt-3 font-bold text-grey-800"
+          className="mt-3 font-semibold text-grey-800"
           style={{
             fontFamily: "var(--font-barlow, Barlow, sans-serif)",
             fontSize: "32px",
@@ -18,7 +18,7 @@ function StatCard({ stat }: { stat: EcommerceStat }) {
         >
           {stat.total}
         </p>
-        <div className="mt-2 flex items-center gap-1 text-sm">
+        <div className="mt-2 flex items-center gap-1 text-lg">
           {stat.trend.up ? (
             <ArrowUpward className="size-4 text-success" />
           ) : (
