@@ -146,7 +146,7 @@ export function EcommerceWelcome() {
             }}
           >
             <div className="relative z-10 max-w-sm">
-              <h4 className="text-2xl font-bold leading-9">
+              <h4 className="text-4xl font-semibold leading-9">
                 {slide.title}
                 {slide.highlight && (
                   <>
@@ -155,13 +155,13 @@ export function EcommerceWelcome() {
                   </>
                 )}
               </h4>
-              <p className="mt-4 text-sm leading-relaxed text-white/70">
+              <p className="mt-4 text-lg leading-relaxed text-white/70">
                 {slide.subtitle}
               </p>
               <button
                 type="button"
                 onPointerDown={stopDrag}
-                className="mt-6 rounded-control bg-[#00A76F] px-3 py-1.5 text-sm font-bold leading-6 text-white transition-colors hover:bg-[#007867]"
+                className="mt-6 rounded-control bg-[#00A76F] px-3 py-1.5 text-lg font-semibold leading-6 text-white transition-colors hover:bg-[#007867]"
               >
                 {slide.cta}
               </button>

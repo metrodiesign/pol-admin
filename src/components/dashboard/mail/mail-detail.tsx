@@ -33,7 +33,7 @@ function SenderAvatar({ from }: { from: MailMessage["from"] }) {
   }
   return (
     <span
-      className="flex size-10 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white"
+      className="flex size-10 shrink-0 items-center justify-center rounded-full text-lg font-semibold text-white"
       style={{ backgroundColor: from.color ?? "#637381" }}
     >
       {from.initials ?? from.name.charAt(0).toUpperCase()}
@@ -67,12 +67,12 @@ export function MailDetail({ message }: MailDetailProps) {
         <button type="button" aria-label="More" className={iconBtnClass}>
           <MoreVertical className="size-4" />
         </button>
-        <span className="ml-2 text-xs text-grey-400">{message.timestamp}</span>
+        <span className="ml-2 text-lg text-grey-400">{message.timestamp}</span>
       </div>
 
       {/* Subject + reply cluster */}
       <div className="flex items-start justify-between gap-3 px-4 py-4">
-        <h6 className="text-sm font-semibold leading-snug text-grey-800">
+        <h6 className="text-lg font-semibold leading-snug text-grey-800">
           {message.subject}
         </h6>
         <div className="flex shrink-0 items-center gap-0.5">
@@ -92,11 +92,11 @@ export function MailDetail({ message }: MailDetailProps) {
       <div className="flex items-start gap-3 px-4 pb-4">
         <SenderAvatar from={message.from} />
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-semibold text-grey-800">
+          <p className="text-lg font-semibold text-grey-800">
             {message.from.name}{" "}
             <span className="font-normal text-grey-500">&lt;{message.from.email}&gt;</span>
           </p>
-          <p className="text-xs text-grey-500">
+          <p className="text-lg text-grey-500">
             To: {message.to.join(", ")},
           </p>
         </div>
@@ -104,7 +104,7 @@ export function MailDetail({ message }: MailDetailProps) {
 
       {/* Body */}
       <div className="flex-1 overflow-y-auto px-4 pb-4">
-        <p className="text-sm leading-relaxed text-grey-600">{message.body}</p>
+        <p className="text-lg leading-relaxed text-grey-600">{message.body}</p>
       </div>
     </div>
   );

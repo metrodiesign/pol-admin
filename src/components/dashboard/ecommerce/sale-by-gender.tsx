@@ -50,8 +50,8 @@ export function SaleByGender() {
             </RadialBarChart>
           </ResponsiveContainer>
           <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-xs text-grey-500">Total</span>
-            <span className="text-2xl font-bold text-grey-800">
+            <span className="text-lg text-grey-500">Total</span>
+            <span className="text-4xl font-semibold text-grey-800">
               {total.toLocaleString()}
             </span>
           </div>
@@ -60,7 +60,7 @@ export function SaleByGender() {
           {data.map((entry) => (
             <div
               key={entry.label}
-              className="flex items-center gap-1.5 text-sm text-grey-600"
+              className="flex items-center gap-1.5 text-lg text-grey-600"
             >
               <span
                 className="size-3 rounded-full"

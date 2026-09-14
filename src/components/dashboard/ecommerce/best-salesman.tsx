@@ -72,7 +72,7 @@ export function BestSalesman() {
                   </TableCell>
                   <TableCell className="py-4 pr-6 text-right">
                     <span
-                      className="inline-flex min-w-[56px] items-center justify-center rounded-md px-2 py-1 text-xs font-bold"
+                      className="inline-flex min-w-[56px] items-center justify-center rounded-md px-2 py-1 text-lg font-semibold"
                       style={{
                         backgroundColor: rankStyle.bg,
                         color: rankStyle.text,

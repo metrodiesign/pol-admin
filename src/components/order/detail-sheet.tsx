@@ -33,11 +33,11 @@ export function OrderDetailSheet({
         {/* Header */}
         <div className="flex items-start justify-between gap-2 border-b border-[var(--divider)] px-4 py-3">
           <div className="min-w-0">
-            <SheetTitle className="text-base font-bold text-foreground">
+            <SheetTitle className="text-xl font-semibold text-foreground">
               รายละเอียดคำสั่งซื้อ
             </SheetTitle>
             <div className="mt-0.5 flex flex-wrap items-center gap-2">
-              <span className="text-xs font-semibold text-grey-600">
+              <span className="text-lg font-semibold text-grey-600">
                 คำสั่งซื้อ <span className="font-mono">• {order?.id ?? "—"}</span>
               </span>
             </div>

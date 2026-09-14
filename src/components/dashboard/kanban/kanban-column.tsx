@@ -91,7 +91,7 @@ export function KanbanColumn({
       <div className="flex h-8 items-center gap-2">
         {/* Count badge — light grey pill matching live reference */}
         <span
-          className="flex h-5 min-w-[20px] items-center justify-center rounded-md px-1.5 text-xs font-bold leading-none text-grey-600"
+          className="flex h-5 min-w-[20px] items-center justify-center rounded-md px-1.5 text-lg font-semibold leading-none text-grey-600"
           style={{ backgroundColor: "rgba(145,158,171,0.16)" }}
         >
           {column.cards.length}
@@ -111,7 +111,7 @@ export function KanbanColumn({
                 setIsEditingName(false);
               }
             }}
-            className="min-w-0 flex-1 rounded bg-transparent px-1 text-sm font-bold text-grey-800 outline-none ring-1 ring-primary focus:ring-2"
+            className="min-w-0 flex-1 rounded bg-transparent px-1 text-lg font-semibold text-grey-800 outline-none ring-1 ring-primary focus:ring-2"
             autoFocus
             aria-label="Edit column name"
           />
@@ -123,7 +123,7 @@ export function KanbanColumn({
               // focus after next render
               setTimeout(() => inputRef.current?.focus(), 0);
             }}
-            className="min-w-0 flex-1 truncate text-left text-sm font-bold text-grey-800 hover:text-grey-600"
+            className="min-w-0 flex-1 truncate text-left text-lg font-semibold text-grey-800 hover:text-grey-600"
             aria-label={`Column name: ${column.name}`}
           >
             {column.name}

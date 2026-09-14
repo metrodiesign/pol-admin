@@ -13,7 +13,7 @@ export function FormHelperText({
   children: ReactNode;
 }) {
   return (
-    <p className={cn("text-xs", error ? "text-error" : "text-grey-600", className)}>
+    <p className={cn("text-lg", error ? "text-error" : "text-grey-600", className)}>
       {children}
     </p>
   );
@@ -47,7 +47,7 @@ export function FormControl({
         <label
           id={id}
           className={cn(
-            "select-none text-sm font-medium",
+            "select-none text-lg font-medium",
             hasError ? "text-error" : "text-foreground",
           )}
         >

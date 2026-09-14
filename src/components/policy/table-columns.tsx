@@ -38,12 +38,12 @@ const VCP_SORT_RANK: Record<VcpStatus, number> = {
 };
 
 function VcpBadge({ vcp }: { vcp: VcpStatus }) {
-  if (vcp === "none") return <span className="text-sm text-grey-500">N/A</span>;
+  if (vcp === "none") return <span className="text-lg text-grey-500">N/A</span>;
   const style = VCP_META[vcp];
   return (
     <span
       className={cn(
-        "inline-flex items-center whitespace-nowrap rounded-full px-4 py-1 text-sm font-semibold",
+        "inline-flex items-center whitespace-nowrap rounded-full px-4 py-1 text-lg font-semibold",
         style.chip,
       )}
     >
@@ -67,7 +67,7 @@ export const policyColumns: ColumnDef<Policy>[] = [
     header: "ประเภทประกันภัย",
     enableSorting: false,
     cell: ({ row }) => (
-      <span className="text-sm whitespace-nowrap text-foreground">
+      <span className="text-lg whitespace-nowrap text-foreground">
         {INSURANCE_KIND_LABEL[row.original.insuranceKind]}
       </span>
     ),
@@ -81,10 +81,10 @@ export const policyColumns: ColumnDef<Policy>[] = [
       const p = row.original;
       return (
         <div className="min-w-0 whitespace-nowrap">
-          <span className="block text-sm font-bold text-primary underline underline-offset-2">
+          <span className="block text-lg font-semibold text-primary underline underline-offset-2">
             {p.referenceNo}
           </span>
-          <span className="mt-0.5 block text-xs text-grey-500">
+          <span className="mt-0.5 block text-lg text-grey-500">
             {REFERENCE_TYPE_LABEL[p.referenceType]}
           </span>
         </div>
@@ -96,7 +96,7 @@ export const policyColumns: ColumnDef<Policy>[] = [
     header: "ชื่อ-นามสกุล",
     enableSorting: false,
     cell: ({ row }) => (
-      <span className="block min-w-0 truncate text-sm text-foreground">
+      <span className="block min-w-0 truncate text-lg text-foreground">
         {row.original.customer.name}
       </span>
     ),
@@ -108,14 +108,14 @@ export const policyColumns: ColumnDef<Policy>[] = [
     cell: ({ row }) => {
       const info = row.original.extraInfo;
       if (!info.tooltip) {
-        return <span className="text-sm whitespace-nowrap text-foreground">{info.text}</span>;
+        return <span className="text-lg whitespace-nowrap text-foreground">{info.text}</span>;
       }
       return (
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger
               render={
-                <span className="cursor-help text-sm whitespace-nowrap text-foreground underline decoration-dotted underline-offset-4" />
+                <span className="cursor-help text-lg whitespace-nowrap text-foreground underline decoration-dotted underline-offset-4" />
               }
             >
               {info.text}
@@ -133,7 +133,7 @@ export const policyColumns: ColumnDef<Policy>[] = [
     accessorFn: (p) => p.netPremium,
     meta: { headClassName: "text-right", cellClassName: "text-right" },
     cell: ({ row }) => (
-      <span className="text-sm whitespace-nowrap text-foreground">
+      <span className="text-lg whitespace-nowrap text-foreground">
         {formatAmount(row.original.netPremium, 2)}
       </span>
     ),
@@ -145,7 +145,7 @@ export const policyColumns: ColumnDef<Policy>[] = [
     accessorFn: (p) => p.totalAmount,
     meta: { headClassName: "text-right", cellClassName: "text-right" },
     cell: ({ row }) => (
-      <span className="text-sm whitespace-nowrap text-foreground">
+      <span className="text-lg whitespace-nowrap text-foreground">
         {formatAmount(row.original.totalAmount, 2)}
       </span>
     ),
@@ -157,13 +157,13 @@ export const policyColumns: ColumnDef<Policy>[] = [
     cell: ({ row }) => {
       const d = row.original.deduction;
       if (d.state === "none") {
-        return <span className="text-sm text-grey-500">N/A</span>;
+        return <span className="text-lg text-grey-500">N/A</span>;
       }
       return (
         <div className="min-w-0 whitespace-nowrap">
-          <span className="block text-sm text-foreground">ตัดชำระแล้ว</span>
+          <span className="block text-lg text-foreground">ตัดชำระแล้ว</span>
           {d.date ? (
-            <span className="block text-xs text-grey-500">{formatThaiSlashDate(d.date)}</span>
+            <span className="block text-lg text-grey-500">{formatThaiSlashDate(d.date)}</span>
           ) : null}
         </div>
       );

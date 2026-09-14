@@ -23,7 +23,7 @@ export function Legend({
   return (
     <legend
       data-slot="legend"
-      className={cn("text-lg font-semibold text-foreground", className)}
+      className={cn("text-2xl font-semibold text-foreground", className)}
       {...props}
     />
   );
@@ -65,7 +65,7 @@ export function Label({
   return (
     <label
       data-slot="label"
-      className={cn("text-sm font-medium text-foreground select-none", className)}
+      className={cn("text-lg font-medium text-foreground select-none", className)}
       {...props}
     />
   );
@@ -78,7 +78,7 @@ export function Description({
   return (
     <p
       data-slot="description"
-      className={cn("text-xs text-grey-500", className)}
+      className={cn("text-lg text-grey-500", className)}
       {...props}
     />
   );

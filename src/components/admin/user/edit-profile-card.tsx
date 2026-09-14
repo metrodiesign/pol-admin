@@ -51,7 +51,7 @@ export function UserEditProfileCard({
     >
       <span
         className={cn(
-          "absolute top-6 right-6 inline-flex items-center rounded-full px-4 py-1 text-sm font-semibold",
+          "absolute top-6 right-6 inline-flex items-center rounded-full px-4 py-1 text-lg font-semibold",
           badge.bg,
           badge.text
         )}

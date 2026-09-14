@@ -53,7 +53,7 @@ export function ProductInfoTabs() {
               aria-selected={activeTab === tab}
               onClick={() => setActiveTab(tab)}
               className={cn(
-                "h-12 px-5 text-sm transition-colors",
+                "h-12 px-5 text-lg transition-colors",
                 activeTab === tab
                   ? "border-b-2 border-grey-800 font-semibold text-foreground"
                   : "font-medium text-grey-600 hover:text-foreground",
@@ -71,14 +71,14 @@ export function ProductInfoTabs() {
           <div className="space-y-6">
             {/* Specifications */}
             <section>
-              <h6 className="mb-3 text-sm font-bold text-foreground">
+              <h6 className="mb-3 text-lg font-semibold text-foreground">
                 Specifications
               </h6>
               <div className="space-y-0">
                 {SPECS.map(({ key, value }) => (
                   <div
                     key={key}
-                    className="grid grid-cols-[160px_1fr] border-b border-[var(--divider)] py-2 text-sm last:border-0"
+                    className="grid grid-cols-[160px_1fr] border-b border-[var(--divider)] py-2 text-lg last:border-0"
                   >
                     <span className="text-grey-500">{key}</span>
                     <span className="font-medium text-foreground">{value}</span>
@@ -89,14 +89,14 @@ export function ProductInfoTabs() {
 
             {/* Product details */}
             <section>
-              <h6 className="mb-3 text-sm font-bold text-foreground">
+              <h6 className="mb-3 text-lg font-semibold text-foreground">
                 Product details
               </h6>
               <ul className="space-y-1.5">
                 {PRODUCT_DETAILS.map((item) => (
                   <li
                     key={item}
-                    className="flex items-start gap-2 text-sm text-grey-600"
+                    className="flex items-start gap-2 text-lg text-grey-600"
                   >
                     <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-grey-500" />
                     {item}
@@ -107,14 +107,14 @@ export function ProductInfoTabs() {
 
             {/* Benefits */}
             <section>
-              <h6 className="mb-3 text-sm font-bold text-foreground">
+              <h6 className="mb-3 text-lg font-semibold text-foreground">
                 Benefits
               </h6>
               <ul className="space-y-1.5">
                 {BENEFITS.map((item) => (
                   <li
                     key={item}
-                    className="flex items-start gap-2 text-sm text-grey-600"
+                    className="flex items-start gap-2 text-lg text-grey-600"
                   >
                     <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-grey-500" />
                     {item}
@@ -125,14 +125,14 @@ export function ProductInfoTabs() {
 
             {/* Delivery and returns */}
             <section>
-              <h6 className="mb-3 text-sm font-bold text-foreground">
+              <h6 className="mb-3 text-lg font-semibold text-foreground">
                 Delivery and returns
               </h6>
               <ul className="space-y-1.5">
                 {DELIVERY.map((item) => (
                   <li
                     key={item}
-                    className="flex items-start gap-2 text-sm text-grey-600"
+                    className="flex items-start gap-2 text-lg text-grey-600"
                   >
                     <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-grey-500" />
                     {item}
@@ -144,7 +144,7 @@ export function ProductInfoTabs() {
         )}
 
         {activeTab === "Reviews (8)" && (
-          <div className="py-8 text-center text-sm text-grey-500">
+          <div className="py-8 text-center text-lg text-grey-500">
             Reviews section coming soon.
           </div>
         )}

@@ -131,7 +131,7 @@ export function AccountDrawer({ variant = "white" }: AccountDrawerProps) {
             alt={accountUser.name}
             onLoadingStatusChange={setAvatarStatus}
           />
-          <AvatarFallback className="bg-primary/10 text-sm font-semibold text-primary">
+          <AvatarFallback className="bg-primary/10 text-lg font-semibold text-primary">
             {avatarStatus === "error" ? (
               "JF"
             ) : (
@@ -168,17 +168,17 @@ export function AccountDrawer({ variant = "white" }: AccountDrawerProps) {
             <span className="absolute inset-[3px] rounded-full bg-white" />
             <Avatar className="size-[84px]">
               <AvatarImage src="/avatars/avatar-25.webp" alt={accountUser.name} />
-              <AvatarFallback className="bg-primary/10 text-xl font-semibold text-primary">
+              <AvatarFallback className="bg-primary/10 text-3xl font-semibold text-primary">
                 JF
               </AvatarFallback>
             </Avatar>
           </div>
 
           {/* identity จริงจาก /api/v1/me — displayName + platform access. email/avatar ยัง mock (backend ไม่ส่ง). */}
-          <p className="mt-2 text-base font-semibold text-grey-800">{me?.displayName ?? accountUser.name}</p>
-          <p className="text-sm text-grey-600">{me?.email ?? accountUser.email}</p>
+          <p className="mt-2 text-xl font-semibold text-grey-800">{me?.displayName ?? accountUser.name}</p>
+          <p className="text-lg text-grey-600">{me?.email ?? accountUser.email}</p>
           {me && (
-            <span className="mt-1 rounded-md bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">
+            <span className="mt-1 rounded-md bg-primary/10 px-2 py-0.5 text-lg font-semibold text-primary">
               {me.hasPlatformAccess ? "Platform Access" : "No Platform Access"}
             </span>
           )}
@@ -194,7 +194,7 @@ export function AccountDrawer({ variant = "white" }: AccountDrawerProps) {
               >
                 <Avatar className="size-10">
                   <AvatarImage src={a.src} alt={a.alt} />
-                  <AvatarFallback className="bg-grey-200 text-xs font-semibold text-grey-700">
+                  <AvatarFallback className="bg-grey-200 text-lg font-semibold text-grey-700">
                     {a.alt.charAt(0)}
                   </AvatarFallback>
                 </Avatar>
@@ -205,7 +205,7 @@ export function AccountDrawer({ variant = "white" }: AccountDrawerProps) {
               aria-label="Add account"
               className="flex size-10 items-center justify-center rounded-full border border-dashed border-[var(--divider)] text-grey-500 transition-colors hover:bg-[var(--action-hover)]"
             >
-              <span className="text-lg leading-none">+</span>
+              <span className="text-2xl leading-none">+</span>
             </button>
           </div>
         </div>
@@ -216,13 +216,13 @@ export function AccountDrawer({ variant = "white" }: AccountDrawerProps) {
             <li key={label} className="rounded-[6px] overflow-hidden">
               <button
                 type="button"
-                className="flex w-full items-center gap-3 px-2 py-3 text-sm transition-colors hover:bg-[var(--action-hover)]"
+                className="flex w-full items-center gap-3 px-2 py-3 text-lg transition-colors hover:bg-[var(--action-hover)]"
               >
                 <Icon />
-                <span className="flex-1 text-left text-sm font-medium text-grey-800">{label}</span>
+                <span className="flex-1 text-left text-lg font-medium text-grey-800">{label}</span>
                 {badge !== undefined && (
                   <span
-                    className="flex size-6 items-center justify-center rounded-[6px] text-xs font-bold"
+                    className="flex size-6 items-center justify-center rounded-[6px] text-lg font-semibold"
                     style={{
                       background: "rgba(255, 86, 48, 0.16)",
                       color: "rgb(183, 29, 24)",
@@ -248,11 +248,11 @@ export function AccountDrawer({ variant = "white" }: AccountDrawerProps) {
             }}
           >
             <div className="px-6 py-8">
-              <p className="text-xl font-extrabold text-white">35% OFF</p>
-              <p className="mt-0.5 text-sm font-semibold text-white">Power up Productivity!</p>
+              <p className="text-3xl font-extrabold text-white">35% OFF</p>
+              <p className="mt-0.5 text-lg font-semibold text-white">Power up Productivity!</p>
               <button
                 type="button"
-                className="mt-4 rounded-lg px-2 py-1 text-xs font-bold text-grey-900"
+                className="mt-4 rounded-lg px-2 py-1 text-lg font-semibold text-grey-900"
                 style={{ background: "rgb(255, 171, 0)" }}
               >
                 Upgrade to Pro
@@ -269,7 +269,7 @@ export function AccountDrawer({ variant = "white" }: AccountDrawerProps) {
 
           {/* Logout — 204/401/403 are terminal logged-out states; keep drawer open on real failure. */}
           {logoutFailed && (
-            <p role="alert" className="mb-2 text-center text-xs font-semibold text-error">
+            <p role="alert" className="mb-2 text-center text-lg font-semibold text-error">
               ออกจากระบบไม่สำเร็จ กรุณาลองอีกครั้ง
             </p>
           )}
@@ -278,7 +278,7 @@ export function AccountDrawer({ variant = "white" }: AccountDrawerProps) {
             onClick={() => void handleLogout()}
             disabled={logoutPending}
             aria-busy={logoutPending}
-            className="mt-3 w-full rounded-lg py-2 text-sm font-bold transition-colors hover:opacity-90"
+            className="mt-3 w-full rounded-lg py-2 text-lg font-semibold transition-colors hover:opacity-90"
             style={{
               background: "rgba(255, 86, 48, 0.16)",
               color: "rgb(183, 29, 24)",

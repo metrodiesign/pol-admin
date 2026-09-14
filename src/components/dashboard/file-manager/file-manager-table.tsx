@@ -85,7 +85,7 @@ export function FileManagerTable({
           {COLUMNS.map((col) => (
             <TableHead
               key={col.key}
-              className="px-4 py-4 text-sm font-semibold text-grey-600 bg-grey-200"
+              className="px-4 py-4 text-lg font-semibold text-grey-600 bg-grey-200"
             >
               <button
                 type="button"
@@ -98,7 +98,7 @@ export function FileManagerTable({
             </TableHead>
           ))}
           {/* Shared header */}
-          <TableHead className="px-4 py-4 text-sm font-semibold text-grey-600 bg-grey-200">
+          <TableHead className="px-4 py-4 text-lg font-semibold text-grey-600 bg-grey-200">
             Shared
           </TableHead>
           {/* Actions — no label */}

@@ -17,10 +17,10 @@ export const tenantColumns: ColumnDef<Merchant>[] = [
       const t = row.original;
       return (
         <div className="flex flex-col gap-0.5">
-          <span className="text-sm font-semibold text-foreground">
+          <span className="text-lg font-semibold text-foreground">
             {t.name}
           </span>
-          <span className="text-data text-xs font-semibold text-grey-600">
+          <span className="text-data text-lg font-semibold text-grey-600">
             {t.code}
           </span>
         </div>
@@ -32,7 +32,7 @@ export const tenantColumns: ColumnDef<Merchant>[] = [
     header: "นิติบุคคล",
     enableSorting: false,
     cell: ({ row }) => (
-      <span className="text-sm text-foreground">{row.original.legalEntityId}</span>
+      <span className="text-lg text-foreground">{row.original.legalEntityId}</span>
     ),
   },
   {
@@ -64,7 +64,7 @@ export const tenantColumns: ColumnDef<Merchant>[] = [
     header: "ผู้ดูแล",
     enableSorting: true,
     cell: ({ row }) => (
-      <span className="text-data text-sm text-foreground">
+      <span className="text-data text-lg text-foreground">
         {row.original.adminCount}
       </span>
     ),

@@ -18,8 +18,8 @@ export function BookingCustomerReviews() {
       {/* Header */}
       <div className="flex items-center justify-between p-6 pb-0">
         <div>
-          <h6 className="text-lg font-semibold text-grey-800">Customer reviews</h6>
-          <p className="mt-0.5 text-sm text-grey-500">{total} Reviews</p>
+          <h6 className="text-2xl font-semibold text-grey-800">Customer reviews</h6>
+          <p className="mt-0.5 text-lg text-grey-500">{total} Reviews</p>
         </div>
         <div className="flex items-center gap-1">
           <button
@@ -55,8 +55,8 @@ export function BookingCustomerReviews() {
             className="size-12 rounded-full object-cover shrink-0"
           />
           <div>
-            <p className="text-sm font-semibold text-grey-800">{review.name}</p>
-            <p className="text-xs text-grey-500">{review.postedAt}</p>
+            <p className="text-lg font-semibold text-grey-800">{review.name}</p>
+            <p className="text-lg text-grey-500">{review.postedAt}</p>
           </div>
         </div>
 
@@ -71,14 +71,14 @@ export function BookingCustomerReviews() {
         </div>
 
         {/* Comment */}
-        <p className="text-sm text-grey-600 line-clamp-5 leading-relaxed">{review.comment}</p>
+        <p className="text-lg text-grey-600 line-clamp-5 leading-relaxed">{review.comment}</p>
 
         {/* Tag chips */}
         <div className="flex flex-wrap gap-2">
           {review.tags.map((tag) => (
             <span
               key={tag}
-              className="rounded-md bg-grey-100 px-2.5 py-1 text-xs font-semibold text-grey-700"
+              className="rounded-md bg-grey-100 px-2.5 py-1 text-lg font-semibold text-grey-700"
             >
               {tag}
             </span>
@@ -89,13 +89,13 @@ export function BookingCustomerReviews() {
         <div className="flex gap-3 pt-2">
           <button
             type="button"
-            className="flex-1 rounded-control border border-grey-300 py-2 text-sm font-semibold text-grey-800 transition-colors hover:bg-grey-100"
+            className="flex-1 rounded-control border border-grey-300 py-2 text-lg font-semibold text-grey-800 transition-colors hover:bg-grey-100"
           >
             Reject
           </button>
           <button
             type="button"
-            className="flex-1 rounded-control bg-grey-800 py-2 text-sm font-semibold text-white transition-colors hover:bg-grey-900"
+            className="flex-1 rounded-control bg-grey-800 py-2 text-lg font-semibold text-white transition-colors hover:bg-grey-900"
           >
             Accept
           </button>

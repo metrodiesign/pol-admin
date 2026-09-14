@@ -142,15 +142,15 @@ export function FeaturedCarousel() {
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
             <div className="pointer-events-none absolute inset-x-0 bottom-0 p-6">
               <p
-                className="text-xs font-semibold uppercase tracking-widest"
+                className="text-lg font-semibold uppercase tracking-widest"
                 style={{ color: "#00A76F" }}
               >
                 {slide.category}
               </p>
-              <h6 className="mt-1 line-clamp-2 max-w-xs text-base font-semibold text-white">
+              <h6 className="mt-1 line-clamp-2 max-w-xs text-xl font-semibold text-white">
                 {slide.title}
               </h6>
-              <p className="mt-1 line-clamp-1 text-xs text-white/60">{slide.caption}</p>
+              <p className="mt-1 line-clamp-1 text-lg text-white/60">{slide.caption}</p>
             </div>
           </div>
         ))}

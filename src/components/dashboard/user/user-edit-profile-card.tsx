@@ -60,7 +60,7 @@ export function UserEditProfileCard({
     >
       <span
         className={cn(
-          "absolute top-6 right-6 inline-flex h-6 items-center rounded-md px-1.5 text-xs font-bold",
+          "absolute top-6 right-6 inline-flex h-6 items-center rounded-md px-1.5 text-lg font-semibold",
           badge.bg,
           badge.text
         )}
@@ -79,7 +79,7 @@ export function UserEditProfileCard({
         <div className="space-y-5">
           <Field className="flex-row items-start justify-between gap-4">
             <div>
-              <Label className="text-sm font-semibold">Banned</Label>
+              <Label className="text-lg font-semibold">Banned</Label>
               <Description>Apply disable account</Description>
             </div>
             <Switch
@@ -91,7 +91,7 @@ export function UserEditProfileCard({
 
           <Field className="flex-row items-start justify-between gap-4">
             <div>
-              <Label className="text-sm font-semibold">Email verified</Label>
+              <Label className="text-lg font-semibold">Email verified</Label>
               <Description>
                 Disabling this will automatically send the user a verification
                 email
@@ -110,7 +110,7 @@ export function UserEditProfileCard({
         <button
           type="button"
           onClick={onDeleteUser}
-          className="rounded-control bg-error/16 px-3 py-1.5 text-sm font-bold text-error-dark transition-colors hover:bg-error/24"
+          className="rounded-control bg-error/16 px-3 py-1.5 text-lg font-semibold text-error-dark transition-colors hover:bg-error/24"
         >
           Delete user
         </button>

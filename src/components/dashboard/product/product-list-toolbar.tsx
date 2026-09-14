@@ -73,13 +73,13 @@ export function ProductListToolbar({
 
       {/* Action buttons — spacer keeps them aligned to input box */}
       <div className="hidden flex-col gap-1.5 sm:flex">
-        <span aria-hidden className="select-none text-sm font-medium">&nbsp;</span>
+        <span aria-hidden className="select-none text-lg font-medium">&nbsp;</span>
         <div className="flex flex-1 items-center gap-0.5">
           {ACTION_BUTTONS.map(({ Icon, label }) => (
             <button
               key={label}
               type="button"
-              className="flex h-[30px] items-center gap-1.5 rounded-lg px-2 text-xs font-bold text-grey-800 transition-colors duration-[250ms] hover:bg-[var(--action-hover)]"
+              className="flex h-[30px] items-center gap-1.5 rounded-lg px-2 text-lg font-semibold text-grey-800 transition-colors duration-[250ms] hover:bg-[var(--action-hover)]"
             >
               <Icon className="size-4" />
               <span>{label}</span>
@@ -94,7 +94,7 @@ export function ProductListToolbar({
           <button
             key={label}
             type="button"
-            className="flex h-[30px] items-center gap-1.5 rounded-lg px-2 text-xs font-bold text-grey-800 transition-colors duration-[250ms] hover:bg-[var(--action-hover)]"
+            className="flex h-[30px] items-center gap-1.5 rounded-lg px-2 text-lg font-semibold text-grey-800 transition-colors duration-[250ms] hover:bg-[var(--action-hover)]"
           >
             <Icon className="size-4" />
             <span>{label}</span>

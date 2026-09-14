@@ -74,7 +74,7 @@ export function BankingExpenses() {
           {/* 2-column legend grid */}
           <div className="grid grid-cols-2 gap-x-4 gap-y-2.5">
             {expensesCategories.map((cat) => (
-              <div key={cat.label} className="flex items-center gap-1.5 text-sm">
+              <div key={cat.label} className="flex items-center gap-1.5 text-lg">
                 <span
                   className="size-2.5 shrink-0 rounded-full"
                   style={{ backgroundColor: cat.color }}
@@ -90,14 +90,14 @@ export function BankingExpenses() {
           {/* Footer stats */}
           <div className="mt-6 flex gap-10 border-t border-dashed border-grey-300 pt-5">
             <div>
-              <p className="text-sm font-semibold leading-[22px] text-grey-800">Categories</p>
-              <p className="mt-1 text-2xl font-bold text-grey-800">
+              <p className="text-lg font-semibold leading-[22px] text-grey-800">Categories</p>
+              <p className="mt-1 text-4xl font-semibold text-grey-800">
                 {expensesSummary.categories}
               </p>
             </div>
             <div>
-              <p className="text-sm font-semibold leading-[22px] text-grey-800">Categories</p>
-              <p className="mt-1 text-2xl font-bold text-grey-800">{expensesSummary.total}</p>
+              <p className="text-lg font-semibold leading-[22px] text-grey-800">Categories</p>
+              <p className="mt-1 text-4xl font-semibold text-grey-800">{expensesSummary.total}</p>
             </div>
           </div>
         </div>

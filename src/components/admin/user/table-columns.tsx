@@ -69,7 +69,7 @@ export const userColumns: ColumnDef<User>[] = [
       const d = new Date(row.original.createdAt);
       const time = d.toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit" });
       return (
-        <span className="text-sm text-grey-600">
+        <span className="text-lg text-grey-600">
           {formatThaiDate(d)} {time}
         </span>
       );
@@ -88,10 +88,10 @@ export const userColumns: ColumnDef<User>[] = [
             <AvatarFallback>{getInitials(u.name)}</AvatarFallback>
           </Avatar>
           <div className="min-w-0">
-            <span className="block truncate text-sm font-semibold leading-[22px] text-foreground">
+            <span className="block truncate text-lg font-semibold leading-[22px] text-foreground">
               {u.name}
             </span>
-            <span className="block truncate text-sm leading-[22px] text-grey-500">
+            <span className="block truncate text-lg leading-[22px] text-grey-500">
               {u.email}
             </span>
           </div>
@@ -105,7 +105,7 @@ export const userColumns: ColumnDef<User>[] = [
     enableSorting: false,
     meta: { headClassName: "w-[160px]", cellClassName: "w-[160px]" },
     cell: ({ getValue }) => (
-      <span className="text-sm text-foreground">{getValue<string>()}</span>
+      <span className="text-lg text-foreground">{getValue<string>()}</span>
     ),
   },
   {
@@ -113,7 +113,7 @@ export const userColumns: ColumnDef<User>[] = [
     header: "สำนักงาน",
     enableSorting: false,
     cell: ({ getValue }) => (
-      <span className="text-sm text-foreground">{getValue<string>()}</span>
+      <span className="text-lg text-foreground">{getValue<string>()}</span>
     ),
   },
   {
@@ -125,7 +125,7 @@ export const userColumns: ColumnDef<User>[] = [
         {getValue<string[]>().map((r) => (
           <span
             key={r}
-            className="inline-flex h-6 items-center rounded-md bg-grey-600/8 px-1.5 text-xs font-bold text-grey-700"
+            className="inline-flex h-6 items-center rounded-md bg-grey-600/8 px-1.5 text-lg font-semibold text-grey-700"
           >
             {r}
           </span>
@@ -140,7 +140,7 @@ export const userColumns: ColumnDef<User>[] = [
     meta: { headClassName: "w-[140px]", cellClassName: "w-[140px]" },
     cell: ({ row }) => (
       <span
-        className={`inline-flex items-center whitespace-nowrap rounded-full px-4 py-1 text-sm font-semibold ${statusStyles[row.original.status]}`}
+        className={`inline-flex items-center whitespace-nowrap rounded-full px-4 py-1 text-lg font-semibold ${statusStyles[row.original.status]}`}
       >
         {statusLabel[row.original.status]}
       </span>

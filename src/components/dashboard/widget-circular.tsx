@@ -16,8 +16,8 @@ export function WidgetCircularGroup() {
           style={{ backgroundColor: cardColor[w.color] }}
         >
           <div>
-            <p className="text-2xl font-bold">{w.total}</p>
-            <p className="mt-1 text-sm text-white/80">{w.title}</p>
+            <p className="text-4xl font-semibold">{w.total}</p>
+            <p className="mt-1 text-lg text-white/80">{w.title}</p>
           </div>
           <RadialChart
             value={w.value}

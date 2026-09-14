@@ -19,13 +19,13 @@ export function CourseProgress() {
             </PieChart>
           </ResponsiveContainer>
           <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-sm text-grey-500">Total</span>
-            <span className="text-2xl font-bold leading-tight text-grey-800">{courseProgress.total}</span>
+            <span className="text-lg text-grey-500">Total</span>
+            <span className="text-4xl font-semibold leading-tight text-grey-800">{courseProgress.total}</span>
           </div>
         </div>
         <div className="flex items-center gap-5">
           {courseProgress.data.map((entry) => (
-            <div key={entry.label} className="flex items-center gap-1.5 text-xs text-grey-700">
+            <div key={entry.label} className="flex items-center gap-1.5 text-lg text-grey-700">
               <span className="size-2.5 rounded-full" style={{ backgroundColor: entry.color }} />
               {entry.label}
             </div>

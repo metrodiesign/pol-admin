@@ -25,7 +25,7 @@ export function ProductPublishButton({ defaultStatus }: ProductPublishButtonProp
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="flex items-center gap-1.5 rounded-lg bg-grey-500/16 px-3 py-1.5 text-sm font-bold text-grey-700 transition-colors hover:bg-grey-500/24"
+        className="flex items-center gap-1.5 rounded-lg bg-grey-500/16 px-3 py-1.5 text-lg font-semibold text-grey-700 transition-colors hover:bg-grey-500/24"
       >
         {status}
         <ChevronDown
@@ -54,7 +54,7 @@ export function ProductPublishButton({ defaultStatus }: ProductPublishButtonProp
                   setOpen(false);
                 }}
                 className={cn(
-                  "flex w-full items-center gap-2.5 px-3 py-2 text-sm transition-colors hover:bg-[var(--action-hover)]",
+                  "flex w-full items-center gap-2.5 px-3 py-2 text-lg transition-colors hover:bg-[var(--action-hover)]",
                   status === value
                     ? "font-semibold text-foreground"
                     : "text-grey-600",

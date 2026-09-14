@@ -37,7 +37,7 @@ export function AnalyticsTasks() {
             <label
               id={`task-${i}`}
               className={cn(
-                "flex-1 cursor-pointer select-none text-sm",
+                "flex-1 cursor-pointer select-none text-lg",
                 task.done
                   ? "text-grey-400 line-through"
                   : "text-grey-800",

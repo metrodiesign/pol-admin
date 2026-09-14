@@ -110,11 +110,12 @@
 
 ## App setup & theming
 
-- `src/app/layout.tsx`: โหลด 5 Google font ผ่าน `next/font/google` เป็น `--font-*` CSS var,
+- `src/app/layout.tsx`: โหลด font local 2 ตระกูล (DB Sathorn X สำหรับ UI ทั้งไทย/ละติน, IBM Plex Mono สำหรับ
+  data) ผ่าน `next/font/local` จาก `src/app/fonts/` เป็น `--font-*` CSS var,
   ครอบ `SettingsProvider`, และ inject `SETTINGS_INIT_SCRIPT` (inline IIFE ใน `<head>`) เพื่อ
   pre-paint theme ก่อน render แรก (กัน flash).
-- `src/components/providers/settings-provider.tsx`: อ่าน 9 setting (mode/preset/contrast/rtl/
-  compact/fontSize/navLayout/navColor/fontFamily) จาก localStorage แล้ว apply ลง `<html>` (class/`data-*`/CSS var).
+- `src/components/providers/settings-provider.tsx`: อ่าน 8 setting (mode/preset/contrast/rtl/
+  compact/fontSize/navLayout/navColor) จาก localStorage แล้ว apply ลง `<html>` (class/`data-*`/CSS var).
   เข้าถึงผ่าน `useSettings()`.
 - path alias **`@/*` -> `./src/*`** (`tsconfig.json`) — ใช้ absolute import เสมอ, เลี่ยง relative ข้ามโมดูล.
 - **โครงสร้างไฟล์ hierarchical**: folder = domain, file = entity, ตัด prefix ที่ซ้ำชื่อโฟลเดอร์

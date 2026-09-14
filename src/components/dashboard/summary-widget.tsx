@@ -8,14 +8,14 @@ function SummaryCard({ stat }: { stat: SummaryStat }) {
   return (
     <div className="dashboard-card flex items-start justify-between gap-4 p-6">
       <div>
-        <p className="text-sm font-semibold leading-[22px] text-grey-800">{stat.title}</p>
+        <p className="text-lg font-semibold leading-[22px] text-grey-800">{stat.title}</p>
         <p
-          className="mt-3 text-3xl font-bold leading-[48px] text-grey-800"
+          className="mt-3 text-5xl font-semibold leading-[48px] text-grey-800"
           style={{ fontFamily: "var(--font-barlow, 'Barlow', 'Public Sans Variable', sans-serif)" }}
         >
           {stat.total}
         </p>
-        <div className="mt-2 flex items-center gap-1.5 text-sm">
+        <div className="mt-2 flex items-center gap-1.5 text-lg">
           <TrendIcon className={cn("size-4", stat.trend.up ? "text-success" : "text-error")} />
           <span className="font-semibold text-grey-800">
             {stat.trend.up ? "+" : "-"}

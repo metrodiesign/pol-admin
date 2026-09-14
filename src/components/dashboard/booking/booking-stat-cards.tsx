@@ -177,14 +177,14 @@ function StatCard({
     >
       {/* Left content */}
       <div className="flex-1 min-w-0 pr-2">
-        <p className="text-sm font-semibold text-grey-800">{stat.title}</p>
+        <p className="text-lg font-semibold text-grey-800">{stat.title}</p>
         <p
-          className="mt-2 font-bold text-grey-800 leading-tight"
+          className="mt-2 font-semibold text-grey-800 leading-tight"
           style={{ fontSize: "2rem", letterSpacing: "-0.01em" }}
         >
           {stat.total}
         </p>
-        <div className="mt-2 flex items-center gap-1 text-sm">
+        <div className="mt-2 flex items-center gap-1 text-lg">
           <TrendIcon
             className={cn("size-4", stat.trend.up ? "text-success" : "text-error")}
           />

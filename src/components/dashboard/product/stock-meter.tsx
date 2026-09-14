@@ -52,7 +52,7 @@ export function StockMeter({ count, label, status }: StockMeterProps) {
         />
       </div>
       {/* Label */}
-      <p className="whitespace-nowrap text-xs font-medium text-grey-600">
+      <p className="whitespace-nowrap text-lg font-medium text-grey-600">
         {label}
       </p>
     </div>

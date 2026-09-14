@@ -138,25 +138,25 @@ function RoleDetailBody({
         <SimpleBar autoHide={false} style={{ height: "100%" }}>
         <div className="flex flex-col gap-4 py-4">
           <div className="flex flex-col gap-4 px-4">
-            <p className="text-sm text-grey-600">{role.description}</p>
+            <p className="text-lg text-grey-600">{role.description}</p>
 
             {/* Stat cards */}
             <div className="grid grid-cols-2 gap-3">
               <div className="rounded-control border border-[var(--divider)] p-3">
-                <p className="text-xs text-grey-500">สิทธิ์ที่ได้รับ</p>
-                <p className="mt-1 text-lg font-bold tabular-nums text-foreground">
+                <p className="text-lg text-grey-500">สิทธิ์ที่ได้รับ</p>
+                <p className="mt-1 text-2xl font-semibold tabular-nums text-foreground">
                   {granted}/{total}
                 </p>
               </div>
               <div className="rounded-control border border-[var(--divider)] p-3">
-                <p className="text-xs text-grey-500">ผู้ใช้ที่ผูก</p>
-                <p className="mt-1 text-lg font-bold tabular-nums text-foreground">
+                <p className="text-lg text-grey-500">ผู้ใช้ที่ผูก</p>
+                <p className="mt-1 text-2xl font-semibold tabular-nums text-foreground">
                   {role.userCount}
                 </p>
               </div>
             </div>
 
-            <p className="text-sm font-semibold text-foreground">
+            <p className="text-lg font-semibold text-foreground">
               สิทธิ์ที่ได้รับ
             </p>
           </div>
@@ -166,10 +166,10 @@ function RoleDetailBody({
             {grouped.map((entry) => (
               <div key={entry.group.key}>
                 <div className="flex items-center justify-between bg-grey-100 px-4 py-2.5">
-                  <span className="text-sm font-semibold text-grey-700">
+                  <span className="text-lg font-semibold text-grey-700">
                     {entry.group.label}
                   </span>
-                  <span className="text-sm tabular-nums text-grey-500">
+                  <span className="text-lg tabular-nums text-grey-500">
                     {entry.granted}/{entry.total}
                   </span>
                 </div>
@@ -179,13 +179,13 @@ function RoleDetailBody({
                       key={p.key}
                       className="flex items-center justify-between gap-3 border-b border-[var(--divider)] px-4 py-3"
                     >
-                      <span className="flex items-center gap-3 text-sm text-foreground">
+                      <span className="flex items-center gap-3 text-lg text-foreground">
                         <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-success/16">
                           <Check className="size-3.5 text-success" />
                         </span>
                         {p.label}
                       </span>
-                      <span className="font-mono text-xs text-grey-500">
+                      <span className="font-mono text-lg text-grey-500">
                         {p.key}
                       </span>
                     </li>
@@ -226,7 +226,7 @@ function RoleDetailBody({
           render={
             <button
               type="button"
-              className="inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-sm font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]"
+              className="inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-lg font-semibold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]"
             />
           }
         >

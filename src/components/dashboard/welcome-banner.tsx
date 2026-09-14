@@ -144,7 +144,7 @@ export function WelcomeBanner() {
             }}
           >
             <div className="relative z-10 max-w-[360px]">
-              <h4 className="text-2xl font-bold leading-9">
+              <h4 className="text-4xl font-semibold leading-9">
                 {slide.title}
                 {slide.highlight && (
                   <>
@@ -153,13 +153,13 @@ export function WelcomeBanner() {
                   </>
                 )}
               </h4>
-              <p className="mt-4 max-w-[300px] text-sm leading-relaxed text-white/70">
+              <p className="mt-4 max-w-[300px] text-lg leading-relaxed text-white/70">
                 {slide.subtitle}
               </p>
               <button
                 type="button"
                 onPointerDown={stopDrag}
-                className="mt-6 rounded-control px-3 py-1.5 text-sm font-bold leading-6 text-white transition-opacity hover:opacity-90"
+                className="mt-6 rounded-control px-3 py-1.5 text-lg font-semibold leading-6 text-white transition-opacity hover:opacity-90"
                 style={{ backgroundColor: "#00A76F" }}
               >
                 {slide.cta}

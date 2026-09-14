@@ -23,7 +23,7 @@ export function FileManagerToolbar({
     <div className="flex flex-col gap-3 py-5 sm:flex-row sm:items-stretch sm:gap-4">
       {/* Search */}
       <div className="flex flex-1 flex-col gap-1.5">
-        <span className="select-none text-sm font-medium text-grey-800">Search</span>
+        <span className="select-none text-lg font-medium text-grey-800">Search</span>
         <div
           className={cn(
             "flex h-12 items-center gap-2 rounded-control border bg-transparent px-3.5 transition-colors",
@@ -41,18 +41,18 @@ export function FileManagerToolbar({
             onChange={(e) => onSearchChange(e.target.value)}
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
-            className="flex-1 bg-transparent text-sm text-foreground placeholder:text-grey-500 outline-none"
+            className="flex-1 bg-transparent text-lg text-foreground placeholder:text-grey-500 outline-none"
           />
         </div>
       </div>
 
       {/* Select date */}
       <div className="flex flex-col gap-1.5">
-        <span className="select-none text-sm font-medium text-grey-800">Date</span>
+        <span className="select-none text-lg font-medium text-grey-800">Date</span>
         <div className="flex flex-1 items-center">
           <button
             type="button"
-            className="flex h-12 min-w-[140px] items-center gap-1.5 rounded-control border border-[var(--divider)] px-3.5 text-sm font-semibold text-foreground transition-colors hover:bg-[var(--action-hover)]"
+            className="flex h-12 min-w-[140px] items-center gap-1.5 rounded-control border border-[var(--divider)] px-3.5 text-lg font-semibold text-foreground transition-colors hover:bg-[var(--action-hover)]"
           >
             Select date
             <ChevronDown className="size-4 text-grey-500" />
@@ -62,11 +62,11 @@ export function FileManagerToolbar({
 
       {/* All type */}
       <div className="flex flex-col gap-1.5">
-        <span className="select-none text-sm font-medium text-grey-800">Type</span>
+        <span className="select-none text-lg font-medium text-grey-800">Type</span>
         <div className="flex flex-1 items-center">
           <button
             type="button"
-            className="flex h-12 min-w-[120px] items-center gap-1.5 rounded-control border border-[var(--divider)] px-3.5 text-sm font-semibold text-foreground transition-colors hover:bg-[var(--action-hover)]"
+            className="flex h-12 min-w-[120px] items-center gap-1.5 rounded-control border border-[var(--divider)] px-3.5 text-lg font-semibold text-foreground transition-colors hover:bg-[var(--action-hover)]"
           >
             All type
             <ChevronDown className="size-4 text-grey-500" />
@@ -76,7 +76,7 @@ export function FileManagerToolbar({
 
       {/* View toggle */}
       <div className="flex flex-col gap-1.5">
-        <span className="select-none text-sm font-medium text-grey-800">View</span>
+        <span className="select-none text-lg font-medium text-grey-800">View</span>
         <div className="flex flex-1 items-center">
           <div className="flex h-12 overflow-hidden rounded-control border border-[var(--divider)]">
             <button

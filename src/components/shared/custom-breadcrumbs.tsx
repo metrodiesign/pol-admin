@@ -30,7 +30,7 @@ export function CustomBreadcrumbs({
         <div className="flex items-center justify-between gap-2">
           <div>
             {typeof heading === "string" ? (
-              <h4 className="text-lg font-bold leading-9 text-foreground">{heading}</h4>
+              <h4 className="text-2xl font-semibold leading-9 text-foreground">{heading}</h4>
             ) : (
               heading
             )}
@@ -42,7 +42,7 @@ export function CustomBreadcrumbs({
       {/* Row 2: breadcrumb trail */}
       {hasLinks && (
         <nav aria-label="breadcrumb">
-          <ol className="flex flex-wrap items-center text-sm text-grey-600">
+          <ol className="flex flex-wrap items-center text-lg text-grey-600">
             {links.map((link, i) => {
               const isLast = i === links.length - 1;
               return (
@@ -72,7 +72,7 @@ export function CustomBreadcrumbs({
 
       {/* Optional plain-language description */}
       {description != null && (
-        <p className="mt-1.5 max-w-3xl text-sm text-grey-600">{description}</p>
+        <p className="mt-1.5 max-w-3xl text-lg text-grey-600">{description}</p>
       )}
 
       {/* Optional moreLink block */}
@@ -82,7 +82,7 @@ export function CustomBreadcrumbs({
             <Link
               key={ml.href}
               href={ml.href}
-              className="text-xs text-grey-500 hover:underline"
+              className="text-lg text-grey-500 hover:underline"
             >
               {ml.name}
             </Link>

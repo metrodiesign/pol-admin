@@ -58,11 +58,11 @@ export function ProductTableRow({
           <div className="min-w-0">
             <Link
               href={`/minimals/product/details`}
-              className="block truncate text-sm font-semibold text-foreground hover:underline"
+              className="block truncate text-lg font-semibold text-foreground hover:underline"
             >
               {product.name}
             </Link>
-            <span className="block text-sm text-grey-600">
+            <span className="block text-lg text-grey-600">
               {product.category}
             </span>
           </div>
@@ -71,8 +71,8 @@ export function ProductTableRow({
 
       {/* Create at */}
       <td className="px-4 py-4">
-        <p className="text-sm text-foreground">{product.createdAt}</p>
-        <p className="text-xs text-grey-500">{product.createdTime}</p>
+        <p className="text-lg text-foreground">{product.createdAt}</p>
+        <p className="text-lg text-grey-500">{product.createdTime}</p>
       </td>
 
       {/* Stock */}
@@ -89,7 +89,7 @@ export function ProductTableRow({
       </td>
 
       {/* Price */}
-      <td className="px-4 py-4 text-sm font-semibold text-foreground">
+      <td className="px-4 py-4 text-lg font-semibold text-foreground">
         ${product.price.toFixed(2)}
       </td>
 

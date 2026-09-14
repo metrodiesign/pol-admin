@@ -27,9 +27,7 @@ import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import {
   useSettings,
-  FONT_FAMILY_VARS,
   type PresetName,
-  type FontFamily,
 } from "@/components/providers/settings-provider";
 
 const presets: { name: PresetName; color: string; dark: string }[] = [
@@ -41,7 +39,6 @@ const presets: { name: PresetName; color: string; dark: string }[] = [
   { name: "red", color: "#ff3030", dark: "#b71833" },
 ];
 
-const fonts: FontFamily[] = ["Public Sans", "Inter", "DM Sans", "Nunito Sans"];
 
 function IconButton({
   label,
@@ -93,7 +90,7 @@ function SwitchCard({
         />
       </div>
       <div className="flex items-center justify-between">
-        <span className="text-sm font-semibold text-grey-800">{label}</span>
+        <span className="text-lg font-semibold text-grey-800">{label}</span>
         {info && <Info className="size-4 text-grey-400" />}
       </div>
     </div>
@@ -109,7 +106,7 @@ function SectionCard({
 }) {
   return (
     <div className="relative rounded-2xl border border-grey-500/12 px-4 pb-4 pt-7">
-      <span className="absolute -top-[11px] left-3 flex h-[22px] items-center rounded-full bg-grey-800 px-2.5 text-xs font-semibold text-white">
+      <span className="absolute -top-[11px] left-3 flex h-[22px] items-center rounded-full bg-grey-800 px-2.5 text-lg font-semibold text-white">
         {label}
       </span>
       {children}
@@ -137,7 +134,7 @@ export function SettingsDrawer({ variant = "white" }: SettingsDrawerProps) {
   const [open, setOpen] = useState(false);
 
   const { settings, setSetting, reset } = useSettings();
-  const { mode, contrast, rtl, compact, fontSize, navLayout, navColor, fontFamily } =
+  const { mode, contrast, rtl, compact, fontSize, navLayout, navColor } =
     settings;
 
   const sizePct = ((fontSize - 12) / (20 - 12)) * 100;
@@ -163,7 +160,7 @@ export function SettingsDrawer({ variant = "white" }: SettingsDrawerProps) {
         className="w-[360px] gap-0 p-0 sm:max-w-[360px]"
       >
         <div className="flex items-center justify-between px-5 py-4">
-          <SheetTitle className="text-lg font-semibold text-grey-800">Settings</SheetTitle>
+          <SheetTitle className="text-2xl font-semibold text-grey-800">Settings</SheetTitle>
           <div className="flex items-center gap-1">
             <IconButton label="Fullscreen">
               <Maximize className="size-5" />
@@ -211,7 +208,7 @@ export function SettingsDrawer({ variant = "white" }: SettingsDrawerProps) {
 
           {/* Nav */}
           <SectionCard label="Nav">
-            <p className="mb-2 text-sm font-medium text-grey-600">Layout</p>
+            <p className="mb-2 text-lg font-medium text-grey-600">Layout</p>
             <div className="flex gap-3">
               {layoutIcons.map((LIcon, i) => (
                 <button
@@ -231,7 +228,7 @@ export function SettingsDrawer({ variant = "white" }: SettingsDrawerProps) {
               ))}
             </div>
 
-            <p className="mb-2 mt-4 text-sm font-medium text-grey-600">Color</p>
+            <p className="mb-2 mt-4 text-lg font-medium text-grey-600">Color</p>
             <div className="flex gap-3">
               {(["integrate", "apparent"] as const).map((c) => (
                 <button
@@ -239,7 +236,7 @@ export function SettingsDrawer({ variant = "white" }: SettingsDrawerProps) {
                   type="button"
                   onClick={() => setSetting("navColor", c)}
                   className={cn(
-                    "flex h-14 flex-1 items-center justify-center gap-2 rounded-xl border text-sm font-semibold capitalize transition-colors",
+                    "flex h-14 flex-1 items-center justify-center gap-2 rounded-xl border text-lg font-semibold capitalize transition-colors",
                     navColor === c
                       ? "border-primary bg-primary/8 text-primary"
                       : "border-grey-500/12 text-grey-400",
@@ -279,45 +276,10 @@ export function SettingsDrawer({ variant = "white" }: SettingsDrawerProps) {
 
           {/* Font */}
           <SectionCard label="Font">
-            <p className="mb-2 text-sm font-medium text-grey-600">Family</p>
-            <div className="grid grid-cols-2 gap-3">
-              {fonts.map((f) => (
-                <button
-                  key={f}
-                  type="button"
-                  onClick={() => setSetting("fontFamily", f)}
-                  className={cn(
-                    "flex h-[86px] flex-col items-center justify-center gap-1.5 rounded-xl border transition-colors",
-                    fontFamily === f
-                      ? "border-primary shadow-z8"
-                      : "border-grey-500/12",
-                  )}
-                  style={{ fontFamily: FONT_FAMILY_VARS[f] }}
-                >
-                  <span
-                    className={cn(
-                      "text-2xl font-bold",
-                      fontFamily === f ? "text-primary" : "text-grey-400",
-                    )}
-                  >
-                    Aa
-                  </span>
-                  <span
-                    className={cn(
-                      "text-xs font-medium",
-                      fontFamily === f ? "text-grey-800" : "text-grey-500",
-                    )}
-                  >
-                    {f}
-                  </span>
-                </button>
-              ))}
-            </div>
-
-            <p className="mb-1 mt-4 text-sm font-medium text-grey-600">Size</p>
+            <p className="mb-1 text-lg font-medium text-grey-600">Size</p>
             <div className="relative pb-1 pt-7">
               <span
-                className="absolute top-0 z-10 -translate-x-1/2 rounded-md bg-grey-800 px-2 py-0.5 text-xs font-semibold text-white"
+                className="absolute top-0 z-10 -translate-x-1/2 rounded-md bg-grey-800 px-2 py-0.5 text-lg font-semibold text-white"
                 style={{ left: `${sizePct}%` }}
               >
                 {fontSize}px

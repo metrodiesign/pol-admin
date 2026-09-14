@@ -25,7 +25,7 @@ function SenderAvatar({ from }: { from: MailMessage["from"] }) {
   }
   return (
     <span
-      className="flex size-10 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white"
+      className="flex size-10 shrink-0 items-center justify-center rounded-full text-lg font-semibold text-white"
       style={{ backgroundColor: from.color ?? "#637381" }}
     >
       {from.initials ?? from.name.charAt(0).toUpperCase()}
@@ -44,7 +44,7 @@ export function MailList({ messages, selectedId, onSelectMessage }: MailListProp
             type="text"
             placeholder="Search..."
             aria-label="Search mail"
-            className="h-10 w-full rounded-lg border border-grey-300 bg-transparent pl-9 pr-3.5 text-sm text-foreground placeholder:text-grey-400 focus:border-grey-600 focus:outline-none"
+            className="h-10 w-full rounded-lg border border-grey-300 bg-transparent pl-9 pr-3.5 text-lg text-foreground placeholder:text-grey-400 focus:border-grey-600 focus:outline-none"
           />
         </div>
       </div>
@@ -70,15 +70,15 @@ export function MailList({ messages, selectedId, onSelectMessage }: MailListProp
                 <div className="flex items-center justify-between gap-1">
                   <span
                     className={cn(
-                      "truncate text-sm",
-                      !msg.isRead ? "font-bold text-grey-800" : "font-semibold text-grey-700"
+                      "truncate text-lg",
+                      !msg.isRead ? "font-semibold text-grey-800" : "font-semibold text-grey-700"
                     )}
                   >
                     {msg.from.name}
                   </span>
-                  <span className="shrink-0 text-xs text-grey-400">{msg.relativeTime}</span>
+                  <span className="shrink-0 text-lg text-grey-400">{msg.relativeTime}</span>
                 </div>
-                <p className="truncate text-xs text-grey-500">{msg.preview}</p>
+                <p className="truncate text-lg text-grey-500">{msg.preview}</p>
               </div>
             </button>
           );

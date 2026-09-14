@@ -20,10 +20,10 @@ export function ReadField({
 }) {
   return (
     <div className={cn("flex flex-col gap-1", className)}>
-      <span className="text-xs font-medium text-grey-600">{label}</span>
+      <span className="text-lg font-medium text-grey-600">{label}</span>
       <span
         className={cn(
-          "text-sm font-semibold text-foreground break-all",
+          "text-lg font-semibold text-foreground break-all",
           mono && "text-data font-medium",
         )}
       >

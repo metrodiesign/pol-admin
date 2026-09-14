@@ -40,17 +40,17 @@ function AppRow({ app }: { app: RelatedApp }) {
       </span>
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
-          <h6 className="truncate text-sm font-semibold leading-[22px] text-grey-800">{app.name}</h6>
+          <h6 className="truncate text-lg font-semibold leading-[22px] text-grey-800">{app.name}</h6>
           <span
             className={cn(
-              "inline-flex h-[22px] shrink-0 items-center rounded-md px-1.5 text-xs font-bold",
+              "inline-flex h-[22px] shrink-0 items-center rounded-md px-1.5 text-lg font-semibold",
               isPaid ? "bg-success/16 text-success-dark" : "bg-grey-500/16 text-grey-800",
             )}
           >
             {app.price}
           </span>
         </div>
-        <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-grey-600">
+        <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-lg text-grey-600">
           <MetaItem icon={<Download className="size-4 text-grey-500" />}>{app.downloads}</MetaItem>
           <span className="size-1 rounded-full bg-grey-500" />
           <MetaItem icon={<HardDrive className="size-4 text-grey-500" />}>{app.size}</MetaItem>
@@ -76,7 +76,7 @@ export function RelatedApplications() {
   return (
     <section className="dashboard-card flex flex-col">
       <header className="p-6">
-        <h6 className="text-lg font-semibold text-grey-800">Related applications</h6>
+        <h6 className="text-2xl font-semibold text-grey-800">Related applications</h6>
       </header>
       <Tabs defaultValue="7days" className="flex flex-1 flex-col">
         <TabsList variant="segment">

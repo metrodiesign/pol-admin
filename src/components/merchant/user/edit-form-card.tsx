@@ -56,7 +56,7 @@ interface MerchantUserEditFormCardProps {
 }
 
 const cancelClass =
-  "inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-sm font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]";
+  "inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-lg font-semibold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]";
 
 const cardStyle = {
   boxShadow:
@@ -124,8 +124,8 @@ export function MerchantUserEditFormCard({
         <dl className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           {rows.map(([label, value]) => (
             <div key={label} className="flex flex-col gap-1">
-              <dt className="text-sm font-medium text-grey-600">{label}</dt>
-              <dd className="text-sm font-bold text-foreground">{value || "-"}</dd>
+              <dt className="text-lg font-medium text-grey-600">{label}</dt>
+              <dd className="text-lg font-semibold text-foreground">{value || "-"}</dd>
             </div>
           ))}
         </dl>
@@ -145,14 +145,14 @@ export function MerchantUserEditFormCard({
     <div className="rounded-card bg-card p-6" style={cardStyle}>
       <form id={formId} onSubmit={handleSubmit} noValidate>
         <fieldset className="mb-5">
-          <legend className="mb-2 text-sm font-medium text-grey-800">
+          <legend className="mb-2 text-lg font-medium text-grey-800">
             ประเภทบุคคล <span className="text-error">*</span>
           </legend>
           <div className="flex gap-6">
             {PERSON_TYPES.map((pt) => (
               <label
                 key={pt}
-                className="flex cursor-pointer items-center gap-2 text-sm text-foreground"
+                className="flex cursor-pointer items-center gap-2 text-lg text-foreground"
               >
                 <input
                   type="radio"
@@ -167,7 +167,7 @@ export function MerchantUserEditFormCard({
             ))}
           </div>
           {errors.personType && (
-            <p className="mt-1 text-xs text-error">{errors.personType}</p>
+            <p className="mt-1 text-lg text-error">{errors.personType}</p>
           )}
         </fieldset>
 
@@ -252,7 +252,7 @@ export function MerchantUserEditFormCard({
 
         {showAcceptTerms && (
           <div className="mt-5">
-            <div className="flex items-center gap-2 text-sm text-foreground">
+            <div className="flex items-center gap-2 text-lg text-foreground">
               <label className="flex cursor-pointer items-center gap-2">
                 <Checkbox
                   checked={form.acceptTerms}
@@ -277,7 +277,7 @@ export function MerchantUserEditFormCard({
                   <DialogHeader>
                     <DialogTitle>เงื่อนไขการใช้บริการ</DialogTitle>
                   </DialogHeader>
-                  <div className="max-h-[60vh] space-y-3 overflow-y-auto pr-1 text-sm leading-relaxed text-muted-foreground">
+                  <div className="max-h-[60vh] space-y-3 overflow-y-auto pr-1 text-lg leading-relaxed text-muted-foreground">
                     <p>
                       1. ผู้สมัครรับรองว่าข้อมูลที่ให้ไว้ในการลงทะเบียนเป็นความจริง
                       ถูกต้อง และเป็นปัจจุบันทุกประการ
@@ -307,7 +307,7 @@ export function MerchantUserEditFormCard({
               </Dialog>
             </div>
             {errors.acceptTerms && (
-              <p className="mt-1 text-xs text-error">{errors.acceptTerms}</p>
+              <p className="mt-1 text-lg text-error">{errors.acceptTerms}</p>
             )}
           </div>
         )}
@@ -323,8 +323,8 @@ export function MerchantUserEditFormCard({
               type="submit"
               className={
                 brandAccent
-                  ? "inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
-                  : "inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
+                  ? "inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-primary px-3 text-lg font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+                  : "inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-primary px-3 text-lg font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
               }
             >
               {submitLabel}

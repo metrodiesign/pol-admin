@@ -36,7 +36,7 @@ export function CourseHoursSpent() {
       title="Hours spent"
       action={
         <Select value={period} onValueChange={(v) => v && setPeriod(v)}>
-          <SelectTrigger className="h-8 rounded-control text-sm">
+          <SelectTrigger className="h-8 rounded-control text-lg">
             <SelectValue />
           </SelectTrigger>
           <SelectContent align="end">

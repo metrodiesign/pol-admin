@@ -65,7 +65,7 @@ const MERCHANT_PILL_CLASSES = [
   "rounded-full",
   "px-4",
   "py-1",
-  "text-sm",
+  "text-lg",
   "font-semibold",
 ];
 
@@ -210,7 +210,7 @@ describe("control plane semantic markers mirror merchant pills", () => {
   test("notification tab counts stay compact", () => {
     const markup = render(NotificationsView);
     assert.match(markup, /h-5 min-w-5/);
-    assert.match(markup, /rounded px-1 text-xs font-bold/);
+    assert.match(markup, /rounded px-1 text-lg font-semibold/);
     assert.doesNotMatch(markup, /<span class="[^"]*h-5 min-w-5[^"]*h-\[30px\]/);
   });
 });

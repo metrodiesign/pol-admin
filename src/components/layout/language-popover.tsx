@@ -43,7 +43,7 @@ export function LanguagePopover({ variant = "white" }: LanguagePopoverProps) {
             type="button"
             onClick={() => { setActive(lang.code); setOpen(false); }}
             className={cn(
-              "flex w-full items-center gap-4 rounded-control px-2 py-1.5 text-sm transition-colors hover:bg-[var(--action-hover)]",
+              "flex w-full items-center gap-4 rounded-control px-2 py-1.5 text-lg transition-colors hover:bg-[var(--action-hover)]",
               active === lang.code && "bg-[rgba(145,158,171,0.16)] font-semibold text-grey-800",
             )}
           >

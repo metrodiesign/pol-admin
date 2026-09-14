@@ -39,11 +39,11 @@ export function OrderTableFooter({
       {/* Dense toggle */}
       <label className="flex cursor-pointer select-none items-center gap-2">
         <Switch checked={dense} onCheckedChange={onDenseChange} size="sm" />
-        <span className="text-sm text-grey-600">Dense</span>
+        <span className="text-lg text-grey-600">Dense</span>
       </label>
 
       {/* Pagination */}
-      <div className="flex flex-nowrap items-center gap-3 text-sm text-grey-600 sm:gap-6">
+      <div className="flex flex-nowrap items-center gap-3 text-lg text-grey-600 sm:gap-6">
         <div className="flex flex-nowrap items-center gap-2">
           <span className="whitespace-nowrap">Rows per page:</span>
           <Select
@@ -52,7 +52,7 @@ export function OrderTableFooter({
               if (v !== null) onRowsPerPageChange(Number(v));
             }}
           >
-            <SelectTrigger className="h-7 w-auto gap-1 border-none px-1 text-sm font-semibold text-foreground">
+            <SelectTrigger className="h-7 w-auto gap-1 border-none px-1 text-lg font-semibold text-foreground">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

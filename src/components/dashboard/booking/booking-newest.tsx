@@ -20,8 +20,8 @@ function BookingCard({ booking }: { booking: NewestBooking }) {
           className="size-9 rounded-full object-cover shrink-0"
         />
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-semibold text-grey-800 truncate">{booking.name}</p>
-          <p className="text-xs text-grey-500">{booking.bookedAt}</p>
+          <p className="text-lg font-semibold text-grey-800 truncate">{booking.name}</p>
+          <p className="text-lg text-grey-500">{booking.bookedAt}</p>
         </div>
         <button
           type="button"
@@ -43,12 +43,12 @@ function BookingCard({ booking }: { booking: NewestBooking }) {
         {/* Hot / price badge at bottom */}
         <div className="absolute bottom-2 left-2 flex items-center gap-1.5">
           {booking.isHot && (
-            <span className="flex items-center gap-1 rounded-full bg-grey-800/80 px-2 py-0.5 text-xs font-bold text-white backdrop-blur-sm">
+            <span className="flex items-center gap-1 rounded-full bg-grey-800/80 px-2 py-0.5 text-lg font-semibold text-white backdrop-blur-sm">
               🔥 {booking.price}
             </span>
           )}
           {!booking.isHot && (
-            <span className="rounded-full bg-grey-800/80 px-2 py-0.5 text-xs font-bold text-white backdrop-blur-sm">
+            <span className="rounded-full bg-grey-800/80 px-2 py-0.5 text-lg font-semibold text-white backdrop-blur-sm">
               {booking.price}
             </span>
           )}
@@ -57,13 +57,13 @@ function BookingCard({ booking }: { booking: NewestBooking }) {
 
       {/* Meta row */}
       <div className="flex items-center justify-between px-3 py-3">
-        <div className="flex items-center gap-3 text-xs text-grey-500">
+        <div className="flex items-center gap-3 text-lg text-grey-500">
           <span className="flex items-center gap-1">
             <Moon className="size-3.5" />
             {booking.duration}
           </span>
         </div>
-        <div className="flex items-center gap-1 text-xs text-grey-500">
+        <div className="flex items-center gap-1 text-lg text-grey-500">
           <Users className="size-3.5" />
           {booking.guests}
         </div>
@@ -87,8 +87,8 @@ export function BookingNewest() {
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h6 className="text-lg font-semibold text-grey-800">Newest booking</h6>
-          <p className="text-sm text-grey-500">{total} bookings</p>
+          <h6 className="text-2xl font-semibold text-grey-800">Newest booking</h6>
+          <p className="text-lg text-grey-500">{total} bookings</p>
         </div>
         <div className="flex items-center gap-1">
           <button

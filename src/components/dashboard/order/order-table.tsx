@@ -92,7 +92,7 @@ export function OrderTable({
           {COLUMNS.map((col) => (
             <TableHead
               key={col.key}
-              className={`px-4 py-4 text-sm font-semibold leading-6 text-grey-600 ${headBg}`}
+              className={`px-4 py-4 text-lg font-semibold leading-6 text-grey-600 ${headBg}`}
             >
               <button
                 type="button"
@@ -116,7 +116,7 @@ export function OrderTable({
           <TableRow>
             <td
               colSpan={8}
-              className="py-16 text-center text-sm text-grey-600"
+              className="py-16 text-center text-lg text-grey-600"
             >
               No data
             </td>

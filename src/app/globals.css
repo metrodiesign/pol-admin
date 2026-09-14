@@ -91,39 +91,37 @@
   --shadow-warning: 0 8px 16px 0 rgba(255, 171, 0, 0.24);
   --shadow-error: 0 8px 16px 0 rgba(255, 86, 48, 0.24);
 
-  /* ---- Typography ---- */
-  /* Thai font appended after the Latin face so Latin glyphs use Public Sans and
-     Thai glyphs use Noto Sans Thai (Latin face has no Thai coverage). */
-  --font-sans: var(--font-public-sans), var(--font-noto-thai), ui-sans-serif,
-    system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
-    sans-serif;
-
-  /* ---- Typography (Public Sans body, Barlow display — extracted from minimals) ---- */
-  --font-display: "Barlow", var(--font-public-sans), var(--font-noto-thai),
-    ui-sans-serif, system-ui, sans-serif;
+  /* ---- Typography: DB Sathorn X covers both Thai and Latin (see app/layout.tsx) ---- */
+  --font-sans: var(--font-db-sathorn-x), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font-db-sathorn-x), ui-sans-serif, system-ui, sans-serif;
+  /* Legacy alias: dashboard widgets set font-family: var(--font-barlow, ...) inline. */
+  --font-barlow: var(--font-db-sathorn-x);
   /* ---- Control-plane signature: monospace data face for machine identifiers
      (masked keys, idempotency keys, event/client IDs, signatures, refs). ---- */
   --font-mono: var(--font-ibm-plex-mono), ui-monospace, SFMono-Regular,
     "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
-  /* ---- Body/display scale: floor 14px, body 16px (rebalanced up) ---- */
-  --text-xs: 0.875rem;            /* 14px ← floor */
+  /* ---- Body/display scale: components sit on text-lg (18px) and up; the
+     steps above follow Tailwind's default ratio with slightly wider leading
+     because Thai stacks vowels/tone marks above and below the baseline. ---- */
+  --text-xs: 0.875rem;            /* 14px */
   --text-xs--line-height: 1.25rem;
-  --text-sm: 0.9375rem;           /* 15px ← body (text-sm) */
+  --text-sm: 0.9375rem;           /* 15px */
   --text-sm--line-height: 1.375rem;
-  --text-base: 1rem;              /* 16px ← normal */
+  --text-base: 1rem;              /* 16px */
   --text-base--line-height: 1.5rem;
-  --text-lg: 1.25rem;             /* 20px */
+  --text-lg: 1.125rem;            /* 18px ← body */
   --text-lg--line-height: 1.75rem;
-  --text-xl: 1.5rem;              /* 24px */
-  --text-xl--line-height: 2rem;
-  --text-2xl: 1.75rem;            /* 28px */
-  --text-2xl--line-height: 2.25rem;
-  --text-3xl: 2rem;               /* 32px */
+  --text-xl: 1.25rem;             /* 20px */
+  --text-xl--line-height: 1.875rem;
+  --text-2xl: 1.5rem;             /* 24px */
+  --text-2xl--line-height: 2.125rem;
+  --text-3xl: 1.875rem;           /* 30px */
   --text-3xl--line-height: 2.5rem;
-  --text-4xl: 2.5rem;             /* 40px */
+  --text-4xl: 2.25rem;            /* 36px */
   --text-4xl--line-height: 2.75rem;
   --text-5xl: 3rem;               /* 48px */
-  --text-5xl--line-height: 3rem;
+  --text-5xl--line-height: 3.25rem;
   /* clamp ranges = base rem (mobile) -> computed px @1440 (desktop), matching MUI responsiveFontSizes */
   --text-h1: clamp(2.5rem, 1.972rem + 2.253vw, 4rem);
   --text-h2: clamp(2rem, 1.648rem + 1.502vw, 3rem);
@@ -353,12 +351,30 @@
   body {
     background: var(--color-bg);
     color: var(--color-text-primary);
-    /* --font-active set on <html> by the settings provider (Font → Family);
-       falls back to the Public Sans stack when unset. Thai face appended so the
-       selected Latin font never strands Thai glyphs on the OS fallback. */
-    font-family: var(--font-active, var(--font-public-sans)),
-      var(--font-noto-thai), ui-sans-serif, system-ui, sans-serif;
+    font-family: var(--font-sans);
+    /* DB Sathorn X has a 0.292em x-height; normalize it against a typical sans-serif face. */
+    font-size-adjust: 0.5;
+    font-weight: 400;
     -webkit-font-smoothing: antialiased;
+  }
+
+  /* UA default bold (700) on these lands on the Bold file; the UI never goes
+     above semibold, which DB Sathorn X serves from the Medium file. */
+  th,
+  b,
+  strong {
+    font-weight: 600;
+  }
+
+  /* Keep machine-readable text at its declared size and weight; it uses IBM Plex Mono, not DB Sathorn X. */
+  .font-mono,
+  .text-data,
+  code,
+  kbd,
+  samp,
+  pre {
+    font-size-adjust: none;
+    font-weight: 400;
   }
   /* Restore pointer cursor on interactive elements — Tailwind v4 preflight
      removes the browser default cursor:pointer on <button>. */
@@ -557,22 +573,22 @@ tbody tr {
   }
 }
 
-/* ---- Typography utilities (MUI variant parity; h1-h3 use Barlow display) ---- */
-@utility text-h1 { font-family: var(--font-display); font-size: var(--text-h1); line-height: 1.25; font-weight: 800; }
-@utility text-h2 { font-family: var(--font-display); font-size: var(--text-h2); line-height: 1.333; font-weight: 800; }
-@utility text-h3 { font-family: var(--font-display); font-size: var(--text-h3); line-height: 1.5; font-weight: 700; }
-@utility text-h4 { font-size: var(--text-h4); line-height: 1.5; font-weight: 700; }
-@utility text-h5 { font-size: var(--text-h5); line-height: 1.5; font-weight: 700; }
+/* ---- Typography utilities (MUI variant parity; h1-h3 use --font-display) ---- */
+@utility text-h1 { font-family: var(--font-display); font-size: var(--text-h1); line-height: 1.25; font-weight: 600; }
+@utility text-h2 { font-family: var(--font-display); font-size: var(--text-h2); line-height: 1.333; font-weight: 600; }
+@utility text-h3 { font-family: var(--font-display); font-size: var(--text-h3); line-height: 1.5; font-weight: 600; }
+@utility text-h4 { font-size: var(--text-h4); line-height: 1.5; font-weight: 600; }
+@utility text-h5 { font-size: var(--text-h5); line-height: 1.5; font-weight: 600; }
 @utility text-h6 { font-size: var(--text-h6); line-height: 1.556; font-weight: 600; }
 @utility text-subtitle1 { font-size: 1rem; line-height: 1.5; font-weight: 600; }
 @utility text-subtitle2 { font-size: 0.875rem; line-height: 1.571; font-weight: 600; }
 @utility text-body1 { font-size: 1rem; line-height: 1.5; font-weight: 400; }
 @utility text-body2 { font-size: 0.875rem; line-height: 1.571; font-weight: 400; }
 @utility text-caption { font-size: 0.875rem; line-height: 1.5; font-weight: 400; }
-@utility text-overline { font-size: 0.875rem; line-height: 1.5; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+@utility text-overline { font-size: 0.875rem; line-height: 1.5; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 
 /* ---- Control-plane data face: machine identifiers, tabular figures aligned ---- */
-@utility text-data { font-family: var(--font-mono); font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+@utility text-data { font-family: var(--font-mono); font-size-adjust: none; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
 
 /* ---- Control-plane health spine: vertical state bar on list rows / cards.
    Decorative only — the same state is always shown in a text badge too. ---- */

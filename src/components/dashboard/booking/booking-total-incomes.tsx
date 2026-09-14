@@ -19,22 +19,22 @@ export function BookingTotalIncomes() {
       {/* Header */}
       <div className="flex items-start justify-between p-6 pb-0">
         <div>
-          <p className="text-sm font-semibold" style={{ color: "rgba(255,255,255,0.72)" }}>
+          <p className="text-lg font-semibold" style={{ color: "rgba(255,255,255,0.72)" }}>
             Total incomes
           </p>
           <p
-            className="mt-2 font-bold text-white"
+            className="mt-2 font-semibold text-white"
             style={{ fontFamily: "var(--font-barlow, 'Barlow', sans-serif)", fontSize: "2rem" }}
           >
             {totalIncomes.total}
           </p>
         </div>
-        <div className="flex items-center gap-1 text-sm font-semibold text-white">
+        <div className="flex items-center gap-1 text-lg font-semibold text-white">
           <TrendingUp className="size-4" />
           +{totalIncomes.trend.value}%
         </div>
       </div>
-      <p className="px-6 text-xs" style={{ color: "rgba(255,255,255,0.48)" }}>
+      <p className="px-6 text-lg" style={{ color: "rgba(255,255,255,0.48)" }}>
         {totalIncomes.trendLabel}
       </p>
 

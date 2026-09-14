@@ -40,7 +40,7 @@ export function TableSelectedAction({
         onChange={onSelectAll}
         aria-label="Select all"
       />
-      <span className="ml-2 text-sm font-semibold text-foreground">
+      <span className="ml-2 text-lg font-semibold text-foreground">
         {numSelected} selected
       </span>
       {action ? <div className="ml-4 flex items-center">{action}</div> : null}

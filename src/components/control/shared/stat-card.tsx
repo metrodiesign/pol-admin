@@ -17,8 +17,8 @@ export function StatCard({
       style={cardStyle}
     >
       <div>
-        <p className="text-sm font-semibold text-grey-600">{label}</p>
-        <p className="mt-2 text-2xl font-bold text-foreground md:text-3xl">{value}</p>
+        <p className="text-lg font-semibold text-grey-600">{label}</p>
+        <p className="mt-2 text-4xl font-semibold text-foreground md:text-5xl">{value}</p>
       </div>
       {trailing}
     </div>

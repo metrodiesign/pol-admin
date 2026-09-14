@@ -49,8 +49,8 @@ function CardShell({
     <section className={CARD_CLASS} style={cardStyle} aria-label={`ผู้ให้บริการ ${title}`}>
       <div className="flex flex-col gap-3 border-b border-[var(--divider)] p-5 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0">
-          <h3 className="text-lg font-bold leading-7 text-foreground">{title}</h3>
-          {subtitle ? <p className="mt-0.5 text-sm text-grey-600">{subtitle}</p> : null}
+          <h3 className="text-2xl font-semibold leading-7 text-foreground">{title}</h3>
+          {subtitle ? <p className="mt-0.5 text-lg text-grey-600">{subtitle}</p> : null}
         </div>
         {badges ? <div className="flex flex-wrap items-center gap-2">{badges}</div> : null}
       </div>
@@ -71,16 +71,16 @@ function UnconnectedCard({
   const href = `/control/psp/create?merchantId=${encodeURIComponent(merchantId)}&psp=${provider}&returnTo=settings`;
   return (
     <CardShell title={PROVIDER_LABEL[provider]} subtitle="ยังไม่เชื่อมต่อ">
-      <p className="text-sm text-grey-600">สร้างการเชื่อมต่อเพื่อเริ่มใช้ {PROVIDER_LABEL[provider]}</p>
+      <p className="text-lg text-grey-600">สร้างการเชื่อมต่อเพื่อเริ่มใช้ {PROVIDER_LABEL[provider]}</p>
       {canManage ? (
         <Link
           href={href}
-          className="mt-4 inline-flex h-11 min-w-[180px] items-center justify-center rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
+          className="mt-4 inline-flex h-11 min-w-[180px] items-center justify-center rounded-control bg-primary px-3 text-lg font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
         >
           สร้างการเชื่อมต่อ
         </Link>
       ) : (
-        <p className="mt-4 text-sm text-grey-600">ต้องมีสิทธิ์ merchant.manage เพื่อสร้างการเชื่อมต่อ</p>
+        <p className="mt-4 text-lg text-grey-600">ต้องมีสิทธิ์ merchant.manage เพื่อสร้างการเชื่อมต่อ</p>
       )}
     </CardShell>
   );
@@ -97,7 +97,7 @@ function CopyButton({ value }: { value: string }) {
           setTimeout(() => setCopied(false), 1500);
         });
       }}
-      className="inline-flex h-8 items-center gap-1 rounded-control bg-grey-600/8 px-2 text-xs font-semibold text-grey-700 hover:bg-grey-600/16"
+      className="inline-flex h-8 items-center gap-1 rounded-control bg-grey-600/8 px-2 text-lg font-semibold text-grey-700 hover:bg-grey-600/16"
       aria-label="คัดลอก callback URL"
     >
       <Copy className="size-3.5" aria-hidden />
@@ -246,18 +246,18 @@ function ConnectedCard({
         {connection.callbackUrl ? (
           <div className="sm:col-span-2">
             <div className="flex items-center justify-between gap-2">
-              <span className="text-xs font-medium text-grey-600">Callback URL</span>
+              <span className="text-lg font-medium text-grey-600">Callback URL</span>
               <CopyButton value={connection.callbackUrl} />
             </div>
-            <p className="text-data mt-1 break-all text-sm text-grey-700">{connection.callbackUrl}</p>
+            <p className="text-data mt-1 break-all text-lg text-grey-700">{connection.callbackUrl}</p>
           </div>
         ) : null}
       </div>
 
       {connection.pendingCredentialTest ? (
         <div className="mt-4 rounded-xl border border-[var(--divider)] p-3">
-          <p className="text-sm font-semibold text-foreground">มีชุด credential รออนุมัติ</p>
-          <p className="text-xs text-grey-600">
+          <p className="text-lg font-semibold text-foreground">มีชุด credential รออนุมัติ</p>
+          <p className="text-lg text-grey-600">
             ผลทดสอบล่าสุด: {lastTestLabel(connection.pendingCredentialTest.result)}
           </p>
           {pendingCredentialApproval && canManageSettings ? (
@@ -275,7 +275,7 @@ function ConnectedCard({
 
       {notice ? (
         <p
-          className={cn("mt-4 text-sm", notice.tone === "error" ? "text-error" : "text-success-dark")}
+          className={cn("mt-4 text-lg", notice.tone === "error" ? "text-error" : "text-success-dark")}
           role={notice.tone === "error" ? "alert" : "status"}
         >
           {notice.text}
@@ -288,7 +288,7 @@ function ConnectedCard({
           onClick={() => void runTest()}
           disabled={!testGate?.allowed || testing}
           title={testGate?.reason ?? undefined}
-          className="inline-flex h-10 items-center gap-1.5 rounded-control bg-grey-600/8 px-3 text-sm font-semibold text-grey-800 hover:bg-grey-600/16 disabled:pointer-events-none disabled:opacity-50"
+          className="inline-flex h-10 items-center gap-1.5 rounded-control bg-grey-600/8 px-3 text-lg font-semibold text-grey-800 hover:bg-grey-600/16 disabled:pointer-events-none disabled:opacity-50"
         >
           {testing ? <Loader2 className="size-4 animate-spin" aria-hidden /> : <FlaskConical className="size-4" aria-hidden />}
           ทดสอบ
@@ -300,7 +300,7 @@ function ConnectedCard({
               onClick={() => setCredentialOpen(true)}
               disabled={!credentialGate?.allowed}
               title={credentialGate?.reason ?? undefined}
-              className="inline-flex h-10 items-center gap-1.5 rounded-control bg-grey-600/8 px-3 text-sm font-semibold text-grey-800 hover:bg-grey-600/16 disabled:pointer-events-none disabled:opacity-50"
+              className="inline-flex h-10 items-center gap-1.5 rounded-control bg-grey-600/8 px-3 text-lg font-semibold text-grey-800 hover:bg-grey-600/16 disabled:pointer-events-none disabled:opacity-50"
             >
               <KeyRound className="size-4" aria-hidden />
               ขอเปลี่ยนข้อมูล
@@ -309,7 +309,7 @@ function ConnectedCard({
               type="button"
               onClick={() => void toggleEnabled()}
               disabled={!resource?.etag || toggling}
-              className="inline-flex h-10 items-center gap-1.5 rounded-control bg-grey-600/8 px-3 text-sm font-semibold text-grey-800 hover:bg-grey-600/16 disabled:pointer-events-none disabled:opacity-50"
+              className="inline-flex h-10 items-center gap-1.5 rounded-control bg-grey-600/8 px-3 text-lg font-semibold text-grey-800 hover:bg-grey-600/16 disabled:pointer-events-none disabled:opacity-50"
             >
               {toggling ? <Loader2 className="size-4 animate-spin" aria-hidden /> : <Power className="size-4" aria-hidden />}
               {connection.isEnabled ? "ปิดใช้งาน" : "เปิดใช้งาน"}
@@ -318,7 +318,7 @@ function ConnectedCard({
         ) : null}
         <Link
           href={`/control/psp/read?id=${encodeURIComponent(connection.pspConnectionId)}`}
-          className="inline-flex h-10 items-center gap-1.5 rounded-control px-3 text-sm font-semibold text-primary hover:underline"
+          className="inline-flex h-10 items-center gap-1.5 rounded-control px-3 text-lg font-semibold text-primary hover:underline"
         >
           รายละเอียด
         </Link>

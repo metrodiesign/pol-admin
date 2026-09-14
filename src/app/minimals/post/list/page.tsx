@@ -22,7 +22,7 @@ export default function PostListPage() {
         action={
           <Link
             href="/minimals/post/new"
-            className="inline-flex h-9 items-center gap-1.5 rounded-[8px] bg-foreground px-3 text-sm font-bold text-card hover:opacity-90 transition-opacity"
+            className="inline-flex h-9 items-center gap-1.5 rounded-[8px] bg-foreground px-3 text-lg font-semibold text-card hover:opacity-90 transition-opacity"
           >
             <Plus className="size-4" />
             Add post

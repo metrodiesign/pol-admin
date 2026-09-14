@@ -80,11 +80,11 @@ export function InvoiceDetailToolbar({ status }: InvoiceDetailToolbarProps) {
 
       {/* Status select */}
       <div className="relative flex flex-col gap-1">
-        <label id={statusId} className="text-xs font-medium text-grey-500">Status</label>
+        <label id={statusId} className="text-lg font-medium text-grey-500">Status</label>
         <Select defaultValue={status}>
           <SelectTrigger
             aria-labelledby={statusId}
-            className={cn("w-40 text-sm font-medium text-grey-800")}
+            className={cn("w-40 text-lg font-medium text-grey-800")}
           >
             <SelectValue placeholder="Status" />
           </SelectTrigger>

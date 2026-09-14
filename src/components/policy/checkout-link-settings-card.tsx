@@ -56,7 +56,7 @@ function Pills<T extends string>({
             aria-pressed={active}
             onClick={() => onChange(o.value)}
             className={
-              "h-9 rounded-full border px-4 text-sm font-semibold transition-colors " +
+              "h-9 rounded-full border px-4 text-lg font-semibold transition-colors " +
               (active
                 ? "border-secondary bg-secondary/8 text-secondary"
                 : "border-[var(--divider)] text-grey-700 hover:bg-grey-100")
@@ -70,7 +70,7 @@ function Pills<T extends string>({
   );
 }
 
-const labelCls = "mb-2 block text-sm font-semibold text-grey-700";
+const labelCls = "mb-2 block text-lg font-semibold text-grey-700";
 
 export function CheckoutLinkSettingsCard(props: CheckoutLinkSettingsCardProps) {
   return (
@@ -190,8 +190,8 @@ function CustomNotifyToggle({
           {icon}
         </span>
         <span className="min-w-0">
-          <span className="block text-sm font-bold text-foreground">{title}</span>
-          <span className="block truncate text-xs text-grey-500">
+          <span className="block text-lg font-semibold text-foreground">{title}</span>
+          <span className="block truncate text-lg text-grey-500">
             {checked ? "กรอกปลายทางด้านล่าง" : "ปิดอยู่"}
           </span>
         </span>

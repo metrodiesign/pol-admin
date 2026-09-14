@@ -45,7 +45,7 @@ export function MerchantUserEditProfileCard({
     >
       <span
         className={cn(
-          "absolute top-6 right-6 inline-flex items-center rounded-full px-4 py-1 text-sm font-semibold",
+          "absolute top-6 right-6 inline-flex items-center rounded-full px-4 py-1 text-lg font-semibold",
           badge.bg,
           badge.text,
         )}
@@ -70,7 +70,7 @@ export function MerchantUserEditProfileCard({
             <button
               type="button"
               onClick={onReject}
-              className="inline-flex h-11 flex-1 min-w-[120px] items-center justify-center rounded-control bg-error/16 px-4 text-sm font-bold text-error-dark transition-colors hover:bg-error/24"
+              className="inline-flex h-11 flex-1 min-w-[120px] items-center justify-center rounded-control bg-error/16 px-4 text-lg font-semibold text-error-dark transition-colors hover:bg-error/24"
             >
               ไม่อนุมัติ
             </button>
@@ -79,7 +79,7 @@ export function MerchantUserEditProfileCard({
             <button
               type="button"
               onClick={onApprove}
-              className="inline-flex h-11 flex-1 min-w-[120px] items-center justify-center rounded-control bg-success px-4 text-sm font-bold text-white transition-colors hover:bg-success/90"
+              className="inline-flex h-11 flex-1 min-w-[120px] items-center justify-center rounded-control bg-success px-4 text-lg font-semibold text-white transition-colors hover:bg-success/90"
             >
               อนุมัติ
             </button>

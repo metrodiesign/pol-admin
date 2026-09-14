@@ -29,8 +29,8 @@ export function WidgetCard({
           )}
         >
           <div>
-            {title && <h6 className="text-lg font-semibold text-grey-800">{title}</h6>}
-            {subtitle && <p className="mt-1 text-sm text-grey-600">{subtitle}</p>}
+            {title && <h6 className="text-2xl font-semibold text-grey-800">{title}</h6>}
+            {subtitle && <p className="mt-1 text-lg text-grey-600">{subtitle}</p>}
           </div>
           {action}
         </header>

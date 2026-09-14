@@ -14,7 +14,7 @@ export function RoleToggle({ defaultRole = "admin" }: RoleToggleProps) {
 
   return (
     <div className="flex items-center justify-center gap-2">
-      <span className="text-sm font-semibold text-grey-800">My role:</span>
+      <span className="text-lg font-semibold text-grey-800">My role:</span>
       {/* Toggle group container — bordered pill group matching live reference */}
       <div className="flex items-center rounded-[8px] border border-[rgba(145,158,171,0.16)] p-1 gap-1">
         {(["admin", "user"] as const).map((r) => {
@@ -25,7 +25,7 @@ export function RoleToggle({ defaultRole = "admin" }: RoleToggleProps) {
               type="button"
               onClick={() => setRole(r)}
               className={cn(
-                "rounded-[8px] px-1 py-[5px] text-xs font-semibold capitalize leading-5 transition-colors",
+                "rounded-[8px] px-1 py-[5px] text-lg font-semibold capitalize leading-5 transition-colors",
                 isActive
                   ? "bg-[rgba(28,37,46,0.08)] text-grey-800 dark:bg-[rgba(255,255,255,0.08)]"
                   : "bg-transparent text-grey-600 hover:bg-[rgba(28,37,46,0.04)] dark:hover:bg-[rgba(255,255,255,0.04)]",

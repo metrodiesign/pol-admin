@@ -35,13 +35,13 @@ export function BankingInvite() {
       </div>
 
       <div className="relative z-10 max-w-[200px]">
-        <p className="text-base font-semibold leading-snug text-white">
+        <p className="text-xl font-semibold leading-snug text-white">
           Invite friends
           <br />
           and earn
         </p>
         <p
-          className="mt-2 text-4xl font-bold"
+          className="mt-2 text-5xl font-semibold"
           style={{
             color: "#FFAB00",
             fontFamily: "var(--font-barlow, var(--font-sans))",
@@ -49,7 +49,7 @@ export function BankingInvite() {
         >
           $50
         </p>
-        <p className="mt-3 text-xs leading-relaxed text-white/64">
+        <p className="mt-3 text-lg leading-relaxed text-white/64">
           Praesent egestas tristique nibh. Duis lobortis massa imperdiet quam.
         </p>
 
@@ -61,11 +61,11 @@ export function BankingInvite() {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
             aria-label="Email"
-            className="flex-1 rounded-control border border-white/24 bg-white/16 px-3 py-2 text-xs text-white placeholder-white/48 outline-none transition-colors focus:border-white/48"
+            className="flex-1 rounded-control border border-white/24 bg-white/16 px-3 py-2 text-lg text-white placeholder-white/48 outline-none transition-colors focus:border-white/48"
           />
           <button
             type="button"
-            className="shrink-0 rounded-control px-4 py-2 text-xs font-bold text-grey-900 transition-colors hover:opacity-90"
+            className="shrink-0 rounded-control px-4 py-2 text-lg font-semibold text-grey-900 transition-colors hover:opacity-90"
             style={{ backgroundColor: "#FFAB00" }}
           >
             Invite

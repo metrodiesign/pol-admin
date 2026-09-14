@@ -37,8 +37,8 @@ export function PremiumCartBar({
       {open ? (
         count === 0 ? (
           <div className="border-b border-[var(--divider)] px-5 py-8 text-center">
-            <p className="text-sm font-bold text-foreground">ตะกร้ายังว่างอยู่</p>
-            <p className="mt-1 text-xs text-grey-500">
+            <p className="text-lg font-semibold text-foreground">ตะกร้ายังว่างอยู่</p>
+            <p className="mt-1 text-lg text-grey-500">
               คลิก &quot;เพิ่มลงตะกร้า&quot; ที่กรมธรรม์ในตารางเพื่อรวมรับชำระเบี้ย
             </p>
           </div>
@@ -68,7 +68,7 @@ export function PremiumCartBar({
           <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-secondary text-white">
             <ShoppingCart className="size-4.5" aria-hidden />
           </span>
-          <span className="text-sm font-bold text-foreground">ตะกร้ารับชำระเบี้ย</span>
+          <span className="text-lg font-semibold text-foreground">ตะกร้ารับชำระเบี้ย</span>
           <ChevronUp
             className={
               "ml-auto size-5 shrink-0 text-grey-500 transition-transform " +
@@ -81,12 +81,12 @@ export function PremiumCartBar({
         <div className="flex flex-col gap-3 mmd:flex-row mmd:items-center mmd:justify-end mmd:gap-6">
           <div className="flex items-center justify-between gap-6">
             <div>
-              <p className="text-sm font-medium text-grey-500">กรมธรรม์</p>
-              <p className="text-xl font-bold tabular-nums text-secondary">{count}</p>
+              <p className="text-lg font-medium text-grey-500">กรมธรรม์</p>
+              <p className="text-3xl font-semibold tabular-nums text-secondary">{count}</p>
             </div>
             <div>
-              <p className="text-sm font-medium text-grey-500">เบี้ยรวม</p>
-              <p className="text-xl font-bold tabular-nums text-secondary">{formatTHB(total, 2)}</p>
+              <p className="text-lg font-medium text-grey-500">เบี้ยรวม</p>
+              <p className="text-3xl font-semibold tabular-nums text-secondary">{formatTHB(total, 2)}</p>
             </div>
           </div>
           <button
@@ -94,7 +94,7 @@ export function PremiumCartBar({
             onClick={onProceed}
             disabled={count === 0}
             aria-label="ตะกร้าสินค้า"
-            className="inline-flex h-11 w-full shrink-0 items-center justify-center rounded-control bg-primary px-5 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:bg-grey-300 disabled:text-grey-500 disabled:hover:bg-grey-300 mmd:w-auto"
+            className="inline-flex h-11 w-full shrink-0 items-center justify-center rounded-control bg-primary px-5 text-lg font-semibold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:bg-grey-300 disabled:text-grey-500 disabled:hover:bg-grey-300 mmd:w-auto"
           >
             ตะกร้าสินค้า
           </button>

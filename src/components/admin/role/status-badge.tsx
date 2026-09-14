@@ -17,7 +17,7 @@ export function RoleStatusBadge({ status, className }: RoleStatusBadgeProps) {
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-bold whitespace-nowrap",
+        "inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-lg font-semibold whitespace-nowrap",
         style.chip,
         className,
       )}

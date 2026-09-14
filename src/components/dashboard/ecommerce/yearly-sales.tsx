@@ -31,7 +31,7 @@ interface ChartTooltipProps {
 function ChartTooltip({ active, label, payload }: ChartTooltipProps) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="rounded-lg bg-grey-800/90 px-3 py-2 text-xs text-white shadow-z8">
+    <div className="rounded-lg bg-grey-800/90 px-3 py-2 text-lg text-white shadow-z8">
       <p className="mb-1 font-semibold">{label}</p>
       {payload.map((entry) => (
         <p key={entry.name} className="flex items-center gap-1.5">
@@ -64,7 +64,7 @@ export function YearlySales() {
       subtitle={change}
       action={
         <Select value={year} onValueChange={(v) => v && setYear(v)}>
-          <SelectTrigger className="h-8 w-[88px] rounded-control text-sm">
+          <SelectTrigger className="h-8 w-[88px] rounded-control text-lg">
             <SelectValue />
           </SelectTrigger>
           <SelectContent align="end">
@@ -82,7 +82,7 @@ export function YearlySales() {
         {totals.map((t) => {
           const s = series.find((se) => se.name === t.name);
           return (
-            <div key={t.name} className="flex items-center gap-1.5 text-sm">
+            <div key={t.name} className="flex items-center gap-1.5 text-lg">
               <span
                 className="size-3 rounded-full"
                 style={{ backgroundColor: s?.color }}

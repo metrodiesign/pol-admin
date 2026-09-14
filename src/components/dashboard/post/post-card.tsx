@@ -14,7 +14,7 @@ function StatusChip({ status }: { status: "published" | "draft" }) {
   return (
     <span
       className={cn(
-        "inline-flex h-6 items-center rounded-md px-1.5 text-xs font-bold",
+        "inline-flex h-6 items-center rounded-md px-1.5 text-lg font-semibold",
         status === "published"
           ? "bg-info/16 text-info-dark"
           : "bg-grey-500/16 text-grey-800",
@@ -39,33 +39,33 @@ export function PostCard({ post }: PostCardProps) {
         {/* Status + date row */}
         <div className="mb-4 flex items-center gap-2">
           <StatusChip status={post.status} />
-          <span className="text-xs text-grey-500">{post.date}</span>
+          <span className="text-lg text-grey-500">{post.date}</span>
         </div>
 
         {/* Title */}
         <Link
           href="/minimals/post/details"
-          className="mb-2 line-clamp-2 text-sm font-semibold leading-[1.5] text-grey-800 transition-colors hover:underline"
+          className="mb-2 line-clamp-2 text-lg font-semibold leading-[1.5] text-grey-800 transition-colors hover:underline"
         >
           {post.title}
         </Link>
 
         {/* Description */}
-        <p className="line-clamp-2 flex-1 text-xs leading-[1.7] text-grey-500">
+        <p className="line-clamp-2 flex-1 text-lg leading-[1.7] text-grey-500">
           {post.description}
         </p>
 
         {/* Footer stats */}
         <div className="mt-auto flex items-center gap-4 pt-4 sm:pt-2">
-          <span className="flex items-center gap-1 text-xs text-grey-500">
+          <span className="flex items-center gap-1 text-lg text-grey-500">
             <MessageCircle className="size-3.5" />
             {post.comments}
           </span>
-          <span className="flex items-center gap-1 text-xs text-grey-500">
+          <span className="flex items-center gap-1 text-lg text-grey-500">
             <Eye className="size-3.5" />
             {post.views}
           </span>
-          <span className="flex items-center gap-1 text-xs text-grey-500">
+          <span className="flex items-center gap-1 text-lg text-grey-500">
             <Share2 className="size-3.5" />
             {post.shares}
           </span>

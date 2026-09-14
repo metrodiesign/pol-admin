@@ -78,8 +78,8 @@ function ProfileCover({
           className="size-[124px] rounded-full border-4 border-white object-cover"
         />
         <div className="text-white">
-          <h4 className="text-2xl font-bold">{userProfile.name}</h4>
-          <p className="mt-0.5 text-sm opacity-70">{userProfile.role}</p>
+          <h4 className="text-4xl font-semibold">{userProfile.name}</h4>
+          <p className="mt-0.5 text-lg opacity-70">{userProfile.role}</p>
         </div>
       </div>
 
@@ -91,7 +91,7 @@ function ProfileCover({
             type="button"
             onClick={() => onTabChange(tab.key)}
             className={cn(
-              "flex shrink-0 items-center gap-1.5 border-b-2 px-2 py-[9px] text-sm transition-colors sm:px-3",
+              "flex shrink-0 items-center gap-1.5 border-b-2 px-2 py-[9px] text-lg transition-colors sm:px-3",
               activeTab === tab.key
                 ? "border-grey-800 font-semibold text-grey-800"
                 : "border-transparent font-medium text-grey-600 hover:text-grey-800",
@@ -111,12 +111,12 @@ function ProfileStatsCard() {
     <div className="dashboard-card">
       <div className="flex items-center divide-x divide-grey-200">
         <div className="flex-1 py-6 text-center">
-          <p className="text-2xl font-bold text-grey-800">{userProfile.followers}</p>
-          <p className="mt-1 text-sm text-grey-600">Follower</p>
+          <p className="text-4xl font-semibold text-grey-800">{userProfile.followers}</p>
+          <p className="mt-1 text-lg text-grey-600">Follower</p>
         </div>
         <div className="flex-1 py-6 text-center">
-          <p className="text-2xl font-bold text-grey-800">{userProfile.following}</p>
-          <p className="mt-1 text-sm text-grey-600">Following</p>
+          <p className="text-4xl font-semibold text-grey-800">{userProfile.following}</p>
+          <p className="mt-1 text-lg text-grey-600">Following</p>
         </div>
       </div>
     </div>
@@ -127,28 +127,28 @@ function ProfileAboutCard() {
   const { about } = userProfile;
   return (
     <div className="dashboard-card p-6">
-      <h6 className="text-lg font-semibold text-grey-800">About</h6>
-      <p className="mt-6 text-sm leading-[22px] text-grey-600">{about.bio}</p>
+      <h6 className="text-2xl font-semibold text-grey-800">About</h6>
+      <p className="mt-6 text-lg leading-[22px] text-grey-600">{about.bio}</p>
       <ul className="mt-6 space-y-4">
-        <li className="flex items-center gap-2 text-sm text-grey-600">
+        <li className="flex items-center gap-2 text-lg text-grey-600">
           <MapPin className="size-5 shrink-0 text-grey-500" />
           <span>
             Live at{" "}
             <span className="font-semibold text-grey-800">{about.country}</span>
           </span>
         </li>
-        <li className="flex items-center gap-2 text-sm text-grey-600">
+        <li className="flex items-center gap-2 text-lg text-grey-600">
           <Mail className="size-5 shrink-0 text-grey-500" />
           <span>{about.email}</span>
         </li>
-        <li className="flex items-center gap-2 text-sm text-grey-600">
+        <li className="flex items-center gap-2 text-lg text-grey-600">
           <Building className="size-5 shrink-0 text-grey-500" />
           <span>
             <span className="font-semibold text-grey-800">{about.role}</span> at{" "}
             <span className="font-semibold text-grey-800">{about.company}</span>
           </span>
         </li>
-        <li className="flex items-center gap-2 text-sm text-grey-600">
+        <li className="flex items-center gap-2 text-lg text-grey-600">
           <GraduationCap className="size-5 shrink-0 text-grey-500" />
           <span>
             Studied at{" "}
@@ -164,10 +164,10 @@ function ProfileSocialCard() {
   const { social } = userProfile;
   return (
     <div className="dashboard-card p-6">
-      <h6 className="text-lg font-semibold text-grey-800">Social</h6>
+      <h6 className="text-2xl font-semibold text-grey-800">Social</h6>
       <ul className="mt-6 space-y-4">
         {Object.entries(social).map(([key, url]) => (
-          <li key={key} className="flex items-center gap-2 text-sm text-grey-600">
+          <li key={key} className="flex items-center gap-2 text-lg text-grey-600">
             <svg
               viewBox="0 0 24 24"
               className={cn("size-5 shrink-0 fill-current", SOCIAL_COLORS[key])}
@@ -189,20 +189,20 @@ function PostComposer() {
         aria-label="Share what you are thinking here"
         placeholder="Share what you are thinking here..."
         rows={4}
-        className="w-full resize-none rounded-control border border-grey-200 bg-transparent px-4 py-3 text-sm text-grey-800 outline-none placeholder:text-grey-400 focus:border-grey-400"
+        className="w-full resize-none rounded-control border border-grey-200 bg-transparent px-4 py-3 text-lg text-grey-800 outline-none placeholder:text-grey-400 focus:border-grey-400"
       />
       <div className="mt-6 flex items-center justify-between">
         <div className="flex gap-1">
           <button
             type="button"
-            className="flex h-9 items-center gap-1.5 rounded-full bg-[rgba(145,158,171,0.16)] px-2 text-xs font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]"
+            className="flex h-9 items-center gap-1.5 rounded-full bg-[rgba(145,158,171,0.16)] px-2 text-lg font-semibold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]"
           >
             <ImageIcon className="size-4 text-success" />
             Image/Video
           </button>
           <button
             type="button"
-            className="flex h-9 items-center gap-1.5 rounded-full bg-[rgba(145,158,171,0.16)] px-2 text-xs font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]"
+            className="flex h-9 items-center gap-1.5 rounded-full bg-[rgba(145,158,171,0.16)] px-2 text-lg font-semibold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]"
           >
             <Radio className="size-4 text-error" />
             Streaming
@@ -210,7 +210,7 @@ function PostComposer() {
         </div>
         <button
           type="button"
-          className="flex h-9 items-center rounded-control bg-grey-800 px-3 text-sm font-bold text-white transition-colors hover:bg-grey-900 dark:bg-white dark:text-grey-900 dark:hover:bg-grey-300"
+          className="flex h-9 items-center rounded-control bg-grey-800 px-3 text-lg font-semibold text-white transition-colors hover:bg-grey-900 dark:bg-white dark:text-grey-900 dark:hover:bg-grey-300"
         >
           Post
         </button>
@@ -236,7 +236,7 @@ function AvatarStack({ likers, overflow }: { likers: string[]; overflow: number 
         ))}
       </div>
       {overflow > 0 && (
-        <span className="text-xs text-grey-500">+{overflow}</span>
+        <span className="text-lg text-grey-500">+{overflow}</span>
       )}
     </div>
   );
@@ -257,8 +257,8 @@ function PostCard({ post }: { post: Post }) {
           className="size-10 rounded-full object-cover"
         />
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-grey-800">{post.user.name}</p>
-          <p className="text-xs text-grey-500">{post.createdAt}</p>
+          <p className="text-lg font-semibold text-grey-800">{post.user.name}</p>
+          <p className="text-lg text-grey-500">{post.createdAt}</p>
         </div>
         <button
           type="button"
@@ -269,7 +269,7 @@ function PostCard({ post }: { post: Post }) {
       </div>
 
       {/* Content */}
-      <p className="mt-6 text-sm leading-[22px] text-grey-800">{post.content}</p>
+      <p className="mt-6 text-lg leading-[22px] text-grey-800">{post.content}</p>
 
       {/* Media */}
       {post.image && (
@@ -285,7 +285,7 @@ function PostCard({ post }: { post: Post }) {
             type="button"
             onClick={() => setLiked((v) => !v)}
             className={cn(
-              "flex items-center gap-1 text-sm transition-colors",
+              "flex items-center gap-1 text-lg transition-colors",
               liked ? "text-error" : "text-grey-500 hover:text-error",
             )}
           >
@@ -326,10 +326,10 @@ function PostCard({ post }: { post: Post }) {
               />
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <p className="text-sm font-semibold text-grey-800">{comment.user.name}</p>
-                  <p className="text-xs text-grey-400">{comment.createdAt}</p>
+                  <p className="text-lg font-semibold text-grey-800">{comment.user.name}</p>
+                  <p className="text-lg text-grey-400">{comment.createdAt}</p>
                 </div>
-                <p className="mt-0.5 text-sm text-grey-600">{comment.content}</p>
+                <p className="mt-0.5 text-lg text-grey-600">{comment.content}</p>
               </div>
             </div>
           ))}
@@ -350,7 +350,7 @@ function PostCard({ post }: { post: Post }) {
             type="text"
             aria-label="Write a comment"
             placeholder="Write a comment..."
-            className="flex-1 bg-transparent text-sm text-grey-800 outline-none placeholder:text-grey-400"
+            className="flex-1 bg-transparent text-lg text-grey-800 outline-none placeholder:text-grey-400"
           />
           <div className="flex items-center gap-1 text-grey-400">
             <button type="button" className="hover:text-grey-600">
@@ -408,7 +408,7 @@ export default function UserProfilePage() {
 
       {activeTab !== "profile" && (
         <div className="dashboard-card flex min-h-[300px] items-center justify-center p-6">
-          <p className="text-sm capitalize text-grey-400">{activeTab} content</p>
+          <p className="text-lg capitalize text-grey-400">{activeTab} content</p>
         </div>
       )}
     </>

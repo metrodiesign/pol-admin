@@ -39,10 +39,10 @@ export function webhookColumns({
       enableSorting: false,
       cell: ({ row }) => (
         <div className="flex flex-col gap-0.5">
-          <span className="text-sm font-semibold text-foreground">
+          <span className="text-lg font-semibold text-foreground">
             {row.original.eventType}
           </span>
-          <span className="text-data text-xs text-grey-700">
+          <span className="text-data text-lg text-grey-700">
             {row.original.id}
           </span>
         </div>
@@ -63,7 +63,7 @@ export function webhookColumns({
       header: "บริษัท",
       enableSorting: false,
       cell: ({ row }) => (
-        <span className="text-sm text-foreground">
+        <span className="text-lg text-foreground">
           {MERCHANT_LABEL[row.original.merchantId]}
         </span>
       ),
@@ -73,7 +73,7 @@ export function webhookColumns({
       header: "ครั้งที่ส่ง",
       enableSorting: true,
       cell: ({ row }) => (
-        <span className="text-data text-xs text-grey-600">
+        <span className="text-data text-lg text-grey-600">
           {row.original.attempts}
         </span>
       ),
@@ -106,7 +106,7 @@ export function webhookColumns({
       header: "รับเมื่อ",
       enableSorting: true,
       cell: ({ row }) => (
-        <span className="text-data text-xs text-grey-600">
+        <span className="text-data text-lg text-grey-600">
           {formatDateTime(row.original.receivedAt)}
         </span>
       ),

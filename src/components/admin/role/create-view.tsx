@@ -22,7 +22,7 @@ const cardStyle = {
 };
 
 const cancelClass =
-  "inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-sm font-bold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]";
+  "inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-lg font-semibold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]";
 
 const blankInput: RoleFormInput = {
   code: "",
@@ -180,7 +180,7 @@ export function RoleCreateView({ from }: RoleCreateViewProps) {
             options={STATUS_OPTIONS}
           />
           <div className="flex flex-col gap-2 sm:col-span-2">
-            <span className="text-sm font-medium text-grey-800">สีป้ายกำกับ</span>
+            <span className="text-lg font-medium text-grey-800">สีป้ายกำกับ</span>
             <div className="flex items-center gap-3">
               {ROLE_COLOR_OPTIONS.map((o) => {
                 const selected = input.color === o.value;
@@ -206,7 +206,7 @@ export function RoleCreateView({ from }: RoleCreateViewProps) {
         </div>
 
         <div className="mt-6 flex flex-col gap-2">
-          <span className="text-sm font-medium text-grey-800">สิทธิ์</span>
+          <span className="text-lg font-medium text-grey-800">สิทธิ์</span>
           <div className="-mx-6 border-t border-[var(--divider)]">
             <RolePermissionMatrix
               catalog={cat.catalog.permissions}
@@ -225,7 +225,7 @@ export function RoleCreateView({ from }: RoleCreateViewProps) {
             type="button"
             onClick={handleSave}
             disabled={saving}
-            className="inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-primary px-3 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-60"
+            className="inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-primary px-3 text-lg font-semibold text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-60"
           >
             {saving ? "กำลังบันทึก…" : "บันทึก"}
           </button>
