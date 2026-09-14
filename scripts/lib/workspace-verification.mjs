@@ -31,8 +31,8 @@ const EXPECTED_LOCAL_PACKAGES = new Map([
   ["node_modules/@pol/ui", "packages/ui"],
 ]);
 const REMOVED_APPLICATION_NAMES = ["admin", "merchant"];
-const EXPECTED_ROUTE_COUNT = 99;
-const EXPECTED_ROUTE_SHA256 = "40e830b5fd2c2808dfb6b9dc7b293eeb85dde583c84a3b47f55dec60d4582ae1";
+const EXPECTED_ROUTE_COUNT = 100;
+const EXPECTED_ROUTE_SHA256 = "7581a053718bf4e28f780714093f4dccf01203c25cc6d3704831f5a8e76d030b";
 const FIXTURE_START = "active-reference-fixture:start";
 const FIXTURE_END = "active-reference-fixture:end";
 const NEGATIVE_FIXTURE_SUFFIX = ["scripts", "lib", "workspace-verification.test.mjs"].join("/");

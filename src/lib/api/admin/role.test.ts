@@ -9,6 +9,7 @@ import {
   updateRole,
 } from "./role";
 import type { RoleFormInput } from "@/types/admin/role";
+import { clearTokens, setTokens } from "@/lib/auth/token-store";
 
 // --- integration: role CRUD + catalog (mock global fetch/document) ---
 
@@ -25,13 +26,15 @@ function stubFetch(status: number, body: unknown): { calls: FetchCall[] } {
     const payload = body === undefined ? null : JSON.stringify(body);
     return Promise.resolve(new Response(payload, { status }));
   });
-  // mutations อ่าน document.cookie หา CSRF
-  vi.stubGlobal("document", { cookie: "pol_csrf=tok" });
+  // adminFetch ต้องมี token คู่ (Bearer) และ window สำหรับ redirect
+  setTokens({ accessToken: "access-token", refreshToken: "refresh-token", expiresAt: Date.now() + 600_000 });
+  vi.stubGlobal("window", { location: { href: "" } });
   return { calls };
 }
 
 afterEach(() => {
   vi.unstubAllGlobals();
+  clearTokens();
 });
 
 const SAMPLE_INPUT: RoleFormInput = {
@@ -126,13 +129,13 @@ describe("getPermissionCatalog", () => {
 });
 
 describe("createRole", () => {
-  it("POST /admin/roles พร้อม body เต็ม (มี code) + CSRF header", async () => {
+  it("POST /admin/roles พร้อม body เต็ม (มี code) + Bearer", async () => {
     const { calls } = stubFetch(201, undefined);
     await createRole(SAMPLE_INPUT);
     expect(calls[0]!.path).toBe("/admin/roles");
     expect(calls[0]!.init.method).toBe("POST");
     expect(JSON.parse(calls[0]!.init.body as string)).toEqual(SAMPLE_INPUT);
-    expect(new Headers(calls[0]!.init.headers).get("X-CSRF-Token")).toBe("tok");
+    expect(new Headers(calls[0]!.init.headers).get("Authorization")).toBe("Bearer access-token");
   });
   it("คืน Response ดิบ (409 ตรวจได้)", async () => {
     stubFetch(409, undefined);

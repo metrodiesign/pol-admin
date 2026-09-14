@@ -303,7 +303,7 @@ Production local ของ Next.js ใช้ HTTP บน port `3001`; TLS produc
 - Frontend ไม่ถือ ID token, access token หรือ Bearer token.
 - Backend set session เป็น secure httpOnly cookie.
 - `getMe()` เรียก `/admin/me` ผ่าน same-origin rewrite.
-- Mutation แนบ `X-CSRF-Token` จาก cookie `adm_csrf`.
+- ทุก request แนบ `Authorization: Bearer <access_token>` (ไม่มี cookie/CSRF); `/oauth/token` ผ่าน Next rewrite ไป API.
 - `401` ทำให้ client กลับ `/login`.
 
 Admin Microsoft login เริ่มที่:

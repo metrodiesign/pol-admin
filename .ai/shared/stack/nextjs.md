@@ -91,9 +91,10 @@
   เพราะ reverse proxy same-origin อยู่แล้ว).
   ผลพลอยได้: browser เห็นทุก call เป็น same-origin -> **CORS ไม่ถูก exercise** (อย่าไล่ debug CORS เมื่อใช้ proxy นี้;
   doc backend เขียน admin origin 5130 ก็ไม่มีผล).
-- `src/lib/api/admin/auth.ts`: `adminFetch` (credentials:'include', แนบ `X-CSRF-Token`=cookie `adm_csrf` เฉพาะ
-  mutation, 401->`login()`), `getMe()` (200->AdminMe / 401->null), `login(returnTo)` (full-page navigate
-  `/admin/auth/login?returnTo=`), `logout`/`logoutAll`. pure helper แยกไว้ unit-test (node) ได้.
+- `src/lib/api/admin/auth.ts`: `adminFetch` (แนบ `Authorization: Bearer`, 401 -> refresh 1 ครั้ง single-flight -> retry
+  -> ยัง 401 ล้าง token + เด้ง `/login`), `getMe()` (/me + /me/access), `beginLogin(returnTo)` (PKCE + full-page navigate
+  `/oauth/authorize`), `completeLogin` (หน้า `/auth/callback` แลก code ที่ `/oauth/token` ผ่าน Next rewrite), `logout`.
+  token คู่อยู่ใน `src/lib/auth/token-store.ts` (localStorage แชร์ทุกแท็บ + Web Lock ตอน refresh). pure helper แยกไว้ unit-test (node) ได้.
 - guard = **client-side** (ตรงกับ contract): `auth-provider.tsx` (getMe on mount, `useAuth`) +
   `auth-guard.tsx` (loading/anon->login/authed) wrap ใน `minimals-layout.tsx` -> คุมทุก protected group;
   `/login` `/logout` `/login-error` ไม่ผ่าน MinimalsLayout = public โดยโครงสร้าง.

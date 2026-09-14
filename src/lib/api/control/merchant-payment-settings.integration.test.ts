@@ -3,6 +3,7 @@ import type { AddressInfo } from "node:net";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { PspApiError } from "./psp";
+import { clearTokens, setTokens } from "@/lib/auth/token-store";
 import {
   getMerchantPaymentSettings,
   getSimpleRouting,
@@ -70,7 +71,7 @@ describe("Merchant payment settings HTTP contract", () => {
     const address = server.address() as AddressInfo;
     origin = `http://127.0.0.1:${address.port}`;
 
-    vi.stubGlobal("document", { cookie: "pol_csrf=csrf-token" });
+    setTokens({ accessToken: "access-token", refreshToken: "refresh-token", expiresAt: Date.now() + 600_000 });
     vi.stubGlobal("window", { location: { href: "" } });
     vi.stubGlobal("fetch", (input: string | URL | Request, init: RequestInit = {}) => {
       const target =
@@ -80,6 +81,7 @@ describe("Merchant payment settings HTTP contract", () => {
   });
 
   afterEach(async () => {
+    clearTokens();
     vi.unstubAllGlobals();
     await new Promise<void>((resolve, reject) =>
       server.close((error) => (error ? reject(error) : resolve())),
@@ -110,7 +112,7 @@ describe("Merchant payment settings HTTP contract", () => {
     expect(captured[0]?.headers["idempotency-key"]).toBeUndefined();
   });
 
-  it("sends Idempotency-Key, If-Match and X-CSRF-Token on environment change", async () => {
+  it("sends Idempotency-Key, If-Match and Bearer on environment change", async () => {
     queue.push({
       status: 202,
       body: {
@@ -140,7 +142,7 @@ describe("Merchant payment settings HTTP contract", () => {
     expect(captured[0]?.method).toBe("POST");
     expect(captured[0]?.headers["idempotency-key"]).toBe("idem-1");
     expect(captured[0]?.headers["if-match"]).toBe('"v4"');
-    expect(captured[0]?.headers["x-csrf-token"]).toBe("csrf-token");
+    expect(captured[0]?.headers["authorization"]).toBe("Bearer access-token");
   });
 
   it("round-trips ETag on method PUTs and carries the required headers", async () => {
@@ -234,7 +236,7 @@ describe("Merchant payment settings HTTP contract", () => {
     expect(routing.etag).toBe('"v4"');
     expect(routing.routing.rules).toHaveLength(1);
     expect(captured[0]?.headers["if-match"]).toBe('"v3"');
-    expect(captured[0]?.headers["x-csrf-token"]).toBe("csrf-token");
+    expect(captured[0]?.headers["authorization"]).toBe("Bearer access-token");
     // D3 body: {merchantId, rules}
     const routingBody = JSON.parse(captured[0]?.body ?? "{}");
     expect(routingBody.merchantId).toBe(MERCHANT);

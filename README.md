@@ -237,7 +237,7 @@ Browser -> Admin HTTPS :3001
 Browser ถือ session ผ่าน cookie (same-origin)
 ```
 
-**CSRF:** `adminFetch` แนบ header `X-CSRF-Token` = cookie `adm_csrf` เฉพาะ mutation (POST/PUT/PATCH/DELETE)
+**Auth header:** `adminFetch` แนบ `Authorization: Bearer <access_token>` ทุก request (OAuth code + PKCE, token ใน localStorage แชร์ทุกแท็บ; ไม่มี cookie/CSRF)
 
 **Error redirect:** backend deny -> `/login-error?reason=<label>` (FE map เป็นข้อความใน `login-error/page.tsx`)
 
