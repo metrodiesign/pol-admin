@@ -82,13 +82,13 @@ function CommentItem({ comment }: { comment: PostComment }) {
         </Avatar>
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between mb-1">
-            <span className="text-lg font-semibold text-grey-800">
+            <span className="text-base font-semibold text-grey-800">
               {comment.authorName}
             </span>
-            <span className="text-lg text-grey-500">{comment.date}</span>
+            <span className="text-base text-grey-500">{comment.date}</span>
           </div>
-          <p className="text-lg text-grey-600 leading-relaxed">{comment.body}</p>
-          <button className="mt-2 flex items-center gap-1 text-lg text-grey-500 hover:text-grey-800 transition-colors">
+          <p className="text-base text-grey-600 leading-relaxed">{comment.body}</p>
+          <button className="mt-2 flex items-center gap-1 text-base text-grey-500 hover:text-grey-800 transition-colors">
             <Reply className="size-3.5" />
             Reply
           </button>
@@ -106,12 +106,12 @@ function CommentItem({ comment }: { comment: PostComment }) {
               </Avatar>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-lg font-semibold text-grey-800">
+                  <span className="text-base font-semibold text-grey-800">
                     {reply.authorName}
                   </span>
-                  <span className="text-lg text-grey-500">{reply.date}</span>
+                  <span className="text-base text-grey-500">{reply.date}</span>
                 </div>
-                <p className="text-lg text-grey-600 leading-relaxed">
+                <p className="text-base text-grey-600 leading-relaxed">
                   {reply.mentionName && (
                     <span className="font-semibold text-grey-800">
                       @{reply.mentionName}{" "}
@@ -143,7 +143,7 @@ function PaginationBar({
       <button
         onClick={() => onPageChange(page - 1)}
         disabled={page === 1}
-        className="flex size-9 items-center justify-center rounded-full text-lg text-grey-700 hover:bg-grey-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+        className="flex size-9 items-center justify-center rounded-full text-base text-grey-700 hover:bg-grey-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
       >
         &lsaquo;
       </button>
@@ -151,7 +151,7 @@ function PaginationBar({
         <button
           key={p}
           onClick={() => onPageChange(p)}
-          className={`flex size-9 items-center justify-center rounded-full text-lg transition-colors ${
+          className={`flex size-9 items-center justify-center rounded-full text-base transition-colors ${
             page === p
               ? "bg-grey-800 text-white font-semibold"
               : "text-grey-700 hover:bg-grey-100"
@@ -160,12 +160,12 @@ function PaginationBar({
           {p}
         </button>
       ))}
-      <span className="flex size-9 items-center justify-center text-lg text-grey-500">
+      <span className="flex size-9 items-center justify-center text-base text-grey-500">
         &hellip;
       </span>
       <button
         onClick={() => onPageChange(total)}
-        className={`flex size-9 items-center justify-center rounded-full text-lg transition-colors ${
+        className={`flex size-9 items-center justify-center rounded-full text-base transition-colors ${
           page === total
             ? "bg-grey-800 text-white font-semibold"
             : "text-grey-700 hover:bg-grey-100"
@@ -176,7 +176,7 @@ function PaginationBar({
       <button
         onClick={() => onPageChange(page + 1)}
         disabled={page === total}
-        className="flex size-9 items-center justify-center rounded-full text-lg text-grey-700 hover:bg-grey-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+        className="flex size-9 items-center justify-center rounded-full text-base text-grey-700 hover:bg-grey-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
       >
         &rsaquo;
       </button>
@@ -195,7 +195,7 @@ export function PostDetailsView() {
       <div className="flex items-center justify-between mb-6">
         <Link
           href="/minimals/post/list"
-          className="flex items-center gap-1.5 text-lg font-semibold text-grey-800 hover:text-grey-600 transition-colors"
+          className="flex items-center gap-1.5 text-base font-semibold text-grey-800 hover:text-grey-600 transition-colors"
         >
           <ArrowLeft className="size-4" />
           Back
@@ -205,14 +205,14 @@ export function PostDetailsView() {
             href="https://minimals.cc/post/climate-change-and-its-effects-on-global-food-security"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 rounded-[8px] border border-grey-300 px-3 h-9 text-lg font-semibold text-grey-800 hover:bg-grey-100 transition-colors"
+            className="flex items-center gap-1.5 rounded-[8px] border border-grey-300 px-3 h-9 text-base font-semibold text-grey-800 hover:bg-grey-100 transition-colors"
           >
             <ExternalLink className="size-4" />
             Go live
           </a>
           <Link
             href="/minimals/post/edit"
-            className="flex items-center gap-1.5 rounded-[8px] border border-grey-300 px-3 h-9 text-lg font-semibold text-grey-800 hover:bg-grey-100 transition-colors"
+            className="flex items-center gap-1.5 rounded-[8px] border border-grey-300 px-3 h-9 text-base font-semibold text-grey-800 hover:bg-grey-100 transition-colors"
           >
             <Pencil className="size-4" />
             Edit
@@ -234,7 +234,7 @@ export function PostDetailsView() {
 
         {/* Published chip — top-left */}
         <div className="absolute top-5 left-6 sm:top-6 sm:left-8">
-          <span className="inline-flex h-6 items-center rounded-md bg-info/16 px-1.5 text-lg font-semibold text-info-dark">
+          <span className="inline-flex h-6 items-center rounded-md bg-info/16 px-1.5 text-base font-semibold text-info-dark">
             Published
           </span>
         </div>
@@ -255,7 +255,7 @@ export function PostDetailsView() {
             <DropdownMenuTrigger
               render={
                 <button
-                  className="flex items-center gap-1.5 rounded-[8px] bg-white/10 backdrop-blur-sm border border-white/20 px-3 h-9 text-lg font-semibold text-white hover:bg-white/20 transition-colors outline-none"
+                  className="flex items-center gap-1.5 rounded-[8px] bg-white/10 backdrop-blur-sm border border-white/20 px-3 h-9 text-base font-semibold text-white hover:bg-white/20 transition-colors outline-none"
                   type="button"
                 />
               }
@@ -370,7 +370,7 @@ export function PostDetailsView() {
         </blockquote>
 
         <h4 className="text-h4 text-grey-800 mb-3">Block code</h4>
-        <pre className="rounded-[12px] bg-grey-900 text-grey-100 p-5 mb-6 overflow-x-auto text-lg leading-6 font-mono">
+        <pre className="rounded-[12px] bg-grey-900 text-grey-100 p-5 mb-6 overflow-x-auto text-base leading-6 font-mono">
           <code>{`for (var i=1; i <= 20; i++) {
   if (i % 15 == 0)
     console.log("FizzBuzz");
@@ -426,7 +426,7 @@ export function PostDetailsView() {
           (tag) => (
             <span
               key={tag}
-              className="inline-flex items-center rounded-[6px] border border-grey-300 px-3 py-1 text-lg text-grey-700 hover:bg-grey-100 transition-colors cursor-pointer"
+              className="inline-flex items-center rounded-[6px] border border-grey-300 px-3 py-1 text-base text-grey-700 hover:bg-grey-100 transition-colors cursor-pointer"
             >
               {tag}
             </span>
@@ -438,7 +438,7 @@ export function PostDetailsView() {
       <div className="flex items-center gap-4 mb-8 pb-8 border-b border-grey-200">
         <button
           onClick={() => setLiked((v) => !v)}
-          className={`flex items-center gap-1.5 text-lg transition-colors ${
+          className={`flex items-center gap-1.5 text-base transition-colors ${
             liked ? "text-error" : "text-grey-500 hover:text-error"
           }`}
         >
@@ -455,7 +455,7 @@ export function PostDetailsView() {
               <AvatarFallback>U</AvatarFallback>
             </Avatar>
           ))}
-          <AvatarGroupCount className="text-lg text-grey-600">
+          <AvatarGroupCount className="text-base text-grey-600">
             +17
           </AvatarGroupCount>
         </AvatarGroup>
@@ -465,7 +465,7 @@ export function PostDetailsView() {
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-6">
           <h4 className="text-xl font-semibold text-grey-800">Comments</h4>
-          <span className="text-lg text-grey-500 font-medium">
+          <span className="text-base text-grey-500 font-medium">
             ({POST_COMMENTS.length})
           </span>
         </div>
@@ -484,7 +484,7 @@ export function PostDetailsView() {
             placeholder="Write some of your comments..."
             aria-label="Write a comment"
             rows={4}
-            className="w-full resize-none text-lg text-grey-800 placeholder:text-grey-400 outline-none bg-transparent leading-relaxed"
+            className="w-full resize-none text-base text-grey-800 placeholder:text-grey-400 outline-none bg-transparent leading-relaxed"
           />
           <div className="flex items-center justify-between mt-3 pt-3 border-t border-grey-200">
             <div className="flex items-center gap-1">
@@ -498,7 +498,7 @@ export function PostDetailsView() {
                 <Smile className="size-4" />
               </button>
             </div>
-            <button className="rounded-[8px] bg-foreground px-4 h-9 text-lg font-semibold text-card hover:opacity-90 transition-opacity">
+            <button className="rounded-[8px] bg-foreground px-4 h-9 text-base font-semibold text-card hover:opacity-90 transition-opacity">
               Post comment
             </button>
           </div>

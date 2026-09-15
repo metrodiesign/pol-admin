@@ -32,10 +32,10 @@ export function BankingQuickTransfer() {
 
       {/* RECENT label + View all */}
       <div className="mt-4 flex items-center justify-between">
-        <span className="text-lg font-semibold uppercase tracking-wider text-grey-500">Recent</span>
+        <span className="text-base font-semibold uppercase tracking-wider text-grey-500">Recent</span>
         <button
           type="button"
-          className="-mr-3 inline-flex items-center gap-1 rounded-control px-3 py-1.5 text-lg font-semibold text-grey-800 transition-colors hover:bg-[var(--action-hover)]"
+          className="-mr-3 inline-flex items-center gap-1 rounded-control px-3 py-1.5 text-base font-semibold text-grey-800 transition-colors hover:bg-[var(--action-hover)]"
         >
           View all
           <ArrowRight className="size-4" />
@@ -84,7 +84,7 @@ export function BankingQuickTransfer() {
                     unoptimized
                   />
                 </span>
-                <span className="w-14 truncate text-center text-lg font-medium text-grey-600">
+                <span className="w-14 truncate text-center text-base font-medium text-grey-600">
                   {c.name.split(" ")[0]}
                 </span>
               </button>
@@ -108,7 +108,7 @@ export function BankingQuickTransfer() {
 
       {/* Insert amount */}
       <div className="mt-6">
-        <p className="text-lg font-semibold uppercase tracking-wider text-grey-500">
+        <p className="text-base font-semibold uppercase tracking-wider text-grey-500">
           Insert amount
         </p>
         <div className="mt-3 flex items-center justify-center gap-1">
@@ -148,7 +148,7 @@ export function BankingQuickTransfer() {
       </div>
 
       {/* Balance */}
-      <div className="mt-4 flex items-center justify-between text-lg">
+      <div className="mt-4 flex items-center justify-between text-base">
         <span className="text-grey-600">Your balance</span>
         <span className="font-semibold text-grey-800">$34,212</span>
       </div>
@@ -156,7 +156,7 @@ export function BankingQuickTransfer() {
       {/* Transfer now button */}
       <button
         type="button"
-        className="mt-4 w-full rounded-control bg-grey-800 py-3 text-lg font-semibold text-white transition-colors hover:bg-grey-900"
+        className="mt-4 w-full rounded-control bg-grey-800 py-3 text-base font-semibold text-white transition-colors hover:bg-grey-900"
       >
         Transfer now
       </button>

@@ -145,7 +145,7 @@ export function ApiClientDetailView({ id }: { id?: string }) {
         </DetailSection>
 
         <div className="flex flex-col gap-3 border-t border-[var(--divider)] p-6">
-          <p className="text-lg text-grey-600">
+          <p className="text-base text-grey-600">
             การเพิกถอน client จะตัดการเข้าถึง API ทันทีและย้อนกลับไม่ได้
           </p>
           <div>

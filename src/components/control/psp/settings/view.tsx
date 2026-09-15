@@ -47,7 +47,7 @@ function BlockingState({
   return (
     <div className="rounded-card bg-card px-5 py-12 text-center" style={cardStyle} role="alert">
       <h1 className="text-h6 text-foreground">{title}</h1>
-      <p className="mt-2 text-lg text-grey-600">{message}</p>
+      <p className="mt-2 text-base text-grey-600">{message}</p>
       {onRetry ? (
         <Button type="button" variant="outline" className="mt-5" onClick={onRetry}>
           <RefreshCw className="size-4" />
@@ -68,7 +68,7 @@ function Notice({
   return (
     <div
       className={cn(
-        "rounded-xl border px-4 py-3 text-lg",
+        "rounded-xl border px-4 py-3 text-base",
         tone === "error"
           ? "border-error/30 bg-error/8 text-error-dark"
           : "border-warning/30 bg-warning/8 text-warning-dark",
@@ -84,7 +84,7 @@ function SectionUnavailable({ title, label }: { title: string; label: string }) 
   return (
     <section className="rounded-card bg-card p-6" style={cardStyle} aria-label={title}>
       <h2 className="text-2xl font-semibold leading-7 text-foreground">{title}</h2>
-      <p className="mt-2 text-lg text-grey-600" role="status">
+      <p className="mt-2 text-base text-grey-600" role="status">
         {label}
       </p>
     </section>
@@ -111,7 +111,7 @@ export function MerchantPaymentSettingsView({ merchantId }: { merchantId: string
       <>
         <Header merchantName={merchantName} />
         <div className="flex min-h-[40vh] items-center justify-center" aria-busy="true">
-          <p className="text-lg text-grey-600" role="status">
+          <p className="text-base text-grey-600" role="status">
             กำลังโหลดการตั้งค่า...
           </p>
         </div>

@@ -53,10 +53,10 @@ export function RolePermissionMatrix({
                 onChange={() => toggleGroup(permissions, allSelected)}
                 aria-label={`เลือกสิทธิ์ทั้งหมดในกลุ่ม ${group.label}`}
               />
-              <span className="text-lg font-semibold text-grey-700">
+              <span className="text-base font-semibold text-grey-700">
                 {group.label}
               </span>
-              <span className="ml-auto text-lg tabular-nums text-grey-500">
+              <span className="ml-auto text-base tabular-nums text-grey-500">
                 {grantedN}/{inGroup}
               </span>
             </div>
@@ -69,8 +69,8 @@ export function RolePermissionMatrix({
                       onChange={() => togglePermission(p.key)}
                       aria-label={p.label}
                     />
-                    <span className="text-lg text-foreground">{p.label}</span>
-                    <span className="ml-auto font-mono text-lg text-grey-500">
+                    <span className="text-base text-foreground">{p.label}</span>
+                    <span className="ml-auto font-mono text-base text-grey-500">
                       {p.key}
                     </span>
                   </label>

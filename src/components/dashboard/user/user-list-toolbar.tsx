@@ -50,7 +50,7 @@ export function UserListToolbar({
 
       {/* Spacer label mirrors the fields so the button centers on the input box, not the full field */}
       <div className="hidden flex-col gap-1.5 sm:flex">
-        <span aria-hidden className="select-none text-lg font-medium">&nbsp;</span>
+        <span aria-hidden className="select-none text-base font-medium">&nbsp;</span>
         <div className="flex flex-1 items-center">
           <Button variant="ghost" size="icon" className="text-grey-600 shrink-0">
             <EllipsisVertical className="size-5" />

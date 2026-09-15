@@ -42,17 +42,17 @@ export function FileManagerFooter({
           onCheckedChange={onDenseChange}
           size="sm"
         />
-        <span className="text-lg text-grey-600">Dense</span>
+        <span className="text-base text-grey-600">Dense</span>
       </label>
 
-      <div className="flex items-center gap-4 text-lg text-grey-600">
+      <div className="flex items-center gap-4 text-base text-grey-600">
         <div className="flex items-center gap-1.5">
           <span>Rows per page:</span>
           <Select
             value={String(rowsPerPage)}
             onValueChange={(v) => onRowsPerPageChange(Number(v ?? rowsPerPage))}
           >
-            <SelectTrigger className="h-7 w-auto gap-1 border-none px-1 text-lg font-semibold text-foreground">
+            <SelectTrigger className="h-7 w-auto gap-1 border-none px-1 text-base font-semibold text-foreground">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

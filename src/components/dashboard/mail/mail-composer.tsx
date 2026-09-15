@@ -49,7 +49,7 @@ export function MailComposer() {
         {/* Paragraph dropdown */}
         <button
           type="button"
-          className="flex h-7 items-center gap-1 rounded px-2 text-lg font-medium text-grey-700 transition-colors hover:bg-grey-100"
+          className="flex h-7 items-center gap-1 rounded px-2 text-base font-medium text-grey-700 transition-colors hover:bg-grey-100"
         >
           Paragraph
           <ChevronDown className="size-3.5" />
@@ -93,7 +93,7 @@ export function MailComposer() {
         suppressContentEditableWarning
         data-placeholder="Write something awesome..."
         className={cn(
-          "min-h-[96px] px-3 py-3 text-lg leading-relaxed text-grey-800 outline-none",
+          "min-h-[96px] px-3 py-3 text-base leading-relaxed text-grey-800 outline-none",
           "empty:before:text-grey-400 empty:before:content-[attr(data-placeholder)]"
         )}
       />
@@ -118,7 +118,7 @@ export function MailComposer() {
         </div>
         <button
           type="button"
-          className="flex items-center gap-2 rounded-lg bg-success px-4 py-2 text-lg font-semibold text-white transition-colors hover:bg-success-dark"
+          className="flex items-center gap-2 rounded-lg bg-success px-4 py-2 text-base font-semibold text-white transition-colors hover:bg-success-dark"
         >
           Send
           <SendHorizontal className="size-4" />

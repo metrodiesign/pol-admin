@@ -57,7 +57,7 @@ export function AnalyticsWebsiteVisits() {
                 type="button"
                 onClick={() => toggle(s.name)}
                 className={cn(
-                  "flex cursor-pointer items-center gap-1.5 rounded-full border px-3 py-1 text-lg font-semibold transition-opacity",
+                  "flex cursor-pointer items-center gap-1.5 rounded-full border px-3 py-1 text-base font-semibold transition-opacity",
                   isHidden
                     ? "border-grey-300 bg-transparent text-grey-400 opacity-50"
                     : "border-transparent bg-grey-100 text-grey-700",

@@ -36,13 +36,13 @@ export default function LogoutPage() {
   if (failed) {
     return (
       <main className="flex min-h-dvh flex-col items-center justify-center gap-3 bg-grey-100 p-4">
-        <p className="text-lg text-error" role="alert">
+        <p className="text-base text-error" role="alert">
           ออกจากระบบไม่สำเร็จ กรุณาลองอีกครั้ง
         </p>
         <button
           type="button"
           onClick={() => void attemptLogout()}
-          className="rounded-lg bg-primary px-4 py-2 text-lg font-semibold text-white"
+          className="rounded-lg bg-primary px-4 py-2 text-base font-semibold text-white"
         >
           ลองอีกครั้ง
         </button>
@@ -52,7 +52,7 @@ export default function LogoutPage() {
 
   return (
     <main className="flex min-h-dvh items-center justify-center bg-grey-100 p-4">
-      <p className="text-lg text-muted-foreground" role="status">
+      <p className="text-base text-muted-foreground" role="status">
         กำลังออกจากระบบ...
       </p>
     </main>

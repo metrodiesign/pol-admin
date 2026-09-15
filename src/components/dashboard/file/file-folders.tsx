@@ -24,7 +24,7 @@ export function FileFolders() {
         </div>
         <Link
           href="/minimals/file-manager"
-          className="-mr-3 inline-flex items-center gap-1 rounded-control px-3 py-1.5 text-lg font-semibold text-grey-800 transition-colors hover:bg-[var(--action-hover)]"
+          className="-mr-3 inline-flex items-center gap-1 rounded-control px-3 py-1.5 text-base font-semibold text-grey-800 transition-colors hover:bg-[var(--action-hover)]"
         >
           View all
           <ArrowRight className="size-4" />
@@ -64,8 +64,8 @@ export function FileFolders() {
                 </button>
               </div>
             </div>
-            <h6 className="mt-3 text-lg font-semibold leading-[22px] text-grey-800">{folder.name}</h6>
-            <p className="mt-0.5 text-lg text-grey-500">
+            <h6 className="mt-3 text-base font-semibold leading-[22px] text-grey-800">{folder.name}</h6>
+            <p className="mt-0.5 text-base text-grey-500">
               {folder.size} / {folder.fileCount}
             </p>
             {/* Avatar group */}
@@ -84,7 +84,7 @@ export function FileFolders() {
                   ))}
                 </div>
                 {folder.overflow > 0 && (
-                  <span className="ml-1 text-lg font-medium text-grey-500">
+                  <span className="ml-1 text-base font-medium text-grey-500">
                     +{folder.overflow}
                   </span>
                 )}
@@ -116,9 +116,9 @@ export function FileFolders() {
               </svg>
               <FolderStarIcon starred={folder.starred} />
             </div>
-            <h6 className="mt-2 text-lg font-semibold leading-[22px] text-grey-800">{folder.name}</h6>
-            <p className="text-lg text-grey-500">{folder.size}</p>
-            <p className="text-lg text-grey-500">{folder.fileCount}</p>
+            <h6 className="mt-2 text-base font-semibold leading-[22px] text-grey-800">{folder.name}</h6>
+            <p className="text-base text-grey-500">{folder.size}</p>
+            <p className="text-base text-grey-500">{folder.fileCount}</p>
             {folder.shared.length > 0 && (
               <div className="mt-2 flex -space-x-2">
                 {folder.shared.slice(0, 2).map((av) => (
@@ -132,7 +132,7 @@ export function FileFolders() {
                   />
                 ))}
                 {folder.overflow > 0 && (
-                  <span className="ml-1 text-lg font-medium text-grey-500">+{folder.overflow}</span>
+                  <span className="ml-1 text-base font-medium text-grey-500">+{folder.overflow}</span>
                 )}
               </div>
             )}

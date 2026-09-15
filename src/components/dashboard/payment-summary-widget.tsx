@@ -20,10 +20,10 @@ function PaymentSummaryCard({
         >
           {stat.total}
         </p>
-        <div className="mt-2 flex flex-col items-start gap-1.5 text-lg">
+        <div className="mt-2 flex flex-col items-start gap-1.5 text-base">
           <span
             className={cn(
-              "inline-flex items-center gap-0.5 rounded-md px-1.5 py-0.5 text-lg font-semibold",
+              "inline-flex items-center gap-0.5 rounded-md px-1.5 py-0.5 text-base font-semibold",
               stat.trend.up ? "bg-success/16 text-success" : "bg-error/16 text-error",
             )}
           >

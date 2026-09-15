@@ -77,7 +77,7 @@ function FormCard({ title, caption, children }: FormCardProps) {
       <div className="flex items-start justify-between px-6 py-5">
         <div>
           <h2 className="text-xl font-semibold text-grey-800">{title}</h2>
-          <p className="text-lg text-grey-500">{caption}</p>
+          <p className="text-base text-grey-500">{caption}</p>
         </div>
         <button
           type="button"
@@ -139,7 +139,7 @@ function RichTextEditor({
         <Select defaultValue="Paragraph">
           <SelectTrigger
             aria-label="Text format"
-            className="mr-1 h-8 w-auto gap-1 border-none px-2 text-lg font-medium text-grey-800"
+            className="mr-1 h-8 w-auto gap-1 border-none px-2 text-base font-medium text-grey-800"
           >
             <SelectValue placeholder="Paragraph" />
           </SelectTrigger>
@@ -216,7 +216,7 @@ function RichTextEditor({
         suppressContentEditableWarning
         onBlur={() => onChange(editorRef.current?.innerHTML ?? "")}
         dangerouslySetInnerHTML={{ __html: value }}
-        className="min-h-[200px] px-4 py-3 text-lg text-grey-800 outline-none"
+        className="min-h-[200px] px-4 py-3 text-base text-grey-800 outline-none"
         data-placeholder="Write something awesome..."
         aria-label="Content editor"
         style={{
@@ -276,7 +276,7 @@ function ImageDropzone({ existingImages = [], onExistingRemove, onRemoveAll }: I
           </svg>
         </div>
         <p className="text-xl font-semibold text-grey-800">Drop or select files</p>
-        <p className="mt-1 text-lg text-grey-500">
+        <p className="mt-1 text-base text-grey-500">
           Drag files here, or{" "}
           <button
             type="button"
@@ -327,13 +327,13 @@ function ImageDropzone({ existingImages = [], onExistingRemove, onRemoveAll }: I
             <button
               type="button"
               onClick={onRemoveAll}
-              className="text-lg text-grey-600 hover:text-grey-800 transition-colors"
+              className="text-base text-grey-600 hover:text-grey-800 transition-colors"
             >
               Remove All
             </button>
             <button
               type="button"
-              className="inline-flex items-center gap-1.5 rounded-control bg-foreground px-2.5 py-1 text-lg leading-[22px] font-semibold text-card hover:opacity-90 transition-opacity"
+              className="inline-flex items-center gap-1.5 rounded-control bg-foreground px-2.5 py-1 text-base leading-[22px] font-semibold text-card hover:opacity-90 transition-opacity"
             >
               <Upload className="size-4" />
               Upload
@@ -452,7 +452,7 @@ export function TourForm({ mode, tour }: TourFormProps) {
               <div>
                 <label
                   id={nameId}
-                  className="mb-1.5 block text-lg font-semibold text-grey-800"
+                  className="mb-1.5 block text-base font-semibold text-grey-800"
                 >
                   Name
                 </label>
@@ -462,13 +462,13 @@ export function TourForm({ mode, tour }: TourFormProps) {
                   placeholder="Ex: Adventure seekers expedition..."
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full rounded-control border border-[var(--divider)] h-14 px-3.5 text-lg text-grey-800 outline-none placeholder:text-grey-400 focus:border-grey-800 focus:ring-1 focus:ring-inset focus:ring-grey-800"
+                  className="w-full rounded-control border border-[var(--divider)] h-14 px-3.5 text-base text-grey-800 outline-none placeholder:text-grey-400 focus:border-grey-800 focus:ring-1 focus:ring-inset focus:ring-grey-800"
                 />
               </div>
 
               {/* Content */}
               <div>
-                <label className="mb-1.5 block text-lg font-semibold text-grey-800">
+                <label className="mb-1.5 block text-base font-semibold text-grey-800">
                   Content
                 </label>
                 <RichTextEditor value={content} onChange={setContent} />
@@ -476,7 +476,7 @@ export function TourForm({ mode, tour }: TourFormProps) {
 
               {/* Images */}
               <div>
-                <label className="mb-1.5 block text-lg font-semibold text-grey-800">
+                <label className="mb-1.5 block text-base font-semibold text-grey-800">
                   Images
                 </label>
                 <ImageDropzone
@@ -496,7 +496,7 @@ export function TourForm({ mode, tour }: TourFormProps) {
             <div className="space-y-5">
               {/* Tour guide */}
               <div>
-                <label className="mb-1.5 block text-lg font-semibold text-grey-800">
+                <label className="mb-1.5 block text-base font-semibold text-grey-800">
                   Tour guide
                 </label>
                 <div className="rounded-control border border-[var(--divider)] px-3 py-2 focus-within:border-grey-800 focus-within:ring-1 focus-within:ring-inset focus-within:ring-grey-800">
@@ -504,7 +504,7 @@ export function TourForm({ mode, tour }: TourFormProps) {
                     {selectedGuides.map((guide) => (
                       <span
                         key={guide.id}
-                        className="inline-flex h-6 items-center gap-1 rounded-[8px] bg-[rgba(145,158,171,0.16)] py-0.5 pl-1 pr-2 text-lg font-normal text-grey-800"
+                        className="inline-flex h-6 items-center gap-1 rounded-[8px] bg-[rgba(145,158,171,0.16)] py-0.5 pl-1 pr-2 text-base font-normal text-grey-800"
                       >
                         <span className="relative size-5 overflow-hidden rounded-full bg-grey-200 shrink-0">
                           <Image
@@ -530,7 +530,7 @@ export function TourForm({ mode, tour }: TourFormProps) {
                       type="text"
                       aria-label="Tour guide"
                       placeholder={selectedGuides.length === 0 ? "+ Tour guides" : ""}
-                      className="min-w-[120px] flex-1 bg-transparent text-lg text-grey-800 outline-none placeholder:text-grey-400"
+                      className="min-w-[120px] flex-1 bg-transparent text-base text-grey-800 outline-none placeholder:text-grey-400"
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
                           e.preventDefault();
@@ -551,7 +551,7 @@ export function TourForm({ mode, tour }: TourFormProps) {
 
               {/* Available: Start + End date */}
               <div>
-                <label className="mb-1.5 block text-lg font-semibold text-grey-800">
+                <label className="mb-1.5 block text-base font-semibold text-grey-800">
                   Available
                 </label>
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -562,7 +562,7 @@ export function TourForm({ mode, tour }: TourFormProps) {
                       placeholder="Start date"
                       value={startDate}
                       onChange={(e) => setStartDate(e.target.value)}
-                      className="w-full rounded-control border border-[var(--divider)] h-14 px-3.5 pr-10 text-lg text-grey-800 outline-none placeholder:text-grey-400 focus:border-grey-800 focus:ring-1 focus:ring-inset focus:ring-grey-800"
+                      className="w-full rounded-control border border-[var(--divider)] h-14 px-3.5 pr-10 text-base text-grey-800 outline-none placeholder:text-grey-400 focus:border-grey-800 focus:ring-1 focus:ring-inset focus:ring-grey-800"
                     />
                     <button
                       type="button"
@@ -582,7 +582,7 @@ export function TourForm({ mode, tour }: TourFormProps) {
                       placeholder="End date"
                       value={endDate}
                       onChange={(e) => setEndDate(e.target.value)}
-                      className="w-full rounded-control border border-[var(--divider)] h-14 px-3.5 pr-10 text-lg text-grey-800 outline-none placeholder:text-grey-400 focus:border-grey-800 focus:ring-1 focus:ring-inset focus:ring-grey-800"
+                      className="w-full rounded-control border border-[var(--divider)] h-14 px-3.5 pr-10 text-base text-grey-800 outline-none placeholder:text-grey-400 focus:border-grey-800 focus:ring-1 focus:ring-inset focus:ring-grey-800"
                     />
                     <button
                       type="button"
@@ -602,7 +602,7 @@ export function TourForm({ mode, tour }: TourFormProps) {
               <div>
                 <label
                   id={durationId}
-                  className="mb-1.5 block text-lg font-semibold text-grey-800"
+                  className="mb-1.5 block text-base font-semibold text-grey-800"
                 >
                   Duration
                 </label>
@@ -612,7 +612,7 @@ export function TourForm({ mode, tour }: TourFormProps) {
                   placeholder="Ex: 2 days, 4 days 3 nights..."
                   value={duration}
                   onChange={(e) => setDuration(e.target.value)}
-                  className="w-full rounded-control border border-[var(--divider)] h-14 px-3.5 text-lg text-grey-800 outline-none placeholder:text-grey-400 focus:border-grey-800 focus:ring-1 focus:ring-inset focus:ring-grey-800"
+                  className="w-full rounded-control border border-[var(--divider)] h-14 px-3.5 text-base text-grey-800 outline-none placeholder:text-grey-400 focus:border-grey-800 focus:ring-1 focus:ring-inset focus:ring-grey-800"
                 />
               </div>
 
@@ -620,7 +620,7 @@ export function TourForm({ mode, tour }: TourFormProps) {
               <div>
                 <label
                   id={destinationId}
-                  className="mb-1.5 block text-lg font-semibold text-grey-800"
+                  className="mb-1.5 block text-base font-semibold text-grey-800"
                 >
                   Destination
                 </label>
@@ -630,7 +630,7 @@ export function TourForm({ mode, tour }: TourFormProps) {
                 >
                   <SelectTrigger
                     aria-labelledby={destinationId}
-                    className="w-full h-14 text-lg text-grey-800"
+                    className="w-full h-14 text-base text-grey-800"
                   >
                     <SelectValue placeholder="+ Destination" />
                   </SelectTrigger>
@@ -646,7 +646,7 @@ export function TourForm({ mode, tour }: TourFormProps) {
 
               {/* Services */}
               <div>
-                <label className="mb-1.5 block text-lg font-semibold text-grey-800">
+                <label className="mb-1.5 block text-base font-semibold text-grey-800">
                   Services
                 </label>
                 <div className="grid grid-cols-2 gap-y-2">
@@ -655,7 +655,7 @@ export function TourForm({ mode, tour }: TourFormProps) {
                       {col.map((service) => (
                         <label
                           key={service}
-                          className="flex cursor-pointer items-center gap-2 text-lg text-grey-700"
+                          className="flex cursor-pointer items-center gap-2 text-base text-grey-700"
                         >
                           <input
                             type="checkbox"
@@ -673,7 +673,7 @@ export function TourForm({ mode, tour }: TourFormProps) {
 
               {/* Tags */}
               <div>
-                <label className="mb-1.5 block text-lg font-semibold text-grey-800">
+                <label className="mb-1.5 block text-base font-semibold text-grey-800">
                   Tags
                 </label>
                 <div className="rounded-control border border-[var(--divider)] px-3 py-2 focus-within:border-grey-800 focus-within:ring-1 focus-within:ring-inset focus-within:ring-grey-800">
@@ -681,7 +681,7 @@ export function TourForm({ mode, tour }: TourFormProps) {
                     {tags.map((tag) => (
                       <span
                         key={tag}
-                        className="inline-flex items-center gap-1 rounded-full border border-primary px-2 py-0.5 text-lg font-semibold text-primary-dark"
+                        className="inline-flex items-center gap-1 rounded-full border border-primary px-2 py-0.5 text-base font-semibold text-primary-dark"
                       >
                         {tag}
                         <button
@@ -706,7 +706,7 @@ export function TourForm({ mode, tour }: TourFormProps) {
                           addTag(tagInput);
                         }
                       }}
-                      className="min-w-[80px] flex-1 bg-transparent text-lg text-grey-800 outline-none placeholder:text-grey-400"
+                      className="min-w-[80px] flex-1 bg-transparent text-base text-grey-800 outline-none placeholder:text-grey-400"
                     />
                   </div>
                 </div>
@@ -716,7 +716,7 @@ export function TourForm({ mode, tour }: TourFormProps) {
 
           {/* Footer */}
           <div className="flex items-center justify-between py-2">
-            <label className="flex cursor-pointer items-center gap-2 text-lg font-semibold text-grey-700">
+            <label className="flex cursor-pointer items-center gap-2 text-base font-semibold text-grey-700">
               <Switch
                 checked={publish}
                 onCheckedChange={setPublish}
@@ -726,7 +726,7 @@ export function TourForm({ mode, tour }: TourFormProps) {
             </label>
             <button
               type="submit"
-              className="h-12 rounded-control bg-foreground px-4 text-lg font-semibold text-card hover:opacity-90 transition-opacity"
+              className="h-12 rounded-control bg-foreground px-4 text-base font-semibold text-card hover:opacity-90 transition-opacity"
             >
               {isEdit ? "Save changes" : "Create tour"}
             </button>

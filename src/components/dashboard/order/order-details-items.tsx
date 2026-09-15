@@ -42,12 +42,12 @@ export function OrderDetailItems({
               />
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-lg font-semibold text-foreground">
+              <p className="text-base font-semibold text-foreground">
                 {item.name}
               </p>
-              <p className="text-lg text-grey-600">{item.sku}</p>
+              <p className="text-base text-grey-600">{item.sku}</p>
             </div>
-            <div className="flex items-center gap-8 text-lg text-foreground">
+            <div className="flex items-center gap-8 text-base text-foreground">
               <span className="text-grey-600">x{item.qty}</span>
               <span className="w-20 text-right font-semibold">
                 {formatCurrency(item.price * item.qty)}
@@ -61,7 +61,7 @@ export function OrderDetailItems({
       <div className="my-5 border-t border-dashed border-[var(--divider)]" />
 
       {/* Price summary */}
-      <div className="space-y-2.5 text-lg">
+      <div className="space-y-2.5 text-base">
         <div className="flex items-center justify-end gap-2">
           <span className="w-48 text-right text-grey-600">
             Subtotal

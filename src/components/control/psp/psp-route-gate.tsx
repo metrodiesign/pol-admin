@@ -25,7 +25,7 @@ export function shouldRedirectToForbidden(
 function LoadingState(): React.JSX.Element {
   return (
     <div className="flex min-h-[50vh] items-center justify-center" aria-busy="true">
-      <p className="text-lg text-grey-600" role="status">
+      <p className="text-base text-grey-600" role="status">
         กำลังตรวจสอบสิทธิ์...
       </p>
     </div>

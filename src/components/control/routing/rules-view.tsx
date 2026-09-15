@@ -72,7 +72,7 @@ export function RoutingRulesView() {
     <div className="flex flex-col gap-6">
       <div className="flex items-start gap-3 rounded-2xl border border-warning/30 bg-warning/8 px-5 py-4">
         <ShieldAlert className="mt-0.5 size-5 shrink-0 text-warning-dark" />
-        <p className="text-lg font-medium text-warning-dark">
+        <p className="text-base font-medium text-warning-dark">
           การเปลี่ยนแปลง routing ต้องผ่านการอนุมัติแบบ maker-checker (Approvals)
         </p>
       </div>

@@ -56,7 +56,7 @@ export function KanbanBoard({ initialColumns }: KanbanBoardProps) {
       {/* Page header row with Fixed column toggle */}
       <div className="mb-5 flex items-center justify-between">
         <h4 className="text-4xl font-semibold leading-9 text-foreground">Kanban</h4>
-        <label className="flex cursor-pointer items-center gap-2 text-lg font-medium text-grey-700">
+        <label className="flex cursor-pointer items-center gap-2 text-base font-medium text-grey-700">
           Fixed column
           <Switch
             checked={fixedColumn}
@@ -92,7 +92,7 @@ export function KanbanBoard({ initialColumns }: KanbanBoardProps) {
           <button
             type="button"
             onClick={handleAddColumn}
-            className="flex h-14 w-[200px] items-center gap-1.5 whitespace-nowrap rounded-control px-4 text-lg font-semibold text-grey-800 transition-colors hover:bg-grey-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            className="flex h-14 w-[200px] items-center gap-1.5 whitespace-nowrap rounded-control px-4 text-base font-semibold text-grey-800 transition-colors hover:bg-grey-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             aria-label="Add column"
           >
             <Plus className="size-4" strokeWidth={2.5} />

@@ -71,7 +71,7 @@ function UserCardItem({ card }: { card: UserCard }) {
           />
         </div>
         <p className="mt-4 text-xl font-semibold text-grey-800">{card.name}</p>
-        <p className="mt-1 text-lg text-grey-600">{card.role}</p>
+        <p className="mt-1 text-base text-grey-600">{card.role}</p>
 
         <div className="mt-4 mb-2">
           <SocialIcons />
@@ -83,19 +83,19 @@ function UserCardItem({ card }: { card: UserCard }) {
         {/* Stats */}
         <div className="mt-6 flex w-full items-start justify-around">
           <div className="text-center">
-            <p className="text-lg font-normal text-grey-600">
+            <p className="text-base font-normal text-grey-600">
               Follower
             </p>
             <p className="mt-1 text-xl font-semibold text-grey-800">{card.totalFollowers}</p>
           </div>
           <div className="text-center">
-            <p className="text-lg font-normal text-grey-600">
+            <p className="text-base font-normal text-grey-600">
               Following
             </p>
             <p className="mt-1 text-xl font-semibold text-grey-800">{card.totalFollowing}</p>
           </div>
           <div className="text-center">
-            <p className="text-lg font-normal text-grey-600">
+            <p className="text-base font-normal text-grey-600">
               Total post
             </p>
             <p className="mt-1 text-xl font-semibold text-grey-800">{card.totalPosts}</p>
@@ -150,7 +150,7 @@ export default function UserCardsPage() {
             type="button"
             onClick={() => setPage(p)}
             className={cn(
-              "flex size-8 items-center justify-center rounded-full text-lg transition-colors",
+              "flex size-8 items-center justify-center rounded-full text-base transition-colors",
               page === p
                 ? "bg-grey-800 text-white font-semibold"
                 : "font-normal text-grey-800 hover:bg-[rgba(145,158,171,0.08)]",

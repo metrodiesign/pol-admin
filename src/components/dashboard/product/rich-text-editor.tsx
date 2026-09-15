@@ -73,7 +73,7 @@ export function RichTextEditor({
         <Select value={heading} onValueChange={(v) => setHeading(v ?? "")}>
           <SelectTrigger
             aria-label="Text style"
-            className="h-8 w-auto gap-1 border-none px-2 text-lg font-medium text-grey-800 hover:bg-[var(--action-hover)]"
+            className="h-8 w-auto gap-1 border-none px-2 text-base font-medium text-grey-800 hover:bg-[var(--action-hover)]"
           >
             <SelectValue placeholder="Paragraph" />
           </SelectTrigger>
@@ -137,7 +137,7 @@ export function RichTextEditor({
           onBlur={() => setFocused(false)}
           // Content is hardcoded mock data, not user input — no XSS risk
           dangerouslySetInnerHTML={{ __html: initialHtml }}
-          className="min-h-[200px] bg-grey-50 px-4 py-3 text-lg text-foreground outline-none [&_h6]:mb-1 [&_h6]:mt-3 [&_h6]:text-lg [&_h6]:font-semibold [&_h6]:text-foreground [&_li]:text-grey-600 [&_p]:my-0.5 [&_p]:text-grey-600 [&_ul]:ml-4 [&_ul]:list-disc [&_ul]:space-y-1"
+          className="min-h-[200px] bg-grey-50 px-4 py-3 text-base text-foreground outline-none [&_h6]:mb-1 [&_h6]:mt-3 [&_h6]:text-base [&_h6]:font-semibold [&_h6]:text-foreground [&_li]:text-grey-600 [&_p]:my-0.5 [&_p]:text-grey-600 [&_ul]:ml-4 [&_ul]:list-disc [&_ul]:space-y-1"
         />
       ) : (
         <div
@@ -146,7 +146,7 @@ export function RichTextEditor({
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           data-placeholder={placeholder}
-          className="min-h-[200px] bg-grey-50 px-4 py-3 text-lg text-foreground outline-none empty:before:text-grey-400 empty:before:content-[attr(data-placeholder)]"
+          className="min-h-[200px] bg-grey-50 px-4 py-3 text-base text-foreground outline-none empty:before:text-grey-400 empty:before:content-[attr(data-placeholder)]"
         />
       )}
     </div>

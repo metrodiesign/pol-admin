@@ -60,7 +60,7 @@ export function OrderTableRow({
         </TableCell>
 
         {/* Order # */}
-        <TableCell className={cn("px-4 text-lg font-normal", py)}>
+        <TableCell className={cn("px-4 text-base font-normal", py)}>
           <Link
             href={`/minimals/order/details`}
             className="text-foreground underline decoration-foreground/40 hover:decoration-foreground"
@@ -82,10 +82,10 @@ export function OrderTableRow({
               />
             </div>
             <div className="min-w-0">
-              <p className="text-lg font-semibold text-foreground">
+              <p className="text-base font-semibold text-foreground">
                 {order.customer.name}
               </p>
-              <p className="truncate text-lg text-grey-600">
+              <p className="truncate text-base text-grey-600">
                 {order.customer.email}
               </p>
             </div>
@@ -94,17 +94,17 @@ export function OrderTableRow({
 
         {/* Date */}
         <TableCell className={cn("px-4", py)}>
-          <p className="text-lg text-foreground">{order.date}</p>
-          <p className="text-lg text-grey-600">{order.time}</p>
+          <p className="text-base text-foreground">{order.date}</p>
+          <p className="text-base text-grey-600">{order.time}</p>
         </TableCell>
 
         {/* Items */}
-        <TableCell className={cn("px-4 text-lg text-foreground", py)}>
+        <TableCell className={cn("px-4 text-base text-foreground", py)}>
           {order.items}
         </TableCell>
 
         {/* Price */}
-        <TableCell className={cn("px-4 text-lg text-foreground", py)}>
+        <TableCell className={cn("px-4 text-base text-foreground", py)}>
           {formatPrice(order.price)}
         </TableCell>
 
@@ -179,13 +179,13 @@ export function OrderTableRow({
                     />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="text-lg text-foreground">{item.name}</p>
-                    <p className="text-lg text-grey-500">{item.sku}</p>
+                    <p className="text-base text-foreground">{item.name}</p>
+                    <p className="text-base text-grey-500">{item.sku}</p>
                   </div>
-                  <span className="text-lg text-foreground">
+                  <span className="text-base text-foreground">
                     x{item.qty}
                   </span>
-                  <span className="ml-8 w-20 text-right text-lg text-[rgb(28,37,46)]">
+                  <span className="ml-8 w-20 text-right text-base text-[rgb(28,37,46)]">
                     {formatPrice(item.price)}
                   </span>
                 </div>

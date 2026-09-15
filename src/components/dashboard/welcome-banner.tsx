@@ -153,13 +153,13 @@ export function WelcomeBanner() {
                   </>
                 )}
               </h4>
-              <p className="mt-4 max-w-[300px] text-lg leading-relaxed text-white/70">
+              <p className="mt-4 max-w-[300px] text-base leading-relaxed text-white/70">
                 {slide.subtitle}
               </p>
               <button
                 type="button"
                 onPointerDown={stopDrag}
-                className="mt-6 rounded-control px-3 py-1.5 text-lg font-semibold leading-6 text-white transition-opacity hover:opacity-90"
+                className="mt-6 rounded-control px-3 py-1.5 text-base font-semibold leading-6 text-white transition-opacity hover:opacity-90"
                 style={{ backgroundColor: "#00A76F" }}
               >
                 {slide.cta}

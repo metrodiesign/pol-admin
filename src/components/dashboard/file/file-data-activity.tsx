@@ -60,7 +60,7 @@ export function FileDataActivity() {
                     key={s.name}
                     type="button"
                     onClick={() => toggleSeries(s.name)}
-                    className="flex items-center gap-1.5 text-lg font-medium"
+                    className="flex items-center gap-1.5 text-base font-medium"
                   >
                     <span
                       className="size-2.5 rounded-full"
@@ -75,7 +75,7 @@ export function FileDataActivity() {
             </div>
             {/* Period selector */}
             <Select value={period} onValueChange={(v) => v && setPeriod(v)}>
-              <SelectTrigger className="h-8 rounded-control text-lg">
+              <SelectTrigger className="h-8 rounded-control text-base">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent align="end">

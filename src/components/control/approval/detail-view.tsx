@@ -181,7 +181,7 @@ export function ApprovalDetailView({ id }: { id?: string }) {
           title="การตรวจสอบ (maker-checker)"
           description={`ผู้ตรวจสอบคนที่สองเป็นผู้ลงนามอนุมัติหรือปฏิเสธ — ผู้ขอ (${req.maker}) ไม่สามารถอนุมัติคำขอของตนเองได้`}
         >
-          <p className="text-lg text-grey-600">
+          <p className="text-base text-grey-600">
             {allowed
               ? "ใช้ปุ่ม อนุมัติ / ปฏิเสธ ด้านบนเพื่อบันทึกการตัดสินใจ"
               : reason}

@@ -41,7 +41,7 @@ export function BankingBalanceStats() {
       subtitle={subtitle}
       action={
         <Select value={period} onValueChange={(v) => v && setPeriod(v)}>
-          <SelectTrigger className="h-8 rounded-control text-lg">
+          <SelectTrigger className="h-8 rounded-control text-base">
             <SelectValue />
           </SelectTrigger>
           <SelectContent align="end">
@@ -57,11 +57,11 @@ export function BankingBalanceStats() {
       {/* Legend chips */}
       <div className="mb-5 flex flex-wrap gap-4">
         {legend.map((item) => (
-          <div key={item.label} className="flex items-center gap-1.5 text-lg">
+          <div key={item.label} className="flex items-center gap-1.5 text-base">
             <span className="size-2.5 rounded-full" style={{ backgroundColor: item.color }} />
             <span className="text-grey-600">{item.label}</span>
             <span
-              className="rounded-full px-1.5 py-0.5 text-lg font-semibold"
+              className="rounded-full px-1.5 py-0.5 text-base font-semibold"
               style={{
                 backgroundColor: `${item.color}18`,
                 color: item.color,

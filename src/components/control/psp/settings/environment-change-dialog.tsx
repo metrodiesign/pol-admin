@@ -154,7 +154,7 @@ function DialogBody({
                 className="flex flex-col gap-4 rounded-xl border border-[var(--divider)] p-4"
                 disabled={submitting}
               >
-                <legend className="px-1 text-lg font-semibold text-foreground">
+                <legend className="px-1 text-base font-semibold text-foreground">
                   {PROVIDER_LABEL[draft.psp]}
                 </legend>
                 {draft.psp === "2c2p" ? (
@@ -206,7 +206,7 @@ function DialogBody({
           })}
 
           {target === "live" && hasOmise ? (
-            <label className="flex items-start gap-2 text-lg text-grey-800">
+            <label className="flex items-start gap-2 text-base text-grey-800">
               <Checkbox
                 checked={webhookConfirmed}
                 onChange={(checked) => {
@@ -220,7 +220,7 @@ function DialogBody({
           ) : null}
 
           {formError ? (
-            <p className="text-lg text-error" role="alert">
+            <p className="text-base text-error" role="alert">
               {formError}
             </p>
           ) : null}

@@ -17,7 +17,7 @@ export function RolePermissionProgress({
 }: RolePermissionProgressProps) {
   return (
     <div className={cn("flex w-36 flex-col gap-1", className)}>
-      <span className="text-lg font-semibold tabular-nums text-grey-700">
+      <span className="text-base font-semibold tabular-nums text-grey-700">
         {value}/{max}
       </span>
       <Progress value={value} max={max} className="w-full" />

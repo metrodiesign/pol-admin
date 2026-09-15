@@ -17,10 +17,10 @@ function ProgressBar({
   return (
     <div className="space-y-1.5">
       <div className="flex items-center justify-between">
-        <span className="text-lg font-semibold" style={{ color }}>
+        <span className="text-base font-semibold" style={{ color }}>
           {label}
         </span>
-        <div className="flex items-center gap-2 text-lg">
+        <div className="flex items-center gap-2 text-base">
           <span className="font-semibold text-grey-800">{value}</span>
           <span className="min-w-[52px] text-right text-grey-500">
             ({percent})

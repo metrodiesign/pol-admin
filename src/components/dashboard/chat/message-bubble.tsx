@@ -97,7 +97,7 @@ function SingleBubble({ message, isOwn }: SingleBubbleProps) {
       ) : (
         <div
           className={cn(
-            "max-w-[340px] rounded-2xl px-3.5 py-2 text-lg leading-[22px]",
+            "max-w-[340px] rounded-2xl px-3.5 py-2 text-base leading-[22px]",
             isOwn
               ? "rounded-br-sm bg-[#d3fcd2] text-grey-900"
               : "rounded-bl-sm bg-grey-100 text-grey-800"
@@ -124,7 +124,7 @@ export function MessageGroup({
     <div className="flex flex-col gap-1.5">
       {/* Time label above the group, aligned to the sender side */}
       <div className={cn("flex", isOwn ? "justify-end" : "justify-start")}>
-        <span className="text-lg leading-5 text-grey-400">{groupTime}</span>
+        <span className="text-base leading-5 text-grey-400">{groupTime}</span>
       </div>
 
       <div className={cn("flex gap-2", isOwn ? "flex-row-reverse" : "flex-row")}>
@@ -145,7 +145,7 @@ export function MessageGroup({
         <div className={cn("flex flex-col gap-1", isOwn ? "items-end" : "items-start")}>
           {/* Sender name — incoming only, above bubbles */}
           {!isOwn && (
-            <p className="px-1 text-lg leading-5 text-grey-500">{senderName}</p>
+            <p className="px-1 text-base leading-5 text-grey-500">{senderName}</p>
           )}
 
           {messages.map((msg) => (

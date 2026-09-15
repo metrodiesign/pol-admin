@@ -69,7 +69,7 @@ export function CandidateTestButton({
         type="button"
         onClick={() => void run()}
         disabled={status === "testing"}
-        className="inline-flex h-9 items-center gap-1.5 rounded-control bg-grey-600/8 px-3 text-lg font-semibold text-grey-800 transition-colors hover:bg-grey-600/16 disabled:pointer-events-none disabled:opacity-50"
+        className="inline-flex h-9 items-center gap-1.5 rounded-control bg-grey-600/8 px-3 text-base font-semibold text-grey-800 transition-colors hover:bg-grey-600/16 disabled:pointer-events-none disabled:opacity-50"
       >
         {status === "testing" ? (
           <Loader2 className="size-4 animate-spin" aria-hidden />
@@ -78,9 +78,9 @@ export function CandidateTestButton({
         )}
         ทดสอบชุดใหม่
       </button>
-      {result ? <p className="text-lg text-grey-700">ผลชุดรออนุมัติ: {result}</p> : null}
+      {result ? <p className="text-base text-grey-700">ผลชุดรออนุมัติ: {result}</p> : null}
       {error ? (
-        <p className="text-lg text-error" role="alert">
+        <p className="text-base text-error" role="alert">
           {error}
         </p>
       ) : null}

@@ -12,7 +12,7 @@ export function BankingContacts() {
       action={
         <button
           type="button"
-          className="-mr-3 inline-flex items-center gap-1 rounded-control px-3 py-1.5 text-lg font-semibold text-grey-800 transition-colors hover:bg-[var(--action-hover)]"
+          className="-mr-3 inline-flex items-center gap-1 rounded-control px-3 py-1.5 text-base font-semibold text-grey-800 transition-colors hover:bg-[var(--action-hover)]"
         >
           View all
           <ArrowRight className="size-4" />
@@ -36,8 +36,8 @@ export function BankingContacts() {
               unoptimized
             />
             <div className="min-w-0 flex-1">
-              <p className="text-lg font-semibold text-grey-800">{c.name}</p>
-              <p className="truncate text-lg text-grey-500">{c.email}</p>
+              <p className="text-base font-semibold text-grey-800">{c.name}</p>
+              <p className="truncate text-base text-grey-500">{c.email}</p>
             </div>
             <button
               type="button"

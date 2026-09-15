@@ -30,7 +30,7 @@ export function BankingOverview() {
       {/* Header row */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-lg text-grey-500">Total balance</p>
+          <p className="text-base text-grey-500">Total balance</p>
           <p
             className="mt-1 text-5xl font-semibold leading-[3rem] text-grey-800"
             style={{ fontFamily: "var(--font-barlow, var(--font-sans))" }}
@@ -49,7 +49,7 @@ export function BankingOverview() {
             <button
               key={action.label}
               type="button"
-              className="flex items-center gap-1.5 rounded-control px-2 py-1 text-lg font-semibold text-grey-800 transition-colors"
+              className="flex items-center gap-1.5 rounded-control px-2 py-1 text-base font-semibold text-grey-800 transition-colors"
               style={{ backgroundColor: "rgba(145,158,171,0.16)" }}
             >
               <action.icon className="size-4" />
@@ -83,16 +83,16 @@ export function BankingOverview() {
             />
           </span>
           <div>
-            <p className={cn("text-lg", activeTab === "income" ? "text-white/64" : "text-grey-500")}>
+            <p className={cn("text-base", activeTab === "income" ? "text-white/64" : "text-grey-500")}>
               Income
             </p>
-            <p className={cn("text-lg font-semibold", activeTab === "income" ? "text-white" : "text-grey-800")}>
+            <p className={cn("text-base font-semibold", activeTab === "income" ? "text-white" : "text-grey-800")}>
               {income.value}
             </p>
           </div>
           <span
             className={cn(
-              "ml-1 rounded-full px-1.5 py-0.5 text-lg font-semibold",
+              "ml-1 rounded-full px-1.5 py-0.5 text-base font-semibold",
               activeTab === "income"
                 ? "bg-white/16 text-white"
                 : "bg-success/16 text-success-dark",
@@ -124,16 +124,16 @@ export function BankingOverview() {
             />
           </span>
           <div>
-            <p className={cn("text-lg", activeTab === "expenses" ? "text-white/64" : "text-grey-500")}>
+            <p className={cn("text-base", activeTab === "expenses" ? "text-white/64" : "text-grey-500")}>
               Expenses
             </p>
-            <p className={cn("text-lg font-semibold", activeTab === "expenses" ? "text-white" : "text-grey-800")}>
+            <p className={cn("text-base font-semibold", activeTab === "expenses" ? "text-white" : "text-grey-800")}>
               {expenses.value}
             </p>
           </div>
           <span
             className={cn(
-              "ml-1 rounded-full px-1.5 py-0.5 text-lg font-semibold",
+              "ml-1 rounded-full px-1.5 py-0.5 text-base font-semibold",
               activeTab === "expenses"
                 ? "bg-white/16 text-white"
                 : "bg-error/16 text-error-dark",

@@ -21,10 +21,10 @@ export function AnalyticsOrderTimeline() {
               </div>
               {/* Content */}
               <div className={isLast ? "pb-1" : "pb-7"}>
-                <p className="text-lg font-semibold leading-[22px] text-grey-800">
+                <p className="text-base font-semibold leading-[22px] text-grey-800">
                   {event.title}
                 </p>
-                <p className="text-lg leading-[18px] text-grey-500">{event.time}</p>
+                <p className="text-base leading-[18px] text-grey-500">{event.time}</p>
               </div>
             </li>
           );

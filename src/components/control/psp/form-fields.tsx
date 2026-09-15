@@ -50,7 +50,7 @@ export function PspMethodFields({
       aria-describedby={error ? `${id}-error` : undefined}
       aria-invalid={Boolean(error) || undefined}
     >
-      <legend className={cn("text-lg font-medium", error ? "text-error" : "text-grey-800")}>
+      <legend className={cn("text-base font-medium", error ? "text-error" : "text-grey-800")}>
         ช่องทางที่เปิดใช้ <span className="text-error">*</span>
       </legend>
       {provider ? (
@@ -65,10 +65,10 @@ export function PspMethodFields({
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={card.image} alt={METHOD_LABEL[method]} className="h-20 w-20 shrink-0 object-contain" />
                 <span className="flex min-w-0 flex-1 flex-col gap-1">
-                  <span className="text-lg font-semibold text-foreground group-has-[:checked]:text-secondary">
+                  <span className="text-base font-semibold text-foreground group-has-[:checked]:text-secondary">
                     {card.title}
                   </span>
-                  <span className="text-lg leading-relaxed text-grey-500">{card.caption}</span>
+                  <span className="text-base leading-relaxed text-grey-500">{card.caption}</span>
                 </span>
                 <input
                   type="checkbox"
@@ -87,9 +87,9 @@ export function PspMethodFields({
           })}
         </div>
       ) : (
-        <p className="mt-2 text-lg text-grey-600">เลือก PSP ก่อนเลือกช่องทาง</p>
+        <p className="mt-2 text-base text-grey-600">เลือก PSP ก่อนเลือกช่องทาง</p>
       )}
-      {error ? <p id={`${id}-error`} className="mt-1.5 text-lg text-error">{error}</p> : null}
+      {error ? <p id={`${id}-error`} className="mt-1.5 text-base text-error">{error}</p> : null}
     </fieldset>
   );
 }
@@ -112,7 +112,7 @@ export function PspCredentialFields({
   disabled?: boolean;
 }) {
   if (!provider) {
-    return <p className="text-lg text-grey-600 sm:col-span-2">เลือก PSP เพื่อกรอก Credential เริ่มต้น</p>;
+    return <p className="text-base text-grey-600 sm:col-span-2">เลือก PSP เพื่อกรอก Credential เริ่มต้น</p>;
   }
 
   return (

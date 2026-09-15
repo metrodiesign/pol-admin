@@ -53,15 +53,15 @@ export function CountrySelect({
       itemToStringLabel={(o) => o.value}
     >
       <div ref={anchor} className={cn("flex w-full flex-col gap-1.5", className)}>
-        <label id={id} className="select-none text-lg font-medium text-grey-800">
+        <label id={id} className="select-none text-base font-medium text-grey-800">
           {label}
         </label>
         <ComboboxInput
           aria-labelledby={id}
           className={cn(
-            "h-12 rounded-control border-[var(--divider)] text-lg",
+            "h-12 rounded-control border-[var(--divider)] text-base",
             "focus-within:border-grey-800 focus-within:ring-1 focus-within:ring-inset focus-within:ring-grey-800",
-            "[&_[data-slot=input-group-control]]:text-lg",
+            "[&_[data-slot=input-group-control]]:text-base",
           )}
         >
           {selected ? (

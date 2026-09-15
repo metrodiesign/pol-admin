@@ -15,7 +15,7 @@ export function CurrentBalance() {
           {currentBalance.rows.map((row) => (
             <div
               key={row.label}
-              className="flex items-center justify-between text-lg"
+              className="flex items-center justify-between text-base"
             >
               <span className="text-grey-500">{row.label}</span>
               <span
@@ -34,13 +34,13 @@ export function CurrentBalance() {
         <div className="flex gap-3">
           <button
             type="button"
-            className="flex-1 rounded-control border border-grey-800 px-4 py-2.5 text-lg font-semibold text-grey-800 transition-colors hover:bg-grey-800/8"
+            className="flex-1 rounded-control border border-grey-800 px-4 py-2.5 text-base font-semibold text-grey-800 transition-colors hover:bg-grey-800/8"
           >
             Request
           </button>
           <button
             type="button"
-            className="flex-1 rounded-control bg-[#00A76F] px-4 py-2.5 text-lg font-semibold text-white transition-colors hover:bg-[#007867]"
+            className="flex-1 rounded-control bg-[#00A76F] px-4 py-2.5 text-base font-semibold text-white transition-colors hover:bg-[#007867]"
           >
             Transfer
           </button>

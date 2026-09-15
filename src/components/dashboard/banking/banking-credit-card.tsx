@@ -156,7 +156,7 @@ export function BankingCreditCard() {
               {/* Top row */}
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="text-lg text-white/64">Current balance</p>
+                  <p className="text-base text-white/64">Current balance</p>
                   <p
                     className="mt-1.5 text-4xl font-semibold"
                     style={{ fontFamily: "var(--font-barlow, var(--font-sans))" }}
@@ -187,21 +187,21 @@ export function BankingCreditCard() {
 
               {/* Card number */}
               <div className="mt-8">
-                <p className="font-mono text-lg tracking-widest text-white/80">
+                <p className="font-mono text-base tracking-widest text-white/80">
                   {visible ? card.maskedNumber : "•••• •••• •••• ••••"}
                 </p>
               </div>
 
               {/* Bottom row */}
               <div className="mt-6 flex items-end justify-between">
-                <div className="flex gap-6 text-lg text-white/64">
+                <div className="flex gap-6 text-base text-white/64">
                   <div>
                     <p className="uppercase tracking-wide">Card holder</p>
-                    <p className="mt-1 text-lg font-semibold text-white">{card.cardHolder}</p>
+                    <p className="mt-1 text-base font-semibold text-white">{card.cardHolder}</p>
                   </div>
                   <div>
                     <p className="uppercase tracking-wide">Expiration date</p>
-                    <p className="mt-1 text-lg font-semibold text-white">{card.expiration}</p>
+                    <p className="mt-1 text-base font-semibold text-white">{card.expiration}</p>
                   </div>
                 </div>
 

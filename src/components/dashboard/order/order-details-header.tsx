@@ -42,7 +42,7 @@ export function OrderDetailsHeader({
           </h4>
           <OrderStatusLabel status={status} />
         </div>
-        <p className="ml-10 mt-0.5 text-lg text-grey-600">
+        <p className="ml-10 mt-0.5 text-base text-grey-600">
           {date} {time}
         </p>
       </div>
@@ -55,7 +55,7 @@ export function OrderDetailsHeader({
             render={
               <Button
                 variant="outline"
-                className="h-9 gap-1.5 rounded-lg border-[rgba(145,158,171,0.32)] text-lg font-semibold text-foreground"
+                className="h-9 gap-1.5 rounded-lg border-[rgba(145,158,171,0.32)] text-base font-semibold text-foreground"
               />
             }
           >
@@ -73,7 +73,7 @@ export function OrderDetailsHeader({
         {/* Print */}
         <Button
           variant="outline"
-          className="h-9 gap-1.5 rounded-lg border-[rgba(145,158,171,0.32)] text-lg font-semibold text-foreground"
+          className="h-9 gap-1.5 rounded-lg border-[rgba(145,158,171,0.32)] text-base font-semibold text-foreground"
           onClick={() => window.print()}
         >
           <Printer className="size-4" />
@@ -81,7 +81,7 @@ export function OrderDetailsHeader({
         </Button>
 
         {/* Edit */}
-        <Button className="h-9 gap-1.5 rounded-lg bg-foreground px-3 text-lg font-semibold text-card hover:opacity-90">
+        <Button className="h-9 gap-1.5 rounded-lg bg-foreground px-3 text-base font-semibold text-card hover:opacity-90">
           <Pencil className="size-4" />
           Edit
         </Button>

@@ -51,7 +51,7 @@ function GeneralTab() {
           <AvatarUpload src={AVATAR_URL} alt="Jaydon Frankie" size={144} />
 
           <div className="mt-8 flex items-center justify-between gap-4">
-            <span className="text-lg font-semibold text-grey-800">Public profile</span>
+            <span className="text-base font-semibold text-grey-800">Public profile</span>
             <Switch
               checked={publicProfile}
               onCheckedChange={setPublicProfile}
@@ -62,7 +62,7 @@ function GeneralTab() {
           <div className="mt-6 flex justify-center">
             <button
               type="button"
-              className="h-9 rounded-control bg-error/16 px-3 py-1.5 text-lg font-semibold leading-6 text-error-dark transition-colors hover:bg-error/24"
+              className="h-9 rounded-control bg-error/16 px-3 py-1.5 text-base font-semibold leading-6 text-error-dark transition-colors hover:bg-error/24"
             >
               Delete user
             </button>
@@ -125,7 +125,7 @@ function GeneralTab() {
           <div className="mt-6 flex justify-end">
             <button
               type="button"
-              className="h-9 rounded-control bg-grey-800 px-3 py-1.5 text-lg font-semibold leading-6 text-white transition-colors hover:bg-grey-900 dark:bg-white dark:text-grey-900 dark:hover:bg-grey-300"
+              className="h-9 rounded-control bg-grey-800 px-3 py-1.5 text-base font-semibold leading-6 text-white transition-colors hover:bg-grey-900 dark:bg-white dark:text-grey-900 dark:hover:bg-grey-300"
             >
               Save changes
             </button>
@@ -159,7 +159,7 @@ export default function UserAccountPage() {
               type="button"
               onClick={() => setActiveTab(tab.key)}
               className={cn(
-                "flex shrink-0 items-center gap-1.5 border-b-2 px-4 py-3 text-lg transition-colors",
+                "flex shrink-0 items-center gap-1.5 border-b-2 px-4 py-3 text-base transition-colors",
                 activeTab === tab.key
                   ? "border-grey-800 font-semibold text-grey-800"
                   : "border-transparent font-medium text-grey-500 hover:text-grey-700",
@@ -179,7 +179,7 @@ export default function UserAccountPage() {
       {activeTab === "general" && <GeneralTab />}
       {activeTab !== "general" && (
         <div className="dashboard-card flex min-h-[300px] items-center justify-center p-6">
-          <p className="text-lg capitalize text-grey-400">
+          <p className="text-base capitalize text-grey-400">
             {TABS.find((t) => t.key === activeTab)?.label} settings
           </p>
         </div>

@@ -85,7 +85,7 @@ export function RoleBadge({ color, name, className }: RoleBadgeProps) {
   return (
     <span
       className={cn(
-        "inline-flex items-center whitespace-nowrap rounded-full px-4 py-1 text-lg font-semibold",
+        "inline-flex items-center whitespace-nowrap rounded-full px-4 py-1 text-base font-semibold",
         style.chip,
         className,
       )}

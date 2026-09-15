@@ -80,7 +80,7 @@ function FloatingField({
       <label
         id={fieldId}
         className={cn(
-          "select-none text-lg font-medium",
+          "select-none text-base font-medium",
           disabled ? "text-grey-400" : "text-grey-800",
         )}
       >
@@ -96,7 +96,7 @@ function FloatingField({
         {prefix && (
           <span
             className={cn(
-              "pl-3 text-lg",
+              "pl-3 text-base",
               disabled ? "text-grey-400" : "text-grey-600",
             )}
           >
@@ -112,7 +112,7 @@ function FloatingField({
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           className={cn(
-            "h-full w-full bg-transparent text-lg outline-none",
+            "h-full w-full bg-transparent text-base outline-none",
             prefix ? "pl-1 pr-3" : "px-3",
             disabled ? "text-grey-400" : "text-grey-800",
           )}
@@ -141,7 +141,7 @@ function FloatingTextarea({
     <div className={cn("flex flex-col gap-1.5", className)}>
       <label
         id={fieldId}
-        className="select-none text-lg font-medium text-grey-800"
+        className="select-none text-base font-medium text-grey-800"
       >
         {label}
       </label>
@@ -158,7 +158,7 @@ function FloatingTextarea({
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           rows={3}
-          className="w-full resize-none bg-transparent px-3 py-3 text-lg text-grey-800 outline-none"
+          className="w-full resize-none bg-transparent px-3 py-3 text-base text-grey-800 outline-none"
         />
       </div>
     </div>
@@ -189,7 +189,7 @@ function FloatingSelect({
       <label
         id={fieldId}
         className={cn(
-          "select-none text-lg font-medium",
+          "select-none text-base font-medium",
           disabled ? "text-grey-400" : "text-grey-800",
         )}
       >
@@ -212,7 +212,7 @@ function FloatingSelect({
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
             className={cn(
-              "h-full w-full border-none pl-3 pr-3 text-lg",
+              "h-full w-full border-none pl-3 pr-3 text-base",
               disabled ? "text-grey-400" : "text-grey-800",
             )}
           >
@@ -251,7 +251,7 @@ function DateField({
       <label
         id={inputId}
         className={cn(
-          "select-none text-lg font-medium",
+          "select-none text-base font-medium",
           disabled ? "text-grey-400" : "text-grey-800",
         )}
       >
@@ -274,7 +274,7 @@ function DateField({
           onBlur={() => setFocused(false)}
           placeholder="MM/DD/YYYY"
           className={cn(
-            "h-full w-full bg-transparent pl-3 pr-10 text-lg outline-none",
+            "h-full w-full bg-transparent pl-3 pr-10 text-base outline-none",
             disabled ? "text-grey-400" : "text-grey-800",
           )}
         />
@@ -366,9 +366,9 @@ export function InvoiceNewEditForm({ mode, initialData }: InvoiceNewEditFormProp
             </button>
           </div>
           <div className="mt-3 space-y-0.5">
-            <p className="text-lg font-semibold text-grey-800">{fromAddress.name}</p>
-            <p className="text-lg text-grey-600">{fromAddress.address}</p>
-            <p className="text-lg text-grey-600">{fromAddress.phone}</p>
+            <p className="text-base font-semibold text-grey-800">{fromAddress.name}</p>
+            <p className="text-base text-grey-600">{fromAddress.address}</p>
+            <p className="text-base text-grey-600">{fromAddress.phone}</p>
           </div>
         </div>
 
@@ -396,9 +396,9 @@ export function InvoiceNewEditForm({ mode, initialData }: InvoiceNewEditFormProp
           </div>
           {hasToAddress ? (
             <div className="mt-3 space-y-0.5">
-              <p className="text-lg font-semibold text-grey-800">{toAddress.name}</p>
-              <p className="text-lg text-grey-600">{toAddress.address}</p>
-              <p className="text-lg text-grey-600">{toAddress.phone}</p>
+              <p className="text-base font-semibold text-grey-800">{toAddress.name}</p>
+              <p className="text-base text-grey-600">{toAddress.address}</p>
+              <p className="text-base text-grey-600">{toAddress.phone}</p>
             </div>
           ) : null}
         </div>
@@ -495,7 +495,7 @@ export function InvoiceNewEditForm({ mode, initialData }: InvoiceNewEditFormProp
                 <button
                   type="button"
                   onClick={() => removeItem(idx)}
-                  className="inline-flex items-center gap-1.5 text-lg font-semibold leading-[22px] text-error hover:opacity-80"
+                  className="inline-flex items-center gap-1.5 text-base font-semibold leading-[22px] text-error hover:opacity-80"
                 >
                   <Trash2 className="size-4" />
                   Remove
@@ -513,7 +513,7 @@ export function InvoiceNewEditForm({ mode, initialData }: InvoiceNewEditFormProp
           <button
             type="button"
             onClick={addItem}
-            className="inline-flex items-center gap-1.5 text-lg font-semibold leading-[22px] text-primary hover:opacity-80"
+            className="inline-flex items-center gap-1.5 text-base font-semibold leading-[22px] text-primary hover:opacity-80"
           >
             <Plus className="size-4" />
             Add item
@@ -524,33 +524,33 @@ export function InvoiceNewEditForm({ mode, initialData }: InvoiceNewEditFormProp
             {/* Adjustment inputs */}
             <div className="grid grid-cols-3 gap-3 max-sm:grid-cols-1">
               <div>
-                <label id={shippingId} className="mb-1 block text-lg text-grey-500">Shipping($)</label>
+                <label id={shippingId} className="mb-1 block text-base text-grey-500">Shipping($)</label>
                 <input
                   aria-labelledby={shippingId}
                   type="number"
                   value={shipping}
                   onChange={(e) => setShipping(Number(e.target.value) || 0)}
-                  className="w-full rounded-control border border-[var(--divider)] bg-transparent px-3 py-2 text-lg text-grey-800 outline-none focus:border-grey-800 focus:ring-1 focus:ring-inset focus:ring-grey-800"
+                  className="w-full rounded-control border border-[var(--divider)] bg-transparent px-3 py-2 text-base text-grey-800 outline-none focus:border-grey-800 focus:ring-1 focus:ring-inset focus:ring-grey-800"
                 />
               </div>
               <div>
-                <label id={discountId} className="mb-1 block text-lg text-grey-500">Discount($)</label>
+                <label id={discountId} className="mb-1 block text-base text-grey-500">Discount($)</label>
                 <input
                   aria-labelledby={discountId}
                   type="number"
                   value={discount}
                   onChange={(e) => setDiscount(Number(e.target.value) || 0)}
-                  className="w-full rounded-control border border-[var(--divider)] bg-transparent px-3 py-2 text-lg text-grey-800 outline-none focus:border-grey-800 focus:ring-1 focus:ring-inset focus:ring-grey-800"
+                  className="w-full rounded-control border border-[var(--divider)] bg-transparent px-3 py-2 text-base text-grey-800 outline-none focus:border-grey-800 focus:ring-1 focus:ring-inset focus:ring-grey-800"
                 />
               </div>
               <div>
-                <label id={taxesId} className="mb-1 block text-lg text-grey-500">Taxes(%)</label>
+                <label id={taxesId} className="mb-1 block text-base text-grey-500">Taxes(%)</label>
                 <input
                   aria-labelledby={taxesId}
                   type="number"
                   value={taxes}
                   onChange={(e) => setTaxes(Number(e.target.value) || 0)}
-                  className="w-full rounded-control border border-[var(--divider)] bg-transparent px-3 py-2 text-lg text-grey-800 outline-none focus:border-grey-800 focus:ring-1 focus:ring-inset focus:ring-grey-800"
+                  className="w-full rounded-control border border-[var(--divider)] bg-transparent px-3 py-2 text-base text-grey-800 outline-none focus:border-grey-800 focus:ring-1 focus:ring-inset focus:ring-grey-800"
                 />
               </div>
             </div>
@@ -558,26 +558,26 @@ export function InvoiceNewEditForm({ mode, initialData }: InvoiceNewEditFormProp
             {/* Summary list */}
             <div className="mt-4 space-y-2">
               <div className="flex justify-between">
-                <span className="text-lg text-grey-500">Subtotal</span>
-                <span className="text-lg font-semibold text-grey-800">
+                <span className="text-base text-grey-500">Subtotal</span>
+                <span className="text-base font-semibold text-grey-800">
                   {fCurrency(subtotal)}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-lg text-grey-500">Shipping</span>
-                <span className={cn("text-lg font-semibold", shipping > 0 ? "text-error" : "text-grey-800")}>
+                <span className="text-base text-grey-500">Shipping</span>
+                <span className={cn("text-base font-semibold", shipping > 0 ? "text-error" : "text-grey-800")}>
                   {shipping > 0 ? `-${fCurrency(shipping)}` : "-"}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-lg text-grey-500">Discount</span>
-                <span className={cn("text-lg font-semibold", discount > 0 ? "text-error" : "text-grey-800")}>
+                <span className="text-base text-grey-500">Discount</span>
+                <span className={cn("text-base font-semibold", discount > 0 ? "text-error" : "text-grey-800")}>
                   {discount > 0 ? `-${fCurrency(discount)}` : "-"}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-lg text-grey-500">Taxes</span>
-                <span className="text-lg font-semibold text-grey-800">
+                <span className="text-base text-grey-500">Taxes</span>
+                <span className="text-base font-semibold text-grey-800">
                   {taxes > 0 ? `${parseFloat(taxes.toFixed(1))}%` : "-"}
                 </span>
               </div>

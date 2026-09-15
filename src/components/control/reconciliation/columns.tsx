@@ -32,7 +32,7 @@ export const reconciliationColumns: ColumnDef<ReconciliationLine>[] = [
     header: "สกุลเงิน",
     enableSorting: true,
     cell: ({ row }) => (
-      <span className="text-data text-lg text-grey-700">
+      <span className="text-data text-base text-grey-700">
         {row.original.currency}
       </span>
     ),
@@ -42,7 +42,7 @@ export const reconciliationColumns: ColumnDef<ReconciliationLine>[] = [
     header: "จำนวนรายการ",
     enableSorting: true,
     cell: ({ row }) => (
-      <span className="text-data text-lg text-grey-700">
+      <span className="text-data text-base text-grey-700">
         {row.original.count}
       </span>
     ),
@@ -52,7 +52,7 @@ export const reconciliationColumns: ColumnDef<ReconciliationLine>[] = [
     header: "ยอดรวม",
     enableSorting: true,
     cell: ({ row }) => (
-      <span className="text-data text-lg font-semibold text-foreground">
+      <span className="text-data text-base font-semibold text-foreground">
         {formatTHB(row.original.total, 2)}
       </span>
     ),

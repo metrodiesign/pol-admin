@@ -44,7 +44,7 @@ export function ProductBuyPanel({
       {/* Status eyebrow */}
       <span
         className={cn(
-          "text-lg font-semibold uppercase tracking-wider",
+          "text-base font-semibold uppercase tracking-wider",
           isOutOfStock ? "text-error" : "text-success-dark",
         )}
       >
@@ -71,7 +71,7 @@ export function ProductBuyPanel({
             />
           ))}
         </div>
-        <span className="text-lg text-grey-500">({reviews} reviews)</span>
+        <span className="text-base text-grey-500">({reviews} reviews)</span>
       </div>
 
       {/* Price */}
@@ -87,7 +87,7 @@ export function ProductBuyPanel({
       </div>
 
       {/* Description */}
-      <p className="mt-4 text-lg leading-relaxed text-grey-600">
+      <p className="mt-4 text-base leading-relaxed text-grey-600">
         {description}
       </p>
 
@@ -95,7 +95,7 @@ export function ProductBuyPanel({
 
       {/* Color */}
       <div className="flex items-center justify-between">
-        <span className="text-lg font-semibold text-foreground">Color</span>
+        <span className="text-base font-semibold text-foreground">Color</span>
         <div className="flex gap-2">
           {COLORS.map((c, i) => (
             <button
@@ -117,13 +117,13 @@ export function ProductBuyPanel({
 
       {/* Size */}
       <div className="mt-4 flex items-center justify-between">
-        <span className="text-lg font-semibold text-foreground">Size</span>
+        <span className="text-base font-semibold text-foreground">Size</span>
         <div className="flex items-center gap-3">
           <Select
             value={String(selectedSize)}
             onValueChange={(v) => setSelectedSize(Number(v))}
           >
-            <SelectTrigger aria-label="Size" className="h-10 w-[88px] text-lg">
+            <SelectTrigger aria-label="Size" className="h-10 w-[88px] text-base">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -134,7 +134,7 @@ export function ProductBuyPanel({
               ))}
             </SelectContent>
           </Select>
-          <button type="button" className="text-lg text-grey-800 underline">
+          <button type="button" className="text-base text-grey-800 underline">
             Size chart
           </button>
         </div>
@@ -142,7 +142,7 @@ export function ProductBuyPanel({
 
       {/* Quantity */}
       <div className="mt-4 flex items-start justify-between">
-        <span className="text-lg font-semibold text-foreground">Quantity</span>
+        <span className="text-base font-semibold text-foreground">Quantity</span>
         <div className="flex flex-col items-end gap-1">
           <div className="flex items-center gap-2 rounded-lg border border-[var(--divider)] px-1">
             <button
@@ -153,7 +153,7 @@ export function ProductBuyPanel({
             >
               <Minus className="size-3.5" />
             </button>
-            <span className="w-8 text-center text-lg font-semibold text-foreground">
+            <span className="w-8 text-center text-base font-semibold text-foreground">
               {quantity}
             </span>
             <button
@@ -165,7 +165,7 @@ export function ProductBuyPanel({
               <Plus className="size-3.5" />
             </button>
           </div>
-          <span className="text-lg text-grey-400">
+          <span className="text-base text-grey-400">
             Available: {available}
           </span>
         </div>
@@ -177,7 +177,7 @@ export function ProductBuyPanel({
           type="button"
           disabled={isOutOfStock}
           className={cn(
-            "flex flex-1 items-center justify-center gap-2 rounded-lg py-3 text-lg font-semibold transition-colors",
+            "flex flex-1 items-center justify-center gap-2 rounded-lg py-3 text-base font-semibold transition-colors",
             isOutOfStock
               ? "cursor-not-allowed bg-grey-500/24 text-grey-500/80"
               : "border border-grey-800 bg-transparent text-foreground hover:bg-grey-100",
@@ -190,7 +190,7 @@ export function ProductBuyPanel({
           type="button"
           disabled={isOutOfStock}
           className={cn(
-            "flex-1 rounded-lg py-3 text-lg font-semibold transition-colors",
+            "flex-1 rounded-lg py-3 text-base font-semibold transition-colors",
             isOutOfStock
               ? "cursor-not-allowed bg-grey-500/24 text-grey-500/80"
               : "bg-grey-800 text-white hover:bg-grey-900",
@@ -210,7 +210,7 @@ export function ProductBuyPanel({
           <button
             key={label}
             type="button"
-            className="flex items-center gap-1.5 text-lg font-semibold text-grey-600 transition-colors hover:text-foreground"
+            className="flex items-center gap-1.5 text-base font-semibold text-grey-600 transition-colors hover:text-foreground"
           >
             <Icon className="size-4" />
             {label}

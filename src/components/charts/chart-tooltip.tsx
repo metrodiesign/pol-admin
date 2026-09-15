@@ -42,7 +42,7 @@ export function ChartTooltip({
   return (
     <div className="overflow-hidden rounded-[10px] bg-card/90 shadow-[var(--shadow-dropdown)] backdrop-blur-[6px]">
       {showLabel ? (
-        <div className="bg-grey-200 px-2 py-1.5 text-lg font-semibold text-grey-600">
+        <div className="bg-grey-200 px-2 py-1.5 text-base font-semibold text-grey-600">
           {label}
         </div>
       ) : null}
@@ -52,7 +52,7 @@ export function ChartTooltip({
           return (
             <div
               key={item.name ?? i}
-              className="flex items-center gap-1.5 text-lg text-foreground"
+              className="flex items-center gap-1.5 text-base text-foreground"
             >
               {color ? (
                 <span

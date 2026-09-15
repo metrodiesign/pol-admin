@@ -90,7 +90,7 @@ function SwitchCard({
         />
       </div>
       <div className="flex items-center justify-between">
-        <span className="text-lg font-semibold text-grey-800">{label}</span>
+        <span className="text-base font-semibold text-grey-800">{label}</span>
         {info && <Info className="size-4 text-grey-400" />}
       </div>
     </div>
@@ -106,7 +106,7 @@ function SectionCard({
 }) {
   return (
     <div className="relative rounded-2xl border border-grey-500/12 px-4 pb-4 pt-7">
-      <span className="absolute -top-[11px] left-3 flex h-[22px] items-center rounded-full bg-grey-800 px-2.5 text-lg font-semibold text-white">
+      <span className="absolute -top-[11px] left-3 flex h-[22px] items-center rounded-full bg-grey-800 px-2.5 text-base font-semibold text-white">
         {label}
       </span>
       {children}
@@ -208,7 +208,7 @@ export function SettingsDrawer({ variant = "white" }: SettingsDrawerProps) {
 
           {/* Nav */}
           <SectionCard label="Nav">
-            <p className="mb-2 text-lg font-medium text-grey-600">Layout</p>
+            <p className="mb-2 text-base font-medium text-grey-600">Layout</p>
             <div className="flex gap-3">
               {layoutIcons.map((LIcon, i) => (
                 <button
@@ -228,7 +228,7 @@ export function SettingsDrawer({ variant = "white" }: SettingsDrawerProps) {
               ))}
             </div>
 
-            <p className="mb-2 mt-4 text-lg font-medium text-grey-600">Color</p>
+            <p className="mb-2 mt-4 text-base font-medium text-grey-600">Color</p>
             <div className="flex gap-3">
               {(["integrate", "apparent"] as const).map((c) => (
                 <button
@@ -236,7 +236,7 @@ export function SettingsDrawer({ variant = "white" }: SettingsDrawerProps) {
                   type="button"
                   onClick={() => setSetting("navColor", c)}
                   className={cn(
-                    "flex h-14 flex-1 items-center justify-center gap-2 rounded-xl border text-lg font-semibold capitalize transition-colors",
+                    "flex h-14 flex-1 items-center justify-center gap-2 rounded-xl border text-base font-semibold capitalize transition-colors",
                     navColor === c
                       ? "border-primary bg-primary/8 text-primary"
                       : "border-grey-500/12 text-grey-400",
@@ -276,10 +276,10 @@ export function SettingsDrawer({ variant = "white" }: SettingsDrawerProps) {
 
           {/* Font */}
           <SectionCard label="Font">
-            <p className="mb-1 text-lg font-medium text-grey-600">Size</p>
+            <p className="mb-1 text-base font-medium text-grey-600">Size</p>
             <div className="relative pb-1 pt-7">
               <span
-                className="absolute top-0 z-10 -translate-x-1/2 rounded-md bg-grey-800 px-2 py-0.5 text-lg font-semibold text-white"
+                className="absolute top-0 z-10 -translate-x-1/2 rounded-md bg-grey-800 px-2 py-0.5 text-base font-semibold text-white"
                 style={{ left: `${sizePct}%` }}
               >
                 {fontSize}px

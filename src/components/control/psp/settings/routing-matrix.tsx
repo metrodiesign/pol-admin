@@ -169,19 +169,19 @@ export function RoutingMatrix({
   return (
     <section className="rounded-card bg-card p-6" style={cardStyle} aria-label="การกำหนดเส้นทาง">
       <h2 className="text-2xl font-semibold leading-7 text-foreground">การกำหนดเส้นทาง</h2>
-      <p className="mt-1 text-lg text-grey-600">
+      <p className="mt-1 text-base text-grey-600">
         เลือกการเชื่อมต่อหลักและสำรองต่อช่องทางที่เปิดใช้ระดับร้านค้า
       </p>
 
       {advancedReadOnly ? (
         <div className="mt-4 rounded-xl border border-warning/30 bg-warning/8 p-4" role="status">
-          <p className="text-lg text-warning-dark">
+          <p className="text-base text-warning-dark">
             พบกฎขั้นสูง (เงื่อนไขยอดเงิน/Originator) จึงแสดงแบบอ่านอย่างเดียว
           </p>
           {ruleset ? (
             <Link
               href={`/control/routing/read?id=${encodeURIComponent(ruleset.rulesetId)}`}
-              className="mt-2 inline-flex text-lg font-semibold text-primary underline"
+              className="mt-2 inline-flex text-base font-semibold text-primary underline"
             >
               เปิดหน้ารายละเอียด ruleset
             </Link>
@@ -190,7 +190,7 @@ export function RoutingMatrix({
             {enabledMethods.map((method) => {
               const row = rowFor(method);
               return (
-                <div key={method} className="flex items-center justify-between text-lg">
+                <div key={method} className="flex items-center justify-between text-base">
                   <span className="font-semibold text-foreground">{METHOD_LABEL[method]}</span>
                   <span className="text-grey-700">
                     หลัก: {providerName(connections, row.primaryConnectionId)} / สำรอง:{" "}
@@ -206,7 +206,7 @@ export function RoutingMatrix({
           {notice ? (
             <div
               className={cn(
-                "mt-3 flex flex-wrap items-center gap-3 text-lg",
+                "mt-3 flex flex-wrap items-center gap-3 text-base",
                 notice.tone === "error" ? "text-error" : "text-success-dark",
               )}
               role={notice.tone === "error" ? "alert" : "status"}
@@ -216,7 +216,7 @@ export function RoutingMatrix({
                 <button
                   type="button"
                   onClick={onChanged}
-                  className="inline-flex h-8 items-center rounded-control bg-grey-600/8 px-3 text-lg font-semibold text-grey-800 hover:bg-grey-600/16"
+                  className="inline-flex h-8 items-center rounded-control bg-grey-600/8 px-3 text-base font-semibold text-grey-800 hover:bg-grey-600/16"
                 >
                   โหลดข้อมูลใหม่
                 </button>
@@ -226,7 +226,7 @@ export function RoutingMatrix({
 
           <div className="mt-4 flex flex-col gap-4">
             {enabledMethods.length === 0 ? (
-              <p className="text-lg text-grey-600">ยังไม่มีช่องทางที่เปิดใช้ระดับร้านค้า</p>
+              <p className="text-base text-grey-600">ยังไม่มีช่องทางที่เปิดใช้ระดับร้านค้า</p>
             ) : null}
             {enabledMethods.map((method) => {
               const row = rowFor(method);
@@ -255,7 +255,7 @@ export function RoutingMatrix({
                   <div className="flex items-center justify-between">
                     <p className="font-semibold text-foreground">{METHOD_LABEL[method]}</p>
                     {incomplete ? (
-                      <span className="text-lg text-error">ยังไม่กำหนดหลัก</span>
+                      <span className="text-base text-error">ยังไม่กำหนดหลัก</span>
                     ) : null}
                   </div>
                   <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -284,7 +284,7 @@ export function RoutingMatrix({
               type="button"
               onClick={() => void saveDraft()}
               disabled={saving || !routingEtag}
-              className="inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-grey-600/8 px-3 text-lg font-semibold text-grey-800 hover:bg-grey-600/16 disabled:pointer-events-none disabled:opacity-50"
+              className="inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-grey-600/8 px-3 text-base font-semibold text-grey-800 hover:bg-grey-600/16 disabled:pointer-events-none disabled:opacity-50"
             >
               บันทึก draft
             </button>
@@ -292,13 +292,13 @@ export function RoutingMatrix({
               type="button"
               onClick={() => void activate()}
               disabled={activating || !activationTarget || !routingEtag || validation.code !== null}
-              className="inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-primary px-3 text-lg font-semibold text-primary-foreground hover:bg-primary/90 disabled:pointer-events-none disabled:opacity-50"
+              className="inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-primary px-3 text-base font-semibold text-primary-foreground hover:bg-primary/90 disabled:pointer-events-none disabled:opacity-50"
             >
               ส่งคำขอเปิดใช้
             </button>
           </div>
           {routingEtag && !activationTarget ? (
-            <p className="mt-2 text-lg text-grey-600">
+            <p className="mt-2 text-base text-grey-600">
               ยังไม่มี ruleset ให้เปิดใช้ กรุณาบันทึก draft ก่อน
             </p>
           ) : null}
@@ -341,12 +341,12 @@ function RoutingSelect({
 }) {
   return (
     <label className="flex flex-col gap-1.5">
-      <span className="text-lg font-medium text-grey-800">{label}</span>
+      <span className="text-base font-medium text-grey-800">{label}</span>
       <select
         aria-label={label}
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="h-12 rounded-control border border-[var(--divider)] bg-transparent px-3.5 text-lg text-foreground outline-none focus:border-primary focus:ring-1 focus:ring-inset focus:ring-primary"
+        className="h-12 rounded-control border border-[var(--divider)] bg-transparent px-3.5 text-base text-foreground outline-none focus:border-primary focus:ring-1 focus:ring-inset focus:ring-primary"
       >
         <option value="">ไม่กำหนด</option>
         {options.map((option) => (

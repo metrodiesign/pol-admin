@@ -33,7 +33,7 @@ export function AnalyticsTrafficSite() {
             <span className="text-xl font-semibold text-grey-800">
               {site.value}
             </span>
-            <span className="text-lg text-grey-500">{site.name}</span>
+            <span className="text-base text-grey-500">{site.name}</span>
           </div>
         ))}
       </div>

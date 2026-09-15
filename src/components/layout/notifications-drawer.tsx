@@ -51,7 +51,7 @@ function NotifTabBadge({ value, count }: { value: string; count: number }) {
   return (
     <span
       className={cn(
-        "flex h-6 min-w-6 items-center justify-center rounded-md px-1.5 text-lg font-semibold transition-colors",
+        "flex h-6 min-w-6 items-center justify-center rounded-md px-1.5 text-base font-semibold transition-colors",
         tone,
       )}
     >
@@ -64,7 +64,7 @@ function PrimaryButton({ children }: { children: React.ReactNode }) {
   return (
     <button
       type="button"
-      className="rounded-lg bg-primary px-3 py-1.5 text-lg font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+      className="rounded-lg bg-primary px-3 py-1.5 text-base font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
     >
       {children}
     </button>
@@ -75,7 +75,7 @@ function OutlineButton({ children }: { children: React.ReactNode }) {
   return (
     <button
       type="button"
-      className="rounded-lg border border-grey-500/32 px-3 py-1.5 text-lg font-semibold text-grey-800 transition-colors hover:bg-[var(--action-hover)]"
+      className="rounded-lg border border-grey-500/32 px-3 py-1.5 text-base font-semibold text-grey-800 transition-colors hover:bg-[var(--action-hover)]"
     >
       {children}
     </button>
@@ -101,7 +101,7 @@ function NotificationActions({ action }: { action: AppNotification["action"] }) 
     case "reply":
       return (
         <>
-          <div className="mt-2 rounded-lg bg-grey-500/8 p-3 text-lg leading-relaxed text-grey-600">
+          <div className="mt-2 rounded-lg bg-grey-500/8 p-3 text-base leading-relaxed text-grey-600">
             {action.quote}
           </div>
           <div className="mt-2">
@@ -116,8 +116,8 @@ function NotificationActions({ action }: { action: AppNotification["action"] }) 
             <Music className="size-5" />
           </span>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-lg font-medium text-grey-800">{action.name}</p>
-            <p className="text-lg text-grey-500">{action.size}</p>
+            <p className="truncate text-base font-medium text-grey-800">{action.name}</p>
+            <p className="text-base text-grey-500">{action.size}</p>
           </div>
           <OutlineButton>Download</OutlineButton>
         </div>
@@ -129,7 +129,7 @@ function NotificationActions({ action }: { action: AppNotification["action"] }) 
             <span
               key={t.label}
               className={cn(
-                "rounded-md border px-2 py-0.5 text-lg font-semibold",
+                "rounded-md border px-2 py-0.5 text-base font-semibold",
                 tagTone[t.tone],
               )}
             >
@@ -167,14 +167,14 @@ function NotificationRow({ n }: { n: AppNotification }) {
       ) : null}
 
       <div className="min-w-0 flex-1">
-        <p className="pr-4 text-lg leading-snug text-grey-800">
+        <p className="pr-4 text-base leading-snug text-grey-800">
           {n.title.map((seg, i) => (
             <span key={i} className={seg.bold ? "font-semibold" : "text-grey-600"}>
               {seg.text}
             </span>
           ))}
         </p>
-        <p className="mt-1 flex items-center gap-1.5 text-lg text-grey-500">
+        <p className="mt-1 flex items-center gap-1.5 text-base text-grey-500">
           {n.time}
           <span className="size-0.5 rounded-full bg-grey-400" />
           {n.category}
@@ -210,7 +210,7 @@ export function NotificationsDrawer({ variant = "white" }: NotificationsDrawerPr
       >
         <Bell className="size-6" />
         {unreadCount > 0 && (
-          <span className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-error px-1.5 text-lg font-medium text-white">
+          <span className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-error px-1.5 text-base font-medium text-white">
             {unreadCount}
           </span>
         )}
@@ -278,7 +278,7 @@ export function NotificationsDrawer({ variant = "white" }: NotificationsDrawerPr
           </TabsContent>
           <TabsContent value="archived" className="min-h-0 flex-1">
             <SimpleBar autoHide={false} style={{ height: "100%" }}>
-              <p className="px-5 py-16 text-center text-lg text-grey-500">
+              <p className="px-5 py-16 text-center text-base text-grey-500">
                 No archived notifications
               </p>
             </SimpleBar>
@@ -288,7 +288,7 @@ export function NotificationsDrawer({ variant = "white" }: NotificationsDrawerPr
         <div className="mt-auto border-t border-dashed border-[var(--divider)] p-4">
           <button
             type="button"
-            className="w-full rounded-control py-2.5 text-lg font-semibold text-grey-800 transition-colors hover:bg-[var(--action-hover)]"
+            className="w-full rounded-control py-2.5 text-base font-semibold text-grey-800 transition-colors hover:bg-[var(--action-hover)]"
           >
             View all
           </button>

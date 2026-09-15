@@ -58,7 +58,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: SETTINGS_INIT_SCRIPT }}
         />
       </head>
-      <body className="min-h-full">
+      <body className="min-h-full text-base">
         <SettingsProvider>{children}</SettingsProvider>
       </body>
     </html>

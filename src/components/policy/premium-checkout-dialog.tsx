@@ -63,12 +63,12 @@ export function PremiumCheckoutDialog({
                   className="flex items-center justify-between gap-3 border-b border-[var(--divider)] py-2.5 last:border-b-0"
                 >
                   <span className="min-w-0">
-                    <span className="block truncate text-lg font-semibold text-foreground">
+                    <span className="block truncate text-base font-semibold text-foreground">
                       {p.customer.name}
                     </span>
-                    <span className="block truncate text-lg font-semibold text-primary">{p.referenceNo}</span>
+                    <span className="block truncate text-base font-semibold text-primary">{p.referenceNo}</span>
                   </span>
-                  <span className="shrink-0 text-lg font-semibold tabular-nums text-foreground">
+                  <span className="shrink-0 text-base font-semibold tabular-nums text-foreground">
                     {formatAmount(p.premium, 2)}
                   </span>
                 </li>

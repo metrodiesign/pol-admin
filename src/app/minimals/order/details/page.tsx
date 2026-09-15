@@ -76,14 +76,14 @@ export default function OrderDetailsPage() {
                   <p className="text-xl font-semibold text-foreground">
                     {order.customer.name}
                   </p>
-                  <p className="truncate text-lg text-grey-600">
+                  <p className="truncate text-base text-grey-600">
                     {order.customer.email}
                   </p>
                 </div>
               </div>
 
               {order.customer.ipAddress && (
-                <p className="mt-3 text-lg text-foreground">
+                <p className="mt-3 text-base text-foreground">
                   <span className="text-grey-600">IP address: </span>
                   {order.customer.ipAddress}
                 </p>
@@ -91,7 +91,7 @@ export default function OrderDetailsPage() {
 
               <button
                 type="button"
-                className="mt-4 flex items-center gap-1 text-lg font-semibold leading-[22px] text-error transition-opacity hover:opacity-70"
+                className="mt-4 flex items-center gap-1 text-base font-semibold leading-[22px] text-error transition-opacity hover:opacity-70"
               >
                 <Plus className="size-4" />
                 Add to blacklist
@@ -104,7 +104,7 @@ export default function OrderDetailsPage() {
             {/* Delivery section */}
             <div className="px-6 py-5">
               <h6 className="mb-4 text-xl font-semibold leading-6 text-foreground">Delivery</h6>
-              <div className="space-y-3 text-lg">
+              <div className="space-y-3 text-base">
                 <div className="flex items-center justify-between">
                   <span className="text-grey-600">Ship by</span>
                   <span className="font-semibold text-foreground">
@@ -135,7 +135,7 @@ export default function OrderDetailsPage() {
             {/* Shipping section */}
             <div className="px-6 py-5">
               <h6 className="mb-4 text-xl font-semibold leading-6 text-foreground">Shipping</h6>
-              <div className="space-y-3 text-lg">
+              <div className="space-y-3 text-base">
                 <div className="flex items-start justify-between gap-4">
                   <span className="shrink-0 text-grey-600">Address</span>
                   <span className="text-right font-semibold text-foreground">

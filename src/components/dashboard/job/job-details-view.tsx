@@ -30,7 +30,7 @@ function StatusBadge({ status }: { status: string }) {
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="flex h-9 items-center gap-1.5 rounded-control bg-foreground px-3 text-lg font-semibold text-card transition-opacity hover:opacity-90"
+        className="flex h-9 items-center gap-1.5 rounded-control bg-foreground px-3 text-base font-semibold text-card transition-opacity hover:opacity-90"
       >
         {current}
         <ChevronDown className="size-3.5" />
@@ -45,7 +45,7 @@ function StatusBadge({ status }: { status: string }) {
                 setCurrent(s);
                 setOpen(false);
               }}
-              className={`flex w-full px-4 py-2 text-lg transition-colors hover:bg-grey-100 ${current === s ? "font-semibold text-grey-900" : "text-grey-700"}`}
+              className={`flex w-full px-4 py-2 text-base transition-colors hover:bg-grey-100 ${current === s ? "font-semibold text-grey-900" : "text-grey-700"}`}
             >
               {s}
             </button>
@@ -58,7 +58,7 @@ function StatusBadge({ status }: { status: string }) {
 
 function Chip({ label }: { label: string }) {
   return (
-    <span className="inline-flex items-center rounded-[10px] bg-grey-500/16 px-2.5 py-0.5 text-lg text-grey-800">
+    <span className="inline-flex items-center rounded-[10px] bg-grey-500/16 px-2.5 py-0.5 text-base text-grey-800">
       {label}
     </span>
   );
@@ -84,8 +84,8 @@ function CandidateRow({
 
       />
       <div className="flex-1 min-w-0">
-        <p className="text-lg font-semibold text-grey-800 truncate">{name}</p>
-        <p className="text-lg text-grey-500 truncate">{role}</p>
+        <p className="text-base font-semibold text-grey-800 truncate">{name}</p>
+        <p className="text-base text-grey-500 truncate">{role}</p>
       </div>
     </div>
   );
@@ -197,7 +197,7 @@ export function JobDetailsView({ job }: JobDetailsViewProps) {
       <div className="mb-5 flex items-center justify-between gap-3">
         <Link
           href="/minimals/job/list"
-          className="flex items-center gap-0.5 rounded-control px-2 py-1.5 text-lg font-semibold text-grey-800 transition-colors hover:bg-grey-100"
+          className="flex items-center gap-0.5 rounded-control px-2 py-1.5 text-base font-semibold text-grey-800 transition-colors hover:bg-grey-100"
         >
           <ChevronLeft className="size-5" />
           Back
@@ -219,7 +219,7 @@ export function JobDetailsView({ job }: JobDetailsViewProps) {
         <button
           type="button"
           onClick={() => setTab("content")}
-          className={`relative flex h-12 items-center pr-6 text-lg transition-colors ${
+          className={`relative flex h-12 items-center pr-6 text-base transition-colors ${
             tab === "content"
               ? "font-semibold text-grey-800 after:absolute after:bottom-0 after:left-0 after:right-6 after:h-0.5 after:rounded-t-full after:bg-foreground"
               : "font-medium text-grey-600 hover:text-grey-800"
@@ -230,14 +230,14 @@ export function JobDetailsView({ job }: JobDetailsViewProps) {
         <button
           type="button"
           onClick={() => setTab("candidates")}
-          className={`relative flex h-12 items-center pr-6 text-lg transition-colors ${
+          className={`relative flex h-12 items-center pr-6 text-base transition-colors ${
             tab === "candidates"
               ? "font-semibold text-grey-800 after:absolute after:bottom-0 after:left-0 after:right-6 after:h-0.5 after:rounded-t-full after:bg-foreground"
               : "font-medium text-grey-600 hover:text-grey-800"
           }`}
         >
           Candidates{" "}
-          <span className="ml-1 rounded-md bg-foreground px-1.5 py-0.5 text-lg font-semibold text-card">
+          <span className="ml-1 rounded-md bg-foreground px-1.5 py-0.5 text-base font-semibold text-card">
             {job.candidates}
           </span>
         </button>
@@ -318,8 +318,8 @@ export function JobDetailsView({ job }: JobDetailsViewProps) {
                   <div key={row.label} className="flex items-start gap-3">
                     <span className="mt-0.5 shrink-0 text-grey-500">{row.icon}</span>
                     <div>
-                      <p className="text-lg text-grey-500">{row.label}</p>
-                      <p className="text-lg font-semibold text-grey-800">{row.value}</p>
+                      <p className="text-base text-grey-500">{row.label}</p>
+                      <p className="text-base font-semibold text-grey-800">{row.value}</p>
                     </div>
                   </div>
                 ))}
@@ -346,11 +346,11 @@ export function JobDetailsView({ job }: JobDetailsViewProps) {
               </div>
               <h6 className="text-xl font-semibold text-grey-800">{job.company}</h6>
               <div className="mt-3 flex flex-col gap-2">
-                <div className="flex items-start gap-2 text-lg text-grey-600">
+                <div className="flex items-start gap-2 text-base text-grey-600">
                   <MapPin className="mt-0.5 size-4 shrink-0 text-grey-400" />
                   <span>19034 Verna Unions Apt. 164 - Honolulu, RI / 87535</span>
                 </div>
-                <div className="flex items-center gap-2 text-lg text-grey-600">
+                <div className="flex items-center gap-2 text-base text-grey-600">
                   <Phone className="size-4 shrink-0 text-grey-400" />
                   +1 202-555-0143
                 </div>

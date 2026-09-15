@@ -65,7 +65,7 @@ export function ReconciliationView() {
       </div>
 
       <div className="rounded-card bg-card p-6" style={cardStyle}>
-        <p className="text-lg text-grey-600">
+        <p className="text-base text-grey-600">
           เงินจาก PSP เข้าบัญชีบริษัทโดยตรง — แพลตฟอร์มติดตามสถานะออเดอร์
           ไม่ถือเงิน สรุปนี้จัดกลุ่มตามสถานะและสกุลเงิน
         </p>

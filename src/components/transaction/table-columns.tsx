@@ -61,7 +61,7 @@ export function buildTransactionColumns({
     meta: { headClassName: "w-[180px]", cellClassName: "w-[180px]" },
     // ponytail: time เก็บแค่ "HH:MM" ไม่มี date จริงในโมเดล — mock ทั้งหมดคือรายการ "วันนี้" (เหมือน order-table-columns.tsx)
     cell: ({ row }) => (
-      <span className="text-lg text-grey-600">
+      <span className="text-base text-grey-600">
         {row.original.time ? `30 ก.ค. 2569 ${row.original.time}` : "—"}
       </span>
     ),
@@ -75,7 +75,7 @@ export function buildTransactionColumns({
       const t = row.original;
       return (
         <div className="min-w-0">
-          <span className="block text-lg font-semibold text-foreground">
+          <span className="block text-base font-semibold text-foreground">
             {t.code}
           </span>
           <span className="font-semibold text-primary">
@@ -91,7 +91,7 @@ export function buildTransactionColumns({
     enableSorting: false,
     meta: { headClassName: "w-[160px]", cellClassName: "w-[160px]" },
     // ponytail: mock static — ยังไม่มี field แอปพลิเคชันจริงใน PaymentSession/pol-core
-    cell: () => <span className="text-lg text-foreground">V Central Pay</span>,
+    cell: () => <span className="text-base text-foreground">V Central Pay</span>,
   },
   {
     id: "source",
@@ -102,8 +102,8 @@ export function buildTransactionColumns({
       const s = t.source;
       return (
         <div className="min-w-0">
-          <span className="block text-lg font-semibold text-foreground">{s.label}</span>
-          <span className="text-lg text-grey-500">{customerPhone(t)}</span>
+          <span className="block text-base font-semibold text-foreground">{s.label}</span>
+          <span className="text-base text-grey-500">{customerPhone(t)}</span>
         </div>
       );
     },
@@ -116,7 +116,7 @@ export function buildTransactionColumns({
     cell: ({ row }) => {
       const c = row.original.channel;
       return (
-        <span className="inline-flex items-center gap-2 text-lg text-foreground">
+        <span className="inline-flex items-center gap-2 text-base text-foreground">
           <span className={cn("size-3 rounded-full", CHANNEL_DOT[c])} />
           {CHANNEL_LABEL[c]}
         </span>
@@ -129,7 +129,7 @@ export function buildTransactionColumns({
     enableSorting: false,
     meta: { headClassName: "w-[160px]", cellClassName: "w-[160px]" },
     cell: ({ row }) => (
-      <span className="text-lg text-foreground">{PSP_LABEL[row.original.psp]}</span>
+      <span className="text-base text-foreground">{PSP_LABEL[row.original.psp]}</span>
     ),
   },
   {
@@ -139,7 +139,7 @@ export function buildTransactionColumns({
     accessorFn: (t) => Number(t.amount.amount),
     meta: { headClassName: "w-[180px] text-right", cellClassName: "w-[180px] text-right" },
     cell: ({ row }) => (
-      <span className="text-lg font-semibold text-foreground">
+      <span className="text-base font-semibold text-foreground">
         {formatMoney(row.original.amount).replace(` ${row.original.amount.currency}`, "")}
       </span>
     ),

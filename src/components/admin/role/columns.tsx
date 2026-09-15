@@ -78,7 +78,7 @@ export function buildRoleColumns({
             aria-label={`ดูรายละเอียดบทบาท ${role.name}`}
           >
             <RoleBadge color={role.color} name={role.name} />
-            <span className="font-mono text-lg text-grey-500">{role.code}</span>
+            <span className="font-mono text-base text-grey-500">{role.code}</span>
           </button>
         );
       },
@@ -89,7 +89,7 @@ export function buildRoleColumns({
       enableSorting: false,
       meta: { cellClassName: "max-w-xs whitespace-normal text-grey-600" },
       cell: ({ getValue }) => (
-        <span className="text-lg text-grey-600">{getValue<string>()}</span>
+        <span className="text-base text-grey-600">{getValue<string>()}</span>
       ),
     },
     {
@@ -108,7 +108,7 @@ export function buildRoleColumns({
       header: "ผู้ใช้",
       enableSorting: false,
       cell: ({ row }) => (
-        <span className="inline-flex items-center gap-1.5 text-lg text-foreground">
+        <span className="inline-flex items-center gap-1.5 text-base text-foreground">
           <Users className="size-4 text-grey-500" />
           {row.original.userCount}
         </span>

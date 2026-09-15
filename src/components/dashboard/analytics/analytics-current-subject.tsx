@@ -57,7 +57,7 @@ export function AnalyticsCurrentSubject() {
       {/* Legend below the chart */}
       <div className="mt-4 flex items-center justify-center gap-5">
         {series.map((s) => (
-          <div key={s.name} className="flex items-center gap-1.5 text-lg">
+          <div key={s.name} className="flex items-center gap-1.5 text-base">
             <span
               className="size-2.5 rounded-full"
               style={{ backgroundColor: s.color }}

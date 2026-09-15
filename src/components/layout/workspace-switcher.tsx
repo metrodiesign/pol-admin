@@ -17,10 +17,10 @@ export function WorkspaceSwitcher({ variant = "white" }: WorkspaceSwitcherProps)
         style={{ height: "auto" }}
         className="size-6 rounded-md object-contain"
       />
-      <span className={isGrey ? "hidden truncate text-lg font-semibold text-grey-800 lg:inline" : "hidden truncate text-lg font-semibold text-white lg:inline"}>
+      <span className={isGrey ? "hidden truncate text-base font-semibold text-grey-800 lg:inline" : "hidden truncate text-base font-semibold text-white lg:inline"}>
         Team 1
       </span>
-      <span className={isGrey ? "hidden rounded-md bg-grey-500/16 px-1.5 py-0.5 text-lg font-semibold text-grey-600 lg:inline" : "hidden rounded-md bg-white/16 px-1.5 py-0.5 text-lg font-semibold text-white lg:inline"}>
+      <span className={isGrey ? "hidden rounded-md bg-grey-500/16 px-1.5 py-0.5 text-base font-semibold text-grey-600 lg:inline" : "hidden rounded-md bg-white/16 px-1.5 py-0.5 text-base font-semibold text-white lg:inline"}>
         {isGrey ? "Free" : "HQ-001"}
       </span>
     </div>

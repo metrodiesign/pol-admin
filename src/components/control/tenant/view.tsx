@@ -62,7 +62,7 @@ export function TenantsView() {
     <div className="flex flex-col gap-6">
       <div className="flex items-start gap-3 rounded-2xl border border-warning/30 bg-warning/16 p-4">
         <ShieldAlert className="mt-0.5 size-5 shrink-0 text-warning-dark" />
-        <p className="text-lg text-grey-700">
+        <p className="text-base text-grey-700">
           เฉพาะผู้ดูแลระดับ Super เท่านั้นที่จัดการได้ — ผู้ดูแลแบบ Scoped
           เห็นเฉพาะบริษัทของตน (อ่านอย่างเดียว)
         </p>

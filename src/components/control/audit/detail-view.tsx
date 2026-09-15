@@ -94,7 +94,7 @@ export function AuditDetailView({ id }: { id?: string }) {
               <ReadField
                 label="ก่อน"
                 value={
-                  <pre className="text-data mt-1 overflow-x-auto rounded-xl border border-[var(--divider)] bg-grey-100 p-3 text-lg text-grey-700 dark:bg-grey-900">
+                  <pre className="text-data mt-1 overflow-x-auto rounded-xl border border-[var(--divider)] bg-grey-100 p-3 text-base text-grey-700 dark:bg-grey-900">
                     {entry.before ?? "—"}
                   </pre>
                 }
@@ -102,7 +102,7 @@ export function AuditDetailView({ id }: { id?: string }) {
               <ReadField
                 label="หลัง"
                 value={
-                  <pre className="text-data mt-1 overflow-x-auto rounded-xl border border-[var(--divider)] bg-grey-100 p-3 text-lg text-grey-700 dark:bg-grey-900">
+                  <pre className="text-data mt-1 overflow-x-auto rounded-xl border border-[var(--divider)] bg-grey-100 p-3 text-base text-grey-700 dark:bg-grey-900">
                     {entry.after ?? "—"}
                   </pre>
                 }

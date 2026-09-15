@@ -100,7 +100,7 @@ export function PolicyCheckoutView({ ids, sessionId }: PolicyCheckoutViewProps) 
       >
         <div className="flex w-full max-w-md items-center gap-2 rounded-control border border-[var(--divider)] bg-grey-50 px-3.5 py-2.5">
           <LinkIcon className="size-4 shrink-0 text-grey-500" />
-          <span className="truncate text-lg text-grey-700">{issuedLink}</span>
+          <span className="truncate text-base text-grey-700">{issuedLink}</span>
         </div>
       </EmptyOrDone>
     );
@@ -215,7 +215,7 @@ function EmptyOrDone({
         {icon}
       </span>
       <p className="text-xl font-semibold text-foreground">{title}</p>
-      <p className="max-w-md text-lg leading-relaxed text-grey-500">{subtitle}</p>
+      <p className="max-w-md text-base leading-relaxed text-grey-500">{subtitle}</p>
       {children}
       <Button
         render={<Link href="/policy/list" />}

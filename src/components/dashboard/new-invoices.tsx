@@ -28,7 +28,7 @@ function StatusBadge({ status }: { status: InvoiceStatus }) {
   return (
     <span
       className={cn(
-        "inline-flex h-6 items-center rounded-md px-1.5 text-lg font-semibold",
+        "inline-flex h-6 items-center rounded-md px-1.5 text-base font-semibold",
         statusTone[status],
       )}
     >
@@ -100,7 +100,7 @@ export function NewInvoices() {
       <footer className="border-t border-dashed border-[var(--divider)] p-3 text-right">
         <button
           type="button"
-          className="inline-flex items-center gap-1 rounded-control px-3 py-1.5 text-lg font-semibold text-grey-800 transition-colors hover:bg-[var(--action-hover)]"
+          className="inline-flex items-center gap-1 rounded-control px-3 py-1.5 text-base font-semibold text-grey-800 transition-colors hover:bg-[var(--action-hover)]"
         >
           View all
           <ArrowRight className="size-4" />
