@@ -43,14 +43,14 @@ function Pagination({
         type="button"
         disabled={page === 1}
         onClick={() => onChange(page - 1)}
-        className="flex size-9 items-center justify-center rounded-full text-lg text-grey-600 transition-colors hover:bg-grey-100 disabled:pointer-events-none disabled:opacity-40"
+        className="flex size-9 items-center justify-center rounded-full text-base text-grey-600 transition-colors hover:bg-grey-100 disabled:pointer-events-none disabled:opacity-40"
         aria-label="Previous page"
       >
         <ChevronLeft className="size-4" />
       </button>
       {pages.map((p, i) =>
         p === "…" ? (
-          <span key={`ellipsis-${i}`} className="flex size-9 items-center justify-center text-lg text-grey-400">
+          <span key={`ellipsis-${i}`} className="flex size-9 items-center justify-center text-base text-grey-400">
             …
           </span>
         ) : (
@@ -60,8 +60,8 @@ function Pagination({
             onClick={() => onChange(p as number)}
             className={
               p === page
-                ? "flex size-9 items-center justify-center rounded-full bg-foreground text-lg font-semibold text-card"
-                : "flex size-9 items-center justify-center rounded-full text-lg text-grey-600 transition-colors hover:bg-grey-100"
+                ? "flex size-9 items-center justify-center rounded-full bg-foreground text-base font-semibold text-card"
+                : "flex size-9 items-center justify-center rounded-full text-base text-grey-600 transition-colors hover:bg-grey-100"
             }
           >
             {p}
@@ -72,7 +72,7 @@ function Pagination({
         type="button"
         disabled={page === totalPages}
         onClick={() => onChange(page + 1)}
-        className="flex size-9 items-center justify-center rounded-full text-lg text-grey-600 transition-colors hover:bg-grey-100 disabled:pointer-events-none disabled:opacity-40"
+        className="flex size-9 items-center justify-center rounded-full text-base text-grey-600 transition-colors hover:bg-grey-100 disabled:pointer-events-none disabled:opacity-40"
         aria-label="Next page"
       >
         <ChevronRight className="size-4" />
@@ -100,7 +100,7 @@ function JobSearchInput({ value, onChange }: { value: string; onChange: (v: stri
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         aria-label="Search jobs"
-        className="flex-1 bg-transparent text-lg text-foreground placeholder:text-grey-500 outline-none"
+        className="flex-1 bg-transparent text-base text-foreground placeholder:text-grey-500 outline-none"
       />
     </div>
   );
@@ -140,17 +140,17 @@ export function JobListView() {
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-stretch sm:gap-4">
         {/* Search */}
         <div className="flex flex-1 flex-col gap-1.5">
-          <span className="select-none text-lg font-medium text-grey-800">Search</span>
+          <span className="select-none text-base font-medium text-grey-800">Search</span>
           <JobSearchInput value={search} onChange={handleSearch} />
         </div>
 
         {/* Filters */}
         <div className="flex flex-col gap-1.5">
-          <span className="select-none text-lg font-medium text-grey-800">Filters</span>
+          <span className="select-none text-base font-medium text-grey-800">Filters</span>
           <div className="flex flex-1 items-center">
             <button
               type="button"
-              className="flex h-12 min-w-[120px] items-center gap-1.5 rounded-control border border-[var(--divider)] px-3.5 text-lg font-semibold text-grey-700 transition-colors hover:bg-[var(--action-hover)]"
+              className="flex h-12 min-w-[120px] items-center gap-1.5 rounded-control border border-[var(--divider)] px-3.5 text-base font-semibold text-grey-700 transition-colors hover:bg-[var(--action-hover)]"
             >
               <SlidersHorizontal className="size-4" />
               Filters
@@ -160,12 +160,12 @@ export function JobListView() {
 
         {/* Sort by */}
         <div className="flex flex-col gap-1.5">
-          <span className="select-none text-lg font-medium text-grey-800">Sort by</span>
+          <span className="select-none text-base font-medium text-grey-800">Sort by</span>
           <div className="relative flex flex-1 items-center">
             <button
               type="button"
               onClick={() => setSortOpen((o) => !o)}
-              className="flex h-12 min-w-[140px] items-center gap-1.5 rounded-control border border-[var(--divider)] px-3.5 text-lg font-semibold text-grey-700 transition-colors hover:bg-[var(--action-hover)]"
+              className="flex h-12 min-w-[140px] items-center gap-1.5 rounded-control border border-[var(--divider)] px-3.5 text-base font-semibold text-grey-700 transition-colors hover:bg-[var(--action-hover)]"
             >
               {sortOrder}
               <ChevronDown className="size-4" />
@@ -177,7 +177,7 @@ export function JobListView() {
                     key={o}
                     type="button"
                     onClick={() => { setSortOrder(o); setSortOpen(false); }}
-                    className={`flex w-full items-center px-4 py-2 text-lg transition-colors hover:bg-[var(--action-hover)] ${sortOrder === o ? "font-semibold text-grey-900" : "text-grey-700"}`}
+                    className={`flex w-full items-center px-4 py-2 text-base transition-colors hover:bg-[var(--action-hover)] ${sortOrder === o ? "font-semibold text-grey-900" : "text-grey-700"}`}
                   >
                     {o}
                   </button>

@@ -10,7 +10,7 @@ import { useAuth } from "./auth-provider";
 function AuthPending(): React.JSX.Element {
   return (
     <main className="flex min-h-dvh items-center justify-center bg-grey-100 p-4">
-      <p className="text-lg text-muted-foreground" role="status">
+      <p className="text-base text-muted-foreground" role="status">
         กำลังตรวจสอบสถานะ...
       </p>
     </main>

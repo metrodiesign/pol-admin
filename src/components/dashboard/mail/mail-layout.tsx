@@ -64,7 +64,7 @@ export function MailLayout() {
               <MailComposer />
             </>
           ) : (
-            <div className="flex flex-1 items-center justify-center text-lg text-grey-400">
+            <div className="flex flex-1 items-center justify-center text-base text-grey-400">
               Select a message to read
             </div>
           )}
@@ -123,7 +123,7 @@ export function MailLayout() {
               type="text"
               placeholder="Search..."
               aria-label="Search mail"
-              className="h-9 w-full rounded-lg border border-grey-300 bg-transparent pl-9 pr-3 text-lg text-foreground placeholder:text-grey-400 focus:border-grey-600 focus:outline-none"
+              className="h-9 w-full rounded-lg border border-grey-300 bg-transparent pl-9 pr-3 text-base text-foreground placeholder:text-grey-400 focus:border-grey-600 focus:outline-none"
             />
           </div>
         </div>
@@ -138,7 +138,7 @@ export function MailLayout() {
               <MailComposer />
             </>
           ) : (
-            <div className="flex flex-1 items-center justify-center text-lg text-grey-400">
+            <div className="flex flex-1 items-center justify-center text-base text-grey-400">
               Select a message to read
             </div>
           )}

@@ -80,7 +80,7 @@ function FormSectionCard({
           <span className="block text-xl font-semibold leading-7 text-grey-800">
             {title}
           </span>
-          <span className="text-lg text-grey-500">{caption}</span>
+          <span className="text-base text-grey-500">{caption}</span>
         </div>
         <button
           type="button"
@@ -112,7 +112,7 @@ function OutlinedInput({
   rows = 3,
 }: OutlinedInputProps) {
   const baseClass =
-    "w-full rounded-[8px] border border-[var(--divider)] bg-transparent px-3.5 py-3 text-lg text-grey-800 placeholder:text-grey-400 outline-none focus:border-grey-800 focus:ring-1 focus:ring-inset focus:ring-grey-800 transition-colors resize-none";
+    "w-full rounded-[8px] border border-[var(--divider)] bg-transparent px-3.5 py-3 text-base text-grey-800 placeholder:text-grey-400 outline-none focus:border-grey-800 focus:ring-1 focus:ring-inset focus:ring-grey-800 transition-colors resize-none";
   if (multiline) {
     return (
       <textarea
@@ -172,7 +172,7 @@ function ChipInput({ placeholder, options, value, onChange }: ChipInputProps) {
         {value.map((tag) => (
           <span
             key={tag}
-            className="inline-flex h-6 items-center gap-1 rounded-[8px] bg-info/16 px-2 text-lg font-normal text-info-dark"
+            className="inline-flex h-6 items-center gap-1 rounded-[8px] bg-info/16 px-2 text-base font-normal text-info-dark"
           >
             {tag}
             <button
@@ -195,7 +195,7 @@ function ChipInput({ placeholder, options, value, onChange }: ChipInputProps) {
           }}
           onFocus={() => setOpen(true)}
           onBlur={() => setTimeout(() => setOpen(false), 150)}
-          className="flex-1 min-w-[80px] bg-transparent text-lg text-grey-800 placeholder:text-grey-400 outline-none"
+          className="flex-1 min-w-[80px] bg-transparent text-base text-grey-800 placeholder:text-grey-400 outline-none"
         />
       </div>
       {open && filtered.length > 0 && (
@@ -205,7 +205,7 @@ function ChipInput({ placeholder, options, value, onChange }: ChipInputProps) {
               key={opt}
               type="button"
               onMouseDown={() => addTag(opt)}
-              className="w-full px-3 py-2 text-left text-lg text-grey-700 hover:bg-grey-100 transition-colors"
+              className="w-full px-3 py-2 text-left text-base text-grey-700 hover:bg-grey-100 transition-colors"
             >
               {opt}
             </button>
@@ -298,8 +298,8 @@ function UploadDropzone({ value, onChange }: UploadDropzoneProps) {
         <circle cx="34" cy="140" r="2" fill="#FFAB00" fillOpacity="0.4"/>
       </svg>
       <div className="text-center">
-        <p className="text-lg font-semibold text-grey-800">Drop or select a file</p>
-        <p className="mt-1 text-lg text-grey-500">
+        <p className="text-base font-semibold text-grey-800">Drop or select a file</p>
+        <p className="mt-1 text-base text-grey-500">
           Drag a file here, or{" "}
           <span className="text-[#00A76F] underline cursor-pointer">browse</span> your device.
         </p>
@@ -348,7 +348,7 @@ function RichTextEditor({ initialValue, onChange }: RichTextEditorProps) {
             type="button"
             onClick={() => setShowHeadingMenu((v) => !v)}
             onBlur={() => setTimeout(() => setShowHeadingMenu(false), 150)}
-            className="flex items-center gap-1 rounded-md border border-grey-200 bg-card px-2 h-8 text-lg font-medium text-grey-700 hover:bg-grey-50 transition-colors"
+            className="flex items-center gap-1 rounded-md border border-grey-200 bg-card px-2 h-8 text-base font-medium text-grey-700 hover:bg-grey-50 transition-colors"
           >
             {headingVal}
             <ChevronDown className="size-3.5 text-grey-400" />
@@ -363,7 +363,7 @@ function RichTextEditor({ initialValue, onChange }: RichTextEditorProps) {
                     setHeadingVal(h);
                     setShowHeadingMenu(false);
                   }}
-                  className="w-full px-3 py-2 text-left text-lg text-grey-700 hover:bg-grey-100 transition-colors"
+                  className="w-full px-3 py-2 text-left text-base text-grey-700 hover:bg-grey-100 transition-colors"
                 >
                   {h}
                 </button>
@@ -439,7 +439,7 @@ function RichTextEditor({ initialValue, onChange }: RichTextEditorProps) {
       {/* Editable area — seeded imperatively via useEffect, no innerHTML */}
       <div
         ref={editorRef}
-        className="min-h-[200px] p-4 text-lg text-grey-800 leading-relaxed outline-none empty:before:text-grey-400 empty:before:content-[attr(data-placeholder)]"
+        className="min-h-[200px] p-4 text-base text-grey-800 leading-relaxed outline-none empty:before:text-grey-400 empty:before:content-[attr(data-placeholder)]"
         contentEditable
         suppressContentEditableWarning
         onInput={(e) => onChange(e.currentTarget.textContent ?? "")}
@@ -501,11 +501,11 @@ export function PostNewEditForm({
           rows={4}
         />
         <div>
-          <p className="mb-2 text-lg font-semibold leading-[22px] text-grey-800">Content</p>
+          <p className="mb-2 text-base font-semibold leading-[22px] text-grey-800">Content</p>
           <RichTextEditor initialValue={content} onChange={setContent} />
         </div>
         <div>
-          <p className="mb-2 text-lg font-semibold leading-[22px] text-grey-800">Cover</p>
+          <p className="mb-2 text-base font-semibold leading-[22px] text-grey-800">Cover</p>
           <UploadDropzone value={cover} onChange={setCover} />
         </div>
       </FormSectionCard>
@@ -544,7 +544,7 @@ export function PostNewEditForm({
             checked={enableComments}
             onCheckedChange={setEnableComments}
           />
-          <span className="text-lg font-medium text-grey-700">
+          <span className="text-base font-medium text-grey-700">
             Enable comments
           </span>
         </div>
@@ -554,18 +554,18 @@ export function PostNewEditForm({
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between pt-2 pb-6">
         <div className="flex items-center gap-3">
           <Switch checked={publish} onCheckedChange={setPublish} />
-          <span className="text-lg font-medium text-grey-700">Publish</span>
+          <span className="text-base font-medium text-grey-700">Publish</span>
         </div>
         <div className="flex items-center gap-3">
           <button
             type="button"
-            className="rounded-[8px] border border-grey-300 px-4 h-12 text-lg font-semibold leading-[26px] text-grey-800 hover:bg-grey-100 transition-colors"
+            className="rounded-[8px] border border-grey-300 px-4 h-12 text-base font-semibold leading-[26px] text-grey-800 hover:bg-grey-100 transition-colors"
           >
             Preview
           </button>
           <button
             type="button"
-            className="rounded-[8px] bg-foreground px-4 h-12 text-lg font-semibold leading-[26px] text-card hover:opacity-90 transition-opacity"
+            className="rounded-[8px] bg-foreground px-4 h-12 text-base font-semibold leading-[26px] text-card hover:opacity-90 transition-opacity"
           >
             {submitLabel}
           </button>

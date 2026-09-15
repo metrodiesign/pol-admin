@@ -36,7 +36,7 @@ export function MerchantUserListTabs({ tabs, active, onChange }: MerchantUserLis
             type="button"
             onClick={() => onChange(tab.value)}
             className={cn(
-              "h-9 shrink-0 rounded-lg px-4 text-lg transition-all whitespace-nowrap",
+              "h-9 shrink-0 rounded-lg px-4 text-base transition-all whitespace-nowrap",
               isActive
                 ? "bg-white font-semibold text-grey-800"
                 : "font-medium text-grey-600 hover:text-grey-800",
@@ -45,7 +45,7 @@ export function MerchantUserListTabs({ tabs, active, onChange }: MerchantUserLis
           >
             {tab.label}
             <span className={cn(
-              "ml-1.5 inline-flex h-5 min-w-5 items-center justify-center rounded px-1 text-lg font-semibold leading-none",
+              "ml-1.5 inline-flex h-5 min-w-5 items-center justify-center rounded px-1 text-base font-semibold leading-none",
               isActive ? "bg-foreground text-card" : BADGE_COLOR[tab.value],
             )}>
               {tab.count}

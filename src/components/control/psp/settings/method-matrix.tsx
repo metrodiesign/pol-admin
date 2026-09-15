@@ -113,17 +113,17 @@ export function MethodMatrix({
   return (
     <section className="rounded-card bg-card p-6" style={cardStyle} aria-label="ช่องทางชำระเงิน">
       <h2 className="text-2xl font-semibold leading-7 text-foreground">ช่องทางชำระเงิน</h2>
-      <p className="mt-1 text-lg text-grey-600">
+      <p className="mt-1 text-base text-grey-600">
         แยกนโยบายระดับร้านค้าออกจากความพร้อมของแต่ละผู้ให้บริการ
       </p>
       {notice ? (
-        <div className="mt-3 flex flex-wrap items-center gap-3 text-lg text-error" role="alert">
+        <div className="mt-3 flex flex-wrap items-center gap-3 text-base text-error" role="alert">
           <span>{notice.message}</span>
           {notice.canRefetch ? (
             <button
               type="button"
               onClick={onChanged}
-              className="inline-flex h-8 items-center rounded-control bg-grey-600/8 px-3 text-lg font-semibold text-grey-800 hover:bg-grey-600/16"
+              className="inline-flex h-8 items-center rounded-control bg-grey-600/8 px-3 text-base font-semibold text-grey-800 hover:bg-grey-600/16"
             >
               โหลดข้อมูลใหม่
             </button>
@@ -133,9 +133,9 @@ export function MethodMatrix({
 
       {/* Desktop table */}
       <div className="mt-4 hidden overflow-x-auto md:block">
-        <table className="w-full text-left text-lg">
+        <table className="w-full text-left text-base">
           <thead>
-            <tr className="text-lg font-medium text-grey-600">
+            <tr className="text-base font-medium text-grey-600">
               <th className="py-2 pr-4">ช่องทาง</th>
               <th className="py-2 pr-4">ร้านค้า</th>
               {SETTINGS_PROVIDERS.map((provider) => (
@@ -205,7 +205,7 @@ export function MethodMatrix({
           <div key={row.method} className="rounded-xl border border-[var(--divider)] p-4">
             <p className="font-semibold text-foreground">{METHOD_LABEL[row.method]}</p>
             <div className="mt-3 flex items-center justify-between">
-              <span className="text-lg text-grey-600">ร้านค้า</span>
+              <span className="text-base text-grey-600">ร้านค้า</span>
               <MerchantToggle
                 method={row.method}
                 enabled={row.merchant?.enabled ?? false}
@@ -220,7 +220,7 @@ export function MethodMatrix({
               const connection = connectionByProvider(provider);
               return (
                 <div key={provider} className="mt-3 flex items-start justify-between gap-3">
-                  <span className="text-lg text-grey-600">{PROVIDER_LABEL[provider]}</span>
+                  <span className="text-base text-grey-600">{PROVIDER_LABEL[provider]}</span>
                   <ProviderCell
                     cell={cell}
                     canManage={canManage}
@@ -264,7 +264,7 @@ function MerchantToggle({
   onToggle: () => void;
 }) {
   if (!canManage) {
-    return <span className="text-lg text-grey-700">{enabled ? "เปิดใช้" : "ปิดใช้"}</span>;
+    return <span className="text-base text-grey-700">{enabled ? "เปิดใช้" : "ปิดใช้"}</span>;
   }
   return (
     <Switch
@@ -290,7 +290,7 @@ function ProviderCell({
   onToggle: () => void;
 }) {
   if (cell.status === "not-connected") {
-    return <span className="text-lg text-grey-500">{CELL_LABEL["not-connected"]}</span>;
+    return <span className="text-base text-grey-500">{CELL_LABEL["not-connected"]}</span>;
   }
   const showToggle = canManage && cell.status !== "unavailable";
   return (
@@ -305,7 +305,7 @@ function ProviderCell({
       ) : (
         <span
           className={cn(
-            "text-lg",
+            "text-base",
             cell.status === "enabled" ? "text-success-dark" : "text-grey-600",
           )}
         >
@@ -313,7 +313,7 @@ function ProviderCell({
         </span>
       )}
       {cell.status !== "enabled" && cell.reason ? (
-        <span className="text-lg text-grey-500">{cell.reason}</span>
+        <span className="text-base text-grey-500">{cell.reason}</span>
       ) : null}
     </div>
   );

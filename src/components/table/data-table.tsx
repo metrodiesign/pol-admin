@@ -77,7 +77,7 @@ export function DataTable<TData>({
                     <TableHead
                       key={header.id}
                       className={cn(
-                        "h-auto whitespace-nowrap bg-grey-200 px-4 py-4 text-lg font-semibold text-grey-600 dark:bg-grey-900",
+                        "h-auto whitespace-nowrap bg-grey-200 px-4 py-4 text-base font-semibold text-grey-600 dark:bg-grey-900",
                         meta?.headClassName,
                       )}
                     >

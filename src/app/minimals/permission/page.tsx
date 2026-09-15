@@ -43,12 +43,12 @@ export default function PermissionPage() {
               >
                 {card.title}
               </h6>
-              <p className="mt-0.5 text-lg text-grey-600">{card.subtitle}</p>
+              <p className="mt-0.5 text-base text-grey-600">{card.subtitle}</p>
             </div>
             {/* Card body */}
             <div className="px-6 pb-6">
               <p
-                className="text-lg font-normal text-grey-600"
+                className="text-base font-normal text-grey-600"
                 style={{ lineHeight: "22px" }}
               >
                 {card.body}

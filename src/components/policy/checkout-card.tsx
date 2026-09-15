@@ -30,7 +30,7 @@ export function CheckoutCard({
         <div className="min-w-0">
           <h2 className="text-xl font-semibold text-primary">{title}</h2>
           {description ? (
-            <p className="mt-0.5 text-lg text-grey-500">{description}</p>
+            <p className="mt-0.5 text-base text-grey-500">{description}</p>
           ) : null}
         </div>
         {action ? <div className="shrink-0">{action}</div> : null}
@@ -53,7 +53,7 @@ export function FieldLabel({
   return (
     <label
       htmlFor={htmlFor}
-      className="text-lg font-semibold text-grey-700 select-none"
+      className="text-base font-semibold text-grey-700 select-none"
     >
       {children}
       {required ? <span className="ml-0.5 text-error">*</span> : null}

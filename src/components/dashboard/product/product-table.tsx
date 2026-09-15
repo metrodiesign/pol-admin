@@ -114,19 +114,19 @@ export function ProductTable({ products }: ProductTableProps) {
                   aria-label="Select all"
                 />
               </th>
-              <th className="px-4 py-2 text-left text-lg font-semibold text-grey-600">
+              <th className="px-4 py-2 text-left text-base font-semibold text-grey-600">
                 Product
               </th>
-              <th className="px-4 py-2 text-left text-lg font-semibold text-grey-600">
+              <th className="px-4 py-2 text-left text-base font-semibold text-grey-600">
                 Create at
               </th>
-              <th className="px-4 py-2 text-left text-lg font-semibold text-grey-600">
+              <th className="px-4 py-2 text-left text-base font-semibold text-grey-600">
                 Stock
               </th>
-              <th className="px-4 py-2 text-left text-lg font-semibold text-grey-600">
+              <th className="px-4 py-2 text-left text-base font-semibold text-grey-600">
                 Price
               </th>
-              <th className="px-4 py-2 text-left text-lg font-semibold text-grey-600">
+              <th className="px-4 py-2 text-left text-base font-semibold text-grey-600">
                 Publish
               </th>
               <th className="w-12 px-3 py-2" />
@@ -147,7 +147,7 @@ export function ProductTable({ products }: ProductTableProps) {
 
       {/* Pagination */}
       <div className="flex items-center justify-end gap-3 border-t border-dashed border-[var(--divider)] px-4 py-3">
-        <span className="hidden text-lg text-grey-500 sm:block">
+        <span className="hidden text-base text-grey-500 sm:block">
           Rows per page:
         </span>
         <Select
@@ -159,7 +159,7 @@ export function ProductTable({ products }: ProductTableProps) {
         >
           <SelectTrigger
             aria-label="Rows per page"
-            className="hidden h-8 w-auto gap-1 border-none px-1 text-lg font-semibold text-foreground sm:flex"
+            className="hidden h-8 w-auto gap-1 border-none px-1 text-base font-semibold text-foreground sm:flex"
           >
             <SelectValue />
           </SelectTrigger>
@@ -171,7 +171,7 @@ export function ProductTable({ products }: ProductTableProps) {
             ))}
           </SelectContent>
         </Select>
-        <span className="text-lg text-grey-500">
+        <span className="text-base text-grey-500">
           {rangeStart}–{rangeEnd} of {filtered.length}
         </span>
         <div className="flex items-center gap-1">

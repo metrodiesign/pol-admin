@@ -50,7 +50,7 @@ export function MailLabelRail({ activeLabel, onLabelChange }: MailLabelRailProps
       <button
         type="button"
         onClick={() => {}}
-        className="mb-2 flex w-full items-center justify-center gap-2 rounded-lg bg-foreground px-4 py-2 text-lg font-semibold text-card transition-opacity hover:opacity-90"
+        className="mb-2 flex w-full items-center justify-center gap-2 rounded-lg bg-foreground px-4 py-2 text-base font-semibold text-card transition-opacity hover:opacity-90"
       >
         <Pencil className="size-4" />
         Compose
@@ -76,7 +76,7 @@ export function MailLabelRail({ activeLabel, onLabelChange }: MailLabelRailProps
             {item.count != null && (
               <span
                 className={cn(
-                  "ml-auto min-w-[20px] rounded-full px-1.5 py-0.5 text-center text-lg font-semibold leading-none",
+                  "ml-auto min-w-[20px] rounded-full px-1.5 py-0.5 text-center text-base font-semibold leading-none",
                   isActive
                     ? "bg-grey-300 text-grey-800"
                     : "bg-grey-200 text-grey-700"

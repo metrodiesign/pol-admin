@@ -19,14 +19,14 @@ export function RoleFormStatus({
         : "โหลดข้อมูลไม่สำเร็จ";
   return (
     <div
-      className="rounded-card bg-card p-10 text-center text-lg text-grey-500"
+      className="rounded-card bg-card p-10 text-center text-base text-grey-500"
       style={cardStyle}
     >
       <p>{msg}</p>
       {state !== "loading" && (
         <Link
           href="/admin/role/list"
-          className="mt-3 inline-flex h-9 items-center justify-center rounded-control bg-primary px-3 text-lg font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+          className="mt-3 inline-flex h-9 items-center justify-center rounded-control bg-primary px-3 text-base font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
         >
           กลับไปหน้ารายการ
         </Link>

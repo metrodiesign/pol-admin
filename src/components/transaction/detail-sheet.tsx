@@ -37,7 +37,7 @@ export function TransactionDetailSheet({
               รายละเอียดธุรกรรม
             </SheetTitle>
             <div className="mt-0.5 flex flex-wrap items-center gap-2">
-              <span className="text-lg font-semibold text-grey-600">
+              <span className="text-base font-semibold text-grey-600">
                 ธุรกรรม <span className="font-mono">• {transaction?.code ?? "—"}</span>
               </span>
             </div>

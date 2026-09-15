@@ -30,7 +30,7 @@ export function CourseSidebar() {
           className="size-[84px] rounded-full object-cover"
         />
         <p className="mt-4 text-xl font-semibold text-grey-800">Jaydon Frankie</p>
-        <p className="mt-0.5 text-lg text-grey-500">ID: 123987</p>
+        <p className="mt-0.5 text-base text-grey-500">ID: 123987</p>
       </div>
 
       {/* Strength radar */}
@@ -68,8 +68,8 @@ export function CourseSidebar() {
         <ul className="mt-4 space-y-4">
           {reminders.map((r) => (
             <li key={r.title}>
-              <p className="text-lg font-semibold leading-snug text-grey-800">{r.title}</p>
-              <p className="mt-0.5 text-lg text-grey-500">{r.date}</p>
+              <p className="text-base font-semibold leading-snug text-grey-800">{r.title}</p>
+              <p className="mt-0.5 text-base text-grey-500">{r.date}</p>
               <div className="mt-2 flex items-center gap-2">
                 <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-grey-200">
                   <div
@@ -77,7 +77,7 @@ export function CourseSidebar() {
                     style={{ width: `${r.progress}%`, backgroundColor: r.color }}
                   />
                 </div>
-                <span className="w-10 text-right text-lg font-semibold text-grey-600">
+                <span className="w-10 text-right text-base font-semibold text-grey-600">
                   {r.progress}%
                 </span>
               </div>

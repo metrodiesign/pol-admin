@@ -17,8 +17,8 @@ export function DetailIdentity({
     <div className="flex flex-col gap-4 border-b border-[var(--divider)] p-6 sm:flex-row sm:items-start sm:justify-between">
       <div className="min-w-0">
         <h2 className="text-2xl font-semibold leading-7 text-foreground">{title}</h2>
-        {subtitle ? <p className="mt-0.5 truncate text-lg text-grey-600">{subtitle}</p> : null}
-        {code ? <p className="text-data mt-1 break-all text-lg text-grey-500">{code}</p> : null}
+        {subtitle ? <p className="mt-0.5 truncate text-base text-grey-600">{subtitle}</p> : null}
+        {code ? <p className="text-data mt-1 break-all text-base text-grey-500">{code}</p> : null}
       </div>
       {badges ? <div className="flex flex-wrap items-center gap-2">{badges}</div> : null}
     </div>
@@ -36,8 +36,8 @@ export function DetailSection({
 }) {
   return (
     <section className="border-b border-[var(--divider)] p-6 last:border-b-0">
-      <h3 className="text-lg font-semibold text-foreground">{title}</h3>
-      {description ? <p className="mt-1 text-lg text-grey-600">{description}</p> : null}
+      <h3 className="text-base font-semibold text-foreground">{title}</h3>
+      {description ? <p className="mt-1 text-base text-grey-600">{description}</p> : null}
       <div className="mt-4">{children}</div>
     </section>
   );
@@ -47,7 +47,7 @@ export function DetailNotFound({ title, message }: { title: string; message: str
   return (
     <div className="rounded-card bg-card p-10 text-center" style={cardStyle}>
       <p className="text-h6 text-foreground">{title}</p>
-      <p className="mt-1 text-lg text-grey-600">{message}</p>
+      <p className="mt-1 text-base text-grey-600">{message}</p>
     </div>
   );
 }

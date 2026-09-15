@@ -43,7 +43,7 @@ export function TourDetailsView({ tour }: TourDetailsViewProps) {
       <div className="mb-5 flex items-center justify-between">
         <Link
           href="/minimals/tour/list"
-          className="inline-flex items-center gap-1 text-lg font-semibold text-grey-700 hover:text-grey-900 transition-colors"
+          className="inline-flex items-center gap-1 text-base font-semibold text-grey-700 hover:text-grey-900 transition-colors"
         >
           <ArrowLeft className="size-4" />
           Back
@@ -59,7 +59,7 @@ export function TourDetailsView({ tour }: TourDetailsViewProps) {
           {/* Status control — dark contained button */}
           <DropdownMenu>
             <DropdownMenuTrigger
-              className="flex items-center gap-1.5 rounded-control bg-foreground px-3 py-1.5 text-lg font-semibold text-card transition-opacity hover:opacity-90 outline-none"
+              className="flex items-center gap-1.5 rounded-control bg-foreground px-3 py-1.5 text-base font-semibold text-card transition-opacity hover:opacity-90 outline-none"
               aria-label="Change status"
             >
               {status}
@@ -88,16 +88,16 @@ export function TourDetailsView({ tour }: TourDetailsViewProps) {
         >
           <TabsTrigger
             value="content"
-            className="mr-10 min-h-12 rounded-none border-0 bg-transparent px-0 pb-3 pt-3 text-lg font-semibold data-active:bg-transparent data-active:shadow-none"
+            className="mr-10 min-h-12 rounded-none border-0 bg-transparent px-0 pb-3 pt-3 text-base font-semibold data-active:bg-transparent data-active:shadow-none"
           >
             Tour content
           </TabsTrigger>
           <TabsTrigger
             value="bookers"
-            className="min-h-12 rounded-none border-0 bg-transparent px-0 pb-3 pt-3 text-lg font-semibold data-active:bg-transparent data-active:shadow-none flex items-center gap-1.5"
+            className="min-h-12 rounded-none border-0 bg-transparent px-0 pb-3 pt-3 text-base font-semibold data-active:bg-transparent data-active:shadow-none flex items-center gap-1.5"
           >
             Booker
-            <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-grey-200 px-1.5 text-lg font-semibold text-grey-700">
+            <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-grey-200 px-1.5 text-base font-semibold text-grey-700">
               {tour.bookedCount}
             </span>
           </TabsTrigger>
@@ -136,7 +136,7 @@ export function TourDetailsView({ tour }: TourDetailsViewProps) {
           </div>
 
           {/* Meta line */}
-          <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-lg text-grey-600">
+          <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-base text-grey-600">
             <div className="flex items-center gap-1">
               <Star className="size-4 fill-warning text-warning" />
               <span className="font-semibold text-grey-800">{tour.rating}</span>
@@ -170,34 +170,34 @@ export function TourDetailsView({ tour }: TourDetailsViewProps) {
           {/* Info grid */}
           <div className="grid grid-cols-2 gap-y-4 gap-x-8 sm:grid-cols-2">
             <div>
-              <div className="flex items-center gap-1.5 text-lg font-semibold text-grey-500 mb-1">
+              <div className="flex items-center gap-1.5 text-base font-semibold text-grey-500 mb-1">
                 <Calendar className="size-4" />
                 Available
               </div>
-              <p className="text-lg font-semibold text-grey-800">
+              <p className="text-base font-semibold text-grey-800">
                 {tour.startDate} - {tour.endDate}
               </p>
             </div>
             <div>
-              <div className="flex items-center gap-1.5 text-lg font-semibold text-grey-500 mb-1">
+              <div className="flex items-center gap-1.5 text-base font-semibold text-grey-500 mb-1">
                 <User className="size-4" />
                 Contact name
               </div>
-              <p className="text-lg font-semibold text-grey-800">{tour.contactName}</p>
+              <p className="text-base font-semibold text-grey-800">{tour.contactName}</p>
             </div>
             <div>
-              <div className="flex items-center gap-1.5 text-lg font-semibold text-grey-500 mb-1">
+              <div className="flex items-center gap-1.5 text-base font-semibold text-grey-500 mb-1">
                 <Clock className="size-4" />
                 Durations
               </div>
-              <p className="text-lg font-semibold text-grey-800">{tour.duration}</p>
+              <p className="text-base font-semibold text-grey-800">{tour.duration}</p>
             </div>
             <div>
-              <div className="flex items-center gap-1.5 text-lg font-semibold text-grey-500 mb-1">
+              <div className="flex items-center gap-1.5 text-base font-semibold text-grey-500 mb-1">
                 <Phone className="size-4" />
                 Contact phone
               </div>
-              <p className="text-lg font-semibold text-grey-800">{tour.contactPhone}</p>
+              <p className="text-base font-semibold text-grey-800">{tour.contactPhone}</p>
             </div>
           </div>
 
@@ -255,7 +255,7 @@ export function TourDetailsView({ tour }: TourDetailsViewProps) {
               ].map((service) => {
                 const included = tour.services.includes(service);
                 return (
-                  <div key={service} className="flex items-center gap-2 text-lg">
+                  <div key={service} className="flex items-center gap-2 text-base">
                     <Check
                       className={`size-4 shrink-0 ${
                         included ? "text-success-dark" : "text-grey-300"
@@ -292,12 +292,12 @@ export function TourDetailsView({ tour }: TourDetailsViewProps) {
                     />
                   </div>
                   <div>
-                    <p className="text-lg font-semibold text-grey-800">{booker.name}</p>
-                    <p className="text-lg text-grey-500">{booker.guests} guests</p>
+                    <p className="text-base font-semibold text-grey-800">{booker.name}</p>
+                    <p className="text-base text-grey-500">{booker.guests} guests</p>
                   </div>
                 </div>
                 <span
-                  className={`rounded-full px-2 py-0.5 text-lg font-semibold ${
+                  className={`rounded-full px-2 py-0.5 text-base font-semibold ${
                     booker.approved
                       ? "bg-success/10 text-success-dark"
                       : "bg-warning/10 text-warning-dark"

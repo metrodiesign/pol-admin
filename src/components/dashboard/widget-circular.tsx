@@ -17,7 +17,7 @@ export function WidgetCircularGroup() {
         >
           <div>
             <p className="text-4xl font-semibold">{w.total}</p>
-            <p className="mt-1 text-lg text-white/80">{w.title}</p>
+            <p className="mt-1 text-base text-white/80">{w.title}</p>
           </div>
           <RadialChart
             value={w.value}

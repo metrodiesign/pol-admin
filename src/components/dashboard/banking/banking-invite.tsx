@@ -49,7 +49,7 @@ export function BankingInvite() {
         >
           $50
         </p>
-        <p className="mt-3 text-lg leading-relaxed text-white/64">
+        <p className="mt-3 text-base leading-relaxed text-white/64">
           Praesent egestas tristique nibh. Duis lobortis massa imperdiet quam.
         </p>
 
@@ -61,11 +61,11 @@ export function BankingInvite() {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
             aria-label="Email"
-            className="flex-1 rounded-control border border-white/24 bg-white/16 px-3 py-2 text-lg text-white placeholder-white/48 outline-none transition-colors focus:border-white/48"
+            className="flex-1 rounded-control border border-white/24 bg-white/16 px-3 py-2 text-base text-white placeholder-white/48 outline-none transition-colors focus:border-white/48"
           />
           <button
             type="button"
-            className="shrink-0 rounded-control px-4 py-2 text-lg font-semibold text-grey-900 transition-colors hover:opacity-90"
+            className="shrink-0 rounded-control px-4 py-2 text-base font-semibold text-grey-900 transition-colors hover:opacity-90"
             style={{ backgroundColor: "#FFAB00" }}
           >
             Invite

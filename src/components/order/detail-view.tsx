@@ -94,9 +94,9 @@ function Panel({
       {title ? (
         <>
           <div className="px-6 py-5">
-            <p className="text-xl font-semibold text-primary">{title}</p>
+            <p className="text-lg font-semibold text-primary">{title}</p>
             {description ? (
-              <p className="mt-0.5 text-lg text-grey-500">{description}</p>
+              <p className="mt-0.5 text-base text-grey-500">{description}</p>
             ) : null}
           </div>
           <div className="border-t border-[var(--divider)]" />
@@ -106,7 +106,7 @@ function Panel({
     </section>
   );
 }
-const fieldLabel = "mb-1.5 block text-lg font-semibold text-grey-700";
+const fieldLabel = "mb-1.5 block text-base font-semibold text-grey-700";
 
 export function OrderDetailView({ id, compact = false }: { id: string | undefined; compact?: boolean }) {
   const t = getOrderById(id);
@@ -143,7 +143,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
       <Panel title="สถานะลิงก์และชำระเงิน">
         <div className="px-6 pt-5 pb-6">
           <div className="flex flex-wrap items-center gap-3">
-            <p className="text-lg font-semibold text-foreground">สถานะ</p>
+            <p className="text-base font-semibold text-foreground">สถานะ</p>
             <OrderStatusBadge status={t.status} />
           </div>
 
@@ -156,21 +156,21 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
               <div className="flex flex-col gap-3">
                 <button
                   type="button"
-                  className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-info/12 px-4 text-lg font-semibold text-info transition-colors hover:bg-info/16"
+                  className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-info/12 px-4 text-base font-semibold text-info transition-colors hover:bg-info/16"
                 >
                   <Send className="size-4" />
                   ส่งลิงก์อีกครั้ง
                 </button>
                 <button
                   type="button"
-                  className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-warning/12 px-4 text-lg font-semibold text-warning-dark transition-colors hover:bg-warning/16"
+                  className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-warning/12 px-4 text-base font-semibold text-warning-dark transition-colors hover:bg-warning/16"
                 >
                   <Clock className="size-4" />
                   ต่ออายุลิงก์
                 </button>
                 <button
                   type="button"
-                  className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-error/12 px-4 text-lg font-semibold text-error transition-colors hover:bg-error/16"
+                  className="inline-flex h-12 items-center gap-2.5 rounded-xl bg-error/12 px-4 text-base font-semibold text-error transition-colors hover:bg-error/16"
                 >
                   <Ban className="size-4" />
                   ยกเลิกลิงก์
@@ -180,21 +180,21 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
               <div className="mt-4 grid grid-cols-2 gap-2.5">
                 <button
                   type="button"
-                  className="col-span-2 inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-control bg-success px-3 text-lg font-semibold text-white transition-colors hover:bg-success-dark"
+                  className="col-span-2 inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-control bg-success px-3 text-base font-semibold text-white transition-colors hover:bg-success-dark"
                 >
                   <ExternalLink className="size-4 shrink-0" />
                   เปิดลิงก์
                 </button>
                 <button
                   type="button"
-                  className="inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-control border border-[var(--divider)] px-3 text-lg font-semibold text-foreground transition-colors hover:bg-grey-100"
+                  className="inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-control border border-[var(--divider)] px-3 text-base font-semibold text-foreground transition-colors hover:bg-grey-100"
                 >
                   <Download className="size-4 shrink-0" />
                   ดาวน์โหลด QR
                 </button>
                 <button
                   type="button"
-                  className="inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-control border border-[var(--divider)] px-3 text-lg font-semibold text-foreground transition-colors hover:bg-grey-100"
+                  className="inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-control border border-[var(--divider)] px-3 text-base font-semibold text-foreground transition-colors hover:bg-grey-100"
                 >
                   <Copy className="size-4 shrink-0" />
                   คัดลอกลิงก์
@@ -207,7 +207,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
 
       <Panel>
         <div className="px-6 py-5">
-          <h2 className="text-xl font-semibold text-primary">ประวัติการดำเนินงาน</h2>
+          <h2 className="text-lg font-semibold text-primary">ประวัติการดำเนินงาน</h2>
         </div>
         <div className="border-t border-[var(--divider)]" />
         <div className="py-5">
@@ -232,12 +232,12 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
                     </span>
                     <div className="min-w-0 flex-1 pt-1">
                       <div className="flex items-start justify-between gap-3">
-                        <p className="text-lg font-semibold text-foreground">{ev.title}</p>
-                        <span className="shrink-0 text-lg tabular-nums text-grey-500">
+                        <p className="text-base font-semibold text-foreground">{ev.title}</p>
+                        <span className="shrink-0 text-base tabular-nums text-grey-500">
                           {ev.time}
                         </span>
                       </div>
-                      <p className="mt-0.5 text-lg text-grey-500">{ev.desc}</p>
+                      <p className="mt-0.5 text-base text-grey-500">{ev.desc}</p>
                     </div>
                   </li>
                 );
@@ -254,29 +254,29 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
           <div className={cn("grid grid-cols-1 gap-x-4 gap-y-4", !compact && "sm:grid-cols-2")}>
             <div>
               <p className={fieldLabel}>หมายเลขคำสั่งซื้อ</p>
-              <p className="text-lg font-semibold text-foreground">{t.id}</p>
+              <p className="text-base font-semibold text-foreground">{t.id}</p>
             </div>
           </div>
           <div className="mt-4 grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
             <div>
               <p className={fieldLabel}>หมายเลขอ้างอิง 1</p>
-              <p className="text-lg font-semibold text-foreground">{refs.ref1 || <span className="text-grey-400">—</span>}</p>
+              <p className="text-base font-semibold text-foreground">{refs.ref1 || <span className="text-grey-400">—</span>}</p>
             </div>
             <div>
               <p className={fieldLabel}>หมายเลขอ้างอิง 2</p>
-              <p className="text-lg font-semibold text-foreground">{refs.ref2 || <span className="text-grey-400">—</span>}</p>
+              <p className="text-base font-semibold text-foreground">{refs.ref2 || <span className="text-grey-400">—</span>}</p>
             </div>
             <div>
               <p className={fieldLabel}>หมายเลขอ้างอิง 3</p>
-              <p className="text-lg font-semibold text-foreground"><span className="text-grey-400">—</span></p>
+              <p className="text-base font-semibold text-foreground"><span className="text-grey-400">—</span></p>
             </div>
             <div>
               <p className={fieldLabel}>หมายเลขอ้างอิง 4</p>
-              <p className="text-lg font-semibold text-foreground"><span className="text-grey-400">—</span></p>
+              <p className="text-base font-semibold text-foreground"><span className="text-grey-400">—</span></p>
             </div>
             <div>
               <p className={fieldLabel}>หมายเลขอ้างอิง 5</p>
-              <p className="text-lg font-semibold text-foreground"><span className="text-grey-400">—</span></p>
+              <p className="text-base font-semibold text-foreground"><span className="text-grey-400">—</span></p>
             </div>
           </div>
         </div>
@@ -288,15 +288,15 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
           <div className="grid grid-cols-1 gap-x-5 gap-y-5 sm:grid-cols-2">
             <div className="flex flex-col gap-1.5">
               <p className={fieldLabel}>ชื่อ-นามสกุล</p>
-              <p className="text-lg font-semibold text-foreground">{t.session?.source.label || <span className="text-grey-400">—</span>}</p>
+              <p className="text-base font-semibold text-foreground">{t.session?.source.label || <span className="text-grey-400">—</span>}</p>
             </div>
             <div className="flex flex-col gap-1.5">
               <p className={fieldLabel}>อีเมล</p>
-              <p className="text-lg font-semibold text-foreground">{t.session?.recipientEmail || <span className="text-grey-400">—</span>}</p>
+              <p className="text-base font-semibold text-foreground">{t.session?.recipientEmail || <span className="text-grey-400">—</span>}</p>
             </div>
             <div className="flex flex-col gap-1.5">
               <p className={fieldLabel}>เบอร์โทรศัพท์</p>
-              <p className="text-lg font-semibold text-foreground">{customerPhone(t) || <span className="text-grey-400">—</span>}</p>
+              <p className="text-base font-semibold text-foreground">{customerPhone(t) || <span className="text-grey-400">—</span>}</p>
             </div>
           </div>
         </div>
@@ -308,7 +308,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
           <div className="-mx-6 overflow-x-auto">
             <table className="w-full min-w-[880px] border-collapse">
               <thead>
-                <tr className="bg-grey-200 text-lg font-semibold text-grey-600 dark:bg-grey-900">
+                <tr className="bg-grey-200 text-base font-semibold text-grey-600 dark:bg-grey-900">
                   <th className="whitespace-nowrap py-4 pr-4 pl-4 text-center">ลำดับ</th>
                   <th className="whitespace-nowrap px-4 py-4 text-left">
                     หมายเลขกรมธรรม์ / รับแจ้ง / สลักหลัง
@@ -328,12 +328,12 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
                 {items.map((it) => (
                   <tr
                     key={it.seq}
-                    className="border-b border-dashed border-[var(--divider)] align-top text-lg"
+                    className="border-b border-dashed border-[var(--divider)] align-top text-base"
                   >
                     <td className="py-4 pr-4 pl-4 text-center text-grey-600">{it.seq}</td>
                     <td className="px-4 py-4">
                       <p className="font-semibold text-primary">{it.docNo}</p>
-                      <p className="mt-0.5 text-lg text-grey-500">{it.docType}</p>
+                      <p className="mt-0.5 text-base text-grey-500">{it.docType}</p>
                     </td>
                     <td className="max-w-[160px] truncate px-4 py-4 text-foreground">{it.insuredName}</td>
                     <td className="px-4 py-4 text-right tabular-nums text-foreground">
@@ -357,12 +357,12 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
           </div>
 
           <div className={cn("mt-4 flex flex-col-reverse gap-3 rounded-2xl bg-info/8 px-5 py-4", !compact && "mmd:flex-row mmd:items-center mmd:justify-between")}>
-            <p className="flex items-center gap-2 text-lg text-grey-600">
+            <p className="flex items-center gap-2 text-base text-grey-600">
               <Info className="size-4 shrink-0 text-info" />
               ลูกค้าจะเห็นรายการย่อยทั้งหมดในหน้าชำระเงิน และจ่ายครั้งเดียว
             </p>
             <div className="text-right">
-              <p className="text-lg text-grey-500">ยอดที่ลูกค้าต้องชำระ</p>
+              <p className="text-base text-grey-500">ยอดที่ลูกค้าต้องชำระ</p>
               <p className="text-4xl font-semibold tabular-nums text-secondary">
                 {formatMoney(t.amount, false)}
               </p>
@@ -383,11 +383,11 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
                 className="h-20 w-20 shrink-0 object-contain"
               />
               <span className="flex min-w-0 flex-1 flex-col gap-1">
-                <span className="text-lg font-semibold text-secondary">
+                <span className="text-base font-semibold text-secondary">
                   {channel?.label ?? sessionChannel ?? "—"}
                 </span>
                 {channel?.caption ? (
-                  <span className="text-lg leading-relaxed text-foreground">{channel.caption}</span>
+                  <span className="text-base leading-relaxed text-foreground">{channel.caption}</span>
                 ) : null}
               </span>
             </div>
@@ -400,19 +400,19 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
         <div className="px-6 pt-5 pb-6">
           <div className="flex flex-col gap-6">
             <div>
-              <span className="mb-2 block text-lg font-semibold text-grey-700">
+              <span className="mb-2 block text-base font-semibold text-grey-700">
                 ระยะเวลาก่อนลิงก์หมดอายุ
               </span>
-              <span className="inline-flex h-9 items-center rounded-full border border-secondary bg-secondary/8 px-4 text-lg font-semibold text-secondary">
+              <span className="inline-flex h-9 items-center rounded-full border border-secondary bg-secondary/8 px-4 text-base font-semibold text-secondary">
                 72 ชม.
               </span>
             </div>
 
             <div>
-              <span className="mb-2 block text-lg font-semibold text-grey-700">
+              <span className="mb-2 block text-base font-semibold text-grey-700">
                 การแจ้งเตือนลูกค้า
               </span>
-              <span className="inline-flex h-9 items-center rounded-full border border-secondary bg-secondary/8 px-4 text-lg font-semibold text-secondary">
+              <span className="inline-flex h-9 items-center rounded-full border border-secondary bg-secondary/8 px-4 text-base font-semibold text-secondary">
                 ส่งหาลูกค้า
               </span>
 
@@ -423,17 +423,17 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
                       <MessageSquare className="size-4" />
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block text-lg font-semibold text-grey-700">ส่ง SMS แจ้งลิงก์</span>
+                      <span className="block text-base font-semibold text-grey-700">ส่ง SMS แจ้งลิงก์</span>
                     </span>
                   </div>
                   <div className="border-t border-[var(--divider)] px-4 py-3">
-                    <p className="text-lg font-semibold text-foreground">{customerPhone(t)}</p>
+                    <p className="text-base font-semibold text-foreground">{customerPhone(t)}</p>
                   </div>
                 </div>
               </div>
             </div>
             <div>
-              <span className="mb-2 block text-lg font-semibold text-grey-700">
+              <span className="mb-2 block text-base font-semibold text-grey-700">
                 การแจ้งเตือนกำหนดผู้รับเอง
               </span>
               <div className="flex flex-col gap-3">
@@ -443,11 +443,11 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
                       <MessageSquare className="size-4" />
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block text-lg font-semibold text-grey-700">ส่ง SMS ถึงผู้รับที่กำหนด</span>
+                      <span className="block text-base font-semibold text-grey-700">ส่ง SMS ถึงผู้รับที่กำหนด</span>
                     </span>
                   </div>
                   <div className="border-t border-[var(--divider)] px-4 py-3">
-                    <p className="text-lg font-semibold text-foreground">{customerPhone(t)}</p>
+                    <p className="text-base font-semibold text-foreground">{customerPhone(t)}</p>
                   </div>
                 </div>
                 <div className="rounded-xl border border-[var(--divider)]">
@@ -456,11 +456,11 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
                       <Mail className="size-4" />
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block text-lg font-semibold text-grey-700">ส่งอีเมลถึงผู้รับที่กำหนด</span>
+                      <span className="block text-base font-semibold text-grey-700">ส่งอีเมลถึงผู้รับที่กำหนด</span>
                     </span>
                   </div>
                   <div className="border-t border-[var(--divider)] px-4 py-3">
-                    <p className="text-lg font-semibold text-foreground">{t.session?.recipientEmail ?? "—"}</p>
+                    <p className="text-base font-semibold text-foreground">{t.session?.recipientEmail ?? "—"}</p>
                   </div>
                 </div>
               </div>

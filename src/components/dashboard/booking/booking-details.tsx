@@ -27,19 +27,19 @@ export function BookingDetails() {
         <table className="w-full min-w-[720px]">
           <thead>
             <tr className="bg-grey-200">
-              <th className="p-4 text-left text-lg font-semibold text-grey-600">
+              <th className="p-4 text-left text-base font-semibold text-grey-600">
                 Destination
               </th>
-              <th className="p-4 text-left text-lg font-semibold text-grey-600">
+              <th className="p-4 text-left text-base font-semibold text-grey-600">
                 Customer
               </th>
-              <th className="p-4 text-left text-lg font-semibold text-grey-600">
+              <th className="p-4 text-left text-base font-semibold text-grey-600">
                 Check in
               </th>
-              <th className="p-4 text-left text-lg font-semibold text-grey-600">
+              <th className="p-4 text-left text-base font-semibold text-grey-600">
                 Check out
               </th>
-              <th className="p-4 text-left text-lg font-semibold text-grey-600">
+              <th className="p-4 text-left text-base font-semibold text-grey-600">
                 Status
               </th>
               <th className="p-4 w-10" />
@@ -62,7 +62,7 @@ export function BookingDetails() {
                         className="object-cover"
                       />
                     </div>
-                    <span className="text-lg font-semibold text-grey-800 line-clamp-2 max-w-[180px]">
+                    <span className="text-base font-semibold text-grey-800 line-clamp-2 max-w-[180px]">
                       {b.destination}
                     </span>
                   </div>
@@ -70,27 +70,27 @@ export function BookingDetails() {
 
                 {/* Customer: name + phone (two lines) */}
                 <td className="px-6 py-3">
-                  <p className="text-lg font-semibold text-grey-800">{b.customer}</p>
-                  <p className="text-lg text-grey-500">{b.phone}</p>
+                  <p className="text-base font-semibold text-grey-800">{b.customer}</p>
+                  <p className="text-base text-grey-500">{b.phone}</p>
                 </td>
 
                 {/* Check in */}
                 <td className="px-6 py-3">
-                  <p className="text-lg text-grey-800">{b.checkIn}</p>
-                  <p className="text-lg text-grey-500">{b.checkInTime}</p>
+                  <p className="text-base text-grey-800">{b.checkIn}</p>
+                  <p className="text-base text-grey-500">{b.checkInTime}</p>
                 </td>
 
                 {/* Check out */}
                 <td className="px-6 py-3">
-                  <p className="text-lg text-grey-800">{b.checkOut}</p>
-                  <p className="text-lg text-grey-500">{b.checkOutTime}</p>
+                  <p className="text-base text-grey-800">{b.checkOut}</p>
+                  <p className="text-base text-grey-500">{b.checkOutTime}</p>
                 </td>
 
                 {/* Status chip */}
                 <td className="px-6 py-3">
                   <span
                     className={cn(
-                      "inline-block rounded-md px-2 py-1 text-lg font-semibold capitalize",
+                      "inline-block rounded-md px-2 py-1 text-base font-semibold capitalize",
                       STATUS_STYLES[b.status]
                     )}
                   >
@@ -118,7 +118,7 @@ export function BookingDetails() {
       <div className="border-t border-dashed border-[var(--divider)] p-3 text-right">
         <button
           type="button"
-          className="inline-flex items-center gap-1 rounded-control px-3 py-1.5 text-lg font-semibold text-grey-800 transition-colors hover:bg-[var(--action-hover)]"
+          className="inline-flex items-center gap-1 rounded-control px-3 py-1.5 text-base font-semibold text-grey-800 transition-colors hover:bg-[var(--action-hover)]"
         >
           View all
           <ArrowRight className="size-4" />

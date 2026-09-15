@@ -62,7 +62,7 @@ export function SelectField({
       disabled={disabled}
     >
       <div className={cn("flex w-full flex-col gap-1.5", className)}>
-        <label id={id} className={cn("text-lg font-medium", hasError ? "text-error" : "text-grey-800")}>
+        <label id={id} className={cn("text-base font-medium", hasError ? "text-error" : "text-grey-800")}>
           {label}
           {required ? <span className="text-error"> *</span> : null}
         </label>
@@ -75,16 +75,16 @@ export function SelectField({
           placeholder={placeholder}
           showClear={clearable}
           className={cn(
-            "h-12 rounded-control border-[var(--divider)] text-lg",
+            "h-12 rounded-control border-[var(--divider)] text-base",
             hasError
               ? "border-error ring-1 ring-inset ring-error"
               : "focus-within:border-primary focus-within:ring-1 focus-within:ring-inset focus-within:ring-primary",
             disabled && "pointer-events-none opacity-60",
-            "[&_[data-slot=input-group-control]]:pl-3.5 [&_[data-slot=input-group-control]]:text-lg",
+            "[&_[data-slot=input-group-control]]:pl-3.5 [&_[data-slot=input-group-control]]:text-base",
           )}
         />
         {error || helperText ? (
-          <p id={descId} className={cn("text-lg", hasError ? "text-error" : "text-grey-600")}>
+          <p id={descId} className={cn("text-base", hasError ? "text-error" : "text-grey-600")}>
             {error || helperText}
           </p>
         ) : null}

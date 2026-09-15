@@ -126,26 +126,26 @@ export function CourseFeatured() {
               {/* Card body */}
               <div className="px-4 py-5">
                 <div className="mb-2 flex flex-wrap items-center gap-1.5">
-                  <span className="inline-flex items-center gap-1 rounded-md bg-[rgba(145,158,171,0.16)] px-1.5 py-0.5 text-lg text-grey-600">
+                  <span className="inline-flex items-center gap-1 rounded-md bg-[rgba(145,158,171,0.16)] px-1.5 py-0.5 text-base text-grey-600">
                     <Clock className="size-3.5" />
                     {course.duration}
                   </span>
-                  <span className="inline-flex items-center gap-1 rounded-md bg-[rgba(145,158,171,0.16)] px-1.5 py-0.5 text-lg text-grey-600">
+                  <span className="inline-flex items-center gap-1 rounded-md bg-[rgba(145,158,171,0.16)] px-1.5 py-0.5 text-base text-grey-600">
                     <Users className="size-3.5" />
                     {course.students}
                   </span>
                 </div>
-                <p className="line-clamp-2 text-lg font-semibold leading-snug text-grey-800">
+                <p className="line-clamp-2 text-base font-semibold leading-snug text-grey-800">
                   {course.title}
                 </p>
                 <div className="mt-3 flex items-center justify-between">
-                  <p className="text-lg">
+                  <p className="text-base">
                     <span className="font-semibold text-grey-800">{course.price}</span>
                     <span className="text-grey-500"> /year</span>
                   </p>
                   <button
                     type="button"
-                    className="rounded-control bg-foreground px-2 py-1 text-lg font-semibold text-card transition-opacity hover:opacity-90"
+                    className="rounded-control bg-foreground px-2 py-1 text-base font-semibold text-card transition-opacity hover:opacity-90"
                   >
                     Join
                   </button>

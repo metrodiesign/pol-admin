@@ -156,11 +156,11 @@ export function RolesView() {
           }}
         />
         {loading ? (
-          <p className="px-5 py-10 text-center text-lg text-grey-500">
+          <p className="px-5 py-10 text-center text-base text-grey-500">
             กำลังโหลด…
           </p>
         ) : error ? (
-          <div className="px-5 py-10 text-center text-lg text-grey-500">
+          <div className="px-5 py-10 text-center text-base text-grey-500">
             <p>โหลดบทบาทไม่สำเร็จ</p>
             <button
               type="button"
@@ -170,7 +170,7 @@ export function RolesView() {
                 setReloadKey((k) => k + 1);
                 if (cat.error) cat.reload();
               }}
-              className="mt-3 inline-flex h-9 items-center rounded-control bg-primary px-3 text-lg font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+              className="mt-3 inline-flex h-9 items-center rounded-control bg-primary px-3 text-base font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
             >
               ลองใหม่
             </button>
@@ -186,7 +186,7 @@ export function RolesView() {
             showSelectionAction={false}
           />
         )}
-        <p className="border-t border-[var(--divider)] px-5 py-4 text-lg text-grey-500">
+        <p className="border-t border-[var(--divider)] px-5 py-4 text-base text-grey-500">
           สิทธิ์รวมของผู้ใช้ = union ของสิทธิ์จากทุกบทบาทที่ได้รับ ·
           บทบาทที่มีผู้ใช้ผูกอยู่จะลบไม่ได้
         </p>

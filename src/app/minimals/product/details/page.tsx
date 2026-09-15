@@ -21,7 +21,7 @@ export default function ProductDetailsPage() {
       <div className="mb-5 flex items-center justify-between">
         <Link
           href="/minimals/product/list"
-          className="flex items-center gap-1 text-lg font-semibold text-foreground transition-opacity hover:opacity-70"
+          className="flex items-center gap-1 text-base font-semibold text-foreground transition-opacity hover:opacity-70"
         >
           <ChevronLeft className="size-4" />
           Back

@@ -60,26 +60,26 @@ export function FileManagerTableRow({
       <TableCell className={cn("px-4", py)}>
         <div className="flex items-center gap-3">
           <FileTypeIcon type={item.type} />
-          <span className="truncate text-lg font-semibold text-foreground">
+          <span className="truncate text-base font-semibold text-foreground">
             {item.name}
           </span>
         </div>
       </TableCell>
 
       {/* Size */}
-      <TableCell className={cn("px-4 text-lg text-foreground", py)}>
+      <TableCell className={cn("px-4 text-base text-foreground", py)}>
         {item.size}
       </TableCell>
 
       {/* Type */}
-      <TableCell className={cn("px-4 text-lg text-foreground", py)}>
+      <TableCell className={cn("px-4 text-base text-foreground", py)}>
         {item.type}
       </TableCell>
 
       {/* Modified */}
       <TableCell className={cn("px-4", py)}>
-        <span className="block text-lg text-foreground">{item.modifiedDate}</span>
-        <span className="block text-lg text-grey-500">{item.modifiedTime}</span>
+        <span className="block text-base text-foreground">{item.modifiedDate}</span>
+        <span className="block text-base text-grey-500">{item.modifiedTime}</span>
       </TableCell>
 
       {/* Shared */}
@@ -95,7 +95,7 @@ export function FileManagerTableRow({
               ))}
             </AvatarGroup>
             {item.sharedOverflow > 0 && (
-              <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-success/16 px-1 text-lg font-semibold text-success-dark">
+              <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-success/16 px-1 text-base font-semibold text-success-dark">
                 +{item.sharedOverflow}
               </span>
             )}

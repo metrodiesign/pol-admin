@@ -64,7 +64,7 @@ function BlockingState({
   return (
     <div className="rounded-card bg-card px-5 py-12 text-center" style={cardStyle} role="alert">
       <h1 className="text-h6 text-foreground">{title}</h1>
-      <p className="mt-2 text-lg text-grey-600">{message}</p>
+      <p className="mt-2 text-base text-grey-600">{message}</p>
       {onRetry ? (
         <Button type="button" variant="outline" className="mt-5" onClick={onRetry}>
           <RefreshCw className="size-4" />
@@ -243,7 +243,7 @@ function PspEditForm({
 
       <div className="flex flex-col gap-5">
         {merchantWarning ? (
-          <div className="flex flex-col gap-3 rounded-xl border border-warning/30 bg-warning/8 px-4 py-3 text-lg text-grey-700 sm:flex-row sm:items-center sm:justify-between" role="status">
+          <div className="flex flex-col gap-3 rounded-xl border border-warning/30 bg-warning/8 px-4 py-3 text-base text-grey-700 sm:flex-row sm:items-center sm:justify-between" role="status">
             <span>โหลดชื่อ Merchant ไม่ครบ; แสดง Merchant ID โดยไม่บล็อก Edit</span>
             {retryMerchants ? (
               <Button type="button" variant="outline" onClick={retryMerchants}>
@@ -254,7 +254,7 @@ function PspEditForm({
           </div>
         ) : null}
         {credentialNotice ? (
-          <div className="rounded-xl border border-error/30 bg-error/8 px-4 py-3 text-lg text-error-dark" role="alert">
+          <div className="rounded-xl border border-error/30 bg-error/8 px-4 py-3 text-base text-error-dark" role="alert">
             {credentialNotice}
           </div>
         ) : null}
@@ -274,8 +274,8 @@ function PspEditForm({
             approvalState="clear"
           />
           <div className="p-6">
-          <h2 className="text-lg font-semibold text-foreground">การตั้งค่า</h2>
-          <p className="mt-1 text-lg text-grey-600">
+          <h2 className="text-base font-semibold text-foreground">การตั้งค่า</h2>
+          <p className="mt-1 text-base text-grey-600">
             แก้เฉพาะช่องทางและ Enabled; Credential เปลี่ยนผ่าน approval flow แยกต่างหาก
           </p>
 
@@ -295,8 +295,8 @@ function PspEditForm({
             <div className="rounded-xl border border-[var(--divider)] p-4 sm:col-span-2">
               <div className="flex items-center justify-between gap-4">
                 <div>
-                  <p className="text-lg font-medium text-grey-800">Enabled</p>
-                  <p className="mt-1 text-lg text-grey-600">
+                  <p className="text-base font-medium text-grey-800">Enabled</p>
+                  <p className="mt-1 text-base text-grey-600">
                     ปิดแล้ว connection จะหยุดรับชำระ
                   </p>
                 </div>
@@ -322,7 +322,7 @@ function PspEditForm({
                 ))}
               </div>
             ) : (
-              <p className="mt-3 text-lg text-grey-600">ไม่มี config ที่รองรับสำหรับแสดงผล</p>
+              <p className="mt-3 text-base text-grey-600">ไม่มี config ที่รองรับสำหรับแสดงผล</p>
             )}
           </section>
 
@@ -330,7 +330,7 @@ function PspEditForm({
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h2 className="text-h6 text-foreground">Credential</h2>
-                <p className="mt-1 text-lg text-grey-600">
+                <p className="mt-1 text-base text-grey-600">
                   ส่ง Credential ใหม่เข้า maker-checker approval โดยไม่แตะค่าที่ active
                 </p>
               </div>
@@ -348,14 +348,14 @@ function PspEditForm({
               </Button>
             </div>
             {dirty ? (
-              <p className="mt-2 text-lg text-grey-600">
+              <p className="mt-2 text-base text-grey-600">
                 ต้องบันทึกหรือยกเลิกการแก้ไขก่อนเปลี่ยน Credential
               </p>
             ) : null}
           </section>
 
           {formError ? (
-            <div className="mt-5 rounded-xl border border-error/30 bg-error/8 px-4 py-3 text-lg text-error-dark" role="alert">
+            <div className="mt-5 rounded-xl border border-error/30 bg-error/8 px-4 py-3 text-base text-error-dark" role="alert">
               {formError}
               {conflict ? (
                 <Button type="button" variant="outline" className="ml-3" onClick={reload}>
@@ -429,7 +429,7 @@ export function PspEditView({ id }: { id: string }) {
       <>
         <Header id={id} />
         <div className="flex min-h-[50vh] items-center justify-center" aria-busy="true">
-          <p className="text-lg text-grey-600" role="status">กำลังโหลด PSP Connection...</p>
+          <p className="text-base text-grey-600" role="status">กำลังโหลด PSP Connection...</p>
         </div>
       </>
     );

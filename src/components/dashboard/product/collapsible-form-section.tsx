@@ -29,7 +29,7 @@ export function CollapsibleFormSection({
       >
         <div>
           <p className="text-xl font-semibold text-foreground">{title}</p>
-          <p className="mt-0.5 text-lg text-grey-500">{subtitle}</p>
+          <p className="mt-0.5 text-base text-grey-500">{subtitle}</p>
         </div>
         <ChevronDown
           className={cn(

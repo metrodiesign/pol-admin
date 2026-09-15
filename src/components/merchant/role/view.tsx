@@ -135,7 +135,7 @@ export function RolesView() {
           searchQuery={search}
           showSelectionAction={false}
         />
-        <p className="border-t border-[var(--divider)] px-5 py-4 text-lg text-grey-500">
+        <p className="border-t border-[var(--divider)] px-5 py-4 text-base text-grey-500">
           สิทธิ์รวมของผู้ใช้ = union ของสิทธิ์จากทุกบทบาทที่ได้รับ ·
           บทบาทที่มีผู้ใช้ผูกอยู่จะลบไม่ได้
         </p>

@@ -42,7 +42,7 @@ export function BookingStatistics() {
           {/* Legend chips */}
           <div className="mt-2 flex items-center gap-4">
             {legend.map((l) => (
-              <div key={l.label} className="flex items-center gap-1.5 text-lg">
+              <div key={l.label} className="flex items-center gap-1.5 text-base">
                 <span className="size-3 rounded-full" style={{ backgroundColor: l.color }} />
                 <span className="text-grey-600">{l.label}</span>
                 <span className="font-semibold text-grey-800">{l.value}</span>
@@ -52,7 +52,7 @@ export function BookingStatistics() {
         </div>
         {/* Period selector */}
         <Select value={period} onValueChange={(v) => v && setPeriod(v)}>
-          <SelectTrigger className="h-8 shrink-0 rounded-control text-lg">
+          <SelectTrigger className="h-8 shrink-0 rounded-control text-base">
             <SelectValue />
           </SelectTrigger>
           <SelectContent align="end">

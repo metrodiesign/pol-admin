@@ -26,7 +26,7 @@ function DateInput({
   const [focused, setFocused] = useState(false);
   return (
     <div className="flex flex-col gap-1.5">
-      <span className="select-none text-lg font-medium text-grey-800">{label}</span>
+      <span className="select-none text-base font-medium text-grey-800">{label}</span>
       <div
         className={cn(
           "flex h-12 items-center rounded-control border bg-transparent transition-colors pl-3.5 pr-1.5",
@@ -43,7 +43,7 @@ function DateInput({
           onChange={(e) => onChange(e.target.value)}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
-          className="min-w-0 flex-1 bg-transparent text-lg text-foreground placeholder:text-grey-500 outline-none"
+          className="min-w-0 flex-1 bg-transparent text-base text-foreground placeholder:text-grey-500 outline-none"
         />
         <button
           type="button"
@@ -87,7 +87,7 @@ export function OrderListToolbar({
 
       {/* Search */}
       <div className="flex flex-1 flex-col gap-1.5">
-        <span className="select-none text-lg font-medium text-grey-800">Search</span>
+        <span className="select-none text-base font-medium text-grey-800">Search</span>
         <div
           className={cn(
             "flex h-12 flex-1 items-center gap-2 rounded-control border bg-transparent transition-colors px-3.5",
@@ -105,14 +105,14 @@ export function OrderListToolbar({
             onChange={(e) => onSearchChange(e.target.value)}
             onFocus={() => setSearchFocused(true)}
             onBlur={() => setSearchFocused(false)}
-            className="min-w-0 flex-1 bg-transparent text-lg text-foreground placeholder:text-grey-500 outline-none"
+            className="min-w-0 flex-1 bg-transparent text-base text-foreground placeholder:text-grey-500 outline-none"
           />
         </div>
       </div>
 
       {/* Kebab — spacer label mirrors fields so button aligns to input */}
       <div className="hidden flex-col gap-1.5 mmd:flex">
-        <span aria-hidden className="select-none text-lg font-medium">&nbsp;</span>
+        <span aria-hidden className="select-none text-base font-medium">&nbsp;</span>
         <div className="flex flex-1 items-center">
           <Button
             variant="ghost"

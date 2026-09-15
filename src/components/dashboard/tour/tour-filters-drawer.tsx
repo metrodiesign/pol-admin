@@ -47,7 +47,7 @@ export function TourFiltersDrawer({ open, onClose }: TourFiltersDrawerProps) {
             <button
               type="button"
               onClick={handleReset}
-              className="text-lg font-semibold text-grey-600 hover:text-grey-800 transition-colors"
+              className="text-base font-semibold text-grey-600 hover:text-grey-800 transition-colors"
             >
               Reset
             </button>
@@ -67,28 +67,28 @@ export function TourFiltersDrawer({ open, onClose }: TourFiltersDrawerProps) {
         <div className="flex-1 overflow-y-auto px-5 py-4 space-y-6">
           {/* Durations section */}
           <div>
-            <h6 className="mb-3 text-lg font-semibold text-grey-800">Durations</h6>
+            <h6 className="mb-3 text-base font-semibold text-grey-800">Durations</h6>
             <div className="space-y-3">
               <div>
-                <label id={startDateId} className="mb-1 block text-lg text-grey-600">Start date</label>
+                <label id={startDateId} className="mb-1 block text-base text-grey-600">Start date</label>
                 <div className="relative">
                   <input
                     aria-labelledby={startDateId}
                     type="date"
                     value={startDate}
                     onChange={(e) => setStartDate(e.target.value)}
-                    className="w-full rounded-control border border-grey-300 px-3 py-2 text-lg text-grey-800 outline-none focus:border-grey-500"
+                    className="w-full rounded-control border border-grey-300 px-3 py-2 text-base text-grey-800 outline-none focus:border-grey-500"
                   />
                 </div>
               </div>
               <div>
-                <label id={endDateId} className="mb-1 block text-lg text-grey-600">End date</label>
+                <label id={endDateId} className="mb-1 block text-base text-grey-600">End date</label>
                 <input
                   aria-labelledby={endDateId}
                   type="date"
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
-                  className="w-full rounded-control border border-grey-300 px-3 py-2 text-lg text-grey-800 outline-none focus:border-grey-500"
+                  className="w-full rounded-control border border-grey-300 px-3 py-2 text-base text-grey-800 outline-none focus:border-grey-500"
                 />
               </div>
             </div>
@@ -96,34 +96,34 @@ export function TourFiltersDrawer({ open, onClose }: TourFiltersDrawerProps) {
 
           {/* Destination */}
           <div>
-            <h6 className="mb-3 text-lg font-semibold text-grey-800">Destination</h6>
+            <h6 className="mb-3 text-base font-semibold text-grey-800">Destination</h6>
             <input
               type="text"
               placeholder="Select destination"
               aria-label="Destination"
-              className="w-full rounded-control border border-grey-300 px-3 py-2 text-lg text-grey-800 outline-none placeholder:text-grey-400 focus:border-grey-500"
+              className="w-full rounded-control border border-grey-300 px-3 py-2 text-base text-grey-800 outline-none placeholder:text-grey-400 focus:border-grey-500"
             />
           </div>
 
           {/* Tour guide */}
           <div>
-            <h6 className="mb-3 text-lg font-semibold text-grey-800">Tour guide</h6>
+            <h6 className="mb-3 text-base font-semibold text-grey-800">Tour guide</h6>
             <input
               type="text"
               placeholder="Select tour guides"
               aria-label="Tour guide"
-              className="w-full rounded-control border border-grey-300 px-3 py-2 text-lg text-grey-800 outline-none placeholder:text-grey-400 focus:border-grey-500"
+              className="w-full rounded-control border border-grey-300 px-3 py-2 text-base text-grey-800 outline-none placeholder:text-grey-400 focus:border-grey-500"
             />
           </div>
 
           {/* Services */}
           <div>
-            <h6 className="mb-3 text-lg font-semibold text-grey-800">Services</h6>
+            <h6 className="mb-3 text-base font-semibold text-grey-800">Services</h6>
             <div className="space-y-2">
               {ALL_SERVICES.map((service) => (
                 <label
                   key={service}
-                  className="flex cursor-pointer items-center gap-2 text-lg text-grey-700"
+                  className="flex cursor-pointer items-center gap-2 text-base text-grey-700"
                 >
                   <input
                     type="checkbox"

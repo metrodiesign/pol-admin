@@ -14,8 +14,8 @@ export function TopCountries() {
               alt={c.name}
               className="h-5 w-7 shrink-0 rounded-sm object-cover"
             />
-            <span className="min-w-0 flex-1 text-lg font-semibold text-grey-800">{c.name}</span>
-            <div className="flex items-center gap-3 text-lg text-grey-700">
+            <span className="min-w-0 flex-1 text-base font-semibold text-grey-800">{c.name}</span>
+            <div className="flex items-center gap-3 text-base text-grey-700">
               <span className="flex items-center gap-1">
                 <Smartphone className="size-3.5 text-grey-500" />
                 {c.android.toFixed(2)}k

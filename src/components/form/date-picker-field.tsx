@@ -96,7 +96,7 @@ export function DatePickerField({ label, value, onChange, placeholder = "เล�
 
   return (
     <div className="flex w-full flex-col gap-1.5">
-      <label id={labelId} className="text-lg font-medium text-grey-800">
+      <label id={labelId} className="text-base font-medium text-grey-800">
         {label}
       </label>
       <Popover open={open} onOpenChange={handleOpenChange}>
@@ -108,7 +108,7 @@ export function DatePickerField({ label, value, onChange, placeholder = "เล�
           )}
         >
           <span
-            className={cn("min-w-0 flex-1 truncate text-lg", value ? "text-foreground" : "text-grey-500")}
+            className={cn("min-w-0 flex-1 truncate text-base", value ? "text-foreground" : "text-grey-500")}
           >
             {value ? formatThaiDate(value) : placeholder}
           </span>
@@ -147,7 +147,7 @@ export function DatePickerField({ label, value, onChange, placeholder = "เล�
                 type="button"
                 variant="outline"
                 size="lg"
-                className="min-w-[100px] rounded-control px-3 text-lg font-semibold"
+                className="min-w-[100px] rounded-control px-3 text-base font-semibold"
                 onClick={() => setOpen(false)}
               >
                 ยกเลิก
@@ -155,7 +155,7 @@ export function DatePickerField({ label, value, onChange, placeholder = "เล�
               <Button
                 type="button"
                 size="lg"
-                className="min-w-[100px] rounded-control px-3 text-lg font-semibold"
+                className="min-w-[100px] rounded-control px-3 text-base font-semibold"
                 disabled={!draft}
                 onClick={handleConfirm}
               >

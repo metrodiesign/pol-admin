@@ -9,7 +9,7 @@ import { MerchantUserEditFormCard } from "@/components/merchant/user/edit-form-c
 import { ConfirmDialog } from "@/components/policy/confirm-dialog";
 
 const cancelClass =
-  "inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-lg font-semibold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]";
+  "inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-base font-semibold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]";
 
 const FORM_ID = "merchant-user-edit-form";
 
@@ -39,7 +39,7 @@ export default function MerchantUserEditPage() {
             <button
               type="button"
               onClick={() => setConfirmAction("save")}
-              className="inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-primary px-3 text-lg font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+              className="inline-flex h-11 min-w-[140px] items-center justify-center rounded-control bg-primary px-3 text-base font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
             >
               บันทึก
             </button>

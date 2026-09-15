@@ -111,7 +111,7 @@ export function AnalyticsCurrentVisits() {
           {currentVisits.map((entry) => (
             <div
               key={entry.label}
-              className="flex items-center gap-1.5 text-lg text-grey-700"
+              className="flex items-center gap-1.5 text-base text-grey-700"
             >
               <span
                 className="size-3 rounded-full"

@@ -57,7 +57,7 @@ function InlineNotice({
       )}
       role={tone === "error" ? "alert" : "status"}
     >
-      <p className="text-lg text-grey-700">{message}</p>
+      <p className="text-base text-grey-700">{message}</p>
       {onRetry ? (
         <Button type="button" variant="outline" onClick={onRetry}>
           <RefreshCw className="size-4" />
@@ -85,7 +85,7 @@ export function PspListHeader({
         type="button"
         disabled
         aria-describedby={createDisabledReason ? "psp-create-disabled-reason" : undefined}
-        className="h-11 min-w-[140px] rounded-control bg-primary px-3 text-lg font-semibold text-primary-foreground hover:bg-primary/90"
+        className="h-11 min-w-[140px] rounded-control bg-primary px-3 text-base font-semibold text-primary-foreground hover:bg-primary/90"
       >
         <Plus className="size-4" />
         เพิ่มการเชื่อมต่อ
@@ -246,7 +246,7 @@ export function PspConnectionsView() {
   const emptyState = (
     <div className="min-h-64 px-5 py-12 text-center">
       <h2 className="text-h6 text-foreground">ไม่พบ PSP Connection</h2>
-      <p className="mt-2 text-lg text-grey-600">ลองเปลี่ยนคำค้นหาหรือตัวกรอง</p>
+      <p className="mt-2 text-base text-grey-600">ลองเปลี่ยนคำค้นหาหรือตัวกรอง</p>
       {canSeeCreate ? (
         <Button
           type="button"
@@ -344,7 +344,7 @@ export function PspConnectionsView() {
           {canSeeCreate && !canCreate && catalogReason ? (
             <p
               id="psp-create-disabled-reason"
-              className="px-5 pb-4 text-lg text-warning-dark"
+              className="px-5 pb-4 text-base text-warning-dark"
               role="status"
             >
               ปิดการเพิ่มการเชื่อมต่อ: {catalogReason}
@@ -353,16 +353,16 @@ export function PspConnectionsView() {
 
           {list.status === "loading" ? (
             <div className="flex min-h-64 items-center justify-center px-5 py-12" aria-busy="true">
-              <p className="text-lg text-grey-600" role="status">กำลังโหลด PSP Connections...</p>
+              <p className="text-base text-grey-600" role="status">กำลังโหลด PSP Connections...</p>
             </div>
           ) : list.status === "forbidden" ? (
             <div className="flex min-h-64 items-center justify-center px-5 py-12" aria-busy="true">
-              <p className="text-lg text-grey-600" role="status">กำลังเปิดหน้า 403...</p>
+              <p className="text-base text-grey-600" role="status">กำลังเปิดหน้า 403...</p>
             </div>
           ) : list.status === "error" ? (
             <div className="min-h-64 px-5 py-12 text-center" role="alert">
               <h2 className="text-h6 text-foreground">โหลด PSP Connections ไม่สำเร็จ</h2>
-              <p className="mt-2 text-lg text-grey-600">กรุณาลองใหม่อีกครั้ง</p>
+              <p className="mt-2 text-base text-grey-600">กรุณาลองใหม่อีกครั้ง</p>
               <Button type="button" variant="outline" className="mt-5" onClick={() => setRetryKey((key) => key + 1)}>
                 <RefreshCw className="size-4" />
                 ลองใหม่

@@ -56,7 +56,7 @@ export function BookingToursAvailable() {
             className="pointer-events-none absolute left-1/2 -translate-x-1/2 flex flex-col items-center"
             style={{ bottom: 8 }}
           >
-            <span className="text-lg text-grey-500">Tours</span>
+            <span className="text-base text-grey-500">Tours</span>
             <span
               className="font-semibold text-grey-800"
               style={{ fontFamily: "var(--font-barlow, 'Barlow', sans-serif)", fontSize: "1.75rem", lineHeight: 1.1 }}
@@ -68,14 +68,14 @@ export function BookingToursAvailable() {
 
         {/* Legend */}
         <div className="mt-6 w-full space-y-2">
-          <div className="flex items-center justify-between text-lg">
+          <div className="flex items-center justify-between text-base">
             <div className="flex items-center gap-2">
               <span className="size-3 rounded-full bg-primary inline-block" />
               <span className="text-grey-600">Sold out</span>
             </div>
             <span className="font-semibold text-grey-800">{toursAvailable.sold} tours</span>
           </div>
-          <div className="flex items-center justify-between text-lg">
+          <div className="flex items-center justify-between text-base">
             <div className="flex items-center gap-2">
               <span className="size-3 rounded-full bg-grey-300 inline-block" />
               <span className="text-grey-600">Available</span>

@@ -67,11 +67,11 @@ export const userColumns: ColumnDef<User>[] = [
           <div className="min-w-0">
             <Link
               href={`/minimals/user/${u.id}/edit`}
-              className="block truncate text-lg font-normal leading-[22px] text-foreground hover:underline"
+              className="block truncate text-base font-normal leading-[22px] text-foreground hover:underline"
             >
               {u.name}
             </Link>
-            <span className="block truncate text-lg leading-[22px] text-grey-500">
+            <span className="block truncate text-base leading-[22px] text-grey-500">
               {u.email}
             </span>
           </div>
@@ -84,7 +84,7 @@ export const userColumns: ColumnDef<User>[] = [
     header: "Phone number",
     enableSorting: false,
     cell: ({ getValue }) => (
-      <span className="text-lg text-foreground">{getValue<string>()}</span>
+      <span className="text-base text-foreground">{getValue<string>()}</span>
     ),
   },
   {
@@ -92,7 +92,7 @@ export const userColumns: ColumnDef<User>[] = [
     header: "Company",
     enableSorting: false,
     cell: ({ getValue }) => (
-      <span className="text-lg text-foreground">{getValue<string>()}</span>
+      <span className="text-base text-foreground">{getValue<string>()}</span>
     ),
   },
   {
@@ -100,7 +100,7 @@ export const userColumns: ColumnDef<User>[] = [
     header: "Role",
     enableSorting: false,
     cell: ({ getValue }) => (
-      <span className="text-lg text-foreground">{getValue<string>()}</span>
+      <span className="text-base text-foreground">{getValue<string>()}</span>
     ),
   },
   {
@@ -109,7 +109,7 @@ export const userColumns: ColumnDef<User>[] = [
     enableSorting: false,
     cell: ({ row }) => (
       <span
-        className={`inline-flex h-6 items-center rounded-md px-1.5 text-lg font-semibold capitalize ${statusStyles[row.original.status]}`}
+        className={`inline-flex h-6 items-center rounded-md px-1.5 text-base font-semibold capitalize ${statusStyles[row.original.status]}`}
       >
         {row.original.status}
       </span>

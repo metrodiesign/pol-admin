@@ -52,7 +52,7 @@ export function FileStorageGauge() {
           <span className="text-5xl font-semibold text-grey-800">{percent}%</span>
         </div>
       </div>
-      <p className="mt-1 text-center text-lg text-grey-500">
+      <p className="mt-1 text-center text-base text-grey-500">
         Used of {used} Gb / {total} Gb
       </p>
 
@@ -68,10 +68,10 @@ export function FileStorageGauge() {
               <img src={item.icon} alt={item.label} className="size-6" />
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-lg font-semibold text-grey-800">{item.label}</p>
-              <p className="text-lg text-grey-500">{item.files}</p>
+              <p className="text-base font-semibold text-grey-800">{item.label}</p>
+              <p className="text-base text-grey-500">{item.files}</p>
             </div>
-            <span className="shrink-0 text-lg font-semibold text-grey-800">
+            <span className="shrink-0 text-base font-semibold text-grey-800">
               {item.size}
             </span>
           </div>

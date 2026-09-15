@@ -163,7 +163,7 @@ function AnalyticsCard({ stat }: { stat: AnalyticsStat }) {
         <GlassIcon type={stat.icon} color={colors.icon} />
         <div
           className={cn(
-            "flex items-center gap-0.5 text-lg font-semibold",
+            "flex items-center gap-0.5 text-base font-semibold",
             stat.trend.up ? "text-success-dark" : "text-error-dark",
           )}
         >
@@ -176,7 +176,7 @@ function AnalyticsCard({ stat }: { stat: AnalyticsStat }) {
       {/* Bottom row: metric + sparkline */}
       <div className="mt-2 flex items-end justify-between">
         <div>
-          <p className="text-lg font-semibold" style={{ opacity: 0.72 }}>{stat.title}</p>
+          <p className="text-base font-semibold" style={{ opacity: 0.72 }}>{stat.title}</p>
           <p className="mt-0.5 text-4xl font-semibold" style={{ color: colors.text }}>
             {stat.total}
           </p>

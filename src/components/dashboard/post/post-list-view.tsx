@@ -33,7 +33,7 @@ function PaginationBar({
       <button
         onClick={() => onPageChange(page - 1)}
         disabled={page === 1}
-        className="flex size-9 items-center justify-center rounded-full text-lg text-grey-700 hover:bg-grey-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+        className="flex size-9 items-center justify-center rounded-full text-base text-grey-700 hover:bg-grey-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
         aria-label="Previous page"
       >
         &lsaquo;
@@ -42,7 +42,7 @@ function PaginationBar({
         <button
           key={p}
           onClick={() => onPageChange(p)}
-          className={`flex size-9 items-center justify-center rounded-full text-lg transition-colors ${
+          className={`flex size-9 items-center justify-center rounded-full text-base transition-colors ${
             page === p
               ? "bg-foreground text-card font-semibold"
               : "text-grey-700 hover:bg-grey-100"
@@ -51,12 +51,12 @@ function PaginationBar({
           {p}
         </button>
       ))}
-      <span className="flex size-9 items-center justify-center text-lg text-grey-500">
+      <span className="flex size-9 items-center justify-center text-base text-grey-500">
         &hellip;
       </span>
       <button
         onClick={() => onPageChange(total)}
-        className={`flex size-9 items-center justify-center rounded-full text-lg transition-colors ${
+        className={`flex size-9 items-center justify-center rounded-full text-base transition-colors ${
           page === total
             ? "bg-grey-800 text-white font-semibold"
             : "text-grey-700 hover:bg-grey-100"
@@ -67,7 +67,7 @@ function PaginationBar({
       <button
         onClick={() => onPageChange(page + 1)}
         disabled={page === total}
-        className="flex size-9 items-center justify-center rounded-full text-lg text-grey-700 hover:bg-grey-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+        className="flex size-9 items-center justify-center rounded-full text-base text-grey-700 hover:bg-grey-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
         aria-label="Next page"
       >
         &rsaquo;
@@ -101,7 +101,7 @@ function SearchInput({ value, onChange }: { value: string; onChange: (v: string)
         onChange={(e) => onChange(e.target.value)}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
-        className="flex-1 bg-transparent text-lg text-foreground placeholder:text-grey-500 outline-none"
+        className="flex-1 bg-transparent text-base text-foreground placeholder:text-grey-500 outline-none"
       />
     </div>
   );
@@ -155,7 +155,7 @@ export function PostListView() {
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-stretch">
         {/* Search */}
         <div className="flex flex-1 flex-col gap-1.5">
-          <span className="select-none text-lg font-medium text-grey-800">Search</span>
+          <span className="select-none text-base font-medium text-grey-800">Search</span>
           <SearchInput
             value={search}
             onChange={(v) => { setSearch(v); setPage(1); }}
@@ -164,14 +164,14 @@ export function PostListView() {
 
         {/* Sort by */}
         <div className="flex flex-col gap-1.5">
-          <span className="select-none text-lg font-medium text-grey-800">Sort by</span>
+          <span className="select-none text-base font-medium text-grey-800">Sort by</span>
           <div className="flex flex-1 items-center">
             <DropdownMenu>
               <DropdownMenuTrigger
                 render={
                   <Button
                     variant="outline"
-                    className="h-12 gap-1.5 px-3 text-lg font-semibold text-grey-800"
+                    className="h-12 gap-1.5 px-3 text-base font-semibold text-grey-800"
                   />
                 }
               >
@@ -208,7 +208,7 @@ export function PostListView() {
             <button
               key={value}
               onClick={() => handleTabChange(value)}
-              className={`relative flex items-center gap-2 pt-2.5 pb-3 text-lg font-semibold transition-colors outline-none ${
+              className={`relative flex items-center gap-2 pt-2.5 pb-3 text-base font-semibold transition-colors outline-none ${
                 isActive
                   ? "text-grey-800 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:rounded-full after:bg-foreground"
                   : "text-grey-600 hover:text-grey-800"
@@ -216,7 +216,7 @@ export function PostListView() {
             >
               {label}
               <span
-                className={`inline-flex items-center justify-center rounded-full min-w-[20px] h-5 px-1.5 text-lg font-semibold ${
+                className={`inline-flex items-center justify-center rounded-full min-w-[20px] h-5 px-1.5 text-base font-semibold ${
                   value === "all"
                     ? "bg-foreground text-card"
                     : value === "published"

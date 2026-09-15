@@ -23,16 +23,16 @@ export function BankingRecentTransitions() {
         <table className="w-full min-w-[500px]">
           <thead>
             <tr className="bg-grey-200">
-              <th className="px-4 py-4 text-left text-lg font-semibold leading-6 text-grey-600">
+              <th className="px-4 py-4 text-left text-base font-semibold leading-6 text-grey-600">
                 Description
               </th>
-              <th className="px-4 py-4 text-left text-lg font-semibold leading-6 text-grey-600">
+              <th className="px-4 py-4 text-left text-base font-semibold leading-6 text-grey-600">
                 Date
               </th>
-              <th className="px-4 py-4 text-right text-lg font-semibold leading-6 text-grey-600">
+              <th className="px-4 py-4 text-right text-base font-semibold leading-6 text-grey-600">
                 Amount
               </th>
-              <th className="px-4 py-4 text-left text-lg font-semibold leading-6 text-grey-600">
+              <th className="px-4 py-4 text-left text-base font-semibold leading-6 text-grey-600">
                 Status
               </th>
               <th className="w-10 px-2 py-4" />
@@ -56,22 +56,22 @@ export function BankingRecentTransitions() {
                       unoptimized
                     />
                     <div>
-                      <p className="text-lg font-semibold text-grey-800">
+                      <p className="text-base font-semibold text-grey-800">
                         {t.type === "receive" ? "Receive money from" : "Payment for"}
                       </p>
-                      <p className="text-lg text-grey-500">{t.description}</p>
+                      <p className="text-base text-grey-500">{t.description}</p>
                     </div>
                   </div>
                 </td>
 
                 {/* Date */}
                 <td className="px-4 py-4">
-                  <p className="text-lg text-grey-800">{t.date}</p>
-                  <p className="text-lg text-grey-500">{t.time}</p>
+                  <p className="text-base text-grey-800">{t.date}</p>
+                  <p className="text-base text-grey-500">{t.time}</p>
                 </td>
 
                 {/* Amount */}
-                <td className="px-4 py-4 text-right text-lg font-semibold text-grey-800">
+                <td className="px-4 py-4 text-right text-base font-semibold text-grey-800">
                   {t.amount}
                 </td>
 
@@ -79,7 +79,7 @@ export function BankingRecentTransitions() {
                 <td className="px-4 py-4">
                   <span
                     className={cn(
-                      "inline-flex h-6 items-center rounded-md px-1.5 text-lg font-semibold leading-[18px]",
+                      "inline-flex h-6 items-center rounded-md px-1.5 text-base font-semibold leading-[18px]",
                       STATUS_STYLES[t.status],
                     )}
                   >
@@ -107,7 +107,7 @@ export function BankingRecentTransitions() {
       <div className="border-t border-dashed border-[var(--divider)] p-3 text-right">
         <button
           type="button"
-          className="inline-flex items-center gap-1 rounded-control px-3 py-1.5 text-lg font-semibold text-grey-800 transition-colors hover:bg-[var(--action-hover)]"
+          className="inline-flex items-center gap-1 rounded-control px-3 py-1.5 text-base font-semibold text-grey-800 transition-colors hover:bg-[var(--action-hover)]"
         >
           View all
           <ArrowRight className="size-4" />

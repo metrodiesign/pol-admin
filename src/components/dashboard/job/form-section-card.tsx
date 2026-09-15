@@ -37,7 +37,7 @@ export function FormSectionCard({
           <p className="text-xl font-semibold leading-7 text-grey-800">
             {title}
           </p>
-          <p className="text-lg text-grey-500">{caption}</p>
+          <p className="text-base text-grey-500">{caption}</p>
         </div>
         <ChevronDown
           className={cn(

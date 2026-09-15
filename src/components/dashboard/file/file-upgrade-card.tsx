@@ -10,7 +10,7 @@ export function FileUpgradeCard() {
       </h6>
       <button
         type="button"
-        className="relative z-10 mt-4 rounded-lg bg-warning px-3 py-1.5 text-lg font-semibold text-[#1C252E] transition-colors duration-[250ms] hover:bg-warning-dark"
+        className="relative z-10 mt-4 rounded-lg bg-warning px-3 py-1.5 text-base font-semibold text-[#1C252E] transition-colors duration-[250ms] hover:bg-warning-dark"
       >
         Upgrade plan
       </button>

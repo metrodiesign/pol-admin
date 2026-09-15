@@ -101,27 +101,27 @@
      (masked keys, idempotency keys, event/client IDs, signatures, refs). ---- */
   --font-mono: var(--font-ibm-plex-mono), ui-monospace, SFMono-Regular,
     "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
-  /* ---- Body/display scale: components sit on text-lg (18px) and up; the
-     steps above follow Tailwind's default ratio with slightly wider leading
-     because Thai stacks vowels/tone marks above and below the baseline. ---- */
-  --text-xs: 0.875rem;            /* 14px */
-  --text-xs--line-height: 1.25rem;
-  --text-sm: 0.9375rem;           /* 15px */
-  --text-sm--line-height: 1.375rem;
-  --text-base: 1rem;              /* 16px */
-  --text-base--line-height: 1.5rem;
-  --text-lg: 1.125rem;            /* 18px ← body */
-  --text-lg--line-height: 1.75rem;
-  --text-xl: 1.25rem;             /* 20px */
-  --text-xl--line-height: 1.875rem;
-  --text-2xl: 1.5rem;             /* 24px */
-  --text-2xl--line-height: 2.125rem;
-  --text-3xl: 1.875rem;           /* 30px */
-  --text-3xl--line-height: 2.5rem;
-  --text-4xl: 2.25rem;            /* 36px */
-  --text-4xl--line-height: 2.75rem;
-  --text-5xl: 3rem;               /* 48px */
-  --text-5xl--line-height: 3.25rem;
+  /* ---- Body/display scale: body sits on text-base (23px); DB Sathorn X reads
+     small, so the scale starts higher than Tailwind's default and keeps wider
+     leading because Thai stacks vowels/tone marks above and below the baseline. ---- */
+  --text-xs: 1.0625rem;           /* 17px */
+  --text-xs--line-height: 1.625rem;
+  --text-sm: 1.25rem;             /* 20px */
+  --text-sm--line-height: 1.875rem;
+  --text-base: 1.4375rem;         /* 23px */
+  --text-base--line-height: 2.125rem;
+  --text-lg: 1.6875rem;           /* 27px */
+  --text-lg--line-height: 2.375rem;
+  --text-xl: 1.9375rem;           /* 31px */
+  --text-xl--line-height: 2.625rem;
+  --text-2xl: 2.3125rem;          /* 37px */
+  --text-2xl--line-height: 3rem;
+  --text-3xl: 2.8125rem;          /* 45px */
+  --text-3xl--line-height: 3.5rem;
+  --text-4xl: 3.375rem;           /* 54px */
+  --text-4xl--line-height: 4rem;
+  --text-5xl: 4.125rem;           /* 66px */
+  --text-5xl--line-height: 4.875rem;
   /* clamp ranges = base rem (mobile) -> computed px @1440 (desktop), matching MUI responsiveFontSizes */
   --text-h1: clamp(2.5rem, 1.972rem + 2.253vw, 4rem);
   --text-h2: clamp(2rem, 1.648rem + 1.502vw, 3rem);
@@ -352,8 +352,6 @@
     background: var(--color-bg);
     color: var(--color-text-primary);
     font-family: var(--font-sans);
-    /* DB Sathorn X has a 0.292em x-height; normalize it against a typical sans-serif face. */
-    font-size-adjust: 0.5;
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
   }
@@ -373,7 +371,6 @@
   kbd,
   samp,
   pre {
-    font-size-adjust: none;
     font-weight: 400;
   }
   /* Restore pointer cursor on interactive elements — Tailwind v4 preflight
@@ -490,7 +487,7 @@ button, a, input, select, textarea {
   border: 1px solid var(--divider);
   background-color: transparent;
   color: var(--color-text-primary);
-  font-size: 1rem; /* 16px — body */
+  @apply text-base;
   outline: none;
   transition: border-color 150ms ease-in-out, box-shadow 150ms ease-in-out;
 }
@@ -588,7 +585,7 @@ tbody tr {
 @utility text-overline { font-size: 0.875rem; line-height: 1.5; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 
 /* ---- Control-plane data face: machine identifiers, tabular figures aligned ---- */
-@utility text-data { font-family: var(--font-mono); font-size-adjust: none; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+@utility text-data { font-family: var(--font-mono); font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
 
 /* ---- Control-plane health spine: vertical state bar on list rows / cards.
    Decorative only — the same state is always shown in a text badge too. ---- */
@@ -630,13 +627,17 @@ tbody tr {
   color: var(--foreground);
 }
 .date-range-calendar .rdp-weekday {
-  font-size: 0.875rem;
+  font-size: 1.125rem;
   font-weight: 500;
   color: var(--color-grey-500);
 }
+.date-range-calendar .rdp-day_button {
+  font-size: 1.125rem;
+  font-weight: 500;
+}
 .date-range-calendar .rdp-selected {
   font-weight: 600;
-  font-size: 0.875rem;
+  font-size: 1.125rem;
 }
 /* endpoint: RDP ทาพื้นครึ่งซ้าย/ขวาไว้ที่ td (ต่อแถบ) — โผล่เป็นเหลี่ยมข้างวงกลม ตัดทิ้ง */
 .date-range-calendar .rdp-range_start,

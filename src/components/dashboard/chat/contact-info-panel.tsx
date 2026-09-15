@@ -26,7 +26,7 @@ function CollapsibleSection({
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="flex w-full items-center justify-between px-4 py-2 text-lg font-semibold tracking-wider text-grey-500 transition-colors hover:bg-grey-100"
+        className="flex w-full items-center justify-between px-4 py-2 text-base font-semibold tracking-wider text-grey-500 transition-colors hover:bg-grey-100"
       >
         {title}
         <ChevronDown
@@ -59,7 +59,7 @@ export function ContactInfoPanel({ contact, attachments }: ContactInfoPanelProps
         <div className="text-center">
           <h6 className="text-xl font-semibold leading-6 text-grey-800">{contact.name}</h6>
           {contact.role && (
-            <p className="text-lg text-grey-500">{contact.role}</p>
+            <p className="text-base text-grey-500">{contact.role}</p>
           )}
         </div>
       </div>
@@ -68,7 +68,7 @@ export function ContactInfoPanel({ contact, attachments }: ContactInfoPanelProps
 
       {/* INFORMATION section */}
       <CollapsibleSection title="INFORMATION">
-        <div className="flex flex-col gap-3 px-4 py-3 text-lg text-grey-600">
+        <div className="flex flex-col gap-3 px-4 py-3 text-base text-grey-600">
           {contact.address && (
             <div className="flex gap-2">
               <MapPin className="mt-0.5 size-4 shrink-0 text-grey-400" />
@@ -123,10 +123,10 @@ function AttachmentRow({ attachment }: { attachment: ChatAttachment }) {
 
       {/* Name + date */}
       <div className="min-w-0 flex-1">
-        <p className="truncate text-lg font-medium leading-5 text-grey-800">
+        <p className="truncate text-base font-medium leading-5 text-grey-800">
           {attachment.name}
         </p>
-        <p className="text-lg leading-4 text-grey-400">{attachment.datetime}</p>
+        <p className="text-base leading-4 text-grey-400">{attachment.datetime}</p>
       </div>
 
       {/* Download button */}

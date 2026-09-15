@@ -86,7 +86,7 @@ function MultiSelectBox({
 
   return (
     <div className="flex flex-col gap-1.5">
-      <label id={fieldId} className="select-none text-lg font-medium text-grey-800">
+      <label id={fieldId} className="select-none text-base font-medium text-grey-800">
         {label}
       </label>
       <div className="flex min-h-12 w-full items-center rounded-control border border-[var(--divider)] px-3.5 py-2 transition-colors focus-within:border-grey-800">
@@ -94,7 +94,7 @@ function MultiSelectBox({
           {value.map((v) => (
             <span
               key={v}
-              className="flex items-center gap-1 rounded-md bg-grey-200 px-2 py-0.5 text-lg font-medium text-grey-700"
+              className="flex items-center gap-1 rounded-md bg-grey-200 px-2 py-0.5 text-base font-medium text-grey-700"
             >
               {v}
               <button
@@ -114,7 +114,7 @@ function MultiSelectBox({
           >
             <SelectTrigger
               aria-labelledby={fieldId}
-              className="h-auto flex-1 border-none px-0 py-0 text-lg text-grey-400"
+              className="h-auto flex-1 border-none px-0 py-0 text-base text-grey-400"
             >
               <SelectValue
                 placeholder={value.length === 0 ? "Select..." : "Add more..."}
@@ -163,7 +163,7 @@ function TagsInput({
         {value.map((tag) => (
           <span
             key={tag}
-            className="flex h-6 items-center gap-1 rounded-lg bg-info/16 px-2 text-lg font-normal text-info-dark"
+            className="flex h-6 items-center gap-1 rounded-lg bg-info/16 px-2 text-base font-normal text-info-dark"
           >
             {tag}
             <button
@@ -187,7 +187,7 @@ function TagsInput({
             }
           }}
           placeholder={value.length === 0 ? "Tags" : "Add tag..."}
-          className="flex-1 min-w-[80px] bg-transparent text-lg text-foreground outline-none placeholder:text-grey-400"
+          className="flex-1 min-w-[80px] bg-transparent text-base text-foreground outline-none placeholder:text-grey-400"
         />
       </div>
     </div>
@@ -221,7 +221,7 @@ function SwitchWithInput({
         onChange={(e) => onInputChange(e.target.value)}
         disabled={!enabled}
         placeholder={switchLabel}
-        className="flex-1 rounded-lg border border-[var(--divider)] bg-transparent px-3 py-2 text-lg text-foreground outline-none placeholder:text-grey-400 disabled:cursor-not-allowed disabled:opacity-50 focus:border-grey-800"
+        className="flex-1 rounded-lg border border-[var(--divider)] bg-transparent px-3 py-2 text-base text-foreground outline-none placeholder:text-grey-400 disabled:cursor-not-allowed disabled:opacity-50 focus:border-grey-800"
       />
     </div>
   );
@@ -284,13 +284,13 @@ export function ProductForm({ mode, defaultValues = {}, onSubmit }: ProductFormP
             rows={3}
           />
           <div>
-            <p className="mb-2 text-lg font-semibold text-foreground">
+            <p className="mb-2 text-base font-semibold text-foreground">
               Content
             </p>
             <RichTextEditor defaultValue={rteDefault} />
           </div>
           <div>
-            <p className="mb-2 text-lg font-semibold text-foreground">
+            <p className="mb-2 text-base font-semibold text-foreground">
               Images
             </p>
             <UploadDropzone initialImages={defaultValues.images ?? []} />
@@ -316,14 +316,14 @@ export function ProductForm({ mode, defaultValues = {}, onSubmit }: ProductFormP
             <div className="flex flex-col gap-1.5">
               <label
                 id={categoryId}
-                className="select-none text-lg font-medium text-grey-800"
+                className="select-none text-base font-medium text-grey-800"
               >
                 Category
               </label>
               <Select value={category} onValueChange={(v) => v && setCategory(v)}>
                 <SelectTrigger
                   aria-labelledby={categoryId}
-                  className="h-12 w-full rounded-control border-[var(--divider)] pl-3.5 pr-3 text-lg text-foreground focus-within:border-grey-800 focus-within:ring-1 focus-within:ring-inset focus-within:ring-grey-800"
+                  className="h-12 w-full rounded-control border-[var(--divider)] pl-3.5 pr-3 text-base text-foreground focus-within:border-grey-800 focus-within:ring-1 focus-within:ring-inset focus-within:ring-grey-800"
                 >
                   <SelectValue />
                 </SelectTrigger>
@@ -359,14 +359,14 @@ export function ProductForm({ mode, defaultValues = {}, onSubmit }: ProductFormP
 
           {/* Gender */}
           <div>
-            <p className="mb-2 text-lg font-semibold text-foreground">
+            <p className="mb-2 text-base font-semibold text-foreground">
               Gender
             </p>
             <div className="flex items-center gap-6">
               {["Men", "Women", "Kids"].map((g) => (
                 <label
                   key={g}
-                  className="flex cursor-pointer items-center gap-2 text-lg text-foreground"
+                  className="flex cursor-pointer items-center gap-2 text-base text-foreground"
                 >
                   <input
                     type="checkbox"
@@ -424,7 +424,7 @@ export function ProductForm({ mode, defaultValues = {}, onSubmit }: ProductFormP
               checked={taxIncluded}
               onCheckedChange={setTaxIncluded}
             />
-            <span className="text-lg text-foreground">
+            <span className="text-base text-foreground">
               Price includes taxes
             </span>
           </div>
@@ -445,7 +445,7 @@ export function ProductForm({ mode, defaultValues = {}, onSubmit }: ProductFormP
             checked={published}
             onCheckedChange={setPublished}
           />
-          <span className="text-lg font-semibold text-foreground">
+          <span className="text-base font-semibold text-foreground">
             Publish
           </span>
         </div>
@@ -472,7 +472,7 @@ export function ProductForm({ mode, defaultValues = {}, onSubmit }: ProductFormP
               published,
             })
           }
-          className="h-12 rounded-lg bg-foreground px-4 text-lg font-semibold text-card transition-opacity hover:opacity-90"
+          className="h-12 rounded-lg bg-foreground px-4 text-base font-semibold text-card transition-opacity hover:opacity-90"
         >
           {submitLabel}
         </button>

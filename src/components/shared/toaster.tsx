@@ -19,7 +19,7 @@ export function Toaster({ toasts, onDismiss }: ToasterProps) {
       {toasts.map((t) => (
         <div
           key={t.id}
-          className="pointer-events-auto flex items-center gap-2 rounded-control bg-grey-800 px-4 py-3 text-lg font-medium text-white shadow-lg"
+          className="pointer-events-auto flex items-center gap-2 rounded-control bg-grey-800 px-4 py-3 text-base font-medium text-white shadow-lg"
         >
           <Check className="size-4 shrink-0 text-success-light" />
           <span>{t.message}</span>

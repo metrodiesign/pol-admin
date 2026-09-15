@@ -42,7 +42,7 @@ export function TablePagination({
   return (
     <div className="flex flex-col gap-3 border-t border-dashed border-grey-200 px-4 py-3 dark:border-grey-800 sm:flex-row sm:items-center sm:justify-between">
       {/* Meta: count */}
-      <span className="tabular-nums text-lg text-grey-500">
+      <span className="tabular-nums text-base text-grey-500">
         {from} ถึง {to} จาก {count} รายการ
       </span>
 
@@ -53,7 +53,7 @@ export function TablePagination({
           disabled={page === 0}
           onClick={() => onPageChange(page - 1)}
           className={cn(
-            "flex items-center gap-1.5 text-lg font-medium transition-colors",
+            "flex items-center gap-1.5 text-base font-medium transition-colors",
             page === 0
               ? "cursor-not-allowed text-grey-400"
               : "text-grey-700 hover:text-foreground",
@@ -67,7 +67,7 @@ export function TablePagination({
             item === "..." ? (
               <span
                 key={`dots-${i}`}
-                className="flex size-9 select-none items-center justify-center text-lg text-grey-500"
+                className="flex size-9 select-none items-center justify-center text-base text-grey-500"
               >
                 &hellip;
               </span>
@@ -77,7 +77,7 @@ export function TablePagination({
                 type="button"
                 onClick={() => onPageChange(item)}
                 className={cn(
-                  "size-9 rounded-lg text-lg font-medium transition-colors",
+                  "size-9 rounded-lg text-base font-medium transition-colors",
                   item === page
                     ? "bg-grey-200 font-semibold text-grey-900"
                     : "text-grey-600 hover:bg-grey-100 hover:text-grey-900",
@@ -94,7 +94,7 @@ export function TablePagination({
           disabled={page >= totalPages - 1}
           onClick={() => onPageChange(page + 1)}
           className={cn(
-            "flex items-center gap-1.5 text-lg font-medium transition-colors",
+            "flex items-center gap-1.5 text-base font-medium transition-colors",
             page >= totalPages - 1
               ? "cursor-not-allowed text-grey-400"
               : "text-grey-700 hover:text-foreground",

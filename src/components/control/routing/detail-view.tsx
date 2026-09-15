@@ -133,7 +133,7 @@ export function RoutingDetailView({ id }: { id?: string }) {
               tone={tone}
               label={rule.enabled ? "เปิดใช้งาน" : "ปิดใช้งาน"}
             />
-            <p className="text-lg text-grey-600">
+            <p className="text-base text-grey-600">
               {rule.enabled
                 ? "rule นี้ถูกนำมาประเมินผลในการเลือก PSP"
                 : "rule นี้ถูกข้ามในการประเมินผล"}
@@ -141,7 +141,7 @@ export function RoutingDetailView({ id }: { id?: string }) {
           </div>
           <div className="mt-4 flex items-start gap-2.5 rounded-xl border border-warning/30 bg-warning/8 px-4 py-3">
             <ShieldAlert className="mt-0.5 size-4 shrink-0 text-warning-dark" />
-            <p className="text-lg font-medium text-warning-dark">
+            <p className="text-base font-medium text-warning-dark">
               การเปลี่ยนแปลงต้องผ่าน Approvals (maker-checker)
             </p>
           </div>

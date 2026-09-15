@@ -40,10 +40,10 @@ export const pspColumns: ColumnDef<PspConnectionListRow>[] = [
     enableSorting: false,
     cell: ({ row }) => (
       <div className="min-w-0">
-        <span className="block truncate text-lg font-semibold leading-[22px] text-foreground">
+        <span className="block truncate text-base font-semibold leading-[22px] text-foreground">
           {row.original.merchantName}
         </span>
-        <span className="text-data block truncate text-lg leading-[22px] text-grey-500">
+        <span className="text-data block truncate text-base leading-[22px] text-grey-500">
           {row.original.pspConnectionId}
         </span>
       </div>
@@ -55,7 +55,7 @@ export const pspColumns: ColumnDef<PspConnectionListRow>[] = [
     enableSorting: false,
     meta: { headClassName: "w-[120px]", cellClassName: "w-[120px]" },
     cell: ({ row }) => (
-      <span className="text-lg font-semibold text-foreground">{PROVIDER_LABEL[row.original.psp]}</span>
+      <span className="text-base font-semibold text-foreground">{PROVIDER_LABEL[row.original.psp]}</span>
     ),
   },
   {
@@ -63,7 +63,7 @@ export const pspColumns: ColumnDef<PspConnectionListRow>[] = [
     header: "ช่องทาง",
     enableSorting: false,
     cell: ({ row }) => (
-      <span className="text-lg text-foreground">
+      <span className="text-base text-foreground">
         {row.original.enabledMethods.map((method) => METHOD_LABEL[method]).join(", ") || "-"}
       </span>
     ),
@@ -101,8 +101,8 @@ export const pspColumns: ColumnDef<PspConnectionListRow>[] = [
     meta: { headClassName: "w-[180px]", cellClassName: "w-[180px]" },
     cell: ({ row }) => (
       <div>
-        <span className="block text-lg text-foreground">{lastTestLabel(row.original.lastTestResult)}</span>
-        <span className="text-data block text-lg text-grey-500">
+        <span className="block text-base text-foreground">{lastTestLabel(row.original.lastTestResult)}</span>
+        <span className="text-data block text-base text-grey-500">
           {formatDateTime(row.original.lastTestedAt ?? "")}
         </span>
       </div>

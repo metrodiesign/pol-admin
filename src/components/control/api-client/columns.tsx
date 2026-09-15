@@ -21,10 +21,10 @@ export const apiClientColumns: ColumnDef<ApiClient>[] = [
     enableSorting: true,
     cell: ({ row }) => (
       <div className="flex flex-col gap-0.5">
-        <span className="text-lg font-semibold text-foreground">
+        <span className="text-base font-semibold text-foreground">
           {row.original.name}
         </span>
-        <span className="text-data text-lg text-grey-600">
+        <span className="text-data text-base text-grey-600">
           {row.original.clientId}
         </span>
       </div>
@@ -59,7 +59,7 @@ export const apiClientColumns: ColumnDef<ApiClient>[] = [
     header: "บริษัท",
     enableSorting: false,
     cell: ({ row }) => (
-      <span className="text-lg text-foreground">
+      <span className="text-base text-foreground">
         {MERCHANT_LABEL[row.original.merchantId]}
       </span>
     ),
@@ -69,7 +69,7 @@ export const apiClientColumns: ColumnDef<ApiClient>[] = [
     header: "ใช้งานล่าสุด",
     enableSorting: true,
     cell: ({ row }) => (
-      <span className="text-data text-lg text-grey-600">
+      <span className="text-data text-base text-grey-600">
         {formatDateTime(row.original.lastUsedAt)}
       </span>
     ),

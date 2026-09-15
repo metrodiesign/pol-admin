@@ -129,7 +129,7 @@ export const navConfig: NavGroup[] = [
 
   // ── Control plane · การเชื่อมต่อ & orchestration ───────────────────────────
   {
-    subheader: "Control plane · การเชื่อมต่อ",
+    subheader: "การเชื่อมต่อ",
     items: [
       { title: "การเชื่อมต่อ PSP", path: "/control/psp/list", icon: "banking", match: "/control/psp", requiredPermission: "settings.manage" },
       { title: "กฎการกำหนดเส้นทาง", path: "/control/routing", icon: "analytics", match: "/control/routing" },
@@ -140,7 +140,7 @@ export const navConfig: NavGroup[] = [
 
   // ── Control plane · การกำกับดูแล ────────────────────────────────────────────
   {
-    subheader: "Control plane · การกำกับดูแล",
+    subheader: "การกำกับดูแล",
     items: [
       { title: "การอนุมัติ", path: "/control/approvals", icon: "invoice", match: "/control/approvals" },
       { title: "บันทึกการตรวจสอบ", path: "/control/audit", icon: "file", match: "/control/audit" },
@@ -150,7 +150,7 @@ export const navConfig: NavGroup[] = [
 
   // ── Control plane · การเงิน & กระทบยอด ──────────────────────────────────────
   {
-    subheader: "Control plane · การเงิน",
+    subheader: "การเงิน",
     items: [
       { title: "การกระทบยอด", path: "/control/reconciliation", icon: "banking", match: "/control/reconciliation" },
       { title: "รายงาน", path: "/control/reports", icon: "analytics", match: "/control/reports" },
@@ -159,7 +159,7 @@ export const navConfig: NavGroup[] = [
 
   // ── Control plane · องค์กร & ระบบ ───────────────────────────────────────────
   {
-    subheader: "Control plane · องค์กร",
+    subheader: "องค์กร",
     items: [
       { title: "Tenants & Workspaces", path: "/control/tenants", icon: "lock", match: "/control/tenants" },
       { title: "Originators", path: "/control/originators", icon: "user", match: "/control/originators" },

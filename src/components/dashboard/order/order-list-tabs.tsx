@@ -71,7 +71,7 @@ export function OrderListTabs({ tabs, active, onChange }: OrderListTabsProps) {
               type="button"
               onClick={() => onChange(tab.value)}
               className={cn(
-                "relative flex shrink-0 items-center gap-2 border-b-2 pb-[7px] pt-[9px] text-lg font-semibold transition-colors",
+                "relative flex shrink-0 items-center gap-2 border-b-2 pb-[7px] pt-[9px] text-base font-semibold transition-colors",
                 "mr-8 last:mr-0",
                 isActive
                   ? "border-foreground text-foreground"
@@ -81,7 +81,7 @@ export function OrderListTabs({ tabs, active, onChange }: OrderListTabsProps) {
               {tab.label}
               <span
                 className={cn(
-                  "inline-flex h-6 min-w-6 items-center justify-center rounded-md px-1.5 text-lg font-semibold leading-none",
+                  "inline-flex h-6 min-w-6 items-center justify-center rounded-md px-1.5 text-base font-semibold leading-none",
                   isActive ? "bg-foreground text-card" : INACTIVE_BADGE[tab.value],
                 )}
               >

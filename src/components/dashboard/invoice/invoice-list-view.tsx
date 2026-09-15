@@ -62,7 +62,7 @@ function DateInput({
   const [focused, setFocused] = useState(false);
   return (
     <div className="flex flex-col gap-1.5">
-      <span className="select-none text-lg font-medium text-grey-800">{label}</span>
+      <span className="select-none text-base font-medium text-grey-800">{label}</span>
       <div
         className={cn(
           "flex h-12 items-center rounded-control border bg-transparent transition-colors pl-3.5 pr-1.5",
@@ -79,7 +79,7 @@ function DateInput({
           onChange={(e) => onChange(e.target.value)}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
-          className="min-w-0 flex-1 bg-transparent text-lg text-foreground placeholder:text-grey-500 outline-none"
+          className="min-w-0 flex-1 bg-transparent text-base text-foreground placeholder:text-grey-500 outline-none"
         />
         <button
           type="button"
@@ -141,7 +141,7 @@ export function InvoiceListView() {
             type="button"
             onClick={() => setActiveTab(tab.key)}
             className={cn(
-              "flex shrink-0 items-center gap-2 border-b-2 pb-[7px] pt-[9px] text-lg transition-colors",
+              "flex shrink-0 items-center gap-2 border-b-2 pb-[7px] pt-[9px] text-base transition-colors",
               "mr-8 last:mr-0",
               activeTab === tab.key
                 ? "border-grey-800 font-semibold text-grey-800"
@@ -151,7 +151,7 @@ export function InvoiceListView() {
             {tab.label}
             <span
               className={cn(
-                "inline-flex h-6 min-w-6 items-center justify-center rounded-md px-1.5 text-lg font-semibold leading-none",
+                "inline-flex h-6 min-w-6 items-center justify-center rounded-md px-1.5 text-base font-semibold leading-none",
                 activeTab === tab.key ? tab.chipClass : "bg-grey-200 text-grey-600",
               )}
             >
@@ -194,7 +194,7 @@ export function InvoiceListView() {
 
         {/* Kebab — spacer aligns button to input box */}
         <div className="hidden flex-col gap-1.5 mmd:flex">
-          <span aria-hidden className="select-none text-lg font-medium">&nbsp;</span>
+          <span aria-hidden className="select-none text-base font-medium">&nbsp;</span>
           <div className="flex flex-1 items-center">
             <button
               type="button"
@@ -220,29 +220,29 @@ export function InvoiceListView() {
                   aria-label="Select all"
                 />
               </th>
-              <th className="px-4 py-4 text-left text-lg font-semibold leading-6 text-grey-600">
+              <th className="px-4 py-4 text-left text-base font-semibold leading-6 text-grey-600">
                 Customer
               </th>
-              <th className="px-4 py-4 text-left text-lg font-semibold leading-6 text-grey-600">
+              <th className="px-4 py-4 text-left text-base font-semibold leading-6 text-grey-600">
                 <button type="button" className="inline-flex items-center gap-1 hover:text-grey-800">
                   Create
                   <ArrowUp className="size-3 text-grey-800" />
                 </button>
               </th>
-              <th className="px-4 py-4 text-left text-lg font-semibold leading-6 text-grey-600">
+              <th className="px-4 py-4 text-left text-base font-semibold leading-6 text-grey-600">
                 <button type="button" className="inline-flex items-center gap-1 hover:text-grey-800">
                   Due
                 </button>
               </th>
-              <th className="px-4 py-4 text-left text-lg font-semibold leading-6 text-grey-600">
+              <th className="px-4 py-4 text-left text-base font-semibold leading-6 text-grey-600">
                 <button type="button" className="inline-flex items-center gap-1 hover:text-grey-800">
                   Amount
                 </button>
               </th>
-              <th className="px-4 py-4 text-left text-lg font-semibold leading-6 text-grey-600">
+              <th className="px-4 py-4 text-left text-base font-semibold leading-6 text-grey-600">
                 Sent
               </th>
-              <th className="px-4 py-4 text-left text-lg font-semibold leading-6 text-grey-600">
+              <th className="px-4 py-4 text-left text-base font-semibold leading-6 text-grey-600">
                 Status
               </th>
               <th className="w-12 px-4 py-4 leading-6" />
@@ -274,19 +274,19 @@ export function InvoiceListView() {
                     <div className="flex items-center gap-3">
                       <span
                         className={cn(
-                          "flex size-9 shrink-0 items-center justify-center rounded-full text-lg font-semibold",
+                          "flex size-9 shrink-0 items-center justify-center rounded-full text-base font-semibold",
                           avatarCls,
                         )}
                       >
                         {initial}
                       </span>
                       <div className="min-w-0">
-                        <p className="text-lg font-semibold leading-[22px] text-grey-800">
+                        <p className="text-base font-semibold leading-[22px] text-grey-800">
                           {row.customer}
                         </p>
                         <Link
                           href="/minimals/invoice/details"
-                          className="text-lg text-grey-500 hover:underline"
+                          className="text-base text-grey-500 hover:underline"
                         >
                           {row.invoiceNumber}
                         </Link>
@@ -295,21 +295,21 @@ export function InvoiceListView() {
                   </td>
                   {/* Create */}
                   <td className={cn("px-4", cellPy)}>
-                    <p className="text-lg text-grey-800">{row.createdDate}</p>
-                    <p className="text-lg text-grey-500">{row.createdTime}</p>
+                    <p className="text-base text-grey-800">{row.createdDate}</p>
+                    <p className="text-base text-grey-500">{row.createdTime}</p>
                   </td>
                   {/* Due */}
                   <td className={cn("px-4", cellPy)}>
-                    <p className="text-lg text-grey-800">{row.dueDate}</p>
-                    <p className="text-lg text-grey-500">{row.dueTime}</p>
+                    <p className="text-base text-grey-800">{row.dueDate}</p>
+                    <p className="text-base text-grey-500">{row.dueTime}</p>
                   </td>
                   {/* Amount */}
                   <td className={cn("px-4", cellPy)}>
-                    <p className="text-lg font-semibold text-grey-800">{row.amount}</p>
+                    <p className="text-base font-semibold text-grey-800">{row.amount}</p>
                   </td>
                   {/* Sent */}
                   <td className={cn("px-4", cellPy)}>
-                    <p className="text-lg text-grey-800">{row.sent}</p>
+                    <p className="text-base text-grey-800">{row.sent}</p>
                   </td>
                   {/* Status */}
                   <td className={cn("px-4", cellPy)}>
@@ -355,17 +355,17 @@ export function InvoiceListView() {
                 )}
               />
             </button>
-            <span className="text-lg text-grey-600">Dense</span>
+            <span className="text-base text-grey-600">Dense</span>
           </div>
 
           {/* Rows per page + count + arrows */}
           <div className="flex w-full items-center justify-end gap-3 sm:w-auto">
-            <span className="text-lg text-grey-600">Rows per page:</span>
+            <span className="text-base text-grey-600">Rows per page:</span>
             <Select
               value={String(rowsPerPage)}
               onValueChange={(v) => setRowsPerPage(Number(v))}
             >
-              <SelectTrigger aria-label="Rows per page" className="h-7 w-auto gap-1 border-none px-1 text-lg font-semibold text-foreground">
+              <SelectTrigger aria-label="Rows per page" className="h-7 w-auto gap-1 border-none px-1 text-base font-semibold text-foreground">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -374,7 +374,7 @@ export function InvoiceListView() {
                 <SelectItem value="25">25</SelectItem>
               </SelectContent>
             </Select>
-            <span className="text-lg text-grey-600">
+            <span className="text-base text-grey-600">
               1–{Math.min(rowsPerPage, total)} of {total}
             </span>
             <button
@@ -414,7 +414,7 @@ export function InvoiceListView() {
               )}
             />
           </button>
-          <span className="text-lg text-grey-600">Dense</span>
+          <span className="text-base text-grey-600">Dense</span>
         </div>
       </div>
     </div>

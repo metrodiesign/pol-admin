@@ -36,7 +36,7 @@ export default function UserCreatePage() {
               <div className="space-y-5">
                 <Field className="flex-row items-start justify-between gap-4">
                   <div>
-                    <Label className="text-lg font-semibold">Email verified</Label>
+                    <Label className="text-base font-semibold">Email verified</Label>
                     <Description>
                       Disabling this will automatically send the user a verification email
                     </Description>

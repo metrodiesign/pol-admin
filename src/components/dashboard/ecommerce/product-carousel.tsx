@@ -141,7 +141,7 @@ export function ProductCarousel() {
             />
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
             <div className="pointer-events-none absolute inset-x-0 bottom-0 p-6">
-              <span className="inline-block rounded-md bg-[#00A76F] px-2 py-0.5 text-lg font-semibold uppercase text-white">
+              <span className="inline-block rounded-md bg-[#00A76F] px-2 py-0.5 text-base font-semibold uppercase text-white">
                 {slide.label}
               </span>
               <p className="mt-2 line-clamp-2 max-w-xs text-2xl font-semibold text-white">
@@ -149,7 +149,7 @@ export function ProductCarousel() {
               </p>
               <button
                 type="button"
-                className="pointer-events-auto mt-3 rounded-control bg-[#00A76F] px-4 py-1.5 text-lg font-semibold text-white transition-colors hover:bg-[#007867]"
+                className="pointer-events-auto mt-3 rounded-control bg-[#00A76F] px-4 py-1.5 text-base font-semibold text-white transition-colors hover:bg-[#007867]"
               >
                 Buy now
               </button>

@@ -51,7 +51,7 @@ interface UserEditFormCardProps {
 }
 
 const cancelClass =
-  "inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-lg font-semibold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]";
+  "inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-[rgba(145,158,171,0.16)] px-3 text-base font-semibold text-grey-800 transition-colors hover:bg-[rgba(145,158,171,0.24)]";
 
 const cardStyle = {
   boxShadow:
@@ -105,18 +105,18 @@ export function UserEditFormCard({
         <dl className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           {rows.map(([label, value]) => (
             <div key={label} className="flex flex-col gap-1">
-              <dt className="text-lg font-medium text-grey-600">{label}</dt>
-              <dd className="text-lg font-semibold text-foreground">{value || "-"}</dd>
+              <dt className="text-base font-medium text-grey-600">{label}</dt>
+              <dd className="text-base font-semibold text-foreground">{value || "-"}</dd>
             </div>
           ))}
           <div className="flex flex-col gap-1">
-            <dt className="text-lg font-medium text-grey-600">สถานะ</dt>
+            <dt className="text-base font-medium text-grey-600">สถานะ</dt>
             <dd>
               <span
                 className={
                   form.status === "active"
-                    ? "inline-flex items-center rounded-full bg-success/16 px-4 py-1 text-lg font-semibold text-success-dark"
-                    : "inline-flex items-center rounded-full bg-error/16 px-4 py-1 text-lg font-semibold text-error-dark"
+                    ? "inline-flex items-center rounded-full bg-success/16 px-4 py-1 text-base font-semibold text-success-dark"
+                    : "inline-flex items-center rounded-full bg-error/16 px-4 py-1 text-base font-semibold text-error-dark"
                 }
               >
                 {statusLabel}
@@ -127,8 +127,8 @@ export function UserEditFormCard({
 
         <div className="-mx-6 mt-6 border-t border-[var(--divider)]">
           <div className="flex items-center justify-between bg-grey-100 px-6 py-2.5">
-            <span className="text-lg font-semibold text-grey-700">บทบาท</span>
-            <span className="text-lg tabular-nums text-grey-500">
+            <span className="text-base font-semibold text-grey-700">บทบาท</span>
+            <span className="text-base tabular-nums text-grey-500">
               {form.roles.length}/{USER_ROLES.length}
             </span>
           </div>
@@ -141,7 +141,7 @@ export function UserEditFormCard({
                 <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-success/16">
                   <Check className="size-3.5 text-success" />
                 </span>
-                <span className="text-lg font-semibold text-foreground">{r}</span>
+                <span className="text-base font-semibold text-foreground">{r}</span>
               </li>
             ))}
           </ul>
@@ -220,8 +220,8 @@ export function UserEditFormCard({
                 onChange={() => toggleAllRoles(form.roles.length === USER_ROLES.length)}
                 aria-label="เลือกบทบาททั้งหมด"
               />
-              <span className="text-lg font-semibold text-grey-700">บทบาท</span>
-              <span className="ml-auto text-lg tabular-nums text-grey-500">
+              <span className="text-base font-semibold text-grey-700">บทบาท</span>
+              <span className="ml-auto text-base tabular-nums text-grey-500">
                 {form.roles.length}/{USER_ROLES.length}
               </span>
             </div>
@@ -234,7 +234,7 @@ export function UserEditFormCard({
                       onChange={(c) => toggleRole(r, c)}
                       aria-label={r}
                     />
-                    <span className="text-lg text-foreground">{r}</span>
+                    <span className="text-base text-foreground">{r}</span>
                   </label>
                 </li>
               ))}
@@ -251,7 +251,7 @@ export function UserEditFormCard({
             )}
             <button
               type="submit"
-              className="inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-primary px-3 text-lg font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+              className="inline-flex h-9 min-w-[100px] items-center justify-center rounded-control bg-primary px-3 text-base font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
             >
               {submitLabel}
             </button>

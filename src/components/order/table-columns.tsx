@@ -64,7 +64,7 @@ export function buildOrderColumns({
     // (ตรงกับ stat card อื่นในหน้านี้) เลย prefix วันที่คงที่ตรงนี้ ถ้าจะทำ per-row date จริง
     // ต้องเพิ่ม field date ใน PaymentSession ก่อน
     cell: ({ row }) => (
-      <span className="text-lg text-grey-600">
+      <span className="text-base text-grey-600">
         {row.original.session?.time ? `30 ก.ค. 2569 ${row.original.session.time}` : "—"}
       </span>
     ),
@@ -79,7 +79,7 @@ export function buildOrderColumns({
       const t = row.original;
       return (
         <div className="min-w-0">
-          <span className="block text-lg font-semibold text-foreground">
+          <span className="block text-base font-semibold text-foreground">
             {t.id}
           </span>
           <span className="font-semibold text-primary">
@@ -96,11 +96,11 @@ export function buildOrderColumns({
     cell: ({ row }) => {
       const t = row.original;
       const s = t.session?.source;
-      if (!s) return <span className="text-lg text-grey-500">—</span>;
+      if (!s) return <span className="text-base text-grey-500">—</span>;
       return (
         <div className="min-w-0">
-          <span className="block text-lg font-semibold text-foreground">{s.label}</span>
-          <span className="text-lg text-grey-500">{customerPhone(t)}</span>
+          <span className="block text-base font-semibold text-foreground">{s.label}</span>
+          <span className="text-base text-grey-500">{customerPhone(t)}</span>
         </div>
       );
     },
@@ -112,9 +112,9 @@ export function buildOrderColumns({
     meta: { headClassName: "w-[200px]", cellClassName: "w-[200px]" },
     cell: ({ row }) => {
       const c = row.original.session?.channel;
-      if (!c) return <span className="text-lg text-grey-500">—</span>;
+      if (!c) return <span className="text-base text-grey-500">—</span>;
       return (
-        <span className="inline-flex items-center gap-2 text-lg text-foreground">
+        <span className="inline-flex items-center gap-2 text-base text-foreground">
           <span className={cn("size-3 rounded-full", CHANNEL_DOT[c])} />
           {CHANNEL_LABEL[c]}
         </span>
@@ -128,7 +128,7 @@ export function buildOrderColumns({
     accessorFn: (t) => Number(t.amount.amount),
     meta: { headClassName: "w-[180px] text-right", cellClassName: "w-[180px] text-right" },
     cell: ({ row }) => (
-      <span className="text-lg font-semibold text-foreground">
+      <span className="text-base font-semibold text-foreground">
         {formatMoney(row.original.amount).replace(` ${row.original.amount.currency}`, "")}
       </span>
     ),

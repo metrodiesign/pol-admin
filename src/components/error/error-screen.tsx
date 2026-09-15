@@ -4,10 +4,10 @@ import Image from "next/image";
 // ไม่มี directive: เรียกได้ทั้งจาก server component (not-found/403/maintenance) และ client (error.tsx)
 
 export const errorButtonClass =
-  "mt-8 inline-flex h-11 w-full items-center justify-center rounded-control bg-primary px-5 text-lg font-semibold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1";
+  "mt-8 inline-flex h-11 w-full items-center justify-center rounded-control bg-primary px-5 text-base font-semibold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1";
 
 export const errorButtonOutlineClass =
-  "mt-3 inline-flex h-11 w-full items-center justify-center rounded-control border border-grey-300 bg-background px-5 text-lg font-semibold text-foreground transition-colors hover:bg-grey-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1";
+  "mt-3 inline-flex h-11 w-full items-center justify-center rounded-control border border-grey-300 bg-background px-5 text-base font-semibold text-foreground transition-colors hover:bg-grey-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1";
 
 interface ErrorScreenProps {
   code?: string; // เช่น "404" — ตัวเลขใหญ่เหนือ title
@@ -51,7 +51,7 @@ export function ErrorCard({ code, title, message, illustration, children }: Erro
       {illustration && <div className="mb-6 flex justify-center">{illustration}</div>}
       {code && <p className="mb-4 text-6xl font-semibold text-crop-blue">{code}</p>}
       <h1 className="text-3xl font-semibold text-foreground">{title}</h1>
-      <p className="mt-2 text-lg text-muted-foreground">{message}</p>
+      <p className="mt-2 text-base text-muted-foreground">{message}</p>
       {children}
     </div>
   );

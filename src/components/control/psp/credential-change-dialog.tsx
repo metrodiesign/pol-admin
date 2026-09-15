@@ -212,7 +212,7 @@ function CredentialChangeDialogContent({
             disabled={busy || phase === "needs-reconcile"}
           />
           {formError ? (
-            <p className="text-lg text-error sm:col-span-2" role="alert">{formError}</p>
+            <p className="text-base text-error sm:col-span-2" role="alert">{formError}</p>
           ) : null}
           <DialogFooter className="sm:col-span-2">
             <Button type="button" variant="outline" onClick={close} disabled={busy}>

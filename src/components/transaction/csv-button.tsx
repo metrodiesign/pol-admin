@@ -9,10 +9,10 @@ export function TransactionCsvButton() {
     <button
       type="button"
       onClick={() => downloadCsv("transactions.csv", PAYMENT_SESSIONS)}
-      className="inline-flex h-11 min-w-[140px] items-center justify-center gap-1.5 rounded-control bg-primary px-3 text-lg font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+      className="inline-flex h-11 min-w-[140px] items-center justify-center gap-1.5 rounded-control bg-primary px-3 text-base font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
     >
       <Download className="size-4" />
-      ส่งออก CSV
+      ส่งออก Excel
     </button>
   );
 }

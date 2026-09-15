@@ -70,7 +70,7 @@ export function ControlToaster() {
         return (
           <div
             key={t.id}
-            className="flex items-center gap-2.5 rounded-xl bg-card px-4 py-3 text-lg font-medium text-foreground"
+            className="flex items-center gap-2.5 rounded-xl bg-card px-4 py-3 text-base font-medium text-foreground"
             style={{ boxShadow: "var(--shadow-dropdown)" }}
           >
             <Icon className={cn("size-4 shrink-0", ICON_COLOR[t.tone])} />

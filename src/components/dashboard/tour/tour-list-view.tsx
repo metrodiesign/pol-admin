@@ -54,7 +54,7 @@ function TourSearchInput({ value, onChange }: { value: string; onChange: (v: str
         onChange={(e) => onChange(e.target.value)}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
-        className="min-w-0 flex-1 bg-transparent text-lg text-foreground placeholder:text-grey-500 outline-none"
+        className="min-w-0 flex-1 bg-transparent text-base text-foreground placeholder:text-grey-500 outline-none"
       />
     </div>
   );
@@ -101,7 +101,7 @@ export function TourListView() {
   const actionNode = (
     <Link
       href="/minimals/tour/new"
-      className="inline-flex h-9 items-center gap-1.5 rounded-control bg-foreground px-3 text-lg font-semibold text-card hover:opacity-90 transition-opacity"
+      className="inline-flex h-9 items-center gap-1.5 rounded-control bg-foreground px-3 text-base font-semibold text-card hover:opacity-90 transition-opacity"
     >
       <Plus className="size-4" />
       Add tour
@@ -126,7 +126,7 @@ export function TourListView() {
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-stretch sm:gap-4">
         {/* Search */}
         <div className="flex flex-1 flex-col gap-1.5">
-          <span className="select-none text-lg font-medium text-grey-800">Search</span>
+          <span className="select-none text-base font-medium text-grey-800">Search</span>
           <TourSearchInput
             value={search}
             onChange={(v) => { setSearch(v); setPage(1); }}
@@ -135,12 +135,12 @@ export function TourListView() {
 
         {/* Filters */}
         <div className="flex flex-col gap-1.5">
-          <span className="select-none text-lg font-medium text-grey-800">Filters</span>
+          <span className="select-none text-base font-medium text-grey-800">Filters</span>
           <div className="flex flex-1 items-center">
             <button
               type="button"
               onClick={() => setFiltersOpen(true)}
-              className="flex h-12 min-w-[120px] items-center gap-1.5 rounded-control border border-[var(--divider)] px-3.5 text-lg font-semibold text-grey-800 transition-colors hover:bg-[var(--action-hover)]"
+              className="flex h-12 min-w-[120px] items-center gap-1.5 rounded-control border border-[var(--divider)] px-3.5 text-base font-semibold text-grey-800 transition-colors hover:bg-[var(--action-hover)]"
             >
               <SlidersHorizontal className="size-4" />
               Filters
@@ -150,10 +150,10 @@ export function TourListView() {
 
         {/* Sort by */}
         <div className="flex flex-col gap-1.5">
-          <span className="select-none text-lg font-medium text-grey-800">Sort by</span>
+          <span className="select-none text-base font-medium text-grey-800">Sort by</span>
           <div className="flex flex-1 items-center">
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex h-12 min-w-[140px] items-center gap-1.5 rounded-control border border-[var(--divider)] px-3.5 text-lg font-semibold text-grey-800 transition-colors hover:bg-[var(--action-hover)] outline-none">
+              <DropdownMenuTrigger className="flex h-12 min-w-[140px] items-center gap-1.5 rounded-control border border-[var(--divider)] px-3.5 text-base font-semibold text-grey-800 transition-colors hover:bg-[var(--action-hover)] outline-none">
                 {sort}
                 <ChevronDown className="size-4" />
               </DropdownMenuTrigger>
@@ -195,7 +195,7 @@ export function TourListView() {
 
           {getPageNumbers().map((p, i) =>
             p === "..." ? (
-              <span key={`ellipsis-${i}`} className="px-1 text-lg text-grey-400">
+              <span key={`ellipsis-${i}`} className="px-1 text-base text-grey-400">
                 ...
               </span>
             ) : (
@@ -203,7 +203,7 @@ export function TourListView() {
                 key={p}
                 type="button"
                 onClick={() => setPage(p as number)}
-                className={`flex size-8 items-center justify-center rounded-full text-lg font-medium transition-colors ${
+                className={`flex size-8 items-center justify-center rounded-full text-base font-medium transition-colors ${
                   page === p
                     ? "bg-foreground text-card"
                     : "text-grey-700 hover:bg-grey-100"
