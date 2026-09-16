@@ -10,7 +10,7 @@ function SummaryCard({ stat }: { stat: SummaryStat }) {
       <div>
         <p className="text-base font-semibold leading-[22px] text-grey-800">{stat.title}</p>
         <p
-          className="mt-3 text-5xl font-semibold leading-[48px] text-grey-800"
+          className="mt-3 text-4xl font-semibold leading-[48px] text-grey-800"
           style={{ fontFamily: "var(--font-barlow, 'Barlow', 'Public Sans Variable', sans-serif)" }}
         >
           {stat.total}

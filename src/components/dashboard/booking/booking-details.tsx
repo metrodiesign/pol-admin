@@ -20,7 +20,7 @@ export function BookingDetails() {
     <div className="dashboard-card">
       {/* Card header */}
       <div className="px-6 py-5">
-        <h6 className="text-2xl font-semibold text-grey-800">Booking details</h6>
+        <h6 className="text-xl font-semibold text-grey-800">Booking details</h6>
       </div>
 
       <div className="overflow-x-auto">

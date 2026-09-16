@@ -36,7 +36,7 @@ export function EnvironmentBanner({
           <p className="text-base font-medium text-grey-600">สภาพแวดล้อมปัจจุบัน</p>
           <p
             className={cn(
-              "text-2xl font-semibold leading-7",
+              "text-xl font-semibold leading-7",
               isLive ? "text-warning" : "text-foreground",
             )}
           >

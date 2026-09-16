@@ -57,7 +57,7 @@ export function ContactInfoPanel({ contact, attachments }: ContactInfoPanelProps
           className="size-24 rounded-full object-cover"
         />
         <div className="text-center">
-          <h6 className="text-xl font-semibold leading-6 text-grey-800">{contact.name}</h6>
+          <h6 className="text-lg font-semibold leading-6 text-grey-800">{contact.name}</h6>
           {contact.role && (
             <p className="text-base text-grey-500">{contact.role}</p>
           )}

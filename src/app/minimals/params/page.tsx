@@ -12,13 +12,10 @@ export const metadata: Metadata = {
 export default function ParamsPage() {
   return (
     <div className="-mt-2 flex flex-col">
-      <h4
-        className="font-semibold text-grey-800"
-        style={{ fontSize: "24px", lineHeight: "36px", fontWeight: 600 }}
-      >
+      <h4 className="text-h4 font-semibold text-grey-800">
         Match params
       </h4>
-      <p className="mt-2 text-xl text-grey-800">
+      <p className="mt-2 text-lg text-grey-800">
         Active on matching path with dynamic parameters.
       </p>
     </div>

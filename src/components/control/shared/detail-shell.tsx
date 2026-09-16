@@ -16,7 +16,7 @@ export function DetailIdentity({
   return (
     <div className="flex flex-col gap-4 border-b border-[var(--divider)] p-6 sm:flex-row sm:items-start sm:justify-between">
       <div className="min-w-0">
-        <h2 className="text-2xl font-semibold leading-7 text-foreground">{title}</h2>
+        <h2 className="text-xl font-semibold leading-7 text-foreground">{title}</h2>
         {subtitle ? <p className="mt-0.5 truncate text-base text-grey-600">{subtitle}</p> : null}
         {code ? <p className="text-data mt-1 break-all text-base text-grey-500">{code}</p> : null}
       </div>

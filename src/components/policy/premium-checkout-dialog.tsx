@@ -42,7 +42,7 @@ export function PremiumCheckoutDialog({
     <Dialog open={open} onOpenChange={(o) => (!o ? onClose() : undefined)}>
       <DialogContent className="theme-minimals sm:max-w-md" showCloseButton={false}>
         <DialogHeader>
-          <DialogTitle className="text-2xl font-semibold text-foreground">
+          <DialogTitle className="text-xl font-semibold text-foreground">
             รายการกรมธรรม์
           </DialogTitle>
           <DialogDescription>
@@ -78,8 +78,8 @@ export function PremiumCheckoutDialog({
         </div>
 
         <div className="flex items-center justify-between">
-          <span className="text-xl font-semibold text-foreground">เบี้ยรวม</span>
-          <span className="text-3xl font-semibold tabular-nums text-secondary">
+          <span className="text-lg font-semibold text-foreground">เบี้ยรวม</span>
+          <span className="text-2xl font-semibold tabular-nums text-secondary">
             {formatAmount(total, 2)}
           </span>
         </div>

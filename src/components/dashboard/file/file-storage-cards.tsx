@@ -28,7 +28,7 @@ export function FileStorageCards({ stacked = false }: FileStorageCardsProps) {
                 <MoreVertical className="size-5" />
               </button>
             </div>
-            <h6 className="mt-4 text-2xl font-semibold text-grey-800">{card.name}</h6>
+            <h6 className="mt-4 text-xl font-semibold text-grey-800">{card.name}</h6>
             {/* Push progress + label to bottom of card */}
             <div className="mt-auto pt-4">
               <div className="h-1.5 w-full overflow-hidden rounded-full bg-grey-200">

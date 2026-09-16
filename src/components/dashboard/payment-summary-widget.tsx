@@ -13,9 +13,9 @@ function PaymentSummaryCard({
   return (
     <div className="dashboard-card flex h-full items-center gap-3 overflow-hidden p-6">
       <div className="min-w-0">
-        <p className="text-xl font-semibold leading-[22px] text-grey-800">{stat.title}</p>
+        <p className="text-lg font-semibold leading-[22px] text-grey-800">{stat.title}</p>
         <p
-          className="mt-3 text-5xl font-semibold leading-[48px] text-grey-800"
+          className="mt-3 text-4xl font-semibold leading-[48px] text-grey-800"
           style={{ fontFamily: "var(--font-barlow, 'Barlow', 'Public Sans Variable', sans-serif)" }}
         >
           {stat.total}

@@ -49,7 +49,7 @@ export function FileDataActivity() {
       {/* Header: title + period (top row); legend chips (second row on mobile, same row on desktop) */}
       <header className="px-6 pt-6 pb-0">
         <div className="flex items-center justify-between gap-3">
-          <h6 className="text-2xl font-semibold text-grey-800">Data activity</h6>
+          <h6 className="text-xl font-semibold text-grey-800">Data activity</h6>
           <div className="flex items-center gap-3">
             {/* Legend toggle chips — hidden on mobile, shown sm+ inline */}
             <div className="hidden items-center gap-3 sm:flex">

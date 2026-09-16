@@ -5,7 +5,7 @@ import { UPGRADE_ILLUSTRATION } from "@/lib/mock/file";
 export function FileUpgradeCard() {
   return (
     <div className="relative overflow-hidden rounded-card bg-grey-900 px-6 py-8 text-white">
-      <h6 className="relative z-10 max-w-[150px] text-2xl font-semibold leading-snug">
+      <h6 className="relative z-10 max-w-[150px] text-xl font-semibold leading-snug">
         Upgrade your plan and get more space
       </h6>
       <button

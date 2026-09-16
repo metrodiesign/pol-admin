@@ -16,6 +16,8 @@
 - 1.2 ระบบต้องกำหนดสเกล token หลักเป็น `--text-xs: 0.9375rem`, `--text-sm: 1.0625rem`, `--text-base: 1.25rem`, `--text-lg: 1.4375rem`, `--text-xl: 1.6875rem`, `--text-2xl: 1.9375rem`, `--text-3xl: 2.3125rem`, `--text-4xl: 2.8125rem` และ `--text-5xl: 3.375rem`
 - 1.3 ระบบต้องทำให้ utility แบบ semantic (`text-body*`, `text-subtitle*`, `text-caption` และ `text-overline`) อ้างอิงสเกลเดียวกับ token หลัก แทนการคงค่าเล็กกว่า base โดยไม่สัมพันธ์กับสเกล
 - 1.4 ระบบต้องทำให้ส่วนปฏิทินที่เป็นข้อความใช้ขนาดใหม่อย่างสอดคล้อง โดยยังคงขนาดช่องวันและการจัดวางที่อ่านและกดใช้งานได้
+- 1.5 ระบบต้องเลื่อนการใช้งาน utility ตั้งแต่ `text-xl` ขึ้นไปลงหนึ่งระดับ (`text-xl` → `text-lg`, `text-2xl` → `text-xl`, `text-3xl` → `text-2xl`, `text-4xl` → `text-3xl`, `text-5xl` → `text-4xl`) รวม responsive variant โดยไม่ให้การแทนค่าทับซ้อนกัน
+- 1.6 ระบบต้องคงการใช้งาน `text-base`, `text-sm`, `text-xs` และ utility ที่เล็กกว่า `text-base` ไว้ตามเดิม
 
 ## REQ-2: การตั้งค่าและขอบเขตผลกระทบ
 

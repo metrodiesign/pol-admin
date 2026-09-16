@@ -141,7 +141,7 @@ export function CalendarPageClient() {
     <div className="py-4">
       {/* Page header */}
       <div className="mb-5 flex items-center justify-between">
-        <h4 className="text-4xl font-semibold leading-9 text-grey-800">Calendar</h4>
+        <h4 className="text-3xl font-semibold leading-9 text-grey-800">Calendar</h4>
         <button
           type="button"
           onClick={handleAddEvent}

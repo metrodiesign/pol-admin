@@ -23,8 +23,8 @@ export function BookingTotalIncomes() {
             Total incomes
           </p>
           <p
-            className="mt-2 font-semibold text-white"
-            style={{ fontFamily: "var(--font-barlow, 'Barlow', sans-serif)", fontSize: "2rem" }}
+            className="mt-2 text-2xl font-semibold text-white"
+            style={{ fontFamily: "var(--font-barlow, 'Barlow', sans-serif)" }}
           >
             {totalIncomes.total}
           </p>

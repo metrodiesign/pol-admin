@@ -163,7 +163,7 @@ export function SearchDialog({ variant = "white", groups }: SearchDialogProps) {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search..."
-              className="flex-1 bg-transparent text-xl text-grey-800 outline-none placeholder:text-grey-500"
+              className="flex-1 bg-transparent text-lg text-grey-800 outline-none placeholder:text-grey-500"
             />
             <span className="flex h-6 items-center rounded-md bg-grey-500/16 px-1.5 text-base font-semibold text-grey-600">
               Esc

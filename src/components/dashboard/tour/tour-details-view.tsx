@@ -110,7 +110,7 @@ export function TourDetailsView({ tour }: TourDetailsViewProps) {
 
           {/* Title + actions */}
           <div className="mt-6 flex items-start justify-between gap-3">
-            <h1 className="text-4xl font-semibold text-grey-800">{tour.title}</h1>
+            <h1 className="text-3xl font-semibold text-grey-800">{tour.title}</h1>
             <div className="flex shrink-0 items-center gap-1">
               <button
                 type="button"
@@ -205,16 +205,16 @@ export function TourDetailsView({ tour }: TourDetailsViewProps) {
 
           {/* Description */}
           <section className="mb-6">
-            <h2 className="mb-3 text-2xl font-semibold text-grey-800">Description</h2>
-            <p className="text-xl leading-7 text-grey-700">{tour.description}</p>
+            <h2 className="mb-3 text-xl font-semibold text-grey-800">Description</h2>
+            <p className="text-lg leading-7 text-grey-700">{tour.description}</p>
           </section>
 
           {/* Highlights */}
           <section className="mb-6">
-            <h2 className="mb-3 text-2xl font-semibold text-grey-800">Highlights</h2>
+            <h2 className="mb-3 text-xl font-semibold text-grey-800">Highlights</h2>
             <ul className="space-y-2">
               {tour.highlights.map((h, i) => (
-                <li key={i} className="flex items-start gap-2 text-xl text-grey-700">
+                <li key={i} className="flex items-start gap-2 text-lg text-grey-700">
                   <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-success/10">
                     <Check className="size-3 text-success-dark" strokeWidth={3} />
                   </span>
@@ -226,12 +226,12 @@ export function TourDetailsView({ tour }: TourDetailsViewProps) {
 
           {/* Program */}
           <section className="mb-6">
-            <h2 className="mb-3 text-2xl font-semibold text-grey-800">Program</h2>
+            <h2 className="mb-3 text-xl font-semibold text-grey-800">Program</h2>
             <div className="space-y-4">
               {tour.program.map((p, i) => (
                 <div key={i}>
                   <p className="mb-1 font-semibold text-grey-800">{p.heading}</p>
-                  <p className="text-xl leading-7 text-grey-700">{p.body}</p>
+                  <p className="text-lg leading-7 text-grey-700">{p.body}</p>
                 </div>
               ))}
             </div>
@@ -239,7 +239,7 @@ export function TourDetailsView({ tour }: TourDetailsViewProps) {
 
           {/* Services */}
           <section>
-            <h2 className="mb-3 text-2xl font-semibold text-grey-800">Services</h2>
+            <h2 className="mb-3 text-xl font-semibold text-grey-800">Services</h2>
             <div className="grid grid-cols-1 gap-y-2 sm:grid-cols-2">
               {[
                 "Audio guide",

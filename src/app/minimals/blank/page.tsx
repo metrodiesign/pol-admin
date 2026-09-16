@@ -15,10 +15,7 @@ export const metadata: Metadata = {
 export default function BlankPage() {
   return (
     <div className="-mt-2 flex flex-col">
-      <h4
-        className="mb-10 font-semibold text-grey-800"
-        style={{ fontSize: "24px", lineHeight: "36px", fontWeight: 600 }}
-      >
+      <h4 className="mb-10 text-h4 font-semibold text-grey-800">
         Blank
       </h4>
 

@@ -29,7 +29,7 @@ export function EditPageHeader({
   }));
 
   const headingClass =
-    "inline-flex items-center text-left text-2xl font-semibold leading-9 text-foreground transition-opacity hover:opacity-80";
+    "inline-flex items-center text-left text-xl font-semibold leading-9 text-foreground transition-opacity hover:opacity-80";
   const headingNode = onBack ? (
     <button type="button" onClick={onBack} className={headingClass}>
       {title}

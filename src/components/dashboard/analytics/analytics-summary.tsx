@@ -177,7 +177,7 @@ function AnalyticsCard({ stat }: { stat: AnalyticsStat }) {
       <div className="mt-2 flex items-end justify-between">
         <div>
           <p className="text-base font-semibold" style={{ opacity: 0.72 }}>{stat.title}</p>
-          <p className="mt-0.5 text-4xl font-semibold" style={{ color: colors.text }}>
+          <p className="mt-0.5 text-3xl font-semibold" style={{ color: colors.text }}>
             {stat.total}
           </p>
         </div>

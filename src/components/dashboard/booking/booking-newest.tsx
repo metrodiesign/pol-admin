@@ -87,7 +87,7 @@ export function BookingNewest() {
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h6 className="text-2xl font-semibold text-grey-800">Newest booking</h6>
+          <h6 className="text-xl font-semibold text-grey-800">Newest booking</h6>
           <p className="text-base text-grey-500">{total} bookings</p>
         </div>
         <div className="flex items-center gap-1">

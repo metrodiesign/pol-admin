@@ -82,11 +82,11 @@ export function PremiumCartBar({
           <div className="flex items-center justify-between gap-6">
             <div>
               <p className="text-base font-medium text-grey-500">กรมธรรม์</p>
-              <p className="text-3xl font-semibold tabular-nums text-secondary">{count}</p>
+              <p className="text-2xl font-semibold tabular-nums text-secondary">{count}</p>
             </div>
             <div>
               <p className="text-base font-medium text-grey-500">เบี้ยรวม</p>
-              <p className="text-3xl font-semibold tabular-nums text-secondary">{formatTHB(total, 2)}</p>
+              <p className="text-2xl font-semibold tabular-nums text-secondary">{formatTHB(total, 2)}</p>
             </div>
           </div>
           <button

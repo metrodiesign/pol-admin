@@ -73,7 +73,7 @@ export default async function LoginErrorPage({
               <Clock className="size-12 text-warning" strokeWidth={1.5} />
             </div>
           )}
-          <h1 className="text-3xl font-semibold text-foreground">{title}</h1>
+          <h1 className="text-2xl font-semibold text-foreground">{title}</h1>
           <p className="mt-2 text-base text-muted-foreground">{message}</p>
           <Link href="/login" className={linkButtonClass}>
             กลับไปหน้าเข้าสู่ระบบ

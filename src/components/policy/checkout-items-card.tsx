@@ -118,7 +118,7 @@ export function CheckoutItemsCard({ items, total, onUpdate, onRemove }: Checkout
         </p>
         <div className="text-right">
           <p className="text-base text-grey-500">ยอดที่ลูกค้าต้องชำระ</p>
-          <p className="text-4xl font-semibold tabular-nums text-secondary">{formatTHB(total, 2)}</p>
+          <p className="text-3xl font-semibold tabular-nums text-secondary">{formatTHB(total, 2)}</p>
         </div>
       </div>
     </CheckoutCard>

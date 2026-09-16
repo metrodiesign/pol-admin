@@ -97,7 +97,7 @@ export function InvoiceAnalytic() {
             >
               <DonutRing color={item.color} bg={item.bg} fill={item.fill} />
               <div className="min-w-0">
-                <p className="text-xl font-semibold leading-6 text-grey-800">{item.label}</p>
+                <p className="text-lg font-semibold leading-6 text-grey-800">{item.label}</p>
                 <p className="text-base text-grey-500">{stat.count} invoices</p>
                 <p className="text-base font-semibold text-grey-800">{stat.amount}</p>
               </div>

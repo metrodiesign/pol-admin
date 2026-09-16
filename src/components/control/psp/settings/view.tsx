@@ -83,7 +83,7 @@ function Notice({
 function SectionUnavailable({ title, label }: { title: string; label: string }) {
   return (
     <section className="rounded-card bg-card p-6" style={cardStyle} aria-label={title}>
-      <h2 className="text-2xl font-semibold leading-7 text-foreground">{title}</h2>
+      <h2 className="text-xl font-semibold leading-7 text-foreground">{title}</h2>
       <p className="mt-2 text-base text-grey-600" role="status">
         {label}
       </p>

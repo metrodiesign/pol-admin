@@ -94,7 +94,7 @@ function Panel({
       {title ? (
         <>
           <div className="px-6 py-5">
-            <p className="text-xl font-semibold text-primary">{title}</p>
+            <p className="text-lg font-semibold text-primary">{title}</p>
             {description ? (
               <p className="mt-0.5 text-base text-grey-500">{description}</p>
             ) : null}
@@ -118,7 +118,7 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
         className="flex flex-col items-center justify-center gap-4 rounded-2xl bg-card px-6 py-16 text-center"
         style={{ boxShadow: "var(--shadow-card)" }}
       >
-        <p className="text-xl font-semibold text-foreground">ไม่พบรายการชำระเงิน</p>
+        <p className="text-lg font-semibold text-foreground">ไม่พบรายการชำระเงิน</p>
         <Button
           render={<Link href="/transaction/list" />}
           nativeButton={false}
@@ -207,7 +207,7 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
 
       <Panel>
         <div className="px-6 py-5">
-          <h2 className="text-xl font-semibold text-primary">ประวัติการดำเนินงาน</h2>
+          <h2 className="text-lg font-semibold text-primary">ประวัติการดำเนินงาน</h2>
         </div>
         <div className="border-t border-[var(--divider)]" />
         <div className="py-5">
@@ -379,7 +379,7 @@ export function TransactionDetailView({ id, compact = false }: { id: string | un
             </p>
             <div className="text-right">
               <p className="text-base text-grey-500">ยอดที่ลูกค้าต้องชำระ</p>
-              <p className="text-4xl font-semibold tabular-nums text-secondary">
+              <p className="text-3xl font-semibold tabular-nums text-secondary">
                 {formatMoney(t.amount, false)}
               </p>
             </div>

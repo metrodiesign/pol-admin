@@ -160,7 +160,7 @@ export function SettingsDrawer({ variant = "white" }: SettingsDrawerProps) {
         className="w-[360px] gap-0 p-0 sm:max-w-[360px]"
       >
         <div className="flex items-center justify-between px-5 py-4">
-          <SheetTitle className="text-2xl font-semibold text-grey-800">Settings</SheetTitle>
+          <SheetTitle className="text-xl font-semibold text-grey-800">Settings</SheetTitle>
           <div className="flex items-center gap-1">
             <IconButton label="Fullscreen">
               <Maximize className="size-5" />

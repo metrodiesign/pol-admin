@@ -179,8 +179,8 @@ function StatCard({
       <div className="flex-1 min-w-0 pr-2">
         <p className="text-base font-semibold text-grey-800">{stat.title}</p>
         <p
-          className="mt-2 font-semibold text-grey-800 leading-tight"
-          style={{ fontSize: "2rem", letterSpacing: "-0.01em" }}
+          className="mt-2 text-2xl font-semibold leading-tight text-grey-800"
+          style={{ letterSpacing: "-0.01em" }}
         >
           {stat.total}
         </p>

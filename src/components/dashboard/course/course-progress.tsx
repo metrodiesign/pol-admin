@@ -20,7 +20,7 @@ export function CourseProgress() {
           </ResponsiveContainer>
           <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
             <span className="text-base text-grey-500">Total</span>
-            <span className="text-4xl font-semibold leading-tight text-grey-800">{courseProgress.total}</span>
+            <span className="text-3xl font-semibold leading-tight text-grey-800">{courseProgress.total}</span>
           </div>
         </div>
         <div className="flex items-center gap-5">

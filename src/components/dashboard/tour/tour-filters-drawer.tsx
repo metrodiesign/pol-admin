@@ -42,7 +42,7 @@ export function TourFiltersDrawer({ open, onClose }: TourFiltersDrawerProps) {
       <SheetContent side="right" showCloseButton={false} className="w-[320px] max-w-full p-0 sm:max-w-[320px] flex flex-col gap-0">
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4">
-          <h6 className="text-2xl font-semibold text-grey-800">Filters</h6>
+          <h6 className="text-xl font-semibold text-grey-800">Filters</h6>
           <div className="flex items-center gap-2">
             <button
               type="button"

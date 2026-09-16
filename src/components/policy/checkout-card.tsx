@@ -28,7 +28,7 @@ export function CheckoutCard({
     >
       <header className="flex items-start justify-between gap-4 border-b border-[var(--divider)] px-6 py-5">
         <div className="min-w-0">
-          <h2 className="text-xl font-semibold text-primary">{title}</h2>
+          <h2 className="text-lg font-semibold text-primary">{title}</h2>
           {description ? (
             <p className="mt-0.5 text-base text-grey-500">{description}</p>
           ) : null}

@@ -20,7 +20,7 @@ export function BookingToursAvailable() {
 
   return (
     <div className="dashboard-card flex flex-col p-6 h-full">
-      <h6 className="text-2xl font-semibold text-grey-800">Tours available</h6>
+      <h6 className="text-xl font-semibold text-grey-800">Tours available</h6>
 
       <div className="flex flex-col items-center mt-6 flex-1 justify-center">
         {/* Semi-circle gauge */}
@@ -58,8 +58,8 @@ export function BookingToursAvailable() {
           >
             <span className="text-base text-grey-500">Tours</span>
             <span
-              className="font-semibold text-grey-800"
-              style={{ fontFamily: "var(--font-barlow, 'Barlow', sans-serif)", fontSize: "1.75rem", lineHeight: 1.1 }}
+              className="text-xl font-semibold text-grey-800"
+              style={{ fontFamily: "var(--font-barlow, 'Barlow', sans-serif)" }}
             >
               {toursAvailable.total}
             </span>

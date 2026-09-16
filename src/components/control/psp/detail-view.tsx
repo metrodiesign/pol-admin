@@ -75,7 +75,7 @@ export function ConnectionIdentity({
   return (
     <div className="flex flex-col gap-4 border-b border-[var(--divider)] p-6 sm:flex-row sm:items-start sm:justify-between">
       <div className="min-w-0">
-        <h2 className="text-2xl font-semibold leading-7 text-foreground">{PROVIDER_LABEL[connection.psp]}</h2>
+        <h2 className="text-xl font-semibold leading-7 text-foreground">{PROVIDER_LABEL[connection.psp]}</h2>
         <p className="mt-0.5 truncate text-base text-grey-600">{merchantName}</p>
         <p className="text-data mt-1 break-all text-base text-grey-500">{connection.pspConnectionId}</p>
       </div>

@@ -28,7 +28,7 @@ export function CollapsibleFormSection({
         className="flex w-full items-center justify-between px-6 py-4 text-left"
       >
         <div>
-          <p className="text-xl font-semibold text-foreground">{title}</p>
+          <p className="text-lg font-semibold text-foreground">{title}</p>
           <p className="mt-0.5 text-base text-grey-500">{subtitle}</p>
         </div>
         <ChevronDown

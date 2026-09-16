@@ -43,7 +43,7 @@ export function InvoiceDocument() {
           <MinimalLogo />
           <div className="text-right">
             <InvoiceStatusLabel status={inv.status} />
-            <p className="mt-1 text-2xl font-semibold leading-7 text-grey-800">{inv.invoiceNumber}</p>
+            <p className="mt-1 text-xl font-semibold leading-7 text-grey-800">{inv.invoiceNumber}</p>
           </div>
         </div>
 
@@ -149,8 +149,8 @@ export function InvoiceDocument() {
               <span className="text-base font-semibold text-grey-800">{taxes}%</span>
             </div>
             <div className="flex justify-between border-t border-grey-200 pt-2">
-              <span className="text-xl font-semibold text-grey-800">Total</span>
-              <span className="text-xl font-semibold text-grey-800">
+              <span className="text-lg font-semibold text-grey-800">Total</span>
+              <span className="text-lg font-semibold text-grey-800">
                 {fCurrency(inv.total)}
               </span>
             </div>

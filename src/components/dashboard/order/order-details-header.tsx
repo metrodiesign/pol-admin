@@ -37,7 +37,7 @@ export function OrderDetailsHeader({
           >
             <ChevronLeft className="size-5" />
           </Link>
-          <h4 className="text-4xl font-semibold leading-9 text-foreground">
+          <h4 className="text-3xl font-semibold leading-9 text-foreground">
             Order {orderNumber}
           </h4>
           <OrderStatusLabel status={status} />

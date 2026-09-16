@@ -168,7 +168,7 @@ export function RoutingMatrix({
 
   return (
     <section className="rounded-card bg-card p-6" style={cardStyle} aria-label="การกำหนดเส้นทาง">
-      <h2 className="text-2xl font-semibold leading-7 text-foreground">การกำหนดเส้นทาง</h2>
+      <h2 className="text-xl font-semibold leading-7 text-foreground">การกำหนดเส้นทาง</h2>
       <p className="mt-1 text-base text-grey-600">
         เลือกการเชื่อมต่อหลักและสำรองต่อช่องทางที่เปิดใช้ระดับร้านค้า
       </p>

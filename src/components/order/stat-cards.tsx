@@ -18,7 +18,7 @@ export function OrderStatCards() {
           style={{ boxShadow: "var(--shadow-card)" }}
         >
           <p className="text-base font-semibold text-grey-600">{card.label}</p>
-          <p className="mt-2 text-4xl font-semibold text-foreground md:text-5xl">
+          <p className="mt-2 text-3xl font-semibold text-foreground md:text-4xl">
             {card.value}
           </p>
         </div>

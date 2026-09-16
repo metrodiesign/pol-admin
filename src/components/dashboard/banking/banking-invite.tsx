@@ -35,13 +35,13 @@ export function BankingInvite() {
       </div>
 
       <div className="relative z-10 max-w-[200px]">
-        <p className="text-xl font-semibold leading-snug text-white">
+        <p className="text-lg font-semibold leading-snug text-white">
           Invite friends
           <br />
           and earn
         </p>
         <p
-          className="mt-2 text-5xl font-semibold"
+          className="mt-2 text-4xl font-semibold"
           style={{
             color: "#FFAB00",
             fontFamily: "var(--font-barlow, var(--font-sans))",

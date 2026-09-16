@@ -356,7 +356,7 @@ export function InvoiceNewEditForm({ mode, initialData }: InvoiceNewEditFormProp
         {/* From */}
         <div className="relative p-6 max-mmd:border-b max-mmd:border-dashed max-mmd:border-grey-200 mmd:border-r mmd:border-dashed mmd:border-grey-200">
           <div className="flex items-center justify-between">
-            <p className="text-2xl font-semibold text-grey-500">From:</p>
+            <p className="text-xl font-semibold text-grey-500">From:</p>
             <button
               type="button"
               className="flex size-9 items-center justify-center rounded-full text-grey-600 transition-colors hover:bg-grey-500/8"
@@ -375,7 +375,7 @@ export function InvoiceNewEditForm({ mode, initialData }: InvoiceNewEditFormProp
         {/* To */}
         <div className="relative p-6">
           <div className="flex items-center justify-between">
-            <p className="text-2xl font-semibold text-grey-500">To:</p>
+            <p className="text-xl font-semibold text-grey-500">To:</p>
             <button
               type="button"
               onClick={() => {
@@ -433,7 +433,7 @@ export function InvoiceNewEditForm({ mode, initialData }: InvoiceNewEditFormProp
 
       {/* 3. Details section */}
       <div className="px-6 pt-6">
-        <p className="mb-5 text-2xl font-semibold text-grey-500">Details:</p>
+        <p className="mb-5 text-xl font-semibold text-grey-500">Details:</p>
 
         {items.map((item, idx) => {
           const lineTotal = item.qty * item.price;
@@ -582,8 +582,8 @@ export function InvoiceNewEditForm({ mode, initialData }: InvoiceNewEditFormProp
                 </span>
               </div>
               <div className="flex justify-between border-t border-grey-200 pt-2">
-                <span className="text-xl font-semibold text-grey-800">Total</span>
-                <span className="text-xl font-semibold text-grey-800">
+                <span className="text-lg font-semibold text-grey-800">Total</span>
+                <span className="text-lg font-semibold text-grey-800">
                   {fCurrency(total)}
                 </span>
               </div>

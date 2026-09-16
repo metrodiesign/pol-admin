@@ -49,7 +49,7 @@ export function FileStorageGauge() {
         </svg>
         {/* Center label */}
         <div className="absolute inset-0 flex flex-col items-center justify-end pb-1">
-          <span className="text-5xl font-semibold text-grey-800">{percent}%</span>
+          <span className="text-4xl font-semibold text-grey-800">{percent}%</span>
         </div>
       </div>
       <p className="mt-1 text-center text-base text-grey-500">
