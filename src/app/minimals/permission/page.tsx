@@ -37,20 +37,14 @@ export default function PermissionPage() {
           <div key={card.id} className="dashboard-card">
             {/* Card header */}
             <div className="px-6 pt-6 pb-2">
-              <h6
-                className="text-2xl font-semibold leading-7 text-grey-800"
-                style={{ fontSize: "18px", lineHeight: "28px" }}
-              >
+              <h6 className="text-h6 font-semibold text-grey-800">
                 {card.title}
               </h6>
               <p className="mt-0.5 text-base text-grey-600">{card.subtitle}</p>
             </div>
             {/* Card body */}
             <div className="px-6 pb-6">
-              <p
-                className="text-base font-normal text-grey-600"
-                style={{ lineHeight: "22px" }}
-              >
+              <p className="text-base font-normal text-grey-600">
                 {card.body}
               </p>
             </div>

@@ -144,7 +144,7 @@ export function WelcomeBanner() {
             }}
           >
             <div className="relative z-10 max-w-[360px]">
-              <h4 className="text-4xl font-semibold leading-9">
+              <h4 className="text-3xl font-semibold leading-9">
                 {slide.title}
                 {slide.highlight && (
                   <>

@@ -18,7 +18,7 @@ export function BookingCustomerReviews() {
       {/* Header */}
       <div className="flex items-center justify-between p-6 pb-0">
         <div>
-          <h6 className="text-2xl font-semibold text-grey-800">Customer reviews</h6>
+          <h6 className="text-xl font-semibold text-grey-800">Customer reviews</h6>
           <p className="mt-0.5 text-base text-grey-500">{total} Reviews</p>
         </div>
         <div className="flex items-center gap-1">

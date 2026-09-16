@@ -91,13 +91,13 @@ export function BankingExpenses() {
           <div className="mt-6 flex gap-10 border-t border-dashed border-grey-300 pt-5">
             <div>
               <p className="text-base font-semibold leading-[22px] text-grey-800">Categories</p>
-              <p className="mt-1 text-4xl font-semibold text-grey-800">
+              <p className="mt-1 text-3xl font-semibold text-grey-800">
                 {expensesSummary.categories}
               </p>
             </div>
             <div>
               <p className="text-base font-semibold leading-[22px] text-grey-800">Categories</p>
-              <p className="mt-1 text-4xl font-semibold text-grey-800">{expensesSummary.total}</p>
+              <p className="mt-1 text-3xl font-semibold text-grey-800">{expensesSummary.total}</p>
             </div>
           </div>
         </div>

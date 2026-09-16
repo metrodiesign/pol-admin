@@ -68,7 +68,7 @@ export function CourseFeatured() {
     <div>
       {/* Header row */}
       <div className="mb-4 flex items-center justify-between">
-        <h6 className="text-2xl font-semibold text-grey-800">Featured course</h6>
+        <h6 className="text-xl font-semibold text-grey-800">Featured course</h6>
         <div className="flex items-center gap-1">
           <button
             type="button"

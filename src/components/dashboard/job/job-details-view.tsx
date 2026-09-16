@@ -248,14 +248,14 @@ export function JobDetailsView({ job }: JobDetailsViewProps) {
         <div className="grid grid-cols-1 gap-6 mmd:grid-cols-12">
           {/* Main content */}
           <div className="min-w-0 mmd:col-span-8">
-            <h1 className="mb-5 text-3xl font-semibold leading-9 text-grey-800">
+            <h1 className="mb-5 text-2xl font-semibold leading-9 text-grey-800">
               {job.title}
             </h1>
             {job.descriptionSections ? (
               <div className="space-y-6">
                 {job.descriptionSections.map((section, i) => (
                   <div key={i}>
-                    <h3 className="mb-2 text-xl font-semibold leading-7 text-grey-800">
+                    <h3 className="mb-2 text-lg font-semibold leading-7 text-grey-800">
                       {section.heading}
                     </h3>
                     {section.paragraph && (
@@ -280,7 +280,7 @@ export function JobDetailsView({ job }: JobDetailsViewProps) {
             {/* Skills */}
             {job.skills && job.skills.length > 0 && (
               <div className="mt-6">
-                <h3 className="mb-3 text-2xl font-semibold text-grey-800">Skills</h3>
+                <h3 className="mb-3 text-xl font-semibold text-grey-800">Skills</h3>
                 <div className="flex flex-wrap gap-2">
                   {job.skills.map((s) => (
                     <Chip key={s} label={s} />
@@ -292,7 +292,7 @@ export function JobDetailsView({ job }: JobDetailsViewProps) {
             {/* Benefits */}
             {job.benefits && job.benefits.length > 0 && (
               <div className="mt-6">
-                <h3 className="mb-3 text-2xl font-semibold text-grey-800">Benefits</h3>
+                <h3 className="mb-3 text-xl font-semibold text-grey-800">Benefits</h3>
                 <div className="flex flex-wrap gap-2">
                   {job.benefits.map((b) => (
                     <Chip key={b} label={b} />
@@ -312,7 +312,7 @@ export function JobDetailsView({ job }: JobDetailsViewProps) {
                   "0 0 2px rgba(145,158,171,0.2), 0 12px 24px -4px rgba(145,158,171,0.12)",
               }}
             >
-              <h6 className="mb-4 text-xl font-semibold text-grey-800">Overview</h6>
+              <h6 className="mb-4 text-lg font-semibold text-grey-800">Overview</h6>
               <div className="flex flex-col gap-4">
                 {overviewRows.map((row) => (
                   <div key={row.label} className="flex items-start gap-3">
@@ -344,7 +344,7 @@ export function JobDetailsView({ job }: JobDetailsViewProps) {
 
                 />
               </div>
-              <h6 className="text-xl font-semibold text-grey-800">{job.company}</h6>
+              <h6 className="text-lg font-semibold text-grey-800">{job.company}</h6>
               <div className="mt-3 flex flex-col gap-2">
                 <div className="flex items-start gap-2 text-base text-grey-600">
                   <MapPin className="mt-0.5 size-4 shrink-0 text-grey-400" />
@@ -366,7 +366,7 @@ export function JobDetailsView({ job }: JobDetailsViewProps) {
               "0 0 2px rgba(145,158,171,0.2), 0 12px 24px -4px rgba(145,158,171,0.12)",
           }}
         >
-          <h6 className="mb-4 text-xl font-semibold text-grey-800">
+          <h6 className="mb-4 text-lg font-semibold text-grey-800">
             Candidates ({CANDIDATES.length})
           </h6>
           <div className="divide-y divide-grey-100">

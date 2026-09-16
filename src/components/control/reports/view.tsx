@@ -27,7 +27,7 @@ function ChartCard({
 }) {
   return (
     <div className="flex flex-col gap-5 rounded-card bg-card p-6" style={cardStyle}>
-      <h6 className="text-2xl font-semibold text-grey-800">{title}</h6>
+      <h6 className="text-xl font-semibold text-grey-800">{title}</h6>
       {children}
     </div>
   );

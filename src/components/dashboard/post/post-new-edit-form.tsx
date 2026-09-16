@@ -77,7 +77,7 @@ function FormSectionCard({
     >
       <div className="flex items-start justify-between px-6 pt-6 pb-0">
         <div>
-          <span className="block text-xl font-semibold leading-7 text-grey-800">
+          <span className="block text-lg font-semibold leading-7 text-grey-800">
             {title}
           </span>
           <span className="text-base text-grey-500">{caption}</span>

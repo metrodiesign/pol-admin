@@ -32,7 +32,7 @@ export function BankingOverview() {
         <div>
           <p className="text-base text-grey-500">Total balance</p>
           <p
-            className="mt-1 text-5xl font-semibold leading-[3rem] text-grey-800"
+            className="mt-1 text-4xl font-semibold leading-[3rem] text-grey-800"
             style={{ fontFamily: "var(--font-barlow, var(--font-sans))" }}
           >
             {totalBalance}

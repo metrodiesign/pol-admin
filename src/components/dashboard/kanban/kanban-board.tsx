@@ -55,7 +55,7 @@ export function KanbanBoard({ initialColumns }: KanbanBoardProps) {
     <div className="flex min-h-0 flex-col">
       {/* Page header row with Fixed column toggle */}
       <div className="mb-5 flex items-center justify-between">
-        <h4 className="text-4xl font-semibold leading-9 text-foreground">Kanban</h4>
+        <h4 className="text-3xl font-semibold leading-9 text-foreground">Kanban</h4>
         <label className="flex cursor-pointer items-center gap-2 text-base font-medium text-grey-700">
           Fixed column
           <Switch

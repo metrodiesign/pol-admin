@@ -214,7 +214,7 @@ function EmptyOrDone({
       >
         {icon}
       </span>
-      <p className="text-xl font-semibold text-foreground">{title}</p>
+      <p className="text-lg font-semibold text-foreground">{title}</p>
       <p className="max-w-md text-base leading-relaxed text-grey-500">{subtitle}</p>
       {children}
       <Button

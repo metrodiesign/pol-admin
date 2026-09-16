@@ -158,7 +158,7 @@ export function BankingCreditCard() {
                 <div>
                   <p className="text-base text-white/64">Current balance</p>
                   <p
-                    className="mt-1.5 text-4xl font-semibold"
+                    className="mt-1.5 text-3xl font-semibold"
                     style={{ fontFamily: "var(--font-barlow, var(--font-sans))" }}
                   >
                     {card.balance}

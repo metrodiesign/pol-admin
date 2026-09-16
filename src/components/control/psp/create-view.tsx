@@ -240,7 +240,7 @@ export function PspCreateView({
           aria-busy={submitting}
           noValidate
         >
-          <h2 className="text-2xl font-semibold leading-7 text-foreground">
+          <h2 className="text-xl font-semibold leading-7 text-foreground">
             {draft.provider ? PROVIDER_OPTIONS.find((o) => o.value === draft.provider)?.label : "ข้อมูลการเชื่อมต่อ"}
           </h2>
           <p className="mt-1 text-base text-grey-600">

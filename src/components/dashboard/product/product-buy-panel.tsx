@@ -52,7 +52,7 @@ export function ProductBuyPanel({
       </span>
 
       {/* Name */}
-      <h5 className="mt-2 text-2xl font-semibold leading-tight text-foreground">
+      <h5 className="mt-2 text-xl font-semibold leading-tight text-foreground">
         {name}
       </h5>
 
@@ -77,11 +77,11 @@ export function ProductBuyPanel({
       {/* Price */}
       <div className="mt-3 flex items-center gap-2">
         {priceSale < price && (
-          <span className="text-2xl font-semibold text-grey-500 line-through">
+          <span className="text-xl font-semibold text-grey-500 line-through">
             ${price.toFixed(2)}
           </span>
         )}
-        <span className="text-2xl font-semibold text-foreground">
+        <span className="text-xl font-semibold text-foreground">
           ${priceSale.toFixed(2)}
         </span>
       </div>

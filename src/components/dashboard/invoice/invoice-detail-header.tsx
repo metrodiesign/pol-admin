@@ -26,7 +26,7 @@ export function InvoiceDetailHeader({ invoiceNumber, initialStatus }: InvoiceDet
   return (
     <div className="mb-5">
       {/* Breadcrumb heading */}
-      <h4 className="text-4xl font-semibold leading-9 text-foreground">{invoiceNumber}</h4>
+      <h4 className="text-3xl font-semibold leading-9 text-foreground">{invoiceNumber}</h4>
       <nav aria-label="breadcrumb" className="mt-1">
         <ol className="flex flex-wrap items-center text-base text-grey-600">
           {[

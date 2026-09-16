@@ -168,14 +168,14 @@ export function AccountDrawer({ variant = "white" }: AccountDrawerProps) {
             <span className="absolute inset-[3px] rounded-full bg-white" />
             <Avatar className="size-[84px]">
               <AvatarImage src="/avatars/avatar-25.webp" alt={accountUser.name} />
-              <AvatarFallback className="bg-primary/10 text-3xl font-semibold text-primary">
+              <AvatarFallback className="bg-primary/10 text-2xl font-semibold text-primary">
                 JF
               </AvatarFallback>
             </Avatar>
           </div>
 
           {/* identity จริงจาก /api/v1/me — displayName + platform access. email/avatar ยัง mock (backend ไม่ส่ง). */}
-          <p className="mt-2 text-xl font-semibold text-grey-800">{me?.displayName ?? accountUser.name}</p>
+          <p className="mt-2 text-lg font-semibold text-grey-800">{me?.displayName ?? accountUser.name}</p>
           <p className="text-base text-grey-600">{me?.email ?? accountUser.email}</p>
           {me && (
             <span className="mt-1 rounded-md bg-primary/10 px-2 py-0.5 text-base font-semibold text-primary">
@@ -205,7 +205,7 @@ export function AccountDrawer({ variant = "white" }: AccountDrawerProps) {
               aria-label="Add account"
               className="flex size-10 items-center justify-center rounded-full border border-dashed border-[var(--divider)] text-grey-500 transition-colors hover:bg-[var(--action-hover)]"
             >
-              <span className="text-2xl leading-none">+</span>
+              <span className="text-xl leading-none">+</span>
             </button>
           </div>
         </div>
@@ -248,7 +248,7 @@ export function AccountDrawer({ variant = "white" }: AccountDrawerProps) {
             }}
           >
             <div className="px-6 py-8">
-              <p className="text-3xl font-extrabold text-white">35% OFF</p>
+              <p className="text-2xl font-extrabold text-white">35% OFF</p>
               <p className="mt-0.5 text-base font-semibold text-white">Power up Productivity!</p>
               <button
                 type="button"

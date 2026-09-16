@@ -47,7 +47,7 @@ export function DonutChart({
       </ResponsiveContainer>
       <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
         <span className="text-base font-semibold text-grey-800">{totalLabel}</span>
-        <span className="text-3xl font-semibold text-grey-800">{total}</span>
+        <span className="text-2xl font-semibold text-grey-800">{total}</span>
       </div>
     </div>
   );

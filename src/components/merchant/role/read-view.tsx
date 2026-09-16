@@ -98,13 +98,13 @@ export function RoleReadView({
             <div className="grid grid-cols-2 gap-3 sm:max-w-md">
               <div className="rounded-control border border-[var(--divider)] p-3">
                 <p className="text-base text-grey-500">สิทธิ์ที่ได้รับ</p>
-                <p className="mt-1 text-2xl font-semibold tabular-nums text-foreground">
+                <p className="mt-1 text-xl font-semibold tabular-nums text-foreground">
                   {granted}/{total}
                 </p>
               </div>
               <div className="rounded-control border border-[var(--divider)] p-3">
                 <p className="text-base text-grey-500">ผู้ใช้ที่ผูก</p>
-                <p className="mt-1 text-2xl font-semibold tabular-nums text-foreground">
+                <p className="mt-1 text-xl font-semibold tabular-nums text-foreground">
                   {role.userCount}
                 </p>
               </div>

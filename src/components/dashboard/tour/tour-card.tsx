@@ -87,7 +87,7 @@ export function TourCard({ tour, onDelete }: TourCardProps) {
         {/* Title */}
         <Link
           href={`/minimals/tour/details?id=${tour.id}`}
-          className="mt-1.5 block truncate text-xl font-semibold text-grey-800 hover:underline"
+          className="mt-1.5 block truncate text-lg font-semibold text-grey-800 hover:underline"
           title={tour.title}
         >
           {tour.title}

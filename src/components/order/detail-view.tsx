@@ -117,7 +117,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
         className="flex flex-col items-center justify-center gap-4 rounded-2xl bg-card px-6 py-16 text-center"
         style={{ boxShadow: "var(--shadow-card)" }}
       >
-        <p className="text-xl font-semibold text-foreground">ไม่พบรายการชำระเงิน</p>
+        <p className="text-lg font-semibold text-foreground">ไม่พบรายการชำระเงิน</p>
         <Button
           render={<Link href="/order/list" />}
           nativeButton={false}
@@ -363,7 +363,7 @@ export function OrderDetailView({ id, compact = false }: { id: string | undefine
             </p>
             <div className="text-right">
               <p className="text-base text-grey-500">ยอดที่ลูกค้าต้องชำระ</p>
-              <p className="text-4xl font-semibold tabular-nums text-secondary">
+              <p className="text-3xl font-semibold tabular-nums text-secondary">
                 {formatMoney(t.amount, false)}
               </p>
             </div>

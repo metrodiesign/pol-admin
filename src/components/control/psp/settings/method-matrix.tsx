@@ -112,7 +112,7 @@ export function MethodMatrix({
 
   return (
     <section className="rounded-card bg-card p-6" style={cardStyle} aria-label="ช่องทางชำระเงิน">
-      <h2 className="text-2xl font-semibold leading-7 text-foreground">ช่องทางชำระเงิน</h2>
+      <h2 className="text-xl font-semibold leading-7 text-foreground">ช่องทางชำระเงิน</h2>
       <p className="mt-1 text-base text-grey-600">
         แยกนโยบายระดับร้านค้าออกจากความพร้อมของแต่ละผู้ให้บริการ
       </p>

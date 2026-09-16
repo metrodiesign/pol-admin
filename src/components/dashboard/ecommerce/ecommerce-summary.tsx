@@ -9,12 +9,8 @@ function StatCard({ stat }: { stat: EcommerceStat }) {
       <div>
         <p className="text-base font-semibold leading-[22px] text-grey-800">{stat.title}</p>
         <p
-          className="mt-3 font-semibold text-grey-800"
-          style={{
-            fontFamily: "var(--font-barlow, Barlow, sans-serif)",
-            fontSize: "32px",
-            lineHeight: "48px",
-          }}
+          className="mt-3 text-2xl font-semibold text-grey-800"
+          style={{ fontFamily: "var(--font-barlow, Barlow, sans-serif)" }}
         >
           {stat.total}
         </p>

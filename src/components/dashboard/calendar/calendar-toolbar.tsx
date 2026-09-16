@@ -73,7 +73,7 @@ export function CalendarToolbar({
         >
           <ChevronLeft className="size-4" />
         </button>
-        <span className="min-w-[120px] text-center text-base font-semibold leading-7 text-grey-800 sm:text-xl">
+        <span className="min-w-[120px] text-center text-base font-semibold leading-7 text-grey-800 sm:text-lg">
           {periodLabel}
         </span>
         <button

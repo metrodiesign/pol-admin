@@ -68,7 +68,7 @@ function RadialGauge({
 export function BookingBooked() {
   return (
     <div className="dashboard-card flex flex-col p-6 h-full">
-      <h6 className="text-2xl font-semibold text-grey-800">Booked</h6>
+      <h6 className="text-xl font-semibold text-grey-800">Booked</h6>
 
       {/* Progress bars */}
       <div className="mt-4 space-y-3">

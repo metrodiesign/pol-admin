@@ -65,7 +65,7 @@ export function MailLabelRail({ activeLabel, onLabelChange }: MailLabelRailProps
             type="button"
             onClick={() => onLabelChange(item.id)}
             className={cn(
-              "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-xl leading-6 transition-colors",
+              "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-lg leading-6 transition-colors",
               isActive
                 ? "bg-grey-200 text-grey-800"
                 : "text-grey-600 hover:bg-grey-100 hover:text-grey-800"

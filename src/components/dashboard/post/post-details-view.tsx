@@ -242,7 +242,7 @@ export function PostDetailsView() {
         {/* Title — bottom-left */}
         <div className="absolute bottom-6 left-6 sm:bottom-8 sm:left-8 right-20">
           <h1
-            className="max-w-[480px] text-4xl sm:text-5xl font-semibold leading-tight text-white"
+            className="max-w-[480px] text-3xl sm:text-4xl font-semibold leading-tight text-white"
             style={{ fontFamily: "var(--font-barlow, var(--font-sans))" }}
           >
             Climate Change and Its Effects on Global Food Security
@@ -288,7 +288,7 @@ export function PostDetailsView() {
       {/* Article body */}
       <div className="prose-article mb-8">
         {/* Lead subtitle */}
-        <p className="text-xl font-semibold text-grey-800 mb-6 leading-relaxed">
+        <p className="text-lg font-semibold text-grey-800 mb-6 leading-relaxed">
           Lorem Ipsum is simply dummy text of the printing and typesetting
           industry. Lorem Ipsum has been the industry&apos;s standard dummy text
           ever since the 1500s.
@@ -306,13 +306,13 @@ export function PostDetailsView() {
         <h6 className="text-h6 text-grey-800 mb-4">Heading H6</h6>
 
         <h4 className="text-h4 text-grey-800 mb-3">Paragraph</h4>
-        <p className="text-xl text-grey-800 mb-4 leading-7">
+        <p className="text-lg text-grey-800 mb-4 leading-7">
           Lorem Ipsum is simply dummy text of the printing and typesetting
           industry. Lorem Ipsum has been the industry&apos;s standard dummy text
           ever since the 1500s, when an unknown printer took a galley of type and
           scrambled it to make a type specimen book.
         </p>
-        <p className="text-xl text-grey-800 mb-4 leading-7">
+        <p className="text-lg text-grey-800 mb-4 leading-7">
           This is a{" "}
           <a
             href="https://mtaweb.com"
@@ -331,7 +331,7 @@ export function PostDetailsView() {
         <h4 className="text-h4 text-grey-800 mb-3">
           Unordered list
         </h4>
-        <ul className="list-disc list-inside mb-4 space-y-1 text-xl text-grey-800 leading-7">
+        <ul className="list-disc list-inside mb-4 space-y-1 text-lg text-grey-800 leading-7">
           <li>
             <a
               href="https://www.freecodecamp.org"
@@ -353,7 +353,7 @@ export function PostDetailsView() {
         <h4 className="text-h4 text-grey-800 mb-3">
           Ordered list
         </h4>
-        <ol className="list-decimal list-inside mb-4 space-y-1 text-xl text-grey-800 leading-7">
+        <ol className="list-decimal list-inside mb-4 space-y-1 text-lg text-grey-800 leading-7">
           <li>Analysis</li>
           <li>Design</li>
           <li>Implementation</li>
@@ -361,10 +361,10 @@ export function PostDetailsView() {
 
         <h4 className="text-h4 text-grey-800 mb-3">Blockquote</h4>
         <blockquote className="relative border-l-4 border-grey-300 pl-6 mb-4 py-2">
-          <span className="absolute left-4 -top-1 text-5xl text-grey-300 font-serif leading-none select-none">
+          <span className="absolute left-4 -top-1 text-4xl text-grey-300 font-serif leading-none select-none">
             &ldquo;
           </span>
-          <p className="text-xl text-grey-700 italic leading-7 mt-4">
+          <p className="text-lg text-grey-700 italic leading-7 mt-4">
             Life is short, Smile while you still have teeth!
           </p>
         </blockquote>
@@ -383,7 +383,7 @@ export function PostDetailsView() {
 }`}</code>
         </pre>
 
-        <p className="text-xl text-grey-800 mb-4 leading-7">
+        <p className="text-lg text-grey-800 mb-4 leading-7">
           Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus
           magna, vel scelerisque nisl consectetur et. Nulla vitae elit libero, a
           pharetra augue.
@@ -412,7 +412,7 @@ export function PostDetailsView() {
         <h5 className="text-h5 text-grey-800 mb-3">
           Why do we use it?
         </h5>
-        <p className="text-xl text-grey-800 mb-6 leading-7">
+        <p className="text-lg text-grey-800 mb-6 leading-7">
           It is a long established fact that a reader will be distracted by the
           readable content of a page when looking at its layout. The point of
           using Lorem Ipsum is that it has a more-or-less normal distribution of
@@ -464,7 +464,7 @@ export function PostDetailsView() {
       {/* Comments section */}
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-6">
-          <h4 className="text-xl font-semibold text-grey-800">Comments</h4>
+          <h4 className="text-lg font-semibold text-grey-800">Comments</h4>
           <span className="text-base text-grey-500 font-medium">
             ({POST_COMMENTS.length})
           </span>

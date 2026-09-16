@@ -38,7 +38,7 @@ export function BookingStatistics() {
     <div className="dashboard-card flex flex-col h-full">
       <div className="flex items-start justify-between gap-3 p-6 pb-0">
         <div>
-          <h6 className="text-2xl font-semibold text-grey-800">Statistics</h6>
+          <h6 className="text-xl font-semibold text-grey-800">Statistics</h6>
           {/* Legend chips */}
           <div className="mt-2 flex items-center gap-4">
             {legend.map((l) => (

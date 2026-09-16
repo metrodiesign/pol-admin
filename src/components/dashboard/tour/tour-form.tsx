@@ -76,7 +76,7 @@ function FormCard({ title, caption, children }: FormCardProps) {
     >
       <div className="flex items-start justify-between px-6 py-5">
         <div>
-          <h2 className="text-xl font-semibold text-grey-800">{title}</h2>
+          <h2 className="text-lg font-semibold text-grey-800">{title}</h2>
           <p className="text-base text-grey-500">{caption}</p>
         </div>
         <button
@@ -275,7 +275,7 @@ function ImageDropzone({ existingImages = [], onExistingRemove, onRemoveAll }: I
             <circle cx="14" cy="38" r="4" fill="#2196F3" fillOpacity="0.4"/>
           </svg>
         </div>
-        <p className="text-xl font-semibold text-grey-800">Drop or select files</p>
+        <p className="text-lg font-semibold text-grey-800">Drop or select files</p>
         <p className="mt-1 text-base text-grey-500">
           Drag files here, or{" "}
           <button

@@ -51,7 +51,7 @@ export function SaleByGender() {
           </ResponsiveContainer>
           <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
             <span className="text-base text-grey-500">Total</span>
-            <span className="text-4xl font-semibold text-grey-800">
+            <span className="text-3xl font-semibold text-grey-800">
               {total.toLocaleString()}
             </span>
           </div>

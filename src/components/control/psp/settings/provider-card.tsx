@@ -49,7 +49,7 @@ function CardShell({
     <section className={CARD_CLASS} style={cardStyle} aria-label={`ผู้ให้บริการ ${title}`}>
       <div className="flex flex-col gap-3 border-b border-[var(--divider)] p-5 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0">
-          <h3 className="text-2xl font-semibold leading-7 text-foreground">{title}</h3>
+          <h3 className="text-xl font-semibold leading-7 text-foreground">{title}</h3>
           {subtitle ? <p className="mt-0.5 text-base text-grey-600">{subtitle}</p> : null}
         </div>
         {badges ? <div className="flex flex-wrap items-center gap-2">{badges}</div> : null}

@@ -60,7 +60,7 @@ export default function OrderDetailsPage() {
             {/* Customer section */}
             <div className="px-6 py-5">
               <div className="mb-4 flex items-center justify-between">
-                <h6 className="text-xl font-semibold leading-6 text-foreground">Customer</h6>
+                <h6 className="text-lg font-semibold leading-6 text-foreground">Customer</h6>
               </div>
               <div className="flex items-center gap-3">
                 <div className="relative size-10 shrink-0 overflow-hidden rounded-full bg-grey-200">
@@ -73,7 +73,7 @@ export default function OrderDetailsPage() {
                   />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-xl font-semibold text-foreground">
+                  <p className="text-lg font-semibold text-foreground">
                     {order.customer.name}
                   </p>
                   <p className="truncate text-base text-grey-600">
@@ -103,7 +103,7 @@ export default function OrderDetailsPage() {
 
             {/* Delivery section */}
             <div className="px-6 py-5">
-              <h6 className="mb-4 text-xl font-semibold leading-6 text-foreground">Delivery</h6>
+              <h6 className="mb-4 text-lg font-semibold leading-6 text-foreground">Delivery</h6>
               <div className="space-y-3 text-base">
                 <div className="flex items-center justify-between">
                   <span className="text-grey-600">Ship by</span>
@@ -134,7 +134,7 @@ export default function OrderDetailsPage() {
 
             {/* Shipping section */}
             <div className="px-6 py-5">
-              <h6 className="mb-4 text-xl font-semibold leading-6 text-foreground">Shipping</h6>
+              <h6 className="mb-4 text-lg font-semibold leading-6 text-foreground">Shipping</h6>
               <div className="space-y-3 text-base">
                 <div className="flex items-start justify-between gap-4">
                   <span className="shrink-0 text-grey-600">Address</span>
@@ -156,7 +156,7 @@ export default function OrderDetailsPage() {
 
             {/* Payment section */}
             <div className="px-6 py-5">
-              <h6 className="mb-4 text-xl font-semibold leading-6 text-foreground">Payment</h6>
+              <h6 className="mb-4 text-lg font-semibold leading-6 text-foreground">Payment</h6>
               <div className="flex items-center justify-between">
                 <span className="font-semibold tracking-widest text-foreground">
                   **** **** **** {order.payment.cardLast4}

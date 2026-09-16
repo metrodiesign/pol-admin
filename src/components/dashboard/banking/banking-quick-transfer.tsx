@@ -28,7 +28,7 @@ export function BankingQuickTransfer() {
 
   return (
     <div className="dashboard-card p-6">
-      <h6 className="text-2xl font-semibold text-grey-800">Quick transfer</h6>
+      <h6 className="text-xl font-semibold text-grey-800">Quick transfer</h6>
 
       {/* RECENT label + View all */}
       <div className="mt-4 flex items-center justify-between">
@@ -113,7 +113,7 @@ export function BankingQuickTransfer() {
         </p>
         <div className="mt-3 flex items-center justify-center gap-1">
           <span
-            className="text-5xl font-semibold leading-none text-grey-800"
+            className="text-4xl font-semibold leading-none text-grey-800"
             style={{ fontFamily: "var(--font-barlow, var(--font-sans))" }}
           >
             $
@@ -124,7 +124,7 @@ export function BankingQuickTransfer() {
             max={1000}
             value={amount}
             onChange={handleAmountChange}
-            className="w-32 bg-transparent text-center text-5xl font-semibold leading-none text-grey-800 outline-none"
+            className="w-32 bg-transparent text-center text-4xl font-semibold leading-none text-grey-800 outline-none"
             style={{ fontFamily: "var(--font-barlow, var(--font-sans))" }}
             aria-label="Insert amount"
           />

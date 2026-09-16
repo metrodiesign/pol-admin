@@ -144,7 +144,7 @@ export function ProductCarousel() {
               <span className="inline-block rounded-md bg-[#00A76F] px-2 py-0.5 text-base font-semibold uppercase text-white">
                 {slide.label}
               </span>
-              <p className="mt-2 line-clamp-2 max-w-xs text-2xl font-semibold text-white">
+              <p className="mt-2 line-clamp-2 max-w-xs text-xl font-semibold text-white">
                 {slide.title}
               </p>
               <button

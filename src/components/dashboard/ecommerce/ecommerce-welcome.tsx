@@ -146,7 +146,7 @@ export function EcommerceWelcome() {
             }}
           >
             <div className="relative z-10 max-w-sm">
-              <h4 className="text-4xl font-semibold leading-9">
+              <h4 className="text-3xl font-semibold leading-9">
                 {slide.title}
                 {slide.highlight && (
                   <>

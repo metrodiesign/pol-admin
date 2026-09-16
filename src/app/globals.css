@@ -101,27 +101,27 @@
      (masked keys, idempotency keys, event/client IDs, signatures, refs). ---- */
   --font-mono: var(--font-ibm-plex-mono), ui-monospace, SFMono-Regular,
     "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
-  /* ---- Body/display scale: body sits on text-base (23px); DB Sathorn X reads
-     small, so the scale starts higher than Tailwind's default and keeps wider
-     leading because Thai stacks vowels/tone marks above and below the baseline. ---- */
-  --text-xs: 1.0625rem;           /* 17px */
-  --text-xs--line-height: 1.625rem;
-  --text-sm: 1.25rem;             /* 20px */
-  --text-sm--line-height: 1.875rem;
-  --text-base: 1.4375rem;         /* 23px */
-  --text-base--line-height: 2.125rem;
-  --text-lg: 1.6875rem;           /* 27px */
-  --text-lg--line-height: 2.375rem;
-  --text-xl: 1.9375rem;           /* 31px */
-  --text-xl--line-height: 2.625rem;
-  --text-2xl: 2.3125rem;          /* 37px */
-  --text-2xl--line-height: 3rem;
-  --text-3xl: 2.8125rem;          /* 45px */
-  --text-3xl--line-height: 3.5rem;
-  --text-4xl: 3.375rem;           /* 54px */
-  --text-4xl--line-height: 4rem;
-  --text-5xl: 4.125rem;           /* 66px */
-  --text-5xl--line-height: 4.875rem;
+  /* ---- Body/display scale: body sits on text-base (20px); DB Sathorn X reads
+     small, so the scale keeps wider leading because Thai stacks vowels/tone marks
+     above and below the baseline. ---- */
+  --text-xs: 0.9375rem;           /* 15px */
+  --text-xs--line-height: 1.5rem;
+  --text-sm: 1.0625rem;            /* 17px */
+  --text-sm--line-height: 1.625rem;
+  --text-base: 1.25rem;            /* 20px */
+  --text-base--line-height: 1.875rem;
+  --text-lg: 1.4375rem;            /* 23px */
+  --text-lg--line-height: 2.125rem;
+  --text-xl: 1.6875rem;            /* 27px */
+  --text-xl--line-height: 2.375rem;
+  --text-2xl: 1.9375rem;           /* 31px */
+  --text-2xl--line-height: 2.625rem;
+  --text-3xl: 2.3125rem;           /* 37px */
+  --text-3xl--line-height: 3rem;
+  --text-4xl: 2.8125rem;           /* 45px */
+  --text-4xl--line-height: 3.5rem;
+  --text-5xl: 3.375rem;            /* 54px */
+  --text-5xl--line-height: 4rem;
   /* clamp ranges = base rem (mobile) -> computed px @1440 (desktop), matching MUI responsiveFontSizes */
   --text-h1: clamp(2.5rem, 1.972rem + 2.253vw, 4rem);
   --text-h2: clamp(2rem, 1.648rem + 1.502vw, 3rem);
@@ -577,12 +577,12 @@ tbody tr {
 @utility text-h4 { font-size: var(--text-h4); line-height: 1.5; font-weight: 600; }
 @utility text-h5 { font-size: var(--text-h5); line-height: 1.5; font-weight: 600; }
 @utility text-h6 { font-size: var(--text-h6); line-height: 1.556; font-weight: 600; }
-@utility text-subtitle1 { font-size: 1rem; line-height: 1.5; font-weight: 600; }
-@utility text-subtitle2 { font-size: 0.875rem; line-height: 1.571; font-weight: 600; }
-@utility text-body1 { font-size: 1rem; line-height: 1.5; font-weight: 400; }
-@utility text-body2 { font-size: 0.875rem; line-height: 1.571; font-weight: 400; }
-@utility text-caption { font-size: 0.875rem; line-height: 1.5; font-weight: 400; }
-@utility text-overline { font-size: 0.875rem; line-height: 1.5; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+@utility text-subtitle1 { font-size: var(--text-base); line-height: 1.5; font-weight: 600; }
+@utility text-subtitle2 { font-size: var(--text-sm); line-height: 1.5; font-weight: 600; }
+@utility text-body1 { font-size: var(--text-base); line-height: 1.5; font-weight: 400; }
+@utility text-body2 { font-size: var(--text-sm); line-height: 1.5; font-weight: 400; }
+@utility text-caption { font-size: var(--text-xs); line-height: 1.5; font-weight: 400; }
+@utility text-overline { font-size: var(--text-xs); line-height: 1.5; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 
 /* ---- Control-plane data face: machine identifiers, tabular figures aligned ---- */
 @utility text-data { font-family: var(--font-mono); font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
@@ -619,25 +619,25 @@ tbody tr {
   --rdp-nav-height: 40px;
   --rdp-nav_button-width: 40px;
   --rdp-nav_button-height: 40px;
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
 }
 .date-range-calendar .rdp-month_caption {
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
   font-weight: 600;
   color: var(--foreground);
 }
 .date-range-calendar .rdp-weekday {
-  font-size: 1.125rem;
+  font-size: var(--text-base);
   font-weight: 500;
   color: var(--color-grey-500);
 }
 .date-range-calendar .rdp-day_button {
-  font-size: 1.125rem;
+  font-size: var(--text-base);
   font-weight: 500;
 }
 .date-range-calendar .rdp-selected {
   font-weight: 600;
-  font-size: 1.125rem;
+  font-size: var(--text-base);
 }
 /* endpoint: RDP ทาพื้นครึ่งซ้าย/ขวาไว้ที่ td (ต่อแถบ) — โผล่เป็นเหลี่ยมข้างวงกลม ตัดทิ้ง */
 .date-range-calendar .rdp-range_start,

@@ -221,7 +221,7 @@ export function NotificationsDrawer({ variant = "white" }: NotificationsDrawerPr
         className="w-[420px] gap-0 p-0 sm:max-w-[420px]"
       >
         <div className="flex items-center justify-between px-5 py-4">
-          <SheetTitle className="text-2xl font-semibold text-grey-800">
+          <SheetTitle className="text-xl font-semibold text-grey-800">
             Notifications
           </SheetTitle>
           <div className="flex items-center gap-1">

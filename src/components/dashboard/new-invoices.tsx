@@ -41,7 +41,7 @@ export function NewInvoices() {
   return (
     <section className="dashboard-card flex h-full flex-col">
       <header className="p-6">
-        <h6 className="text-2xl font-semibold text-grey-800">New Invoices</h6>
+        <h6 className="text-xl font-semibold text-grey-800">New Invoices</h6>
       </header>
       <div className="flex-1 overflow-x-auto">
         <Table>

@@ -50,7 +50,7 @@ export function ErrorCard({ code, title, message, illustration, children }: Erro
     <div className="w-full max-w-sm rounded-2xl bg-background px-6 py-10 text-center shadow-card">
       {illustration && <div className="mb-6 flex justify-center">{illustration}</div>}
       {code && <p className="mb-4 text-6xl font-semibold text-crop-blue">{code}</p>}
-      <h1 className="text-3xl font-semibold text-foreground">{title}</h1>
+      <h1 className="text-2xl font-semibold text-foreground">{title}</h1>
       <p className="mt-2 text-base text-muted-foreground">{message}</p>
       {children}
     </div>

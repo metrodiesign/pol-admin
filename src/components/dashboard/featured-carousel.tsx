@@ -147,7 +147,7 @@ export function FeaturedCarousel() {
               >
                 {slide.category}
               </p>
-              <h6 className="mt-1 line-clamp-2 max-w-xs text-xl font-semibold text-white">
+              <h6 className="mt-1 line-clamp-2 max-w-xs text-lg font-semibold text-white">
                 {slide.title}
               </h6>
               <p className="mt-1 line-clamp-1 text-base text-white/60">{slide.caption}</p>

@@ -23,7 +23,7 @@ export function Legend({
   return (
     <legend
       data-slot="legend"
-      className={cn("text-2xl font-semibold text-foreground", className)}
+      className={cn("text-xl font-semibold text-foreground", className)}
       {...props}
     />
   );

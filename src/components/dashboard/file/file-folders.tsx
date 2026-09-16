@@ -13,7 +13,7 @@ export function FileFolders() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <h6 className="text-2xl font-semibold text-grey-800">Folders</h6>
+          <h6 className="text-xl font-semibold text-grey-800">Folders</h6>
           <button
             type="button"
             className="flex size-6 items-center justify-center rounded-full bg-grey-800 text-white hover:bg-grey-700"

@@ -70,7 +70,7 @@ function UserCardItem({ card }: { card: UserCard }) {
             className="size-full object-cover"
           />
         </div>
-        <p className="mt-4 text-xl font-semibold text-grey-800">{card.name}</p>
+        <p className="mt-4 text-lg font-semibold text-grey-800">{card.name}</p>
         <p className="mt-1 text-base text-grey-600">{card.role}</p>
 
         <div className="mt-4 mb-2">
@@ -86,19 +86,19 @@ function UserCardItem({ card }: { card: UserCard }) {
             <p className="text-base font-normal text-grey-600">
               Follower
             </p>
-            <p className="mt-1 text-xl font-semibold text-grey-800">{card.totalFollowers}</p>
+            <p className="mt-1 text-lg font-semibold text-grey-800">{card.totalFollowers}</p>
           </div>
           <div className="text-center">
             <p className="text-base font-normal text-grey-600">
               Following
             </p>
-            <p className="mt-1 text-xl font-semibold text-grey-800">{card.totalFollowing}</p>
+            <p className="mt-1 text-lg font-semibold text-grey-800">{card.totalFollowing}</p>
           </div>
           <div className="text-center">
             <p className="text-base font-normal text-grey-600">
               Total post
             </p>
-            <p className="mt-1 text-xl font-semibold text-grey-800">{card.totalPosts}</p>
+            <p className="mt-1 text-lg font-semibold text-grey-800">{card.totalPosts}</p>
           </div>
         </div>
       </div>

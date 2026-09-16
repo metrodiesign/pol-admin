@@ -76,7 +76,7 @@ export function RelatedApplications() {
   return (
     <section className="dashboard-card flex flex-col">
       <header className="p-6">
-        <h6 className="text-2xl font-semibold text-grey-800">Related applications</h6>
+        <h6 className="text-xl font-semibold text-grey-800">Related applications</h6>
       </header>
       <Tabs defaultValue="7days" className="flex flex-1 flex-col">
         <TabsList variant="segment">

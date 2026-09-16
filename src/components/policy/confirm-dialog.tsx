@@ -33,7 +33,7 @@ export function ConfirmDialog({
     <Dialog open={open} onOpenChange={(o) => (!o ? onClose() : undefined)}>
       <DialogContent className="theme-minimals sm:max-w-sm" showCloseButton={false}>
         <DialogHeader>
-          <DialogTitle className="text-2xl font-semibold text-foreground">{title}</DialogTitle>
+          <DialogTitle className="text-xl font-semibold text-foreground">{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
 

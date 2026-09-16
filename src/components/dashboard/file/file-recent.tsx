@@ -28,7 +28,7 @@ export function FileRecent() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <h6 className="text-2xl font-semibold text-grey-800">Recent files</h6>
+          <h6 className="text-xl font-semibold text-grey-800">Recent files</h6>
           <button
             type="button"
             className="flex size-6 items-center justify-center rounded-full bg-success text-white hover:bg-success-dark"

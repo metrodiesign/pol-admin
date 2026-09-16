@@ -78,7 +78,7 @@ function ProfileCover({
           className="size-[124px] rounded-full border-4 border-white object-cover"
         />
         <div className="text-white">
-          <h4 className="text-4xl font-semibold">{userProfile.name}</h4>
+          <h4 className="text-3xl font-semibold">{userProfile.name}</h4>
           <p className="mt-0.5 text-base opacity-70">{userProfile.role}</p>
         </div>
       </div>
@@ -111,11 +111,11 @@ function ProfileStatsCard() {
     <div className="dashboard-card">
       <div className="flex items-center divide-x divide-grey-200">
         <div className="flex-1 py-6 text-center">
-          <p className="text-4xl font-semibold text-grey-800">{userProfile.followers}</p>
+          <p className="text-3xl font-semibold text-grey-800">{userProfile.followers}</p>
           <p className="mt-1 text-base text-grey-600">Follower</p>
         </div>
         <div className="flex-1 py-6 text-center">
-          <p className="text-4xl font-semibold text-grey-800">{userProfile.following}</p>
+          <p className="text-3xl font-semibold text-grey-800">{userProfile.following}</p>
           <p className="mt-1 text-base text-grey-600">Following</p>
         </div>
       </div>
@@ -127,7 +127,7 @@ function ProfileAboutCard() {
   const { about } = userProfile;
   return (
     <div className="dashboard-card p-6">
-      <h6 className="text-2xl font-semibold text-grey-800">About</h6>
+      <h6 className="text-xl font-semibold text-grey-800">About</h6>
       <p className="mt-6 text-base leading-[22px] text-grey-600">{about.bio}</p>
       <ul className="mt-6 space-y-4">
         <li className="flex items-center gap-2 text-base text-grey-600">
@@ -164,7 +164,7 @@ function ProfileSocialCard() {
   const { social } = userProfile;
   return (
     <div className="dashboard-card p-6">
-      <h6 className="text-2xl font-semibold text-grey-800">Social</h6>
+      <h6 className="text-xl font-semibold text-grey-800">Social</h6>
       <ul className="mt-6 space-y-4">
         {Object.entries(social).map(([key, url]) => (
           <li key={key} className="flex items-center gap-2 text-base text-grey-600">

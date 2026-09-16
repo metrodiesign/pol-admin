@@ -93,10 +93,10 @@ export function OrderDetailItems({
           </span>
         </div>
         <div className="flex items-center justify-end gap-2 pt-2">
-          <span className="w-48 text-right text-xl font-semibold text-foreground">
+          <span className="w-48 text-right text-lg font-semibold text-foreground">
             Total
           </span>
-          <span className="w-24 text-right text-xl font-semibold text-foreground">
+          <span className="w-24 text-right text-lg font-semibold text-foreground">
             {formatCurrency(total)}
           </span>
         </div>
