@@ -14,7 +14,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { accountUser } from "@/lib/mock/topbar";
 import { useAuth } from "@/components/auth/auth-provider";
-import { logout } from "@/lib/api/admin/auth";
+import { EMPLOYEE_END_SESSION_URL, logout } from "@/lib/api/admin/auth";
 
 // Nav icons — SVG paths extracted from minimals.cc live source
 function IconHome() {
@@ -111,7 +111,7 @@ export function AccountDrawer({ variant = "white" }: AccountDrawerProps) {
     try {
       await logout();
       clearAuthState();
-      window.location.href = "/login";
+      window.location.href = EMPLOYEE_END_SESSION_URL;
     } catch {
       setLogoutFailed(true);
     } finally {
