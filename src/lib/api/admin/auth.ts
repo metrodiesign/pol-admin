@@ -283,3 +283,7 @@ export async function logout(): Promise<Response> {
   clearTokens();
   return response;
 }
+
+// step 2 ของ logout ต้องเป็น full navigation (ไม่ใช่ fetch) ให้ 302 ของ Entra end_session_endpoint ทำงานจริงในเบราว์เซอร์ —
+// จบ platform token (step 1: POST /api/v1/auth/logout) แล้วต้องจบ Entra SSO session ด้วย ไม่งั้น login รอบถัดไปข้ามหน้าเลือกอีเมล.
+export const EMPLOYEE_END_SESSION_URL = "/api/v1/auth/employees/logout";

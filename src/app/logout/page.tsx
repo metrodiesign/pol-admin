@@ -1,29 +1,28 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
-import { logout } from "@/lib/api/admin/auth";
+import { EMPLOYEE_END_SESSION_URL, logout } from "@/lib/api/admin/auth";
 
-// sign-out: เรียก BFF logout แล้วเด้งกลับ /login เมื่อได้ 204 หรือ terminal logged-out state (401/403).
+// sign-out: เรียก BFF logout (step 1) แล้ว full navigation ไป Entra end_session_endpoint (step 2)
+// เมื่อได้ 204 หรือ terminal logged-out state (401) — full navigation ให้ 302 ของ Entra ทำงานจริง ไม่ใช้ router.replace.
 export default function LogoutPage() {
-  const router = useRouter();
   const [failed, setFailed] = useState(false);
   const attemptLogout = useCallback(async () => {
     setFailed(false);
     try {
       await logout();
-      router.replace("/login");
+      window.location.href = EMPLOYEE_END_SESSION_URL;
     } catch {
       setFailed(true);
     }
-  }, [router]);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
     void logout()
       .then(() => {
-        if (!cancelled) router.replace("/login");
+        if (!cancelled) window.location.href = EMPLOYEE_END_SESSION_URL;
       })
       .catch(() => {
         if (!cancelled) setFailed(true);
@@ -31,7 +30,7 @@ export default function LogoutPage() {
     return () => {
       cancelled = true;
     };
-  }, [router]);
+  }, []);
 
   if (failed) {
     return (
